@@ -38,11 +38,16 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* KG brand tokens */
-  --color-anchor: var(--anchor);
-  --color-steel: var(--steel);
+  /* KG brand tokens — fixed brand colors */
+  --color-anchor: var(--anchor-fixed);
+  --color-steel: var(--steel-fixed);
   --color-signal: var(--signal);
   --color-lift: var(--lift);
+
+  /* Surface tokens — flip per theme */
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--on-surface);
 
   --font-display: 'Michroma', 'Arial Narrow', Arial, sans-serif;
   --font-body: Arial, 'Helvetica Neue', Helvetica, sans-serif;
@@ -51,59 +56,118 @@
 :root {
   --radius: 0px;
 
-  /* Brand */
-  --anchor: oklch(0.08 0 0);            /* #0A0A0A */
-  --steel:  oklch(0.18 0 0);            /* #1A1A1A */
-  --signal: oklch(0.87 0.18 95);        /* #FFD500 */
-  --lift:   oklch(0.7 0.21 45);         /* #FF6B00 */
+  /* Fixed brand colors — never change between themes */
+  --anchor-fixed: oklch(0.08 0 0);      /* #0A0A0A */
+  --steel-fixed:  oklch(0.18 0 0);      /* #1A1A1A */
+  --signal:       oklch(0.87 0.18 95);  /* #FFD500 */
+  --lift:         oklch(0.7 0.21 45);   /* #FF6B00 */
 
-  /* Site is dark-only */
-  --background: var(--anchor);
-  --foreground: oklch(1 0 0);
-  --card: var(--steel);
-  --card-foreground: oklch(1 0 0);
-  --popover: var(--steel);
-  --popover-foreground: oklch(1 0 0);
+  /* Default theme = DARK */
+  --surface:    var(--anchor-fixed);
+  --surface-2:  var(--steel-fixed);
+  --on-surface: oklch(1 0 0);
+
+  --background: var(--surface);
+  --foreground: var(--on-surface);
+  --card: var(--surface-2);
+  --card-foreground: var(--on-surface);
+  --popover: var(--surface-2);
+  --popover-foreground: var(--on-surface);
   --primary: var(--signal);
-  --primary-foreground: var(--anchor);
-  --secondary: var(--steel);
-  --secondary-foreground: oklch(1 0 0);
+  --primary-foreground: var(--anchor-fixed);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--on-surface);
   --muted: oklch(0.22 0 0);
   --muted-foreground: oklch(0.65 0 0);
   --accent: var(--signal);
-  --accent-foreground: var(--anchor);
+  --accent-foreground: var(--anchor-fixed);
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 12%);
+  --border: color-mix(in oklab, var(--on-surface) 10%, transparent);
+  --input: color-mix(in oklab, var(--on-surface) 12%, transparent);
   --ring: var(--signal);
 }
 
+/* LIGHT THEME — re-flip surface tokens. Brand colors stay locked. */
+.light {
+  --surface:    oklch(0.98 0 0);        /* paper white */
+  --surface-2:  oklch(0.94 0 0);        /* card grey */
+  --on-surface: var(--anchor-fixed);    /* anchor black for text */
+
+  --background: var(--surface);
+  --foreground: var(--on-surface);
+  --card: var(--surface-2);
+  --card-foreground: var(--on-surface);
+  --popover: var(--surface-2);
+  --popover-foreground: var(--on-surface);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--on-surface);
+  --muted: oklch(0.9 0 0);
+  --muted-foreground: oklch(0.4 0 0);
+  --border: color-mix(in oklab, var(--on-surface) 10%, transparent);
+  --input: color-mix(in oklab, var(--on-surface) 12%, transparent);
+}
+
 .dark {
-  --background: var(--anchor);
-  --foreground: oklch(1 0 0);
+  /* Explicit dark — same as :root defaults, kept for clarity. */
+  --surface:    var(--anchor-fixed);
+  --surface-2:  var(--steel-fixed);
+  --on-surface: oklch(1 0 0);
+  --background: var(--surface);
+  --foreground: var(--on-surface);
+}
+
+/* ----------------------------------------------------------------
+ * Override hard-coded utilities so dark-built components flip in
+ * light mode WITHOUT having to rewrite every JSX file.
+ * "bg-anchor" → surface (white in light), "bg-steel" → surface-2,
+ * "text-white" → on-surface (black in light), border/text/bg of
+ * white/X alpha → on-surface mixed with transparency.
+ * Brand utilities ("text-anchor", "bg-signal") remain LITERAL.
+ * --------------------------------------------------------------- */
+@layer utilities {
+  .bg-anchor { background-color: var(--surface) !important; }
+  .bg-steel  { background-color: var(--surface-2) !important; }
+
+  .text-white   { color: var(--on-surface) !important; }
+  .text-white\/40 { color: color-mix(in oklab, var(--on-surface) 40%, transparent) !important; }
+  .text-white\/50 { color: color-mix(in oklab, var(--on-surface) 50%, transparent) !important; }
+  .text-white\/55 { color: color-mix(in oklab, var(--on-surface) 55%, transparent) !important; }
+  .text-white\/60 { color: color-mix(in oklab, var(--on-surface) 60%, transparent) !important; }
+  .text-white\/70 { color: color-mix(in oklab, var(--on-surface) 70%, transparent) !important; }
+  .text-white\/80 { color: color-mix(in oklab, var(--on-surface) 80%, transparent) !important; }
+
+  .border-white\/5  { border-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
+  .border-white\/10 { border-color: color-mix(in oklab, var(--on-surface) 10%, transparent) !important; }
+  .border-white\/20 { border-color: color-mix(in oklab, var(--on-surface) 20%, transparent) !important; }
+
+  .bg-white\/5  { background-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
+  .hover\:bg-white\/5:hover { background-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
+
+  /* Hero gradient: was from-anchor → surface for proper light mode mix */
+  .from-anchor { --tw-gradient-from: var(--surface) !important; }
+  .via-anchor  { --tw-gradient-via:  var(--surface) !important; }
+  .to-anchor   { --tw-gradient-to:   var(--surface) !important; }
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
+  * { border-color: var(--color-border); }
 
   html {
-    background-color: var(--color-anchor);
-    color: oklch(1 0 0);
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: var(--font-body);
   }
 
   body {
-    background-color: var(--color-anchor);
-    color: var(--color-foreground);
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background-color: var(--color-signal);
-    color: var(--color-anchor);
+    background-color: var(--signal);
+    color: var(--anchor-fixed);
   }
 }
