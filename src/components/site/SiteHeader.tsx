@@ -48,16 +48,16 @@ export function SiteHeader() {
         <button
           onClick={toggleTheme}
           aria-label={t("Cambiar tema")}
-          className="p-2 text-white/70 hover:text-signal transition-colors"
+          className="p-2 bg-signal text-anchor hover:scale-110 transition-transform shadow-[2px_2px_0_0_rgba(0,0,0,0.6)]"
         >
-          {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          {theme === "dark" ? <Sun size={16} strokeWidth={2.5} /> : <Moon size={16} strokeWidth={2.5} />}
         </button>
 
         {/* Language toggle */}
         <button
           onClick={toggleLang}
           aria-label={t("Cambiar idioma")}
-          className="text-[11px] font-bold uppercase tracking-widest text-white/70 hover:text-signal transition-colors px-2 py-1 border border-white/15"
+          className="text-[11px] font-bold uppercase tracking-widest text-anchor bg-signal hover:bg-white transition-colors px-3 py-1.5 shadow-[2px_2px_0_0_rgba(0,0,0,0.6)]"
         >
           {lang === "es" ? "EN" : "ES"}
         </button>
