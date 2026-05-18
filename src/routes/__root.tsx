@@ -9,24 +9,27 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-anchor px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <h1 className="font-display text-8xl text-signal">404</h1>
+        <h2 className="mt-4 text-xl font-bold uppercase tracking-widest text-white">
+          Página no encontrada
+        </h2>
+        <p className="mt-3 text-sm text-white/60">
+          La página que buscas no existe o fue movida.
         </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+        <Link
+          to="/"
+          className="mt-8 inline-block bg-signal text-anchor px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
+        >
+          Volver al inicio
+        </Link>
       </div>
     </div>
   );
@@ -35,33 +38,22 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-anchor px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+        <h1 className="font-display text-xl uppercase tracking-widest text-white">
+          Algo falló
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
-        </div>
+        <p className="mt-3 text-sm text-white/60">Intenta recargar la página.</p>
+        <button
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
+          className="mt-8 bg-signal text-anchor px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
+        >
+          Reintentar
+        </button>
       </div>
     </div>
   );
@@ -72,19 +64,53 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "KG Safety · Ingeniería en protección contra caídas" },
+      {
+        name: "description",
+        content:
+          "Capacitación DC-3, equipos certificados y diseño de líneas de vida para empresas Clase Mundial. 30M+ horas-hombre supervisadas sin accidentes.",
+      },
+      { name: "author", content: "KG Fall Protection Engineering" },
+      { property: "og:site_name", content: "KG Safety" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:title", content: "KG Safety · We never fall." },
+      {
+        property: "og:description",
+        content:
+          "Soluciones integrales en seguridad para trabajos en altura. Ingeniería, capacitación y equipos certificados.",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#0A0A0A" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Michroma&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "KG Fall Protection Engineering",
+          alternateName: "KG Safety",
+          url: "https://kg-safety.com",
+          slogan: "We never fall.",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "José María Pino Suárez 304-1, Col. 5 de Mayo",
+            addressLocality: "Toluca",
+            addressRegion: "Estado de México",
+            postalCode: "50090",
+            addressCountry: "MX",
+          },
+          telephone: "+52-722-879-5076",
+        }),
       },
     ],
   }),
@@ -96,11 +122,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es" className="dark">
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="bg-anchor text-white font-body">
         {children}
         <Scripts />
       </body>
@@ -110,10 +136,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <div className="min-h-screen flex flex-col bg-anchor">
+        <SiteHeader />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <SiteFooter />
+        <WhatsAppFloat />
+      </div>
     </QueryClientProvider>
   );
 }

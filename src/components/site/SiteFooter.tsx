@@ -1,0 +1,64 @@
+import { Link } from "@tanstack/react-router";
+
+export function SiteFooter() {
+  return (
+    <footer className="bg-anchor border-t border-white/10">
+      <div className="px-6 md:px-12 py-16 grid md:grid-cols-4 gap-10">
+        <div className="md:col-span-2">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-signal grid place-items-center">
+              <div className="w-5 h-5 border-[3px] border-anchor" />
+            </div>
+            <span className="font-display text-lg tracking-tighter uppercase">
+              KG <span className="text-signal">Safety</span>
+            </span>
+          </div>
+          <p className="text-white/50 text-sm max-w-md leading-relaxed mb-6">
+            Ingeniería aplicada a la eliminación total de riesgos de caída. Soluciones
+            integrales para empresas Clase Mundial en México.
+          </p>
+          <p className="font-display text-signal text-lg tracking-tight">We never fall.</p>
+        </div>
+
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-5">
+            Servicios
+          </h4>
+          <ul className="space-y-3 text-sm text-white/70">
+            <li><Link to="/capacitacion" className="hover:text-signal">Capacitación DC-3</Link></li>
+            <li><Link to="/ingenieria" className="hover:text-signal">Líneas de Vida</Link></li>
+            <li><Link to="/equipos" className="hover:text-signal">Equipos certificados</Link></li>
+            <li><Link to="/contratistas" className="hover:text-signal">P.N.P.C.</Link></li>
+            <li><Link to="/nosotros" className="hover:text-signal">Nosotros</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-5">
+            Contacto
+          </h4>
+          <ul className="space-y-3 text-sm text-white/70">
+            <li><a href="tel:+527228795076" className="hover:text-signal">+52 722 879 5076</a></li>
+            <li><a href="mailto:ventas@kg-safety.com" className="hover:text-signal">ventas@kg-safety.com</a></li>
+            <li className="text-white/50">
+              José María Pino Suárez 304-1<br />
+              Col. 5 de Mayo, Toluca<br />
+              Estado de México, C.P. 50090
+            </li>
+            <li className="text-white/50">Lun a Vie · 9:00 – 18:00</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-white/10 px-6 md:px-12 py-6 flex flex-col md:flex-row justify-between gap-4 text-[10px] tracking-widest uppercase text-white/40">
+        <div>© 2025 KG Fall Protection Engineering · Toluca · Querétaro · CDMX</div>
+        <div className="flex gap-6">
+          <span>STPS</span>
+          <span>OSHA</span>
+          <span>ANSI Z359</span>
+          <span>NOM-009-STPS</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
