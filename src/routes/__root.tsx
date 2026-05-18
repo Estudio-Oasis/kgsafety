@@ -12,7 +12,6 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
-import { WorldClockBar } from "@/components/site/WorldClockBar";
 import { ThemeProvider } from "@/theme/context";
 import { LanguageProvider, useT } from "@/i18n/context";
 
@@ -76,7 +75,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "KG Fall Protection Engineering" },
       { property: "og:site_name", content: "KG Safety" },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "KG Safety · We never fall." },
+      { property: "og:title", content: "KG Safety · Ingeniería en protección contra caídas" },
       {
         property: "og:description",
         content:
@@ -84,6 +83,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0A0A0A" },
+      { name: "twitter:title", content: "KG Safety · Ingeniería en protección contra caídas" },
+      { name: "description", content: "Redesigns kg-safety.com for improved conversion and sales, featuring a modern interface and essential information." },
+      { property: "og:description", content: "Redesigns kg-safety.com for improved conversion and sales, featuring a modern interface and essential information." },
+      { name: "twitter:description", content: "Redesigns kg-safety.com for improved conversion and sales, featuring a modern interface and essential information." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f7512f39-bd24-41cc-b10a-3db814f25724/id-preview-4e5724c2--b45c2c5c-79f2-473b-b923-a035b384b17e.lovable.app-1779147831038.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f7512f39-bd24-41cc-b10a-3db814f25724/id-preview-4e5724c2--b45c2c5c-79f2-473b-b923-a035b384b17e.lovable.app-1779147831038.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -147,7 +152,6 @@ function RootComponent() {
       <ThemeProvider>
         <LanguageProvider>
           <div className="min-h-screen flex flex-col bg-anchor">
-            <WorldClockBar />
             <SiteHeader />
             <main className="flex-1">
               <Outlet />
