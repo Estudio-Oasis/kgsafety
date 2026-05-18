@@ -46,7 +46,7 @@ const KAEE = [
   { letter: "E", title: "Elimination", descKey: "Implementación final para la eliminación total del riesgo de caída." },
 ];
 
-const CLIENTS = ["COCA-COLA FEMSA", "HOLCIM", "UNILEVER", "MERCK", "PETSTAR", "SANTA CLARA"];
+const CLIENTS = ["COCA-COLA FEMSA", "HOLCIM", "UNILEVER", "MERCK", "PETSTAR", "SANTA CLARA", "BIMBO", "NESTLÉ", "CEMEX", "HEINEKEN", "GRUPO MODELO", "PEMEX"];
 
 const SUBBRANDS = [
   { name: "Working at Heights", tag: "WAH" },
