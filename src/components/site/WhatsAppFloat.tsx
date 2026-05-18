@@ -1,4 +1,7 @@
+import { useT } from "@/i18n/context";
+
 export function WhatsAppFloat() {
+  const { t } = useT();
   const msg = encodeURIComponent(
     "Hola KG Safety, me gustaría recibir información y una cotización.",
   );
@@ -7,7 +10,7 @@ export function WhatsAppFloat() {
       href={`https://wa.me/527228795076?text=${msg}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Contactar por WhatsApp"
+      aria-label={t("Contactar por WhatsApp")}
       className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] grid place-items-center shadow-2xl hover:scale-105 transition-transform"
     >
       <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">

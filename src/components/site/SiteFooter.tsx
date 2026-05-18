@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
+import { useT } from "@/i18n/context";
 
 export function SiteFooter() {
+  const { t } = useT();
   return (
     <footer className="bg-anchor border-t border-white/10">
       <div className="px-6 md:px-12 py-16 grid md:grid-cols-4 gap-10">
@@ -14,28 +16,28 @@ export function SiteFooter() {
             </span>
           </div>
           <p className="text-white/50 text-sm max-w-md leading-relaxed mb-6">
-            Ingeniería aplicada a la eliminación total de riesgos de caída. Soluciones
-            integrales para empresas Clase Mundial en México.
+            {t("Ingeniería aplicada a la eliminación total de riesgos de caída. Soluciones integrales para empresas Clase Mundial en México.")}
           </p>
-          <p className="font-display text-signal text-lg tracking-tight">We never fall.</p>
+          <p className="font-display text-signal text-lg tracking-tight">{t("We never fall.")}</p>
         </div>
 
         <div>
           <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-5">
-            Servicios
+            {t("Servicios")}
           </h4>
           <ul className="space-y-3 text-sm text-white/70">
-            <li><Link to="/capacitacion" className="hover:text-signal">Capacitación DC-3</Link></li>
-            <li><Link to="/ingenieria" className="hover:text-signal">Líneas de Vida</Link></li>
-            <li><Link to="/equipos" className="hover:text-signal">Equipos certificados</Link></li>
-            <li><Link to="/contratistas" className="hover:text-signal">P.N.P.C.</Link></li>
-            <li><Link to="/nosotros" className="hover:text-signal">Nosotros</Link></li>
+            <li><Link to="/capacitacion" className="hover:text-signal">{t("Capacitación DC-3")}</Link></li>
+            <li><Link to="/ingenieria" className="hover:text-signal">{t("Líneas de Vida")}</Link></li>
+            <li><Link to="/equipos" className="hover:text-signal">{t("Equipos certificados")}</Link></li>
+            <li><Link to="/contratistas" className="hover:text-signal">{t("P.N.P.C.")}</Link></li>
+            <li><Link to="/blog" className="hover:text-signal">{t("Blog")}</Link></li>
+            <li><Link to="/nosotros" className="hover:text-signal">{t("Nosotros")}</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-5">
-            Contacto
+            {t("Contacto")}
           </h4>
           <ul className="space-y-3 text-sm text-white/70">
             <li><a href="tel:+527228795076" className="hover:text-signal">+52 722 879 5076</a></li>
@@ -45,13 +47,13 @@ export function SiteFooter() {
               Col. 5 de Mayo, Toluca<br />
               Estado de México, C.P. 50090
             </li>
-            <li className="text-white/50">Lun a Vie · 9:00 – 18:00</li>
+            <li className="text-white/50">{t("Lun a Vie · 9:00 – 18:00")}</li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-white/10 px-6 md:px-12 py-6 flex flex-col md:flex-row justify-between gap-4 text-[10px] tracking-widest uppercase text-white/40">
-        <div>© 2025 KG Fall Protection Engineering · Toluca · Querétaro · CDMX</div>
+        <div>{t("© 2025 KG Fall Protection Engineering · Toluca · Querétaro · CDMX")}</div>
         <div className="flex gap-6">
           <span>STPS</span>
           <span>OSHA</span>
