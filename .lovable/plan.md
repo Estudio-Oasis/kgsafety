@@ -1,61 +1,52 @@
-# Rediseño KG Safety — enfoque conversión
 
-Sitio nuevo orientado 100% a **convertir y vender**. Los logos de clientes, certificaciones y stats funcionan como prueba social al servicio de la conversión, no como protagonistas. Estética premium e industrial moderna para que clientes enterprise (Coca-Cola FEMSA, Holcim, Unilever) lo tomen en serio.
+# Auditoría de contenido + toggles de tema e idioma
 
-## Principios de diseño
+## 1. Auditoría: qué falta vs catálogo y propuesta
 
-- **CTA omnipresente:** "Cotizar ahora" + WhatsApp flotante en todas las rutas
-- **Hero que vende:** propuesta de valor clara + CTA primario + prueba social inmediata (logos + stat clave)
-- **Cada sección termina en conversión:** servicio → beneficio → CTA contextual
-- **Prueba social distribuida:** logos, stats y testimonios intercalados, no apilados en una sola franja
-- **Estética actual:** dark mode industrial, tipografía display fuerte (Netron-style), micro-interacciones, motion sutil — nivel Linear/Vercel aplicado a industria pesada
+Revisé los 3 PDFs (catálogo de servicios, brandbook, propuesta de revisión web) contra las 7 rutas actuales. La estructura está, pero falta info concreta:
 
-## Identidad (del brandbook oficial)
+**Páginas faltantes**
+- `/blog` — sí estaba en la propuesta original, lo omití en fase 1. Lo agrego como índice de recursos (3-4 artículos placeholder con normativas NOM-009, OSHA, casos de caída) para SEO y autoridad.
 
-- Paleta: Anchor Black · Steel Grey · Signal Yellow · Lift Orange (en oklch)
-- Tipografía: Arial body · display tipo Netron para impacto
-- Tagline: "We never fall."
-- Método K.A.E.E. como diferenciador
+**Contenido faltante por página existente**
+- **Capacitación**: faltan los **temarios OSHA Subpartes** (guion básico mencionado en pp.19-20 del catálogo), la mención de **Instituto Nacional de Capacitación en Seguridad Laboral KG**, programas de **recertificación anual**, y **rotación de personal**.
+- **Contratistas (P.N.P.C.)**: faltan los **antecedentes** (10 años de implementación, reducción a cero accidentes, 100% auditable, cumplimiento REPSE), las **3 áreas de capacitación + 2 de entrenamiento** específicas, y el detalle de **renta de anclajes** para baja frecuencia.
+- **Ingeniería**: faltan los **departamento de obra civil**, el detalle de **anclajes móviles/portátiles/temporales/individuales/colectivos** (compra y renta), y las variantes **LVH Rigid Rail / Overhead Structural / Cable base**.
+- **Equipos**: falta mención de **30 marcas representadas**, categorías específicas (**descensores de emergencia, rescatadores de espacios confinados, sistemas removibles, malacates manuales/eléctricos, cuerdas, ganchos/poleas/grilletes, abrazaderas y troles**), y la sección **Construcción y Mantenimiento** (residencial e industrial: limpieza, pintura, electricidad, impermeabilización, obra civil) con **programas a corto/mediano/largo plazo** (el programa a 3 años donde el cliente termina siendo dueño del equipo es un diferenciador fuerte).
+- **Nosotros**: falta el bloque oficial del brandbook ("No solo diseñamos seguridad. Diseñamos tranquilidad."), las **problemáticas del mercado** (mercado negro de supervisores, falta de temarios homologados, etc.) que justifican el método K.A.E.E., y la sección de **comunicación efectiva en seguridad** (los 9 elementos).
+- **Inicio**: agregar franja de **submarcas KAEE Group** (Working at Heights, WoLL – Working on Life Lines, Safety@Heights) para reforzar portafolio.
 
-## Arquitectura de rutas
+**Datos de contacto a corregir**
+- Catálogo y propuesta confirman teléfono **722 879 5076** y dirección **José María Pino Suárez 304-1, Col. 5 de Mayo, Toluca, EdoMex 50090** — ya está bien.
 
-```
-/                Landing de conversión
-/equipos         Catálogo + cotizar
-/capacitacion    Niveles + inscribir
-/ingenieria      Servicios + agendar diagnóstico
-/contratistas    P.N.P.C. + registrar empresa
-/nosotros        Trust builder (método, equipo, certificaciones)
-/contacto        Cotización + WhatsApp + datos
-```
+## 2. Toggle oscuro / claro
 
-Blog se omite en esta fase (no convierte directo). Cada ruta con SEO propio y CTA dedicado al final.
+- `ThemeProvider` propio (sin dependencias nuevas) que persiste en `localStorage` y aplica `class="dark"` o `class="light"` al `<html>`.
+- Definir paleta clara en `src/styles.css`: fondo **Paper White** (oklch ~0.98), texto **Anchor Black**, cards **Steel Grey 5%**, acentos **Signal Yellow** y **Lift Orange** se mantienen (son colores de marca). Bordes oscuros al 10%.
+- Botón toggle (sol/luna de `lucide-react`) en `SiteHeader`, junto al selector de idioma.
+- Auditar componentes: hoy uso clases hardcoded como `bg-anchor`, `text-white`, `border-white/10`. Migrar a tokens semánticos (`bg-background`, `text-foreground`, `border-border`) en `SiteHeader`, `SiteFooter`, `WhatsAppFloat`, `__root.tsx` y las 7 rutas. Es el cambio más grande de este plan.
 
-## Estructura de la landing (/)
+## 3. Toggle español / inglés
 
-1. **Hero** — Headline de valor + CTA "Cotizar" + stat ancla (30M+ horas-hombre supervisadas sin accidentes)
-2. **Logos de clientes** (franja sobria, justo bajo hero = prueba social inmediata)
-3. **Servicios** (5 cards con CTA individual a su página)
-4. **Por qué KG** — método K.A.E.E. visualizado + diferenciador vs competencia
-5. **Stats hero** (4 números grandes: 23,578 trabajadores · 6,254 contratistas · 1,560 cursos · 980+ clientes)
-6. **Caso/testimonio** (Grupo IOCISA u otro)
-7. **Certificaciones y normativas** (STPS, OSHA, ANSI, NOM-009) — sello de seriedad
-8. **CTA final** — formulario corto + WhatsApp
+- `i18n` propio, ligero, sin librerías: contexto React `LanguageProvider` con diccionario `{ es, en }` en `src/i18n/dictionary.ts`. Hook `useT()` devuelve strings. Persistencia en `localStorage` + `<html lang>` dinámico.
+- Selector ES/EN en header (texto compacto "ES | EN").
+- Traducir todos los strings visibles de las 8 rutas + header + footer + WhatsApp float + 404. Mantener nombres propios sin traducir (K.A.E.E., P.N.P.C., DC-3, NOM-009-STPS, "We never fall.").
+- SEO: el `head()` de cada ruta lee idioma actual y emite `title`/`description` en el idioma activo, además de `<link rel="alternate" hreflang="...">`.
 
-## Proceso
+## 4. Orden de implementación
 
-1. Capturo el preview actual.
-2. Genero **3 direcciones de diseño** rendereadas, todas con la paleta del brandbook bloqueada, variando composición y registro (ej: dense editorial, hero cinematográfico, modular industrial).
-3. Eliges una, construyo el sitio completo: tokens en `src/styles.css`, 7 rutas con `head()` único, navegación + footer + WhatsApp flotante, formulario que abre WhatsApp prellenado, imágenes industriales generadas con `imagegen`.
+1. Tokens claros/oscuros en `styles.css` + `ThemeProvider`.
+2. `LanguageProvider` + diccionario base.
+3. Migrar `SiteHeader` / `SiteFooter` / `WhatsAppFloat` a tokens semánticos + agregar toggles.
+4. Migrar las 7 rutas existentes a tokens + cablear strings al diccionario.
+5. Crear `/blog` con 3 artículos.
+6. Rellenar contenido faltante por página (sección por sección listado arriba).
+7. QA visual en oscuro y claro, ES y EN, en mobile (946px) y desktop.
 
-## Datos reales que se integran (del catálogo y sitio actual)
+## Fuera de alcance
 
-- Stats, clientes, contacto, niveles de capacitación (8h/16h/24h con DC-3), 12 áreas de cursos, normativas, método K.A.E.E., P.N.P.C., servicios de ingeniería (anclajes, LVV, LVH, hand rails, plataformas), mantenimiento residencial/industrial
+- Backend del formulario / portal de contratistas con login / blog con CMS (siguen requiriendo Lovable Cloud).
+- Buscador y filtros funcionales del catálogo de equipos (sería con Cloud).
+- Traducción del blog full (los artículos quedan en español; los títulos/menús sí se traducen).
 
-## Fuera de alcance (fase 1)
-
-- Backend del formulario y catálogo con DB → requiere Lovable Cloud (lo activamos después si lo pides)
-- Portal de contratistas con login
-- Blog/CMS
-
-¿Apruebas y arranco generando las 3 direcciones?
+¿Apruebo y arranco?
