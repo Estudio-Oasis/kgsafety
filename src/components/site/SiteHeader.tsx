@@ -78,7 +78,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="absolute top-full left-0 right-0 bg-anchor border-b border-white/10 xl:hidden">
+        <div className="absolute top-full left-0 right-0 bg-anchor border-b border-white/10 xl:hidden animate-mobile-in">
           <div className="flex flex-col p-6 gap-5 text-sm font-bold uppercase tracking-widest text-white/80">
             {NAV.map((item) => (
               <Link

@@ -171,3 +171,46 @@
     color: var(--anchor-fixed);
   }
 }
+
+/* ---------------------------------------------------------------
+ * Animations — marquee for top bar, plus mobile-only motion utils
+ * --------------------------------------------------------------- */
+@keyframes kg-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes kg-slide-down {
+  0%   { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes kg-slide-up {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes kg-pulse-signal {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--signal) 60%, transparent); }
+  50%      { box-shadow: 0 0 0 8px color-mix(in oklab, var(--signal) 0%, transparent); }
+}
+
+.animate-marquee { animation: kg-marquee 28s linear infinite; }
+
+@media (max-width: 767px) {
+  .md\:hidden.animate-mobile-in,
+  .animate-mobile-in { animation: kg-slide-up 0.5s ease-out both; }
+  /* Stagger hero CTAs / cards on mobile */
+  main section > * { animation: kg-slide-up 0.55s ease-out both; }
+  main section > *:nth-child(2) { animation-delay: 0.08s; }
+  main section > *:nth-child(3) { animation-delay: 0.16s; }
+  main section > *:nth-child(4) { animation-delay: 0.24s; }
+  main section > *:nth-child(5) { animation-delay: 0.32s; }
+
+  a[href="/contacto"].bg-signal,
+  .pulse-cta { animation: kg-pulse-signal 2.4s ease-in-out infinite; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  main section > *,
+  .animate-mobile-in,
+  .pulse-cta { animation: none !important; }
+}

@@ -12,6 +12,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
+import { WorldClockBar } from "@/components/site/WorldClockBar";
 import { ThemeProvider } from "@/theme/context";
 import { LanguageProvider, useT } from "@/i18n/context";
 
@@ -146,6 +147,7 @@ function RootComponent() {
       <ThemeProvider>
         <LanguageProvider>
           <div className="min-h-screen flex flex-col bg-anchor">
+            <WorldClockBar />
             <SiteHeader />
             <main className="flex-1">
               <Outlet />
