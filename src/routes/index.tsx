@@ -46,7 +46,7 @@ const KAEE = [
   { letter: "E", title: "Elimination", descKey: "Implementación final para la eliminación total del riesgo de caída." },
 ];
 
-const CLIENTS = ["COCA-COLA FEMSA", "HOLCIM", "UNILEVER", "MERCK", "PETSTAR", "SANTA CLARA"];
+const CLIENTS = ["COCA-COLA FEMSA", "HOLCIM", "UNILEVER", "MERCK", "PETSTAR", "SANTA CLARA", "BIMBO", "NESTLÉ", "CEMEX", "HEINEKEN", "GRUPO MODELO", "PEMEX"];
 
 const SUBBRANDS = [
   { name: "Working at Heights", tag: "WAH" },
@@ -66,20 +66,21 @@ function Index() {
             {t("WE NEVER")}<br />
             <span className="text-signal">{t("FALL.")}</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/60 max-w-xl mb-10 leading-relaxed">
-            {t("Soluciones integrales en seguridad industrial para empresas Clase Mundial. Ingeniería aplicada a la eliminación total de riesgos de caída.")}
+          <p className="text-lg md:text-xl text-white/80 max-w-xl mb-10 leading-relaxed">
+            {t("Soluciones integrales en seguridad industrial para empresas Clase Mundial.")}{" "}
+            <span className="kg-highlight font-semibold">{t("Ingeniería aplicada a la eliminación total de riesgos de caída.")}</span>
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link to="/contacto" className="bg-signal text-anchor px-8 md:px-10 py-4 md:py-5 font-bold uppercase text-sm tracking-widest hover:scale-105 transition-transform text-center">
-              {t("Cotizar ahora")}
+            <Link to="/contacto" className="bg-signal text-anchor px-8 md:px-10 py-4 md:py-5 font-bold uppercase text-sm tracking-widest hover:scale-105 transition-transform text-center shadow-[6px_6px_0_0_var(--anchor-fixed)]">
+              {t("Cotizar ahora")} →
             </Link>
-            <Link to="/ingenieria" className="border border-white/20 px-8 md:px-10 py-4 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white/5 transition-colors text-center">
+            <Link to="/ingenieria" className="border-2 border-signal text-signal px-8 md:px-10 py-4 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-signal hover:text-anchor transition-colors text-center">
               {t("Líneas de vida")}
             </Link>
           </div>
-          <div className="mt-12 flex items-center gap-6 border-l-2 border-signal pl-5">
-            <div className="font-display text-3xl md:text-4xl text-white">30M+</div>
-            <div className="text-[10px] uppercase tracking-[0.25em] text-white/50 leading-relaxed">
+          <div className="mt-12 inline-flex items-center gap-4 bg-signal text-anchor pl-5 pr-6 py-3 shadow-[5px_5px_0_0_rgba(0,0,0,0.6)]">
+            <div className="font-display text-3xl md:text-4xl">30M+</div>
+            <div className="text-[10px] uppercase tracking-[0.22em] leading-snug font-bold">
               {t("Horas-hombre supervisadas")}<br />{t("sin accidentes reportados")}
             </div>
           </div>
@@ -91,15 +92,17 @@ function Index() {
         </div>
       </section>
 
-      {/* CLIENT LOGOS */}
-      <section className="border-b border-white/5 px-6 md:px-12 py-10">
-        <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-6 text-center">
+      {/* CLIENT LOGOS — auto-sliding marquee */}
+      <section className="border-y-2 border-signal bg-steel py-8 overflow-hidden">
+        <p className="text-signal text-[10px] font-bold uppercase tracking-[0.3em] mb-6 text-center">
           {t("Confiado por líderes de la industria")}
         </p>
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-50">
-          {CLIENTS.map((c) => (
-            <div key={c} className="font-display text-sm md:text-base text-white tracking-tighter">{c}</div>
-          ))}
+        <div className="relative w-full overflow-hidden">
+          <div className="flex gap-12 md:gap-16 animate-marquee-slow whitespace-nowrap w-max px-6">
+            {[...CLIENTS, ...CLIENTS].map((c, i) => (
+              <div key={`${c}-${i}`} className="font-display text-base md:text-xl text-white tracking-tight shrink-0">{c}</div>
+            ))}
+          </div>
         </div>
       </section>
 

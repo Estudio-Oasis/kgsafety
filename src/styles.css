@@ -130,12 +130,13 @@
   .bg-steel  { background-color: var(--surface-2) !important; }
 
   .text-white   { color: var(--on-surface) !important; }
-  .text-white\/40 { color: color-mix(in oklab, var(--on-surface) 40%, transparent) !important; }
-  .text-white\/50 { color: color-mix(in oklab, var(--on-surface) 50%, transparent) !important; }
-  .text-white\/55 { color: color-mix(in oklab, var(--on-surface) 55%, transparent) !important; }
-  .text-white\/60 { color: color-mix(in oklab, var(--on-surface) 60%, transparent) !important; }
-  .text-white\/70 { color: color-mix(in oklab, var(--on-surface) 70%, transparent) !important; }
-  .text-white\/80 { color: color-mix(in oklab, var(--on-surface) 80%, transparent) !important; }
+  /* Boost readability — body copy gets pushed to high contrast */
+  .text-white\/40 { color: color-mix(in oklab, var(--on-surface) 62%, transparent) !important; }
+  .text-white\/50 { color: color-mix(in oklab, var(--on-surface) 70%, transparent) !important; }
+  .text-white\/55 { color: color-mix(in oklab, var(--on-surface) 75%, transparent) !important; }
+  .text-white\/60 { color: color-mix(in oklab, var(--on-surface) 80%, transparent) !important; }
+  .text-white\/70 { color: color-mix(in oklab, var(--on-surface) 86%, transparent) !important; }
+  .text-white\/80 { color: color-mix(in oklab, var(--on-surface) 92%, transparent) !important; }
 
   .border-white\/5  { border-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
   .border-white\/10 { border-color: color-mix(in oklab, var(--on-surface) 10%, transparent) !important; }
@@ -193,6 +194,46 @@
 }
 
 .animate-marquee { animation: kg-marquee 28s linear infinite; }
+.animate-marquee-slow { animation: kg-marquee 38s linear infinite; }
+
+/* ----------------------------------------------------------------
+ * Reusable highlight components
+ * --------------------------------------------------------------- */
+.kg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--signal);
+  color: var(--anchor-fixed);
+  padding: 0.35rem 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 10px;
+  box-shadow: 3px 3px 0 0 var(--anchor-fixed);
+}
+.kg-pill-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: color-mix(in oklab, var(--signal) 14%, transparent);
+  color: var(--signal);
+  border: 1px solid var(--signal);
+  padding: 0.35rem 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 10px;
+}
+.kg-highlight {
+  background: linear-gradient(180deg, transparent 60%, color-mix(in oklab, var(--signal) 55%, transparent) 60%);
+  padding: 0 0.15em;
+  color: var(--on-surface);
+}
+.kg-card {
+  background: color-mix(in oklab, var(--on-surface) 4%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--on-surface) 12%, transparent);
+}
 
 @media (max-width: 767px) {
   .md\:hidden.animate-mobile-in,
