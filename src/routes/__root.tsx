@@ -12,23 +12,24 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
+import { ThemeProvider } from "@/theme/context";
+import { LanguageProvider, useT } from "@/i18n/context";
 
 function NotFoundComponent() {
+  const { t } = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-anchor px-4">
       <div className="max-w-md text-center">
         <h1 className="font-display text-8xl text-signal">404</h1>
         <h2 className="mt-4 text-xl font-bold uppercase tracking-widest text-white">
-          Página no encontrada
+          {t("Página no encontrada")}
         </h2>
-        <p className="mt-3 text-sm text-white/60">
-          La página que buscas no existe o fue movida.
-        </p>
+        <p className="mt-3 text-sm text-white/60">{t("La página que buscas no existe o fue movida.")}</p>
         <Link
           to="/"
           className="mt-8 inline-block bg-signal text-anchor px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
         >
-          Volver al inicio
+          {t("Volver al inicio")}
         </Link>
       </div>
     </div>
@@ -38,13 +39,14 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const { t } = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-anchor px-4">
       <div className="max-w-md text-center">
         <h1 className="font-display text-xl uppercase tracking-widest text-white">
-          Algo falló
+          {t("Algo falló")}
         </h1>
-        <p className="mt-3 text-sm text-white/60">Intenta recargar la página.</p>
+        <p className="mt-3 text-sm text-white/60">{t("Intenta recargar la página.")}</p>
         <button
           onClick={() => {
             router.invalidate();
@@ -52,7 +54,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           }}
           className="mt-8 bg-signal text-anchor px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
         >
-          Reintentar
+          {t("Reintentar")}
         </button>
       </div>
     </div>
@@ -90,6 +92,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Michroma&display=swap",
       },
+      { rel: "alternate", hrefLang: "es", href: "/" },
+      { rel: "alternate", hrefLang: "en", href: "/" },
     ],
     scripts: [
       {
@@ -121,6 +125,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
+  // Default class "dark"; ThemeProvider may flip to "light" on mount.
   return (
     <html lang="es" className="dark">
       <head>
@@ -138,14 +143,18 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen flex flex-col bg-anchor">
-        <SiteHeader />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <SiteFooter />
-        <WhatsAppFloat />
-      </div>
+      <ThemeProvider>
+        <LanguageProvider>
+          <div className="min-h-screen flex flex-col bg-anchor">
+            <SiteHeader />
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            <SiteFooter />
+            <WhatsAppFloat />
+          </div>
+        </LanguageProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
