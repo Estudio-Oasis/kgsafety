@@ -1,0 +1,205 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { SectionLabel } from "@/components/site/SectionLabel";
+import trainingImg from "@/assets/training-classroom.jpg";
+
+export const Route = createFileRoute("/capacitacion")({
+  component: CapacitacionPage,
+  head: () => ({
+    meta: [
+      { title: "Capacitación DC-3 · KG Safety" },
+      {
+        name: "description",
+        content:
+          "Programas DC-3 en 3 niveles para trabajos en altura, espacios confinados, andamios y más. Certificado, credencial y registro STPS.",
+      },
+      { property: "og:title", content: "Capacitación DC-3 · KG Safety" },
+      {
+        property: "og:description",
+        content: "Tres niveles de capacitación certificada con cobertura nacional.",
+      },
+      { property: "og:url", content: "/capacitacion" },
+    ],
+    links: [{ rel: "canonical", href: "/capacitacion" }],
+  }),
+});
+
+const LEVELS = [
+  {
+    n: "01",
+    badge: "Básico / Autorizado",
+    hours: "8 horas",
+    desc: "El participante conocerá los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
+    bullets: ["DC-3 oficial", "Certificado de cumplimiento", "Credencial con candados anti-falsificación"],
+  },
+  {
+    n: "02",
+    badge: "Supervisor / Monitor",
+    hours: "16 horas",
+    desc: "Capacita en supervisión de trabajadores, evaluación de condiciones de seguridad y maniobras de rescate.",
+    bullets: ["DC-3 oficial", "Certificado", "Credencial profesional"],
+  },
+  {
+    n: "03",
+    badge: "Jefe de Seguridad / Competente",
+    hours: "24 horas",
+    desc: "Cubre normativas nacionales e internacionales, diseño de anclajes, planes de trabajo y capacidad para impartir cursos internos.",
+    bullets: ["DC-3 oficial", "Certificado Competent Person", "Diseño de anclajes"],
+  },
+];
+
+const AREAS = [
+  "Alturas",
+  "Espacios Confinados",
+  "Andamios",
+  "LOTO",
+  "Electricidad",
+  "Trabajos con Calor",
+  "Manejo de Herramientas",
+  "Primeros Auxilios",
+  "Manejo de Extintores",
+  "Montacargas",
+  "OSHA 10 horas",
+  "OSHA 30 horas",
+];
+
+function CapacitacionPage() {
+  return (
+    <div>
+      {/* Hero */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
+        <div className="max-w-5xl">
+          <SectionLabel>Capacitación certificada</SectionLabel>
+          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
+            DC-3, certificado y<br />
+            <span className="text-signal">credencial</span> oficial.
+          </h1>
+          <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed">
+            Tres niveles · doce áreas · capacitadores certificados por KAEE Group FPCS,
+            STPS, OSHA y NSC. Cobertura nacional con programas de recertificación
+            anualizada.
+          </p>
+          <Link
+            to="/contacto"
+            className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors"
+          >
+            Inscribir grupo
+          </Link>
+        </div>
+      </section>
+
+      {/* Levels */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-16">
+            <SectionLabel>Niveles</SectionLabel>
+            <h2 className="font-display text-3xl md:text-5xl uppercase">Tres niveles de mando</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-px bg-white/5 border border-white/5">
+            {LEVELS.map((l) => (
+              <div key={l.n} className="bg-anchor p-8 md:p-10 flex flex-col">
+                <div className="font-display text-signal text-xs mb-6">{l.n} / 03</div>
+                <div className="font-display text-3xl text-white mb-2">{l.hours}</div>
+                <h3 className="font-display text-base uppercase text-white/80 mb-6 leading-tight">
+                  {l.badge}
+                </h3>
+                <p className="text-sm text-white/55 mb-8 leading-relaxed flex-1">{l.desc}</p>
+                <ul className="space-y-2 mb-8 border-t border-white/10 pt-6">
+                  {l.bullets.map((b) => (
+                    <li key={b} className="text-xs text-white/70 flex items-center gap-3">
+                      <span className="w-1 h-1 bg-signal" /> {b}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/contacto"
+                  className="text-signal font-bold text-[10px] uppercase tracking-widest border-b border-signal pb-1 self-start"
+                >
+                  Inscribir →
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Areas grid */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+          <div>
+            <SectionLabel>12 áreas</SectionLabel>
+            <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
+              Cursos<br />disponibles
+            </h2>
+            <p className="text-white/60 mb-8 leading-relaxed">
+              Temarios homologados, instructores certificados y emisión documental con
+              certeza jurídica. Registro de CURP y verificación en línea.
+            </p>
+            <img
+              src={trainingImg}
+              alt="Sesión de capacitación con equipo de protección personal"
+              loading="lazy"
+              width={1920}
+              height={1080}
+              className="w-full grayscale brightness-90"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5">
+            {AREAS.map((a, i) => (
+              <div
+                key={a}
+                className="bg-anchor p-5 md:p-6 hover:bg-steel transition-colors"
+              >
+                <div className="font-display text-signal text-[10px] mb-2">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div className="font-bold text-sm uppercase tracking-tight">{a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Certeza jurídica */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5 bg-steel">
+        <div className="max-w-5xl mx-auto">
+          <SectionLabel>Certeza jurídica</SectionLabel>
+          <h2 className="font-display text-3xl md:text-5xl mb-12 uppercase leading-tight">
+            Cero margen para la falsificación.
+          </h2>
+          <ul className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+            {[
+              "Registro de trabajadores y empresas en base de datos.",
+              "Seguimiento directo de CURP.",
+              "Registro de asistencia y aprobación del curso.",
+              "DC-3 emitido y verificable en línea.",
+              "Credencial con múltiples candados anti-falsificación.",
+              "Certificado de cumplimiento para identidad corporativa.",
+            ].map((c) => (
+              <li key={c} className="flex gap-4 text-white/70 leading-relaxed">
+                <span className="text-signal font-display shrink-0">+</span>
+                <span>{c}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 md:py-28 px-6 md:px-12 text-center">
+        <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
+          Inscriba a su equipo <span className="text-signal">esta semana</span>.
+        </h2>
+        <p className="text-white/60 text-lg mb-10 max-w-2xl mx-auto">
+          Programación a nivel nacional. Modalidad presencial e instructores certificados.
+        </p>
+        <Link
+          to="/contacto"
+          className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors"
+        >
+          Solicitar fechas
+        </Link>
+      </section>
+    </div>
+  );
+}
