@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
-import { ENGINEERING } from "@/data/kaee";
+import { ENGINEERING, type EngineeringService } from "@/data/kaee";
 
 export const Route = createFileRoute("/ingenieria/$servicio")({
   component: ServicePage,
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/ingenieria/$servicio")({
 });
 
 function ServicePage() {
-  const s = Route.useLoaderData();
+  const s = Route.useLoaderData() as EngineeringService;
   return (
     <div>
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">

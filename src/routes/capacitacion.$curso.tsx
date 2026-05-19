@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { SectionLabel } from "@/components/site/SectionLabel";
-import { COURSES } from "@/data/kaee";
+import { COURSES, type Course } from "@/data/kaee";
 
 export const Route = createFileRoute("/capacitacion/$curso")({
   component: CoursePage,
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/capacitacion/$curso")({
 });
 
 function CoursePage() {
-  const course = Route.useLoaderData();
+  const course = Route.useLoaderData() as Course;
   const [active, setActive] = useState(course.levels[0].code);
   const lvl = course.levels.find((l) => l.code === active)!;
 
