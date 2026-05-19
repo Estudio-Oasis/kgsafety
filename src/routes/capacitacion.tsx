@@ -110,7 +110,7 @@ function CapacitacionPage() {
             <p className="text-white/60 mb-8 leading-relaxed">
               {t("Temarios homologados, instructores certificados y emisión documental con certeza jurídica. Registro de CURP y verificación en línea.")}
             </p>
-            <img src={trainingImg} alt="Sesión de capacitación con equipo de protección personal" loading="lazy" width={1920} height={1080} className="w-full grayscale brightness-90" />
+            <img src={trainingImg} alt="Sesión de capacitación con equipo de protección personal" loading="lazy" width={1920} height={1080} className="w-full rounded-sm shadow-[8px_8px_0_0_var(--signal,#F5C500)]" />
           </div>
 
           <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5">
