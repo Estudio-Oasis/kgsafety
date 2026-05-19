@@ -42,19 +42,37 @@ function Index() {
               span="col-span-2 md:col-span-4 md:row-span-3"
               variant="image"
               image={hero}
-              eyebrow={<span className="text-signal">{t("Líder en ingeniería de alturas")}</span>}
+              eyebrow={<span style={{ color: "var(--signal)" }}>{t("Líder en ingeniería de alturas")}</span>}
             >
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6">
-                {t("WE NEVER")} <span className="text-signal">{t("FALL.")}</span>
+              <h1
+                className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6"
+                style={{ color: "#fff" }}
+              >
+                {t("WE NEVER")} <span style={{ color: "var(--signal)" }}>{t("FALL.")}</span>
               </h1>
-              <p className="text-sm md:text-base text-white/85 max-w-lg leading-relaxed mb-6">
+              <p
+                className="text-sm md:text-base max-w-lg leading-relaxed mb-6"
+                style={{ color: "rgba(255,255,255,0.85)" }}
+              >
                 {t("Soluciones integrales en seguridad industrial para empresas Clase Mundial.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
-                <Link to="/contacto" className="bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors rounded-md">
+                <Link
+                  to="/contacto"
+                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md transition-colors"
+                  style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}
+                >
                   {t("Cotizar ahora")} →
                 </Link>
-                <Link to="/ingenieria" className="border border-white/40 text-white px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-colors rounded-md">
+                <Link
+                  to="/ingenieria"
+                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md transition-colors hover:backdrop-brightness-110"
+                  style={{
+                    color: "#fff",
+                    border: "1px solid rgba(255,255,255,0.45)",
+                    background: "rgba(255,255,255,0.06)",
+                  }}
+                >
                   {t("Líneas de vida")}
                 </Link>
               </div>
