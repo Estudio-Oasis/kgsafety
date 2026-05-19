@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import installImg from "@/assets/engineering-install.jpg";
+import officeImg from "@/assets/engineering-office.jpg";
 import { useT } from "@/i18n/context";
 import { ENGINEERING } from "@/data/kaee";
 
