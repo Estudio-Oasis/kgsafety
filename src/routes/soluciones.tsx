@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
+import plantImg from "@/assets/industries-plant.jpg";
 import { INDUSTRIES, SOLUTIONS } from "@/data/kaee";
 
 export const Route = createFileRoute("/soluciones")({
