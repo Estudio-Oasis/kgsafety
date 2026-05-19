@@ -307,8 +307,8 @@ function Index() {
               <div className="mt-3 space-y-1.5">
                 {DIVISIONS.map((d) => (
                   <div key={d.tag} className="flex items-baseline gap-2 text-xs">
-                    <span className="font-display text-signal text-sm w-12 shrink-0">{d.tag}</span>
-                    <span className="opacity-75 leading-tight">{d.name}</span>
+                    <span className="font-display text-sm w-12 shrink-0" style={{ color: "var(--signal)" }}>{d.tag}</span>
+                    <span className="leading-tight" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
                   </div>
                 ))}
               </div>
