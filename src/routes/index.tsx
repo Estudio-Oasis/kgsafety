@@ -2,21 +2,22 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import heroEngineer from "@/assets/hero-engineer.jpg";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
+import { PNPC_STATS, TESTIMONIALS, DIVISIONS, CLIENTS_FULL, INDUSTRIES } from "@/data/kaee";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "KG Safety · Ingeniería que detiene la caída" },
+      { title: "KG Safety · 12 años eliminando riesgos de caída en México" },
       {
         name: "description",
         content:
-          "Capacitación DC-3, equipos certificados y sistemas de anclaje para empresas Clase Mundial. 30M+ horas-hombre supervisadas sin accidentes.",
+          "KAEE Group: capacitación DC-3, ingeniería de líneas de vida y EPP certificado. 12 años sin accidentes, 200+ clientes, 30M+ horas-hombre supervisadas. Presencia en México, Colombia y Chile.",
       },
-      { property: "og:title", content: "KG Safety · Ingeniería que detiene la caída" },
+      { property: "og:title", content: "KG Safety · Eliminación de riesgos laborales" },
       {
         property: "og:description",
-        content: "Soluciones integrales en seguridad para trabajos en altura. Cotiza hoy.",
+        content: "Soluciones integrales en seguridad para trabajos en altura, espacios confinados y renta de equipos.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -25,18 +26,19 @@ export const Route = createFileRoute("/")({
 });
 
 const STATS = [
-  { value: "23,578", labelKey: "Trabajadores capacitados" },
-  { value: "30M+", labelKey: "Horas-hombre supervisadas", accent: true },
-  { value: "1,560", labelKey: "Cursos impartidos" },
-  { value: "980+", labelKey: "Clientes corporativos", accent: true },
+  { value: "12 años", labelKey: "Sin accidentes en sistemas instalados", accent: true },
+  { value: "30M+",   labelKey: "Horas-hombre supervisadas" },
+  { value: "200+",   labelKey: "Clientes corporativos", accent: true },
+  { value: "3 países", labelKey: "México · Colombia · Chile" },
 ];
 
 const SERVICES = [
-  { n: "01", titleKey: "Capacitación DC-3", descKey: "Tres niveles certificados: básico 8 h, supervisor 16 h y jefe de seguridad 24 h. Cobertura nacional.", to: "/capacitacion" as const, ctaKey: "Ver niveles" },
-  { n: "02", titleKey: "Líneas de Vida e Ingeniería", descKey: "Diseño, fabricación e instalación de sistemas verticales y horizontales bajo NOM-009-STPS.", to: "/ingenieria" as const, ctaKey: "Solicitar diagnóstico" },
-  { n: "03", titleKey: "Equipos certificados", descKey: "EPP, anclajes, malacates y rescatadores con marcas líderes. Venta, renta y certificación.", to: "/equipos" as const, ctaKey: "Ver catálogo" },
-  { n: "04", titleKey: "Supervisión en sitio", descKey: "Monitoreo profesional para trabajos de alto riesgo, auditorías y emisión de certificados.", to: "/ingenieria" as const, ctaKey: "Agendar visita" },
-  { n: "05", titleKey: "P.N.P.C. Contratistas", descKey: "Estandariza la seguridad de tus proveedores externos con el programa nacional.", to: "/contratistas" as const, ctaKey: "Conocer programa" },
+  { n: "01", titleKey: "Capacitación DC-3 (W@H)", descKey: "Cuatro niveles certificados en 10 áreas técnicas: alturas, confinados, andamios, LOTO, electricidad, calor y más.", to: "/capacitacion" as const, ctaKey: "Ver cursos" },
+  { n: "02", titleKey: "Ingeniería WoLL", descKey: "Diseño, fabricación e instalación de líneas de vida verticales y horizontales bajo NOM-009-STPS.", to: "/ingenieria" as const, ctaKey: "Solicitar diagnóstico" },
+  { n: "03", titleKey: "Equipos certificados S@H", descKey: "EPP, anclajes, barandales, domos, plataformas y escalas con marcas líderes. Venta, renta y certificación.", to: "/equipos" as const, ctaKey: "Ver catálogo" },
+  { n: "04", titleKey: "Consultoría MS&S", descKey: "Visita en sitio, asesoría, supervisión, certificación e instalación con cobertura nacional.", to: "/ingenieria" as const, ctaKey: "Agendar visita" },
+  { n: "05", titleKey: "P.N.P.C. Contratistas", descKey: "Estandariza la seguridad de tus proveedores externos con el programa nacional propietario de KAEE.", to: "/contratistas" as const, ctaKey: "Conocer programa" },
+  { n: "06", titleKey: "Soluciones por industria", descKey: "Silos, techos, espacios confinados, construcción y rack de tubería para 22 sectores.", to: "/soluciones" as const, ctaKey: "Ver industrias" },
 ];
 
 const KAEE = [
@@ -44,14 +46,6 @@ const KAEE = [
   { letter: "A", title: "Analysis", descKey: "Evaluación exhaustiva de riesgos específicos en sitio con equipo certificado." },
   { letter: "E", title: "Engineering", descKey: "Diseño y fabricación a medida de sistemas de anclaje y líneas de vida." },
   { letter: "E", title: "Elimination", descKey: "Implementación final para la eliminación total del riesgo de caída." },
-];
-
-const CLIENTS = ["COCA-COLA FEMSA", "HOLCIM", "UNILEVER", "MERCK", "PETSTAR", "SANTA CLARA", "BIMBO", "NESTLÉ", "CEMEX", "HEINEKEN", "GRUPO MODELO", "PEMEX"];
-
-const SUBBRANDS = [
-  { name: "Working at Heights", tag: "WAH" },
-  { name: "Working on Life Lines", tag: "WoLL" },
-  { name: "Safety@Heights", tag: "S@H" },
 ];
 
 function Index() {
