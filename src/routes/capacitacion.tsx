@@ -38,21 +38,38 @@ function CapacitacionPage() {
   const { t } = useT();
   return (
     <div>
-      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-5xl">
+      <section className="relative px-6 md:px-12 py-20 md:py-28 border-b border-white/5 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={heightsImg} alt="" loading="eager" width={1600} height={1000} className="w-full h-full object-cover object-center" />
+          <div className="absolute inset-0 bg-gradient-to-r from-anchor via-anchor/85 to-anchor/30" />
+        </div>
+        <div className="max-w-5xl relative z-10">
           <SectionLabel>{t("Capacitación certificada")}</SectionLabel>
-          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
+          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight text-white">
             {t("DC-3, certificado y")}<br />
             <span className="text-signal">{t("credencial")}</span> {t("oficial.")}
           </h1>
-          <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed">
+          <p className="text-lg md:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
             {t("Tres niveles · doce áreas · capacitadores certificados por KAEE Group FPCS, STPS, OSHA y NSC. Cobertura nacional con programas de recertificación anualizada.")}
           </p>
-          <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors">
+          <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
             {t("Inscribir grupo")}
           </Link>
         </div>
       </section>
+
+      {/* visual band: confined space */}
+      <section className="relative border-b border-white/5 grid md:grid-cols-3">
+        <div className="md:col-span-2 relative h-64 md:h-80">
+          <img src={confinedImg} alt="Rescate en espacio confinado" loading="lazy" width={1600} height={1000} className="w-full h-full object-cover" />
+        </div>
+        <div className="bg-signal text-anchor p-8 md:p-12 flex flex-col justify-center">
+          <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3">{t("Realismo operativo")}</div>
+          <div className="font-display text-3xl md:text-4xl uppercase leading-tight mb-3">10 áreas técnicas</div>
+          <p className="text-sm leading-relaxed">{t("Alturas, confinados, andamios, calor, eléctrico, LOTO, primeros auxilios y más.")}</p>
+        </div>
+      </section>
+
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
