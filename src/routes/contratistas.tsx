@@ -39,8 +39,8 @@ function ContratistasPage() {
   const { t } = useT();
   return (
     <div>
-      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
       <section className="relative overflow-hidden border-b border-white/5">
+
         <div className="grid md:grid-cols-2">
           <div className="px-6 md:px-12 py-20 md:py-28 bg-brand-navy text-white">
             <SectionLabel>{t("P.N.P.C.")}</SectionLabel>
