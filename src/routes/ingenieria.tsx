@@ -40,25 +40,34 @@ function IngenieriaPage() {
   const { t } = useT();
   return (
     <div>
-      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-5xl">
+      <section className="relative px-6 md:px-12 py-20 md:py-28 border-b border-white/5 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={officeImg} alt="" loading="eager" width={1600} height={1000} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/85 to-brand-navy/40" />
+        </div>
+        <div className="max-w-5xl relative z-10">
           <SectionLabel>{t("Ingeniería aplicada")}</SectionLabel>
-          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
+          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight text-white">
             {t("Sistemas de anclaje")}<br />
             <span className="text-signal">{t("diseñados")}</span> {t("a medida.")}
           </h1>
-          <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed">
+          <p className="text-lg md:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
             {t("Líneas de vida, anclajes, plataformas y estructuras de obra civil. Ingeniería certificada para cada estructura, cada persona, cada detalle.")}
           </p>
-          <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors">
+          <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
             {t("Agendar diagnóstico")}
           </Link>
         </div>
       </section>
 
-      <section className="border-b border-white/5">
-        <img src={installImg} alt="Instalación de línea de vida horizontal en planta industrial" loading="lazy" width={1920} height={1080} className="w-full h-[40vh] md:h-[60vh] object-cover grayscale brightness-90" />
+      <section className="relative border-b border-white/5">
+        <img src={installImg} alt="Instalación de línea de vida horizontal en planta industrial" loading="lazy" width={1920} height={1080} className="w-full h-[40vh] md:h-[60vh] object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-anchor/80 via-transparent to-transparent" />
+        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-12 bg-signal text-anchor px-5 py-3 shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]">
+          <div className="font-display text-xs uppercase tracking-[0.25em]">{t("Instalación certificada")}</div>
+        </div>
       </section>
+
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
