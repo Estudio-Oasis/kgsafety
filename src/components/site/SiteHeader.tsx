@@ -22,11 +22,11 @@ export function SiteHeader() {
   return (
     <nav className="border-b border-white/10 px-4 md:px-12 py-4 md:py-5 flex justify-between items-center sticky top-0 bg-anchor/90 backdrop-blur-md z-50">
       <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-        <div className="w-9 h-9 md:w-10 md:h-10 bg-signal grid place-items-center">
-          <div className="w-4 h-4 md:w-5 md:h-5 border-[3px] border-anchor" />
+        <div className="w-9 h-9 md:w-10 md:h-10 bg-brand-navy grid place-items-center">
+          <div className="w-4 h-4 md:w-5 md:h-5 border-[3px] border-signal" />
         </div>
         <span className="font-display text-sm md:text-lg tracking-tighter uppercase">
-          KG <span className="text-signal">Safety</span>
+          KG <span className="text-brand-blue">Safety</span>
         </span>
       </Link>
 
@@ -35,8 +35,8 @@ export function SiteHeader() {
           <Link
             key={item.to}
             to={item.to}
-            className="hover:text-signal transition-colors"
-            activeProps={{ className: "text-signal" }}
+            className="hover:text-brand-blue transition-colors"
+            activeProps={{ className: "text-brand-blue" }}
           >
             {t(item.labelKey)}
           </Link>
