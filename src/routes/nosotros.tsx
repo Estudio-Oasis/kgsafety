@@ -37,8 +37,8 @@ function NosotrosPage() {
   const { t } = useT();
   return (
     <div>
-      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
       <section className="relative px-6 md:px-12 py-20 md:py-28 border-b border-white/5 overflow-hidden">
+
         <div className="absolute inset-0">
           <img src={heightsImg} alt="" loading="eager" width={1600} height={1000} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-anchor via-anchor/85 to-anchor/30" />
