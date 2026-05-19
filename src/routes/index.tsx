@@ -313,7 +313,7 @@ function Index() {
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-t border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <BentoGrid>
-            <BentoTile span="col-span-2 md:col-span-4 md:row-span-2" variant="image" image={office}>
+            <BentoTile span="col-span-2 md:col-span-4 md:row-span-2" variant="image" image={ctaImg}>
               <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3" style={{ color: "var(--signal)" }}>
                 {t("Cotice en menos de 24 h")}
               </div>
