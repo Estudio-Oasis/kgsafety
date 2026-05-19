@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
+import heightsImg from "@/assets/heights-worker.jpg";
 import { useT } from "@/i18n/context";
 
 export const Route = createFileRoute("/nosotros")({
@@ -36,18 +37,24 @@ function NosotrosPage() {
   const { t } = useT();
   return (
     <div>
-      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-5xl">
+      <section className="relative px-6 md:px-12 py-20 md:py-28 border-b border-white/5 overflow-hidden">
+
+        <div className="absolute inset-0">
+          <img src={heightsImg} alt="" loading="eager" width={1600} height={1000} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-anchor via-anchor/85 to-anchor/30" />
+        </div>
+        <div className="max-w-5xl relative z-10">
           <SectionLabel>{t("Quiénes somos")}</SectionLabel>
-          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
+          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight text-white">
             {t("No solo diseñamos seguridad.")}<br />
             <span className="text-signal">{t("Diseñamos tranquilidad.")}</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
+          <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
             {t("En KG nos especializamos en el diseño e implementación de sistemas de protección contra caídas que cumplen con los más altos estándares de ingeniería y seguridad. Cada estructura, cada persona y cada detalle importan.")}
           </p>
         </div>
       </section>
+
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5 bg-steel">
         <div className="max-w-7xl mx-auto">
