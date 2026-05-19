@@ -139,8 +139,7 @@ function Index() {
           <BentoGrid>
             <BentoTile
               span="col-span-2 md:col-span-3 md:row-span-2"
-              variant="image"
-              image={team}
+              variant="dark"
               to="/capacitacion"
               eyebrow="01 / Capacitación"
               title={t("Cursos DC-3 certificados")}
@@ -149,7 +148,7 @@ function Index() {
             />
             <BentoTile
               span="col-span-2 md:col-span-3"
-              variant="dark"
+              variant="accent"
               to="/equipos"
               eyebrow="02 / Equipos S@H"
               title={t("EPP y anclajes certificados")}
@@ -158,18 +157,18 @@ function Index() {
             />
             <BentoTile
               span="md:col-span-2"
-              variant="image"
-              image={blueprint}
+              variant="neutral"
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
               title={t("Diseño WoLL")}
+              description={t("Líneas de vida, anclajes, domos, barandales.")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
               span="md:col-span-1"
-              variant="accent"
+              variant="stat"
               to="/contratistas"
-              eyebrow="04"
+              eyebrow="04 / Contratistas"
               title="P.N.P.C."
               cta={t("Programa")}
             />
