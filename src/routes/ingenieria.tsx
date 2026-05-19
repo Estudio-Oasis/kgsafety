@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import installImg from "@/assets/engineering-install.jpg";
 import { useT } from "@/i18n/context";
+import { ENGINEERING } from "@/data/kaee";
 
 export const Route = createFileRoute("/ingenieria")({
   component: IngenieriaPage,
@@ -91,6 +92,21 @@ function IngenieriaPage() {
                 <h4 className="font-bold uppercase text-xs tracking-wider mb-3">{t(p.titleKey)}</h4>
                 <p className="text-xs text-white/55 leading-relaxed">{t(p.descKey)}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MS&S sub-services links */}
+      <section className="px-6 md:px-12 py-16 border-b border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <SectionLabel>{t("División MS&S · Servicios")}</SectionLabel>
+          <h2 className="font-display text-2xl md:text-4xl uppercase mb-8">{t("Siete servicios especializados")}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
+            {ENGINEERING.map((s) => (
+              <Link key={s.slug} to="/ingenieria/$servicio" params={{ servicio: s.slug }} className="kg-bento p-4 text-[11px] uppercase tracking-widest font-bold text-[color:var(--on-surface)] hover:text-brand-blue text-center">
+                {t(s.name)}
+              </Link>
             ))}
           </div>
         </div>
