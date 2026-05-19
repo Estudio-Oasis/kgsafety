@@ -19,8 +19,8 @@ export const Route = createFileRoute("/soluciones")({
 function SolucionesPage() {
   return (
     <div>
-      <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
       <section className="relative px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)] overflow-hidden">
+
         <div className="absolute inset-0">
           <img src={plantImg} alt="" loading="eager" width={1600} height={900} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/95 via-brand-navy/80 to-brand-navy/40" />
