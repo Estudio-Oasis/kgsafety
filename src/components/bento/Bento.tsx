@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 type Variant = "neutral" | "dark" | "accent" | "image" | "stat" | "ghost";
 
 type BaseProps = {
-  span?: string; // tailwind grid span classes e.g. "md:col-span-3 md:row-span-2"
+  span?: string;
   variant?: Variant;
   image?: string;
   imageAlt?: string;
@@ -25,13 +25,47 @@ type TileProps =
   | (BaseProps & { href: string; to?: never })
   | (BaseProps & { to?: undefined; href?: undefined });
 
-const variantClasses: Record<Variant, string> = {
-  neutral: "bg-[color:var(--surface)] text-[color:var(--on-surface)] border border-[color:var(--border)]",
-  dark: "bg-brand-navy text-white border border-brand-navy",
-  accent: "bg-signal text-[color:var(--anchor-fixed)] border-2 border-[color:var(--anchor-fixed)]",
-  image: "text-white border border-[color:var(--border)] bg-brand-navy",
-  stat: "bg-[color:var(--surface-2)] text-[color:var(--on-surface)] border border-[color:var(--border)]",
-  ghost: "bg-transparent text-[color:var(--on-surface)] border border-dashed border-[color:var(--border)]",
+// Each variant defines its OWN foreground via inline CSS var (--tf) so the
+// legacy ".text-white { color: var(--on-surface) !important }" override in
+// styles.css cannot flip white text into navy ink. We then drive text color
+// with `text-[color:var(--tf)]` inside the tile.
+const variantStyles: Record<Variant, { bg: string; border: string; fg: string; muted: string }> = {
+  neutral: {
+    bg: "var(--surface)",
+    border: "color-mix(in oklab, var(--on-surface) 10%, transparent)",
+    fg: "var(--on-surface)",
+    muted: "color-mix(in oklab, var(--on-surface) 65%, transparent)",
+  },
+  dark: {
+    bg: "var(--brand-navy)",
+    border: "var(--brand-navy)",
+    fg: "#ffffff",
+    muted: "rgba(255,255,255,0.72)",
+  },
+  accent: {
+    bg: "var(--signal)",
+    border: "var(--anchor-fixed)",
+    fg: "var(--anchor-fixed)",
+    muted: "color-mix(in oklab, var(--anchor-fixed) 70%, transparent)",
+  },
+  image: {
+    bg: "var(--brand-navy)",
+    border: "color-mix(in oklab, var(--on-surface) 10%, transparent)",
+    fg: "#ffffff",
+    muted: "rgba(255,255,255,0.78)",
+  },
+  stat: {
+    bg: "var(--surface-2)",
+    border: "color-mix(in oklab, var(--on-surface) 10%, transparent)",
+    fg: "var(--on-surface)",
+    muted: "color-mix(in oklab, var(--on-surface) 65%, transparent)",
+  },
+  ghost: {
+    bg: "transparent",
+    border: "color-mix(in oklab, var(--on-surface) 18%, transparent)",
+    fg: "var(--on-surface)",
+    muted: "color-mix(in oklab, var(--on-surface) 60%, transparent)",
+  },
 };
 
 export function BentoTile(props: TileProps) {
@@ -54,18 +88,29 @@ export function BentoTile(props: TileProps) {
   const isLinkInternal = "to" in props && props.to;
   const isLinkExternal = "href" in props && props.href;
   const interactive = Boolean(isLinkInternal || isLinkExternal);
+  const v = variantStyles[variant];
+
+  const tileStyle: CSSProperties = {
+    backgroundColor: v.bg,
+    borderColor: v.border,
+    color: v.fg,
+    // expose tokens so children can use them: text-[color:var(--tf)] etc.
+    ["--tf" as any]: v.fg,
+    ["--tm" as any]: v.muted,
+    ...style,
+  };
 
   const inner = (
     <div
       className={cn(
-        "relative overflow-hidden flex flex-col p-5 md:p-7 rounded-[var(--bento-radius,1.25rem)] transition-all duration-200",
-        variantClasses[variant],
-        interactive && "hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_var(--brand-navy)] cursor-pointer",
-        "min-h-[140px] h-full",
+        "group relative overflow-hidden flex flex-col p-5 md:p-6 rounded-[var(--bento-radius,1.25rem)]",
+        "border transition-all duration-300 ease-out",
+        interactive && "hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(15,27,61,0.45)] cursor-pointer",
+        "min-h-[150px] h-full",
         span,
         className,
       )}
-      style={style}
+      style={tileStyle}
     >
       {image && (
         <>
@@ -73,33 +118,50 @@ export function BentoTile(props: TileProps) {
             src={image}
             alt={imageAlt}
             loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover -z-0"
+            className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
           {imageOverlay && (
-            <div className="absolute inset-0 -z-0 bg-gradient-to-tr from-[color:var(--anchor-fixed)]/85 via-[color:var(--anchor-fixed)]/55 to-transparent" />
+            <div
+              className="absolute inset-0 z-[1]"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(15,27,61,0.78) 0%, rgba(15,27,61,0.55) 55%, rgba(15,27,61,0.25) 100%)",
+              }}
+            />
           )}
         </>
       )}
 
-      <div className="relative flex-1 flex flex-col">
-        {badge && <div className="absolute top-0 right-0">{badge}</div>}
+      <div className="relative z-[2] flex-1 flex flex-col" style={{ color: v.fg }}>
+        {badge && <div className="absolute -top-1 -right-1">{badge}</div>}
         {eyebrow && (
-          <div className="text-[10px] font-bold uppercase tracking-[0.22em] opacity-80 mb-3">
+          <div
+            className="text-[10px] font-bold uppercase tracking-[0.22em] mb-3"
+            style={{ color: variant === "accent" ? v.fg : v.muted }}
+          >
             {eyebrow}
           </div>
         )}
         {title && (
-          <div className="font-display uppercase leading-tight tracking-tight text-xl md:text-2xl mb-2">
+          <div className="font-display uppercase leading-[1.05] tracking-tight text-lg md:text-xl lg:text-2xl mb-2">
             {title}
           </div>
         )}
         {description && (
-          <div className="text-sm opacity-80 leading-relaxed">{description}</div>
+          <div className="text-sm leading-relaxed" style={{ color: v.muted }}>
+            {description}
+          </div>
         )}
         {children}
         {cta && (
           <div className="mt-auto pt-4 text-[11px] font-bold uppercase tracking-[0.22em] inline-flex items-center gap-2">
-            {cta} <span aria-hidden>→</span>
+            <span>{cta}</span>
+            <span
+              aria-hidden
+              className="inline-block transition-transform duration-300 group-hover:translate-x-1"
+            >
+              →
+            </span>
           </div>
         )}
       </div>
@@ -117,7 +179,12 @@ export function BentoTile(props: TileProps) {
   if (isLinkExternal) {
     const { href } = props as { href: string };
     return (
-      <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className={cn("block h-full", span)}>
+      <a
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        className={cn("block h-full", span)}
+      >
         {inner}
       </a>
     );
@@ -128,7 +195,7 @@ export function BentoTile(props: TileProps) {
 export function BentoGrid({
   children,
   className,
-  rows = "auto-rows-[minmax(120px,auto)] md:auto-rows-[minmax(150px,auto)]",
+  rows = "auto-rows-[minmax(140px,auto)] md:auto-rows-[minmax(160px,auto)]",
   cols = "grid-cols-2 md:grid-cols-6",
 }: {
   children: ReactNode;
@@ -136,9 +203,5 @@ export function BentoGrid({
   rows?: string;
   cols?: string;
 }) {
-  return (
-    <div className={cn("grid gap-3 md:gap-4", cols, rows, className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("grid gap-3 md:gap-4", cols, rows, className)}>{children}</div>;
 }

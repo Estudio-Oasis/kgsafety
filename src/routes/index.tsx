@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/i18n/context";
 import { BentoGrid, BentoTile } from "@/components/bento/Bento";
-import { realImage, realImagesIn, realImageBySlug } from "@/lib/real-image";
+import { realImagesIn } from "@/lib/real-image";
 import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES, CLIENTS_FULL, DIVISIONS } from "@/data/kaee";
-import heroFallback from "@/assets/heights-worker.jpg";
+import heroImg from "@/assets/hero-clean.jpg";
+import ctaImg from "@/assets/cta-office.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -21,11 +22,6 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = useT();
-  const hero = realImage("consultoria", 3) ?? heroFallback;
-  const harness = realImage("consultoria", 0) ?? heroFallback; // arnés
-  const team = realImage("consultoria", 1) ?? heroFallback; // gente cascos
-  const office = realImage("consultoria", 2) ?? heroFallback; // oficina
-  const blueprint = realImage("consultoria", 5) ?? heroFallback;
   const clientLogos = realImagesIn("logos-clientes");
   const icons = realImagesIn("iconos-servicios");
   const topCourses = COURSES.slice(0, 6);
@@ -41,20 +37,38 @@ function Index() {
             <BentoTile
               span="col-span-2 md:col-span-4 md:row-span-3"
               variant="image"
-              image={hero}
-              eyebrow={<span className="text-signal">{t("Líder en ingeniería de alturas")}</span>}
+              image={heroImg}
+              eyebrow={<span style={{ color: "var(--signal)" }}>{t("Líder en ingeniería de alturas")}</span>}
             >
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6">
-                {t("WE NEVER")} <span className="text-signal">{t("FALL.")}</span>
+              <h1
+                className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6"
+                style={{ color: "#fff" }}
+              >
+                {t("WE NEVER")} <span style={{ color: "var(--signal)" }}>{t("FALL.")}</span>
               </h1>
-              <p className="text-sm md:text-base text-white/85 max-w-lg leading-relaxed mb-6">
+              <p
+                className="text-sm md:text-base max-w-lg leading-relaxed mb-6"
+                style={{ color: "rgba(255,255,255,0.85)" }}
+              >
                 {t("Soluciones integrales en seguridad industrial para empresas Clase Mundial.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
-                <Link to="/contacto" className="bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors rounded-md">
+                <Link
+                  to="/contacto"
+                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md transition-colors"
+                  style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}
+                >
                   {t("Cotizar ahora")} →
                 </Link>
-                <Link to="/ingenieria" className="border border-white/40 text-white px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-colors rounded-md">
+                <Link
+                  to="/ingenieria"
+                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md transition-colors hover:backdrop-brightness-110"
+                  style={{
+                    color: "#fff",
+                    border: "1px solid rgba(255,255,255,0.45)",
+                    background: "rgba(255,255,255,0.06)",
+                  }}
+                >
                   {t("Líneas de vida")}
                 </Link>
               </div>
@@ -125,8 +139,7 @@ function Index() {
           <BentoGrid>
             <BentoTile
               span="col-span-2 md:col-span-3 md:row-span-2"
-              variant="image"
-              image={team}
+              variant="dark"
               to="/capacitacion"
               eyebrow="01 / Capacitación"
               title={t("Cursos DC-3 certificados")}
@@ -135,7 +148,7 @@ function Index() {
             />
             <BentoTile
               span="col-span-2 md:col-span-3"
-              variant="dark"
+              variant="accent"
               to="/equipos"
               eyebrow="02 / Equipos S@H"
               title={t("EPP y anclajes certificados")}
@@ -144,18 +157,18 @@ function Index() {
             />
             <BentoTile
               span="md:col-span-2"
-              variant="image"
-              image={blueprint}
+              variant="neutral"
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
               title={t("Diseño WoLL")}
+              description={t("Líneas de vida, anclajes, domos, barandales.")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
               span="md:col-span-1"
-              variant="accent"
+              variant="stat"
               to="/contratistas"
-              eyebrow="04"
+              eyebrow="04 / Contratistas"
               title="P.N.P.C."
               cta={t("Programa")}
             />
@@ -175,16 +188,14 @@ function Index() {
             </h2>
           </div>
 
-          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(140px,auto)] md:auto-rows-[minmax(180px,auto)]">
+          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(140px,auto)] md:auto-rows-[minmax(170px,auto)]">
             {topCourses.map((c, i) => {
-              const img = realImageBySlug(c.slug, "consultoria", i);
-              const featured = i === 0 || i === 3;
+              const featured = i === 0;
               return (
                 <BentoTile
                   key={c.slug}
                   span={featured ? "md:col-span-2 md:row-span-2" : "md:col-span-2"}
-                  variant={featured ? "image" : "neutral"}
-                  image={featured ? img : undefined}
+                  variant={featured ? "dark" : i % 2 === 1 ? "neutral" : "stat"}
                   to="/capacitacion/$curso"
                   params={{ curso: c.slug }}
                   eyebrow={`${String(i + 1).padStart(2, "0")} · ${c.levels.length} niveles`}
@@ -218,8 +229,7 @@ function Index() {
           <BentoGrid>
             <BentoTile
               span="col-span-2 md:col-span-3 md:row-span-2"
-              variant="image"
-              image={harness}
+              variant="dark"
               to="/equipos/epp"
               eyebrow={t("EPP completo")}
               title={t("Arnés · Casco · Conectores")}
@@ -252,13 +262,13 @@ function Index() {
           <BentoGrid>
             {/* Testimonio grande */}
             <BentoTile span="col-span-2 md:col-span-3 md:row-span-2" variant="dark">
-              <div className="text-signal text-5xl font-display leading-none mb-4">"</div>
-              <p className="italic leading-relaxed text-base md:text-lg mb-4 opacity-95">
+              <div className="font-display text-5xl leading-none mb-4" style={{ color: "var(--signal)" }}>"</div>
+              <p className="italic leading-relaxed text-base md:text-lg mb-4" style={{ color: "rgba(255,255,255,0.95)" }}>
                 {TESTIMONIALS[0].quote}
               </p>
-              <div className="mt-auto border-t border-white/15 pt-4">
-                <div className="font-bold text-sm">{TESTIMONIALS[0].name}</div>
-                <div className="text-xs text-signal uppercase tracking-widest mt-1">{TESTIMONIALS[0].role}</div>
+              <div className="mt-auto pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.18)" }}>
+                <div className="font-bold text-sm" style={{ color: "#fff" }}>{TESTIMONIALS[0].name}</div>
+                <div className="text-xs uppercase tracking-widest mt-1" style={{ color: "var(--signal)" }}>{TESTIMONIALS[0].role}</div>
               </div>
             </BentoTile>
 
@@ -289,8 +299,8 @@ function Index() {
               <div className="mt-3 space-y-1.5">
                 {DIVISIONS.map((d) => (
                   <div key={d.tag} className="flex items-baseline gap-2 text-xs">
-                    <span className="font-display text-signal text-sm w-12 shrink-0">{d.tag}</span>
-                    <span className="opacity-75 leading-tight">{d.name}</span>
+                    <span className="font-display text-sm w-12 shrink-0" style={{ color: "var(--signal)" }}>{d.tag}</span>
+                    <span className="leading-tight" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
                   </div>
                 ))}
               </div>
@@ -303,22 +313,22 @@ function Index() {
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-t border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <BentoGrid>
-            <BentoTile span="col-span-2 md:col-span-4 md:row-span-2" variant="image" image={office}>
-              <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-signal mb-3">
+            <BentoTile span="col-span-2 md:col-span-4 md:row-span-2" variant="image" image={ctaImg}>
+              <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3" style={{ color: "var(--signal)" }}>
                 {t("Cotice en menos de 24 h")}
               </div>
-              <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-4">
+              <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-4" style={{ color: "#fff" }}>
                 {t("Comparta su necesidad")}<br />
-                <span className="text-signal">{t("respondemos hoy.")}</span>
+                <span style={{ color: "var(--signal)" }}>{t("respondemos hoy.")}</span>
               </h2>
-              <p className="text-sm md:text-base opacity-85 max-w-xl mb-6">
+              <p className="text-sm md:text-base max-w-xl mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
                 {t("Equipo, capacitación o ingeniería. Un especialista lo contactará el mismo día.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
-                <Link to="/contacto" className="bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors rounded-md">
+                <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
                   {t("Solicitar cotización")}
                 </Link>
-                <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="border border-white/40 text-white px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-colors rounded-md">
+                <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
                   {t("WhatsApp directo")}
                 </a>
               </div>
