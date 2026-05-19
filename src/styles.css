@@ -5,9 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * KG Safety — Brandbook 2025
- * Anchor Black · Steel Grey · Signal Yellow · Lift Orange
- * Display: Michroma (proxy for Netron). Body: Arial.
+ * KG Safety — Industrial Trust 2026
+ * Light-first corporate palette:
+ *   Paper White · Mist Grey · Navy Anchor · Industrial Blue · Signal Yellow
+ * Brand black ("anchor-fixed") stays available but the page surface is white.
  */
 
 @theme inline {
@@ -38,11 +39,13 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* KG brand tokens — fixed brand colors */
+  /* KG brand tokens — anchor = navy ink; brand-blue = corporate accent */
   --color-anchor: var(--anchor-fixed);
   --color-steel: var(--steel-fixed);
   --color-signal: var(--signal);
   --color-lift: var(--lift);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-navy: var(--brand-navy);
 
   /* Surface tokens — flip per theme */
   --color-surface: var(--surface);
@@ -56,43 +59,65 @@
 :root {
   --radius: 0px;
 
-  /* Fixed brand colors — never change between themes */
-  --anchor-fixed: oklch(0.08 0 0);      /* #0A0A0A */
-  --steel-fixed:  oklch(0.18 0 0);      /* #1A1A1A */
-  --signal:       oklch(0.87 0.18 95);  /* #FFD500 */
-  --lift:         oklch(0.7 0.21 45);   /* #FF6B00 */
+  /* Brand inks — used as TEXT/strong surfaces */
+  --anchor-fixed: oklch(0.22 0.06 265);   /* deep navy ink #0F1B3D */
+  --steel-fixed:  oklch(0.96 0.005 250);  /* mist grey card #F1F4F8 */
+  --signal:       oklch(0.86 0.18 92);    /* safety yellow #F5C500 */
+  --lift:         oklch(0.7 0.21 45);     /* lift orange */
+  --brand-blue:   oklch(0.55 0.18 255);   /* industrial blue #1E5BC6 */
+  --brand-navy:   oklch(0.22 0.06 265);   /* same as anchor — semantic alias */
 
-  /* Default theme = DARK */
-  --surface:    var(--anchor-fixed);
-  --surface-2:  var(--steel-fixed);
-  --on-surface: oklch(1 0 0);
+  /* Default theme = LIGHT (corporate paper) */
+  --surface:    oklch(0.995 0 0);          /* paper white */
+  --surface-2:  oklch(0.965 0.004 250);    /* mist grey */
+  --on-surface: var(--anchor-fixed);       /* navy ink */
 
   --background: var(--surface);
   --foreground: var(--on-surface);
   --card: var(--surface-2);
   --card-foreground: var(--on-surface);
-  --popover: var(--surface-2);
+  --popover: var(--surface);
   --popover-foreground: var(--on-surface);
-  --primary: var(--signal);
-  --primary-foreground: var(--anchor-fixed);
+  --primary: var(--brand-blue);
+  --primary-foreground: oklch(1 0 0);
   --secondary: var(--surface-2);
   --secondary-foreground: var(--on-surface);
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.65 0 0);
+  --muted: oklch(0.94 0.005 250);
+  --muted-foreground: oklch(0.45 0.02 265);
   --accent: var(--signal);
   --accent-foreground: var(--anchor-fixed);
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(1 0 0);
-  --border: color-mix(in oklab, var(--on-surface) 10%, transparent);
-  --input: color-mix(in oklab, var(--on-surface) 12%, transparent);
-  --ring: var(--signal);
+  --border: color-mix(in oklab, var(--on-surface) 12%, transparent);
+  --input: color-mix(in oklab, var(--on-surface) 14%, transparent);
+  --ring: var(--brand-blue);
 }
 
-/* LIGHT THEME — re-flip surface tokens. Brand colors stay locked. */
+/* LIGHT — explicit class (same as :root defaults) */
 .light {
-  --surface:    oklch(0.98 0 0);        /* paper white */
-  --surface-2:  oklch(0.94 0 0);        /* card grey */
-  --on-surface: var(--anchor-fixed);    /* anchor black for text */
+  --surface:    oklch(0.995 0 0);
+  --surface-2:  oklch(0.965 0.004 250);
+  --on-surface: var(--anchor-fixed);
+
+  --background: var(--surface);
+  --foreground: var(--on-surface);
+  --card: var(--surface-2);
+  --card-foreground: var(--on-surface);
+  --popover: var(--surface);
+  --popover-foreground: var(--on-surface);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--on-surface);
+  --muted: oklch(0.94 0.005 250);
+  --muted-foreground: oklch(0.45 0.02 265);
+  --border: color-mix(in oklab, var(--on-surface) 12%, transparent);
+  --input: color-mix(in oklab, var(--on-surface) 14%, transparent);
+}
+
+/* DARK — softer navy slate (NOT pure black) */
+.dark {
+  --surface:    oklch(0.2 0.04 265);        /* slate navy */
+  --surface-2:  oklch(0.27 0.045 265);      /* lifted slate */
+  --on-surface: oklch(0.98 0 0);
 
   --background: var(--surface);
   --foreground: var(--on-surface);
@@ -102,53 +127,49 @@
   --popover-foreground: var(--on-surface);
   --secondary: var(--surface-2);
   --secondary-foreground: var(--on-surface);
-  --muted: oklch(0.9 0 0);
-  --muted-foreground: oklch(0.4 0 0);
-  --border: color-mix(in oklab, var(--on-surface) 10%, transparent);
-  --input: color-mix(in oklab, var(--on-surface) 12%, transparent);
-}
-
-.dark {
-  /* Explicit dark — same as :root defaults, kept for clarity. */
-  --surface:    var(--anchor-fixed);
-  --surface-2:  var(--steel-fixed);
-  --on-surface: oklch(1 0 0);
-  --background: var(--surface);
-  --foreground: var(--on-surface);
+  --muted: oklch(0.32 0.04 265);
+  --muted-foreground: oklch(0.7 0.02 265);
+  --border: color-mix(in oklab, var(--on-surface) 14%, transparent);
+  --input: color-mix(in oklab, var(--on-surface) 16%, transparent);
 }
 
 /* ----------------------------------------------------------------
- * Override hard-coded utilities so dark-built components flip in
- * light mode WITHOUT having to rewrite every JSX file.
- * "bg-anchor" → surface (white in light), "bg-steel" → surface-2,
- * "text-white" → on-surface (black in light), border/text/bg of
- * white/X alpha → on-surface mixed with transparency.
- * Brand utilities ("text-anchor", "bg-signal") remain LITERAL.
+ * Utility overrides so the old dark-built JSX flips cleanly.
+ * "bg-anchor" → surface (white in light, slate in dark)
+ * "bg-steel"  → surface-2 (mist grey card)
+ * "text-white" → on-surface (navy ink in light, white in dark)
+ * Brand utilities (text-signal, bg-signal) stay literal yellow.
  * --------------------------------------------------------------- */
 @layer utilities {
   .bg-anchor { background-color: var(--surface) !important; }
   .bg-steel  { background-color: var(--surface-2) !important; }
 
   .text-white   { color: var(--on-surface) !important; }
-  /* Boost readability — body copy gets pushed to high contrast */
-  .text-white\/40 { color: color-mix(in oklab, var(--on-surface) 62%, transparent) !important; }
-  .text-white\/50 { color: color-mix(in oklab, var(--on-surface) 70%, transparent) !important; }
-  .text-white\/55 { color: color-mix(in oklab, var(--on-surface) 75%, transparent) !important; }
-  .text-white\/60 { color: color-mix(in oklab, var(--on-surface) 80%, transparent) !important; }
-  .text-white\/70 { color: color-mix(in oklab, var(--on-surface) 86%, transparent) !important; }
-  .text-white\/80 { color: color-mix(in oklab, var(--on-surface) 92%, transparent) !important; }
+  .text-white\/40 { color: color-mix(in oklab, var(--on-surface) 60%, transparent) !important; }
+  .text-white\/50 { color: color-mix(in oklab, var(--on-surface) 68%, transparent) !important; }
+  .text-white\/55 { color: color-mix(in oklab, var(--on-surface) 72%, transparent) !important; }
+  .text-white\/60 { color: color-mix(in oklab, var(--on-surface) 76%, transparent) !important; }
+  .text-white\/70 { color: color-mix(in oklab, var(--on-surface) 84%, transparent) !important; }
+  .text-white\/80 { color: color-mix(in oklab, var(--on-surface) 90%, transparent) !important; }
 
-  .border-white\/5  { border-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
-  .border-white\/10 { border-color: color-mix(in oklab, var(--on-surface) 10%, transparent) !important; }
-  .border-white\/20 { border-color: color-mix(in oklab, var(--on-surface) 20%, transparent) !important; }
+  .border-white\/5  { border-color: color-mix(in oklab, var(--on-surface) 7%, transparent) !important; }
+  .border-white\/10 { border-color: color-mix(in oklab, var(--on-surface) 12%, transparent) !important; }
+  .border-white\/20 { border-color: color-mix(in oklab, var(--on-surface) 22%, transparent) !important; }
 
-  .bg-white\/5  { background-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
+  .bg-white\/5  { background-color: color-mix(in oklab, var(--on-surface) 4%, transparent) !important; }
   .hover\:bg-white\/5:hover { background-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
 
-  /* Hero gradient: was from-anchor → surface for proper light mode mix */
+  /* Hero gradient — was from-anchor → surface for proper mix */
   .from-anchor { --tw-gradient-from: var(--surface) !important; }
   .via-anchor  { --tw-gradient-via:  var(--surface) !important; }
   .to-anchor   { --tw-gradient-to:   var(--surface) !important; }
+
+  /* Industrial blue helpers */
+  .bg-brand-blue   { background-color: var(--brand-blue) !important; }
+  .text-brand-blue { color: var(--brand-blue) !important; }
+  .border-brand-blue { border-color: var(--brand-blue) !important; }
+  .bg-brand-navy   { background-color: var(--brand-navy) !important; }
+  .text-brand-navy { color: var(--brand-navy) !important; }
 }
 
 @layer base {
@@ -168,14 +189,12 @@
   }
 
   ::selection {
-    background-color: var(--signal);
-    color: var(--anchor-fixed);
+    background-color: var(--brand-blue);
+    color: oklch(1 0 0);
   }
 }
 
-/* ---------------------------------------------------------------
- * Animations — marquee for top bar, plus mobile-only motion utils
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
 @keyframes kg-marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -197,28 +216,28 @@
 .animate-marquee-slow { animation: kg-marquee 38s linear infinite; }
 
 /* ----------------------------------------------------------------
- * Reusable highlight components
+ * Bento + reusable highlight components — corporate industrial
  * --------------------------------------------------------------- */
 .kg-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--signal);
-  color: var(--anchor-fixed);
-  padding: 0.35rem 0.85rem;
+  background: var(--brand-navy);
+  color: oklch(1 0 0);
+  padding: 0.4rem 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   font-size: 10px;
-  box-shadow: 3px 3px 0 0 var(--anchor-fixed);
+  border-left: 3px solid var(--signal);
 }
 .kg-pill-outline {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: color-mix(in oklab, var(--signal) 14%, transparent);
-  color: var(--signal);
-  border: 1px solid var(--signal);
+  background: transparent;
+  color: var(--brand-blue);
+  border: 1px solid var(--brand-blue);
   padding: 0.35rem 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -226,19 +245,38 @@
   font-size: 10px;
 }
 .kg-highlight {
-  background: linear-gradient(180deg, transparent 60%, color-mix(in oklab, var(--signal) 55%, transparent) 60%);
+  background: linear-gradient(180deg, transparent 62%, color-mix(in oklab, var(--signal) 75%, transparent) 62%);
   padding: 0 0.15em;
   color: var(--on-surface);
 }
 .kg-card {
-  background: color-mix(in oklab, var(--on-surface) 4%, var(--surface));
+  background: var(--surface);
   border: 1px solid color-mix(in oklab, var(--on-surface) 12%, transparent);
+  box-shadow: 0 1px 0 0 color-mix(in oklab, var(--on-surface) 6%, transparent);
+}
+.kg-bento {
+  background: var(--surface);
+  border: 1px solid color-mix(in oklab, var(--on-surface) 14%, transparent);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.kg-bento:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--brand-navy);
+}
+.kg-bento-blue {
+  background: var(--brand-navy);
+  color: oklch(1 0 0);
+  border: 1px solid var(--brand-navy);
+}
+.kg-bento-yellow {
+  background: var(--signal);
+  color: var(--anchor-fixed);
+  border: 1px solid var(--anchor-fixed);
 }
 
 @media (max-width: 767px) {
   .md\:hidden.animate-mobile-in,
   .animate-mobile-in { animation: kg-slide-up 0.5s ease-out both; }
-  /* Stagger hero CTAs / cards on mobile */
   main section > * { animation: kg-slide-up 0.55s ease-out both; }
   main section > *:nth-child(2) { animation-delay: 0.08s; }
   main section > *:nth-child(3) { animation-delay: 0.16s; }

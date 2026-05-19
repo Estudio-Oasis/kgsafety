@@ -11,10 +11,10 @@ type ThemeCtx = {
 const Ctx = createContext<ThemeCtx | null>(null);
 
 function readInitial(): Theme {
-  if (typeof window === "undefined") return "dark";
+  if (typeof window === "undefined") return "light";
   const saved = window.localStorage.getItem("kg-theme");
   if (saved === "dark" || saved === "light") return saved;
-  return "dark";
+  return "light";
 }
 
 function applyToHtml(theme: Theme) {
@@ -26,7 +26,7 @@ function applyToHtml(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
+  const [theme, setThemeState] = useState<Theme>("light");
 
   // Read persisted theme on mount and apply.
   useEffect(() => {

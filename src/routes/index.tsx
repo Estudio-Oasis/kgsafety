@@ -74,7 +74,7 @@ function Index() {
             <Link to="/contacto" className="bg-signal text-anchor px-8 md:px-10 py-4 md:py-5 font-bold uppercase text-sm tracking-widest hover:scale-105 transition-transform text-center shadow-[6px_6px_0_0_var(--anchor-fixed)]">
               {t("Cotizar ahora")} →
             </Link>
-            <Link to="/ingenieria" className="border-2 border-signal text-signal px-8 md:px-10 py-4 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-signal hover:text-anchor transition-colors text-center">
+            <Link to="/ingenieria" className="border-2 border-brand-navy text-brand-navy px-8 md:px-10 py-4 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-brand-navy hover:text-white transition-colors text-center">
               {t("Líneas de vida")}
             </Link>
           </div>
@@ -205,17 +205,21 @@ function Index() {
         </div>
       </section>
 
-      {/* P.N.P.C. CTA */}
-      <section className="py-20 md:py-28 px-6 md:px-12 bg-signal text-anchor">
+      {/* P.N.P.C. CTA — navy bento with yellow safety stripe */}
+      <section className="py-20 md:py-28 px-6 md:px-12 bg-brand-navy text-white border-t-8 border-signal">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-signal text-anchor px-4 py-2 mb-8 text-[10px] font-bold uppercase tracking-[0.25em]">
+            <span className="w-1.5 h-1.5 bg-anchor rounded-full" />
+            {t("Programa propietario · 10 años")}
+          </div>
           <h2 className="font-display text-3xl md:text-5xl mb-8 uppercase leading-tight">
             {t("Programa Nacional de Profesionalización a Contratistas")}
           </h2>
-          <p className="text-base md:text-lg font-bold mb-10 opacity-80 uppercase tracking-tight max-w-2xl mx-auto">
+          <p className="text-base md:text-lg mb-10 opacity-80 max-w-2xl mx-auto leading-relaxed">
             {t("Estandarice la seguridad de sus proveedores externos bajo los protocolos más estrictos de KG Safety.")}
           </p>
-          <Link to="/contratistas" className="inline-block bg-anchor text-white px-10 md:px-12 py-5 md:py-6 font-display text-xs md:text-sm tracking-widest hover:bg-steel transition-colors uppercase">
-            {t("Solicitar auditoría P.N.P.C.")}
+          <Link to="/contratistas" className="inline-block bg-signal text-anchor px-10 md:px-12 py-5 md:py-6 font-display text-xs md:text-sm tracking-widest hover:bg-white transition-colors uppercase border-2 border-signal shadow-[5px_5px_0_0_rgba(255,255,255,0.15)]">
+            {t("Solicitar auditoría P.N.P.C.")} →
           </Link>
         </div>
       </section>

@@ -22,11 +22,11 @@ export function SiteHeader() {
   return (
     <nav className="border-b border-white/10 px-4 md:px-12 py-4 md:py-5 flex justify-between items-center sticky top-0 bg-anchor/90 backdrop-blur-md z-50">
       <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-        <div className="w-9 h-9 md:w-10 md:h-10 bg-signal grid place-items-center">
-          <div className="w-4 h-4 md:w-5 md:h-5 border-[3px] border-anchor" />
+        <div className="w-9 h-9 md:w-10 md:h-10 bg-brand-navy grid place-items-center">
+          <div className="w-4 h-4 md:w-5 md:h-5 border-[3px] border-signal" />
         </div>
         <span className="font-display text-sm md:text-lg tracking-tighter uppercase">
-          KG <span className="text-signal">Safety</span>
+          KG <span className="text-brand-blue">Safety</span>
         </span>
       </Link>
 
@@ -35,8 +35,8 @@ export function SiteHeader() {
           <Link
             key={item.to}
             to={item.to}
-            className="hover:text-signal transition-colors"
-            activeProps={{ className: "text-signal" }}
+            className="hover:text-brand-blue transition-colors"
+            activeProps={{ className: "text-brand-blue" }}
           >
             {t(item.labelKey)}
           </Link>
@@ -48,7 +48,7 @@ export function SiteHeader() {
         <button
           onClick={toggleTheme}
           aria-label={t("Cambiar tema")}
-          className="p-2 bg-signal text-anchor hover:scale-110 transition-transform shadow-[2px_2px_0_0_rgba(0,0,0,0.6)]"
+          className="p-2 bg-brand-navy text-white border border-brand-navy hover:bg-brand-blue hover:border-brand-blue transition-colors"
         >
           {theme === "dark" ? <Sun size={16} strokeWidth={2.5} /> : <Moon size={16} strokeWidth={2.5} />}
         </button>
@@ -57,14 +57,14 @@ export function SiteHeader() {
         <button
           onClick={toggleLang}
           aria-label={t("Cambiar idioma")}
-          className="text-[11px] font-bold uppercase tracking-widest text-anchor bg-signal hover:bg-white transition-colors px-3 py-1.5 shadow-[2px_2px_0_0_rgba(0,0,0,0.6)]"
+          className="text-[11px] font-bold uppercase tracking-widest text-white bg-brand-blue hover:bg-brand-navy transition-colors px-3 py-1.5 border border-brand-blue hover:border-brand-navy"
         >
           {lang === "es" ? "EN" : "ES"}
         </button>
 
         <Link
           to="/contacto"
-          className="hidden md:inline-block bg-signal text-anchor px-5 lg:px-6 py-2.5 lg:py-3 font-bold text-[11px] lg:text-xs uppercase tracking-tighter hover:bg-white transition-all"
+          className="hidden md:inline-block bg-signal text-anchor px-5 lg:px-6 py-2.5 lg:py-3 font-bold text-[11px] lg:text-xs uppercase tracking-tighter border-2 border-anchor hover:bg-white transition-all shadow-[3px_3px_0_0_var(--anchor-fixed)]"
         >
           {t("Cotizar ahora")}
         </Link>

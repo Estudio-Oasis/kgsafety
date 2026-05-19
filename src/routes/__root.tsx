@@ -133,7 +133,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: React.ReactNode }) {
   // Default class "dark"; ThemeProvider may flip to "light" on mount.
   return (
-    <html lang="es" className="dark">
+    <html lang="es" className="light">
       <head>
         <HeadContent />
       </head>
