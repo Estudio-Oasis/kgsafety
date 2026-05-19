@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
+import heightsImg from "@/assets/heights-worker.jpg";
 import { useT } from "@/i18n/context";
 
 export const Route = createFileRoute("/nosotros")({
