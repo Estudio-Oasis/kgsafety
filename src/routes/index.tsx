@@ -229,8 +229,7 @@ function Index() {
           <BentoGrid>
             <BentoTile
               span="col-span-2 md:col-span-3 md:row-span-2"
-              variant="image"
-              image={harness}
+              variant="dark"
               to="/equipos/epp"
               eyebrow={t("EPP completo")}
               title={t("Arnés · Casco · Conectores")}
