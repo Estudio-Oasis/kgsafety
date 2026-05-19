@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/i18n/context";
 import { BentoGrid, BentoTile } from "@/components/bento/Bento";
-import { realImage, realImagesIn, realImageBySlug } from "@/lib/real-image";
+import { realImagesIn } from "@/lib/real-image";
 import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES, CLIENTS_FULL, DIVISIONS } from "@/data/kaee";
-import heroFallback from "@/assets/heights-worker.jpg";
+import heroImg from "@/assets/hero-clean.jpg";
+import ctaImg from "@/assets/cta-office.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -21,11 +22,6 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = useT();
-  const hero = realImage("consultoria", 3) ?? heroFallback;
-  const harness = realImage("consultoria", 0) ?? heroFallback; // arnés
-  const team = realImage("consultoria", 1) ?? heroFallback; // gente cascos
-  const office = realImage("consultoria", 2) ?? heroFallback; // oficina
-  const blueprint = realImage("consultoria", 5) ?? heroFallback;
   const clientLogos = realImagesIn("logos-clientes");
   const icons = realImagesIn("iconos-servicios");
   const topCourses = COURSES.slice(0, 6);
@@ -41,7 +37,7 @@ function Index() {
             <BentoTile
               span="col-span-2 md:col-span-4 md:row-span-3"
               variant="image"
-              image={hero}
+              image={heroImg}
               eyebrow={<span style={{ color: "var(--signal)" }}>{t("Líder en ingeniería de alturas")}</span>}
             >
               <h1
