@@ -270,13 +270,13 @@ function Index() {
           <BentoGrid>
             {/* Testimonio grande */}
             <BentoTile span="col-span-2 md:col-span-3 md:row-span-2" variant="dark">
-              <div className="text-signal text-5xl font-display leading-none mb-4">"</div>
-              <p className="italic leading-relaxed text-base md:text-lg mb-4 opacity-95">
+              <div className="font-display text-5xl leading-none mb-4" style={{ color: "var(--signal)" }}>"</div>
+              <p className="italic leading-relaxed text-base md:text-lg mb-4" style={{ color: "rgba(255,255,255,0.95)" }}>
                 {TESTIMONIALS[0].quote}
               </p>
-              <div className="mt-auto border-t border-white/15 pt-4">
-                <div className="font-bold text-sm">{TESTIMONIALS[0].name}</div>
-                <div className="text-xs text-signal uppercase tracking-widest mt-1">{TESTIMONIALS[0].role}</div>
+              <div className="mt-auto pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.18)" }}>
+                <div className="font-bold text-sm" style={{ color: "#fff" }}>{TESTIMONIALS[0].name}</div>
+                <div className="text-xs uppercase tracking-widest mt-1" style={{ color: "var(--signal)" }}>{TESTIMONIALS[0].role}</div>
               </div>
             </BentoTile>
 
