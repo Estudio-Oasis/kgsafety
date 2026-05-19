@@ -2,9 +2,35 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/i18n/context";
 import { BentoGrid, BentoTile } from "@/components/bento/Bento";
 import { realImagesIn } from "@/lib/real-image";
-import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES, CLIENTS_FULL, DIVISIONS } from "@/data/kaee";
+import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES, DIVISIONS } from "@/data/kaee";
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
+import alturasImg from "@/assets/courses/alturas.jpg";
+import confinadosImg from "@/assets/courses/confinados.jpg";
+import andamiosImg from "@/assets/courses/andamios.jpg";
+import lotoImg from "@/assets/courses/loto.jpg";
+import electricidadImg from "@/assets/courses/electricidad.jpg";
+import calorImg from "@/assets/courses/calor.jpg";
+import eppImg from "@/assets/equipment/epp.jpg";
+import lvImg from "@/assets/equipment/lineas-de-vida.jpg";
+import anclajesImg from "@/assets/equipment/anclajes.jpg";
+import plataformasImg from "@/assets/equipment/plataformas.jpg";
+
+const COURSE_IMG: Record<string, string> = {
+  alturas: alturasImg,
+  confinados: confinadosImg,
+  andamios: andamiosImg,
+  loto: lotoImg,
+  electricidad: electricidadImg,
+  calor: calorImg,
+};
+
+const EQUIP_IMG: Record<string, string> = {
+  epp: eppImg,
+  "lineas-de-vida": lvImg,
+  anclajes: anclajesImg,
+  plataformas: plataformasImg,
+};
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -23,9 +49,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t } = useT();
   const clientLogos = realImagesIn("logos-clientes");
-  const icons = realImagesIn("iconos-servicios");
   const topCourses = COURSES.slice(0, 6);
-  const topEquip = EQUIPMENT.slice(0, 6);
+  const topEquip = EQUIPMENT.filter((e) => EQUIP_IMG[e.slug]).slice(0, 4);
+  const restEquip = EQUIPMENT.filter((e) => !EQUIP_IMG[e.slug]).slice(0, 4);
 
   return (
     <div className="bg-[color:var(--surface)] text-[color:var(--on-surface)]">
@@ -40,35 +66,17 @@ function Index() {
               image={heroImg}
               eyebrow={<span style={{ color: "var(--signal)" }}>{t("Líder en ingeniería de alturas")}</span>}
             >
-              <h1
-                className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6"
-                style={{ color: "#fff" }}
-              >
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6" style={{ color: "#fff" }}>
                 {t("WE NEVER")} <span style={{ color: "var(--signal)" }}>{t("FALL.")}</span>
               </h1>
-              <p
-                className="text-sm md:text-base max-w-lg leading-relaxed mb-6"
-                style={{ color: "rgba(255,255,255,0.85)" }}
-              >
+              <p className="text-sm md:text-base max-w-lg leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
                 {t("Soluciones integrales en seguridad industrial para empresas Clase Mundial.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
-                <Link
-                  to="/contacto"
-                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md transition-colors"
-                  style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}
-                >
+                <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
                   {t("Cotizar ahora")} →
                 </Link>
-                <Link
-                  to="/ingenieria"
-                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md transition-colors hover:backdrop-brightness-110"
-                  style={{
-                    color: "#fff",
-                    border: "1px solid rgba(255,255,255,0.45)",
-                    background: "rgba(255,255,255,0.06)",
-                  }}
-                >
+                <Link to="/ingenieria" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
                   {t("Líneas de vida")}
                 </Link>
               </div>
@@ -85,37 +93,38 @@ function Index() {
               </div>
             </BentoTile>
 
-            {/* Certificación */}
-            <BentoTile span="md:col-span-1" variant="dark" eyebrow="STPS · DC-3">
-              <div className="font-display text-2xl mt-auto">{t("Registro oficial")}</div>
-            </BentoTile>
-            <BentoTile span="md:col-span-1" variant="neutral" eyebrow={t("3 países")}>
-              <div className="font-display text-base mt-auto leading-tight">MX · CO · CL</div>
-            </BentoTile>
-
-            {/* Logos clientes — banda inferior */}
-            <BentoTile span="col-span-2 md:col-span-6" variant="stat" className="!p-4 md:!p-6">
-              <div className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60 mb-3">
-                {t("Confiado por líderes de la industria")}
-              </div>
-              <div className="overflow-hidden relative">
-                <div className="flex gap-10 md:gap-14 animate-marquee-slow whitespace-nowrap w-max items-center">
-                  {[...CLIENTS_FULL, ...CLIENTS_FULL].map((c, i) => (
-                    <span key={`${c}-${i}`} className="font-display text-sm md:text-base opacity-70 shrink-0 tracking-tight">
-                      {c}
-                    </span>
-                  ))}
+            {/* Certificación + países en UN solo tile compacto */}
+            <BentoTile span="md:col-span-2" variant="dark">
+              <div className="grid grid-cols-2 gap-4 h-full">
+                <div className="flex flex-col">
+                  <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>STPS · DC-3</div>
+                  <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>{t("Registro oficial")}</div>
+                </div>
+                <div className="flex flex-col border-l pl-4" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
+                  <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>{t("3 países")}</div>
+                  <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>MX · CO · CL</div>
                 </div>
               </div>
-              {clientLogos.length > 0 && (
-                <div className="mt-4 flex gap-3 md:gap-5 items-center flex-wrap opacity-80">
-                  {clientLogos.slice(0, 8).map((src, i) => (
-                    <img key={i} src={src} alt="" className="h-8 md:h-10 w-auto object-contain grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition" />
-                  ))}
-                </div>
-              )}
             </BentoTile>
           </BentoGrid>
+
+          {/* ===== Logos clientes — grilla limpia ===== */}
+          <div className="mt-6 md:mt-8 px-2">
+            <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-center mb-5" style={{ color: "color-mix(in oklab, var(--on-surface) 55%, transparent)" }}>
+              {t("Confiado por líderes de la industria")}
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-6 gap-y-6 items-center">
+              {clientLogos.slice(0, 10).map((src, i) => (
+                <div key={i} className="flex items-center justify-center h-12 md:h-14">
+                  <img
+                    src={src}
+                    alt=""
+                    className="max-h-full max-w-[120px] w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -139,7 +148,8 @@ function Index() {
           <BentoGrid>
             <BentoTile
               span="col-span-2 md:col-span-3 md:row-span-2"
-              variant="dark"
+              variant="image"
+              image={alturasImg}
               to="/capacitacion"
               eyebrow="01 / Capacitación"
               title={t("Cursos DC-3 certificados")}
@@ -148,27 +158,28 @@ function Index() {
             />
             <BentoTile
               span="col-span-2 md:col-span-3"
-              variant="accent"
+              variant="image"
+              image={eppImg}
               to="/equipos"
               eyebrow="02 / Equipos S@H"
               title={t("EPP y anclajes certificados")}
-              description={t("Arnés, líneas de vida, andamios, plataformas y más.")}
+              description={t("Arnés, líneas de vida, andamios y más.")}
               cta={t("Catálogo")}
             />
             <BentoTile
               span="md:col-span-2"
-              variant="neutral"
+              variant="image"
+              image={lvImg}
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
               title={t("Diseño WoLL")}
-              description={t("Líneas de vida, anclajes, domos, barandales.")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
               span="md:col-span-1"
-              variant="stat"
+              variant="accent"
               to="/contratistas"
-              eyebrow="04 / Contratistas"
+              eyebrow="04"
               title="P.N.P.C."
               cta={t("Programa")}
             />
@@ -176,26 +187,33 @@ function Index() {
         </div>
       </section>
 
-      {/* ============== TOP CURSOS BENTO ============== */}
+      {/* ============== CATÁLOGO CURSOS ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-2">
-              {t("Capacitación")}
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-2">
+                {t("Capacitación")}
+              </div>
+              <h2 className="font-display text-2xl md:text-4xl uppercase">
+                {t("Catálogo de cursos")}
+              </h2>
             </div>
-            <h2 className="font-display text-2xl md:text-4xl uppercase">
-              {t("Cursos más solicitados")}
-            </h2>
+            <Link to="/capacitacion" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
+              {t("Ver los 10 cursos")} →
+            </Link>
           </div>
 
-          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(140px,auto)] md:auto-rows-[minmax(170px,auto)]">
+          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(170px,auto)] md:auto-rows-[minmax(200px,auto)]">
             {topCourses.map((c, i) => {
+              const img = COURSE_IMG[c.slug];
               const featured = i === 0;
               return (
                 <BentoTile
                   key={c.slug}
-                  span={featured ? "md:col-span-2 md:row-span-2" : "md:col-span-2"}
-                  variant={featured ? "dark" : i % 2 === 1 ? "neutral" : "stat"}
+                  span={featured ? "col-span-2 md:col-span-3 md:row-span-2" : "md:col-span-2"}
+                  variant="image"
+                  image={img}
                   to="/capacitacion/$curso"
                   params={{ curso: c.slug }}
                   eyebrow={`${String(i + 1).padStart(2, "0")} · ${c.levels.length} niveles`}
@@ -209,7 +227,7 @@ function Index() {
         </div>
       </section>
 
-      {/* ============== EQUIPOS + ICONOS ============== */}
+      {/* ============== CATÁLOGO EQUIPOS ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-y border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8 flex items-end justify-between flex-wrap gap-4">
@@ -226,31 +244,38 @@ function Index() {
             </Link>
           </div>
 
-          <BentoGrid>
-            <BentoTile
-              span="col-span-2 md:col-span-3 md:row-span-2"
-              variant="dark"
-              to="/equipos/epp"
-              eyebrow={t("EPP completo")}
-              title={t("Arnés · Casco · Conectores")}
-              description={t("Líneas líderes mundiales. Venta, renta y certificación con pruebas de carga.")}
-              cta={t("Cotizar EPP")}
-            />
-            {topEquip.slice(0, 5).map((e, i) => (
+          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(180px,auto)] md:auto-rows-[minmax(200px,auto)]">
+            {/* 4 categorías con foto */}
+            {topEquip.map((e, i) => {
+              const featured = i === 0;
+              return (
+                <BentoTile
+                  key={e.slug}
+                  span={featured ? "col-span-2 md:col-span-3 md:row-span-2" : "md:col-span-3"}
+                  variant="image"
+                  image={EQUIP_IMG[e.slug]}
+                  to="/equipos/$categoria"
+                  params={{ categoria: e.slug }}
+                  eyebrow={`${e.items.length} ${t("items")}`}
+                  title={e.name.split("—")[0].trim()}
+                  description={featured ? e.desc : undefined}
+                  cta={t("Ver categoría")}
+                />
+              );
+            })}
+            {/* 4 categorías sin foto en barra inferior */}
+            {restEquip.map((e) => (
               <BentoTile
                 key={e.slug}
-                span={i === 0 ? "md:col-span-3" : "md:col-span-1"}
-                variant={i === 0 ? "dark" : "neutral"}
+                span="md:col-span-3 lg:col-span-3"
+                variant="neutral"
                 to="/equipos/$categoria"
                 params={{ categoria: e.slug }}
-                eyebrow={`${e.items.length} items`}
+                eyebrow={`${e.items.length} ${t("items")}`}
                 title={e.name.split("—")[0].trim()}
-                cta={i === 0 ? t("Ver línea") : undefined}
-              >
-                {i !== 0 && icons[i] && (
-                  <img src={icons[i]} alt="" className="absolute right-3 bottom-3 w-10 h-10 object-contain opacity-50" />
-                )}
-              </BentoTile>
+                description={e.desc}
+                cta={t("Ver")}
+              />
             ))}
           </BentoGrid>
         </div>
@@ -272,7 +297,7 @@ function Index() {
               </div>
             </BentoTile>
 
-            {/* PNPC stats — 2 tiles */}
+            {/* PNPC stats */}
             {PNPC_STATS.slice(0, 2).map((s, i) => (
               <BentoTile key={s.label} span="md:col-span-3" variant={i === 0 ? "accent" : "stat"}>
                 <div className="font-display text-5xl md:text-6xl leading-none mb-2">{s.value}</div>
