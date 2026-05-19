@@ -43,16 +43,16 @@ function EquiposPage() {
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
             <SectionLabel>{t("Categorías")}</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("12 líneas de producto")}</h2>
+            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("10 líneas de producto")}</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 border border-white/5">
-            {CATEGORIES.map((c, i) => (
-              <Link key={c.nameKey} to="/contacto" className="bg-anchor p-7 hover:bg-steel transition-colors group block">
-                <div className="font-display text-signal text-xs mb-5">{String(i + 1).padStart(2, "0")} / 12</div>
-                <h3 className="font-display text-base uppercase mb-3 leading-tight">{t(c.nameKey)}</h3>
-                <p className="text-sm text-white/55 mb-6 leading-relaxed">{t(c.descKey)}</p>
+            {EQUIPMENT.map((c, i) => (
+              <Link key={c.slug} to="/equipos/$categoria" params={{ categoria: c.slug }} className="bg-anchor p-7 hover:bg-steel transition-colors group block">
+                <div className="font-display text-signal text-xs mb-5">{String(i + 1).padStart(2, "0")} / 10</div>
+                <h3 className="font-display text-base uppercase mb-3 leading-tight">{t(c.name)}</h3>
+                <p className="text-sm text-white/55 mb-6 leading-relaxed">{t(c.desc)}</p>
                 <span className="text-signal font-bold text-[10px] uppercase tracking-widest group-hover:translate-x-1 inline-block transition-transform">
-                  {t("Cotizar equipos")} →
+                  {t("Ver categoría")} →
                 </span>
               </Link>
             ))}
