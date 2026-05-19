@@ -273,6 +273,13 @@
   color: var(--anchor-fixed);
   border: 1px solid var(--anchor-fixed);
 }
+.kg-header {
+  background-color: color-mix(in oklab, var(--surface) 92%, transparent);
+}
+.dark .kg-header {
+  background-color: color-mix(in oklab, var(--surface-2) 92%, transparent);
+}
+
 
 @media (max-width: 767px) {
   .md\:hidden.animate-mobile-in,
