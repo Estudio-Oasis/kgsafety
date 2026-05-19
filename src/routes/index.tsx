@@ -322,21 +322,21 @@ function Index() {
         <div className="max-w-7xl mx-auto">
           <BentoGrid>
             <BentoTile span="col-span-2 md:col-span-4 md:row-span-2" variant="image" image={office}>
-              <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-signal mb-3">
+              <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3" style={{ color: "var(--signal)" }}>
                 {t("Cotice en menos de 24 h")}
               </div>
-              <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-4">
+              <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-4" style={{ color: "#fff" }}>
                 {t("Comparta su necesidad")}<br />
-                <span className="text-signal">{t("respondemos hoy.")}</span>
+                <span style={{ color: "var(--signal)" }}>{t("respondemos hoy.")}</span>
               </h2>
-              <p className="text-sm md:text-base opacity-85 max-w-xl mb-6">
+              <p className="text-sm md:text-base max-w-xl mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
                 {t("Equipo, capacitación o ingeniería. Un especialista lo contactará el mismo día.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
-                <Link to="/contacto" className="bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors rounded-md">
+                <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
                   {t("Solicitar cotización")}
                 </Link>
-                <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="border border-white/40 text-white px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-colors rounded-md">
+                <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
                   {t("WhatsApp directo")}
                 </a>
               </div>
