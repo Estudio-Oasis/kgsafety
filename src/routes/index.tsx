@@ -188,16 +188,14 @@ function Index() {
             </h2>
           </div>
 
-          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(140px,auto)] md:auto-rows-[minmax(180px,auto)]">
+          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(140px,auto)] md:auto-rows-[minmax(170px,auto)]">
             {topCourses.map((c, i) => {
-              const img = realImageBySlug(c.slug, "consultoria", i);
-              const featured = i === 0 || i === 3;
+              const featured = i === 0;
               return (
                 <BentoTile
                   key={c.slug}
                   span={featured ? "md:col-span-2 md:row-span-2" : "md:col-span-2"}
-                  variant={featured ? "image" : "neutral"}
-                  image={featured ? img : undefined}
+                  variant={featured ? "dark" : i % 2 === 1 ? "neutral" : "stat"}
                   to="/capacitacion/$curso"
                   params={{ curso: c.slug }}
                   eyebrow={`${String(i + 1).padStart(2, "0")} · ${c.levels.length} niveles`}
