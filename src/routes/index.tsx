@@ -2,21 +2,22 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import heroEngineer from "@/assets/hero-engineer.jpg";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
+import { PNPC_STATS, TESTIMONIALS, DIVISIONS, CLIENTS_FULL, INDUSTRIES } from "@/data/kaee";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "KG Safety · Ingeniería que detiene la caída" },
+      { title: "KG Safety · 12 años eliminando riesgos de caída en México" },
       {
         name: "description",
         content:
-          "Capacitación DC-3, equipos certificados y sistemas de anclaje para empresas Clase Mundial. 30M+ horas-hombre supervisadas sin accidentes.",
+          "KAEE Group: capacitación DC-3, ingeniería de líneas de vida y EPP certificado. 12 años sin accidentes, 200+ clientes, 30M+ horas-hombre supervisadas. Presencia en México, Colombia y Chile.",
       },
-      { property: "og:title", content: "KG Safety · Ingeniería que detiene la caída" },
+      { property: "og:title", content: "KG Safety · Eliminación de riesgos laborales" },
       {
         property: "og:description",
-        content: "Soluciones integrales en seguridad para trabajos en altura. Cotiza hoy.",
+        content: "Soluciones integrales en seguridad para trabajos en altura, espacios confinados y renta de equipos.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -25,18 +26,19 @@ export const Route = createFileRoute("/")({
 });
 
 const STATS = [
-  { value: "23,578", labelKey: "Trabajadores capacitados" },
-  { value: "30M+", labelKey: "Horas-hombre supervisadas", accent: true },
-  { value: "1,560", labelKey: "Cursos impartidos" },
-  { value: "980+", labelKey: "Clientes corporativos", accent: true },
+  { value: "12 años", labelKey: "Sin accidentes en sistemas instalados", accent: true },
+  { value: "30M+",   labelKey: "Horas-hombre supervisadas" },
+  { value: "200+",   labelKey: "Clientes corporativos", accent: true },
+  { value: "3 países", labelKey: "México · Colombia · Chile" },
 ];
 
 const SERVICES = [
-  { n: "01", titleKey: "Capacitación DC-3", descKey: "Tres niveles certificados: básico 8 h, supervisor 16 h y jefe de seguridad 24 h. Cobertura nacional.", to: "/capacitacion" as const, ctaKey: "Ver niveles" },
-  { n: "02", titleKey: "Líneas de Vida e Ingeniería", descKey: "Diseño, fabricación e instalación de sistemas verticales y horizontales bajo NOM-009-STPS.", to: "/ingenieria" as const, ctaKey: "Solicitar diagnóstico" },
-  { n: "03", titleKey: "Equipos certificados", descKey: "EPP, anclajes, malacates y rescatadores con marcas líderes. Venta, renta y certificación.", to: "/equipos" as const, ctaKey: "Ver catálogo" },
-  { n: "04", titleKey: "Supervisión en sitio", descKey: "Monitoreo profesional para trabajos de alto riesgo, auditorías y emisión de certificados.", to: "/ingenieria" as const, ctaKey: "Agendar visita" },
-  { n: "05", titleKey: "P.N.P.C. Contratistas", descKey: "Estandariza la seguridad de tus proveedores externos con el programa nacional.", to: "/contratistas" as const, ctaKey: "Conocer programa" },
+  { n: "01", titleKey: "Capacitación DC-3 (W@H)", descKey: "Cuatro niveles certificados en 10 áreas técnicas: alturas, confinados, andamios, LOTO, electricidad, calor y más.", to: "/capacitacion" as const, ctaKey: "Ver cursos" },
+  { n: "02", titleKey: "Ingeniería WoLL", descKey: "Diseño, fabricación e instalación de líneas de vida verticales y horizontales bajo NOM-009-STPS.", to: "/ingenieria" as const, ctaKey: "Solicitar diagnóstico" },
+  { n: "03", titleKey: "Equipos certificados S@H", descKey: "EPP, anclajes, barandales, domos, plataformas y escalas con marcas líderes. Venta, renta y certificación.", to: "/equipos" as const, ctaKey: "Ver catálogo" },
+  { n: "04", titleKey: "Consultoría MS&S", descKey: "Visita en sitio, asesoría, supervisión, certificación e instalación con cobertura nacional.", to: "/ingenieria" as const, ctaKey: "Agendar visita" },
+  { n: "05", titleKey: "P.N.P.C. Contratistas", descKey: "Estandariza la seguridad de tus proveedores externos con el programa nacional propietario de KAEE.", to: "/contratistas" as const, ctaKey: "Conocer programa" },
+  { n: "06", titleKey: "Soluciones por industria", descKey: "Silos, techos, espacios confinados, construcción y rack de tubería para 22 sectores.", to: "/soluciones" as const, ctaKey: "Ver industrias" },
 ];
 
 const KAEE = [
@@ -44,14 +46,6 @@ const KAEE = [
   { letter: "A", title: "Analysis", descKey: "Evaluación exhaustiva de riesgos específicos en sitio con equipo certificado." },
   { letter: "E", title: "Engineering", descKey: "Diseño y fabricación a medida de sistemas de anclaje y líneas de vida." },
   { letter: "E", title: "Elimination", descKey: "Implementación final para la eliminación total del riesgo de caída." },
-];
-
-const CLIENTS = ["COCA-COLA FEMSA", "HOLCIM", "UNILEVER", "MERCK", "PETSTAR", "SANTA CLARA", "BIMBO", "NESTLÉ", "CEMEX", "HEINEKEN", "GRUPO MODELO", "PEMEX"];
-
-const SUBBRANDS = [
-  { name: "Working at Heights", tag: "WAH" },
-  { name: "Working on Life Lines", tag: "WoLL" },
-  { name: "Safety@Heights", tag: "S@H" },
 ];
 
 function Index() {
@@ -99,7 +93,7 @@ function Index() {
         </p>
         <div className="relative w-full overflow-hidden">
           <div className="flex gap-12 md:gap-16 animate-marquee-slow whitespace-nowrap w-max px-6">
-            {[...CLIENTS, ...CLIENTS].map((c, i) => (
+            {[...CLIENTS_FULL, ...CLIENTS_FULL].map((c, i) => (
               <div key={`${c}-${i}`} className="font-display text-base md:text-xl text-white tracking-tight shrink-0">{c}</div>
             ))}
           </div>
@@ -132,7 +126,7 @@ function Index() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 border border-white/5">
             {SERVICES.map((s) => (
               <div key={s.titleKey} className="bg-anchor p-8 hover:bg-steel transition-colors group flex flex-col">
-                <div className="font-display text-signal text-xs mb-6">{s.n} / 05</div>
+                <div className="font-display text-signal text-xs mb-6">{s.n} / 06</div>
                 <h3 className="font-display text-lg uppercase mb-4 leading-tight">{t(s.titleKey)}</h3>
                 <p className="text-sm text-white/55 mb-8 flex-1 leading-relaxed">{t(s.descKey)}</p>
                 <Link to={s.to} className="text-signal font-bold text-[10px] uppercase tracking-widest border-b border-signal pb-1 self-start group-hover:translate-x-1 transition-transform">
@@ -174,36 +168,98 @@ function Index() {
         </div>
       </section>
 
-      {/* SUB-BRANDS — new section */}
-      <section className="py-16 md:py-20 px-6 md:px-12 border-b border-white/5 bg-steel">
+      {/* SUB-BRANDS / DIVISIONES — todas las 5 marcas KAEE Group */}
+      <section className="py-16 md:py-20 px-6 md:px-12 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 text-center">
-            <SectionLabel>{t("Submarcas KAEE Group")}</SectionLabel>
+            <SectionLabel>{t("Divisiones KAEE Group")}</SectionLabel>
+            <h2 className="font-display text-2xl md:text-4xl uppercase mt-4 text-[color:var(--on-surface)]">
+              {t("Cinco marcas, un solo grupo")}
+            </h2>
           </div>
-          <div className="grid md:grid-cols-3 gap-px bg-white/5 border border-white/5">
-            {SUBBRANDS.map((b) => (
-              <div key={b.tag} className="bg-anchor p-8 text-center">
-                <div className="font-display text-signal text-2xl mb-3">{b.tag}</div>
-                <div className="font-display text-base uppercase text-white tracking-tight">{b.name}</div>
-                <div className="text-[10px] uppercase tracking-[0.25em] text-white/40 mt-3">a KAEE GROUP brand</div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            {DIVISIONS.map((b) => (
+              <div key={b.tag} className="kg-bento p-6 text-center">
+                <div className="font-display text-brand-blue text-2xl mb-3">{b.tag}</div>
+                <div className="font-display text-sm uppercase text-[color:var(--on-surface)] tracking-tight mb-3 leading-tight">{b.name}</div>
+                <div className="text-xs text-[color:color-mix(in_oklab,var(--on-surface)_65%,transparent)] leading-snug">{b.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* TESTIMONIAL */}
-      <section className="py-20 md:py-28 px-6 md:px-12 border-b border-white/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-signal text-5xl font-display mb-6 opacity-50">"</div>
-          <p className="text-xl md:text-2xl font-light italic leading-relaxed mb-8 text-white">
-            {t("La rigurosidad técnica de KG Safety transformó nuestra cultura operativa. No solo instalaron equipos: instalaron tranquilidad en procesos de alto riesgo.")}
-          </p>
-          <div className="font-display text-xs uppercase tracking-[0.3em] text-signal">
-            {t("Grupo IOCISA — Cliente Industrial")}
+      {/* TESTIMONIOS REALES — con nombres del sitio anterior */}
+      <section className="py-20 md:py-28 px-6 md:px-12 border-b border-[color:var(--border)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 text-center">
+            <SectionLabel>{t("Testimonios")}</SectionLabel>
+            <h2 className="font-display text-3xl md:text-4xl uppercase mt-4 text-[color:var(--on-surface)]">
+              {t("Voces de nuestros clientes")}
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {TESTIMONIALS.map((tm) => (
+              <div key={tm.name} className="kg-bento p-8 flex flex-col">
+                <div className="text-signal text-4xl font-display mb-4 leading-none">"</div>
+                <p className="text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] italic leading-relaxed mb-6 flex-1">
+                  {tm.quote}
+                </p>
+                <div className="border-t border-[color:var(--border)] pt-4">
+                  <div className="font-bold text-sm text-[color:var(--on-surface)] leading-tight">{tm.name}</div>
+                  <div className="text-xs text-brand-blue uppercase tracking-widest mt-1">{tm.role}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
+
+      {/* PNPC NUMBERS — del sitio anterior */}
+      <section className="py-16 md:py-20 px-6 md:px-12 bg-brand-navy text-white border-y-8 border-signal">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-signal text-[color:var(--anchor-fixed)] px-4 py-2 mb-4 text-[10px] font-bold uppercase tracking-[0.25em]">
+              <span className="w-1.5 h-1.5 bg-[color:var(--anchor-fixed)] rounded-full" />
+              {t("Programa P.N.P.C.")}
+            </div>
+            <h2 className="font-display text-2xl md:text-4xl uppercase">
+              {t("Resultados verificables")}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10">
+            {PNPC_STATS.map((s) => (
+              <div key={s.label} className="bg-brand-navy p-8 text-center">
+                <div className="font-display text-3xl md:text-5xl text-signal mb-3">{s.value}</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-white/70 leading-relaxed">{t(s.label)}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* INDUSTRIAS */}
+      <section className="py-16 md:py-20 px-6 md:px-12 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10 text-center">
+            <SectionLabel>{t("Industrias atendidas")}</SectionLabel>
+            <h2 className="font-display text-2xl md:text-4xl uppercase mt-4 text-[color:var(--on-surface)]">
+              {t("22 sectores · cobertura nacional")}
+            </h2>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 max-w-5xl mx-auto">
+            {INDUSTRIES.map((ind) => (
+              <span key={ind} className="kg-pill-outline">{ind}</span>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/soluciones" className="inline-block border-2 border-brand-navy text-brand-navy px-8 py-4 font-bold uppercase text-xs tracking-widest hover:bg-brand-navy hover:text-white transition-colors">
+              {t("Ver todas las soluciones")} →
+            </Link>
+          </div>
+        </div>
+      </section>
+
 
       {/* P.N.P.C. CTA — navy bento with yellow safety stripe */}
       <section className="py-20 md:py-28 px-6 md:px-12 bg-brand-navy text-white border-t-8 border-signal">

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import trainingImg from "@/assets/training-classroom.jpg";
 import { useT } from "@/i18n/context";
+import { COURSES } from "@/data/kaee";
 
 export const Route = createFileRoute("/capacitacion")({
   component: CapacitacionPage,
@@ -29,11 +30,7 @@ const LEVELS = [
     bullets: ["DC-3 oficial", "Certificado Competent Person", "Diseño de anclajes"] },
 ];
 
-const AREAS = [
-  "Alturas", "Espacios Confinados", "Andamios", "LOTO", "Electricidad",
-  "Trabajos con Calor", "Manejo de Herramientas", "Primeros Auxilios",
-  "Manejo de Extintores", "Montacargas", "OSHA 10 horas", "OSHA 30 horas",
-];
+// areas now come from COURSES dataset
 
 function CapacitacionPage() {
   const { t } = useT();
@@ -98,11 +95,16 @@ function CapacitacionPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5">
-            {AREAS.map((a, i) => (
-              <div key={a} className="bg-anchor p-5 md:p-6 hover:bg-steel transition-colors">
+            {COURSES.map((c, i) => (
+              <Link
+                key={c.slug}
+                to="/capacitacion/$curso"
+                params={{ curso: c.slug }}
+                className="bg-anchor p-5 md:p-6 hover:bg-steel transition-colors group block"
+              >
                 <div className="font-display text-signal text-[10px] mb-2">{String(i + 1).padStart(2, "0")}</div>
-                <div className="font-bold text-sm uppercase tracking-tight">{t(a)}</div>
-              </div>
+                <div className="font-bold text-sm uppercase tracking-tight group-hover:text-brand-blue">{t(c.short)}</div>
+              </Link>
             ))}
           </div>
         </div>

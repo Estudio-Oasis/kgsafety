@@ -1,35 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
+import { EQUIPMENT } from "@/data/kaee";
 
 export const Route = createFileRoute("/equipos")({
   component: EquiposPage,
   head: () => ({
     meta: [
-      { title: "Equipos certificados · EPP y anclajes · KG Safety" },
-      { name: "description", content: "Catálogo de equipos para trabajos en altura: arneses, malacates, cuerdas, anclajes y rescatadores con marcas líderes." },
+      { title: "Equipos certificados · EPP, anclajes, líneas de vida · KG Safety" },
+      { name: "description", content: "Catálogo WoLL + S@H: EPP, anclajes, líneas de vida, barandales, domos, andamios, plataformas, pasos de gato y escalas con marcas líderes." },
       { property: "og:title", content: "Equipos certificados · KG Safety" },
-      { property: "og:description", content: "EPP, anclajes y sistemas removibles para altura y espacios confinados." },
+      { property: "og:description", content: "Diez familias de producto con venta, renta y certificación." },
       { property: "og:url", content: "/equipos" },
     ],
     links: [{ rel: "canonical", href: "/equipos" }],
   }),
 });
-
-const CATEGORIES = [
-  { nameKey: "Arneses y EPP", descKey: "Equipo de protección personal certificado ANSI / OSHA." },
-  { nameKey: "Anclajes", descKey: "Fijos, móviles, temporales, individuales y colectivos." },
-  { nameKey: "Malacates manuales", descKey: "Para elevación y manejo controlado de cargas." },
-  { nameKey: "Malacates eléctricos", descKey: "Operación industrial de alto ciclo." },
-  { nameKey: "Cuerdas y cables", descKey: "Líneas de seguridad de acero y sintéticas." },
-  { nameKey: "Ganchos, poleas, grilletes", descKey: "Hardware certificado con trazabilidad." },
-  { nameKey: "Anclajes de suelo", descKey: "Bases removibles y soluciones permanentes." },
-  { nameKey: "Abrazaderas y troles", descKey: "Sistemas de fijación y desplazamiento." },
-  { nameKey: "Descensores de emergencia", descKey: "Equipos auto-rescatadores certificados." },
-  { nameKey: "Rescatadores de E.C.", descKey: "Equipo especializado para espacios confinados." },
-  { nameKey: "Sistemas removibles", descKey: "Soluciones temporales para baja frecuencia." },
-  { nameKey: "Plataformas elevadoras", descKey: "Acceso seguro a altura controlada." },
-];
 
 const BRANDS = ["Petzl", "MSA", "3M", "Honeywell", "Capital Safety", "Tractel", "Yale", "Miller"];
 
@@ -57,16 +43,16 @@ function EquiposPage() {
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
             <SectionLabel>{t("Categorías")}</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("12 líneas de producto")}</h2>
+            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("10 líneas de producto")}</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 border border-white/5">
-            {CATEGORIES.map((c, i) => (
-              <Link key={c.nameKey} to="/contacto" className="bg-anchor p-7 hover:bg-steel transition-colors group block">
-                <div className="font-display text-signal text-xs mb-5">{String(i + 1).padStart(2, "0")} / 12</div>
-                <h3 className="font-display text-base uppercase mb-3 leading-tight">{t(c.nameKey)}</h3>
-                <p className="text-sm text-white/55 mb-6 leading-relaxed">{t(c.descKey)}</p>
+            {EQUIPMENT.map((c, i) => (
+              <Link key={c.slug} to="/equipos/$categoria" params={{ categoria: c.slug }} className="bg-anchor p-7 hover:bg-steel transition-colors group block">
+                <div className="font-display text-signal text-xs mb-5">{String(i + 1).padStart(2, "0")} / 10</div>
+                <h3 className="font-display text-base uppercase mb-3 leading-tight">{t(c.name)}</h3>
+                <p className="text-sm text-white/55 mb-6 leading-relaxed">{t(c.desc)}</p>
                 <span className="text-signal font-bold text-[10px] uppercase tracking-widest group-hover:translate-x-1 inline-block transition-transform">
-                  {t("Cotizar equipos")} →
+                  {t("Ver categoría")} →
                 </span>
               </Link>
             ))}

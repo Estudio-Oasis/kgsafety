@@ -9,9 +9,11 @@ const NAV = [
   { to: "/equipos", labelKey: "Equipos" },
   { to: "/capacitacion", labelKey: "Capacitación" },
   { to: "/ingenieria", labelKey: "Ingeniería" },
+  { to: "/soluciones", labelKey: "Soluciones" },
   { to: "/contratistas", labelKey: "P.N.P.C." },
   { to: "/nosotros", labelKey: "Nosotros" },
   { to: "/blog", labelKey: "Blog" },
+  { to: "/faq", labelKey: "FAQ" },
 ] as const;
 
 export function SiteHeader() {
