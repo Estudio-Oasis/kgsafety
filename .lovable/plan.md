@@ -1,52 +1,115 @@
+# Pivote a diseño Bento Box + imágenes reales
 
-# Auditoría de contenido + toggles de tema e idioma
+## Objetivo
 
-## 1. Auditoría: qué falta vs catálogo y propuesta
+Rediseñar la home y las páginas índice (capacitación, equipos, ingeniería, soluciones) con un sistema **bento-box** moderno — mosaico de tiles de distinto tamaño, jerarquía asimétrica, alta densidad de información sin sentirse cargado — y reemplazar las imágenes generadas por IA con **fotos reales** extraídas del sitio viejo (kg-safety.com) complementadas con generadas donde falte cobertura.
 
-Revisé los 3 PDFs (catálogo de servicios, brandbook, propuesta de revisión web) contra las 7 rutas actuales. La estructura está, pero falta info concreta:
+Páginas de detalle (`/capacitacion/$curso`, `/equipos/$categoria`, `/ingenieria/$servicio`, contacto, FAQ, nosotros, blog) conservan el layout actual pero heredan los tokens visuales (color, tipografía, sombras de los tiles) para coherencia.
 
-**Páginas faltantes**
-- `/blog` — sí estaba en la propuesta original, lo omití en fase 1. Lo agrego como índice de recursos (3-4 artículos placeholder con normativas NOM-009, OSHA, casos de caída) para SEO y autoridad.
+---
 
-**Contenido faltante por página existente**
-- **Capacitación**: faltan los **temarios OSHA Subpartes** (guion básico mencionado en pp.19-20 del catálogo), la mención de **Instituto Nacional de Capacitación en Seguridad Laboral KG**, programas de **recertificación anual**, y **rotación de personal**.
-- **Contratistas (P.N.P.C.)**: faltan los **antecedentes** (10 años de implementación, reducción a cero accidentes, 100% auditable, cumplimiento REPSE), las **3 áreas de capacitación + 2 de entrenamiento** específicas, y el detalle de **renta de anclajes** para baja frecuencia.
-- **Ingeniería**: faltan los **departamento de obra civil**, el detalle de **anclajes móviles/portátiles/temporales/individuales/colectivos** (compra y renta), y las variantes **LVH Rigid Rail / Overhead Structural / Cable base**.
-- **Equipos**: falta mención de **30 marcas representadas**, categorías específicas (**descensores de emergencia, rescatadores de espacios confinados, sistemas removibles, malacates manuales/eléctricos, cuerdas, ganchos/poleas/grilletes, abrazaderas y troles**), y la sección **Construcción y Mantenimiento** (residencial e industrial: limpieza, pintura, electricidad, impermeabilización, obra civil) con **programas a corto/mediano/largo plazo** (el programa a 3 años donde el cliente termina siendo dueño del equipo es un diferenciador fuerte).
-- **Nosotros**: falta el bloque oficial del brandbook ("No solo diseñamos seguridad. Diseñamos tranquilidad."), las **problemáticas del mercado** (mercado negro de supervisores, falta de temarios homologados, etc.) que justifican el método K.A.E.E., y la sección de **comunicación efectiva en seguridad** (los 9 elementos).
-- **Inicio**: agregar franja de **submarcas KAEE Group** (Working at Heights, WoLL – Working on Life Lines, Safety@Heights) para reforzar portafolio.
+## Fase 1 — Extracción de imágenes reales del sitio viejo
 
-**Datos de contacto a corregir**
-- Catálogo y propuesta confirman teléfono **722 879 5076** y dirección **José María Pino Suárez 304-1, Col. 5 de Mayo, Toluca, EdoMex 50090** — ya está bien.
+1. Script Node en `/tmp` que recorre las 80 carpetas de `site-capture/` en Google Drive vía gateway.
+2. Para cada carpeta: descarga el `.html`, parsea con `cheerio` y extrae `<img src>`, `<source srcset>`, `background-image:` y atributos `data-src`.
+3. Resuelve URLs relativas contra `https://kg-safety.com/` y descarga las imágenes únicas (deduplicación por hash).
+4. Clasifica por nombre/ruta en buckets:
+   - `equipos/` (arneses, líneas de vida, anclajes, andamios, plataformas, montacargas, EPP)
+   - `cursos/` (alturas, espacios confinados, LOTO, incendios, calor, eléctrica, plataformas, andamios, montacargas, herramientas)
+   - `ingenieria/` (lv, anclajes, domos, barandales, escalas, pasos, instalación, supervisión)
+   - `industrias/` (plantas, refinerías, fotos de obra)
+   - `equipo-humano/` (instructores, oficina, certificados)
+   - `marcas/` (logos Petzl, 3M, MSA, etc.)
+5. Guarda en `src/assets/real/<bucket>/<slug>.jpg`. Optimiza con `sharp` (max 1600px ancho, JPEG q80) si está disponible — si no, las deja tal cual.
+6. Genera `src/data/real-assets.ts` con un mapa `{ bucket: string[] }` para que los componentes elijan imágenes por categoría sin hardcodear paths.
 
-## 2. Toggle oscuro / claro
+**Si falta cobertura** (ej. no hay foto clara de "espacios confinados"), genero 1–2 imágenes con `imagegen` que respeten la paleta del sitio (acero, signal, anchor) y las mezclo en el mismo bucket.
 
-- `ThemeProvider` propio (sin dependencias nuevas) que persiste en `localStorage` y aplica `class="dark"` o `class="light"` al `<html>`.
-- Definir paleta clara en `src/styles.css`: fondo **Paper White** (oklch ~0.98), texto **Anchor Black**, cards **Steel Grey 5%**, acentos **Signal Yellow** y **Lift Orange** se mantienen (son colores de marca). Bordes oscuros al 10%.
-- Botón toggle (sol/luna de `lucide-react`) en `SiteHeader`, junto al selector de idioma.
-- Auditar componentes: hoy uso clases hardcoded como `bg-anchor`, `text-white`, `border-white/10`. Migrar a tokens semánticos (`bg-background`, `text-foreground`, `border-border`) en `SiteHeader`, `SiteFooter`, `WhatsAppFloat`, `__root.tsx` y las 7 rutas. Es el cambio más grande de este plan.
+## Fase 2 — Sistema de diseño Bento
 
-## 3. Toggle español / inglés
+Tokens nuevos en `src/styles.css`:
 
-- `i18n` propio, ligero, sin librerías: contexto React `LanguageProvider` con diccionario `{ es, en }` en `src/i18n/dictionary.ts`. Hook `useT()` devuelve strings. Persistencia en `localStorage` + `<html lang>` dinámico.
-- Selector ES/EN en header (texto compacto "ES | EN").
-- Traducir todos los strings visibles de las 8 rutas + header + footer + WhatsApp float + 404. Mantener nombres propios sin traducir (K.A.E.E., P.N.P.C., DC-3, NOM-009-STPS, "We never fall.").
-- SEO: el `head()` de cada ruta lee idioma actual y emite `title`/`description` en el idioma activo, además de `<link rel="alternate" hreflang="...">`.
+- `--bento-radius: 1.25rem` — esquinas suaves uniformes.
+- `--bento-border: 1px solid color-mix(in oklab, var(--on-surface) 12%, transparent)`.
+- `--bento-shadow: 0 1px 0 0 color-mix(...) inset, 0 24px 48px -24px var(--anchor)/40%`.
+- `--bento-bg-1`, `--bento-bg-2`, `--bento-bg-accent` — tres "tonos" de tile (neutro claro, neutro medio, accent signal/navy).
+- `--bento-gap: 12px md:16px`.
 
-## 4. Orden de implementación
+Componente reutilizable `src/components/bento/BentoTile.tsx`:
 
-1. Tokens claros/oscuros en `styles.css` + `ThemeProvider`.
-2. `LanguageProvider` + diccionario base.
-3. Migrar `SiteHeader` / `SiteFooter` / `WhatsAppFloat` a tokens semánticos + agregar toggles.
-4. Migrar las 7 rutas existentes a tokens + cablear strings al diccionario.
-5. Crear `/blog` con 3 artículos.
-6. Rellenar contenido faltante por página (sección por sección listado arriba).
-7. QA visual en oscuro y claro, ES y EN, en mobile (946px) y desktop.
+```tsx
+<BentoTile span="col-span-2 row-span-2" variant="accent" image={img} eyebrow="..." title="..." cta="...">
+  {children}
+</BentoTile>
+```
 
-## Fuera de alcance
+Variantes: `neutral | dark | accent | image | stat | list`. Maneja:
+- imagen de fondo con overlay/grain,
+- número grande (KPIs: "30M+ horas-hombre"),
+- lista compacta (chips),
+- CTA "→" en esquina inferior.
 
-- Backend del formulario / portal de contratistas con login / blog con CMS (siguen requiriendo Lovable Cloud).
-- Buscador y filtros funcionales del catálogo de equipos (sería con Cloud).
-- Traducción del blog full (los artículos quedan en español; los títulos/menús sí se traducen).
+Grilla maestra `BentoGrid` con CSS Grid `grid-cols-6 auto-rows-[clamp(120px,14vw,180px)]`, gap por token. Soporta hijo con `span` arbitrario.
 
-¿Apruebo y arranco?
+## Fase 3 — Rediseño home (`src/routes/index.tsx`)
+
+Layout en 4 bloques bento, todos con CSS Grid 6×N:
+
+**Bloque 1 — Hero bento (6×4)**
+- Tile grande 4×3: titular "We never fall." + sub + CTA primario, fondo con foto real (trabajador en altura).
+- Tile 2×2: KPI "30M+" horas-hombre sin accidentes.
+- Tile 2×1: certificación STPS / DC-3.
+- Tile 2×1: WhatsApp directo / tel.
+- Tile 6×1 (banda inferior): logos de clientes (Cemex, Bimbo, etc., scroll-marquee).
+
+**Bloque 2 — Servicios bento (6×3)**
+4 tiles asimétricos: Capacitación (3×2 con foto curso), Equipos (3×1), Ingeniería (2×2), Contratistas (4×1). Cada uno linkea a su índice.
+
+**Bloque 3 — Cursos top (6×2)**
+Mosaico de 6 tiles iguales con los cursos más buscados (Alturas, Confinados, LOTO, Plataformas, Andamios, Incendios), thumbnail + nombre + horas.
+
+**Bloque 4 — Prueba social bento (6×3)**
+Tile testimonio grande 3×2 + tile "industrias servidas" (chips) 3×1 + tile "30 años" 3×1 + CTA contacto 3×2.
+
+Animación de entrada por tile (stagger con `motion/react` ya disponible si está, si no CSS `@starting-style` o `IntersectionObserver`).
+
+## Fase 4 — Rediseño páginas índice
+
+Mismo lenguaje bento:
+
+- **`/capacitacion`** — Hero bento + grilla bento de 10 cursos (tile cada uno con foto, niveles disponibles como pills).
+- **`/equipos`** — Hero + grilla de 8 categorías + tile "marcas" con logos reales.
+- **`/ingenieria`** — Hero + grilla de 6 servicios (lv, anclajes, domos, barandales, escalas, pasos) con foto.
+- **`/soluciones`** — Bento de industrias con foto real por sector.
+
+Header/footer no cambian (ya están bien).
+
+## Fase 5 — Sustitución de imágenes generadas
+
+Reemplazar usos de `src/assets/*.jpg` (generadas) por las reales de `src/assets/real/`. Borrar las generadas que ya no se usan.
+
+## Fase 6 — QA
+
+- Revisar en viewport actual (946×774) que la grilla colapse a 2 col en mobile, 4 en tablet, 6 en desktop.
+- Verificar contraste de texto sobre imágenes (overlay obligatorio).
+- Build + ver `routeTree.gen.ts` se regenere.
+- Snapshot rápido de la home y una página índice.
+
+---
+
+## Detalles técnicos
+
+- **Dependencias**: agregar `cheerio` solo en `/tmp` (no entra al bundle); `sharp` opcional vía `nix` si está; si no, omito optimización.
+- **Drive download**: stream binario vía `GET .../files/{id}?alt=media` con los mismos headers `Authorization: Bearer LOVABLE_API_KEY` + `X-Connection-Api-Key: GOOGLE_DRIVE_API_KEY`. No usar Node en server runtime — todo se ejecuta en `/dev-server` durante build/dev time.
+- **Bundle**: las ~80 capturas pesan; **solo las imágenes reales extraídas** (no los screenshots de sección ni los HTML) entran a `src/assets/real/`. Estimo 40–80 imágenes finales, ~5–10 MB total.
+- **Compatibilidad**: bento usa CSS Grid nativo + Tailwind v4 utilities, sin libs extra.
+- **Riesgos**:
+  - Si las imágenes del sitio viejo ya no están online (404), me apoyo más en generadas — te aviso en el resumen final.
+  - Algunas imágenes pueden tener marca de agua o ser stock con licencia ambigua: descarto y reemplazo con generadas.
+
+## Lo que NO toco
+
+- Páginas de detalle (`*.$param.tsx`) — solo heredan tokens, no se rediseñan.
+- Header, footer, WhatsApp float, i18n, theme.
+- Datos en `src/data/kaee.ts` (estructura de cursos/equipos).
+- Rutas / SEO existentes.
