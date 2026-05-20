@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { RappelGame } from "./RappelGame";
+import { RappelGame } from "@/components/site/RappelGame";
 
 /**
  * Subtle 8-bit rappeller that descends as the user scrolls. Clicking the
