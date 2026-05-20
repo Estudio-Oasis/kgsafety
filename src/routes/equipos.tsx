@@ -61,15 +61,15 @@ function EquiposPage() {
             {EQUIPMENT.map((c, i) => {
               const img = EQUIPMENT_IMAGES[c.slug];
               return (
-                <Link key={c.slug} to="/equipos/$categoria" params={{ categoria: c.slug }} className="group relative bg-anchor overflow-hidden block min-h-[320px]">
+                <Link key={c.slug} to="/equipos/$categoria" params={{ categoria: c.slug }} className="group relative bg-brand-navy overflow-hidden block min-h-[320px]">
                   {img && (
-                    <img src={img} alt={c.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500" />
+                    <img src={img} alt={c.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-500" />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-anchor via-anchor/85 to-anchor/30" />
-                  <div className="relative z-10 p-7 h-full flex flex-col">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--brand-navy)] via-[color:var(--brand-navy)]/85 to-[color:var(--brand-navy)]/30" />
+                  <div className="kg-on-dark relative z-10 p-7 h-full flex flex-col">
                     <div className="font-display text-signal text-xs mb-5">{String(i + 1).padStart(2, "0")} / 10</div>
                     <h3 className="font-display text-base uppercase mb-3 leading-tight text-white mt-auto">{t(c.name)}</h3>
-                    <p className="text-sm text-white/70 mb-5 leading-relaxed">{t(c.desc)}</p>
+                    <p className="text-sm text-white/75 mb-5 leading-relaxed">{t(c.desc)}</p>
                     <span className="text-signal font-bold text-[10px] uppercase tracking-widest group-hover:translate-x-1 inline-block transition-transform">
                       {t("Ver categoría")} →
                     </span>
