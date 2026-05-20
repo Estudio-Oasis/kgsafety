@@ -58,16 +58,25 @@ function EquiposPage() {
             <h2 className="font-display text-3xl md:text-5xl uppercase">{t("10 líneas de producto")}</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 border border-white/5">
-            {EQUIPMENT.map((c, i) => (
-              <Link key={c.slug} to="/equipos/$categoria" params={{ categoria: c.slug }} className="bg-anchor p-7 hover:bg-steel transition-colors group block">
-                <div className="font-display text-signal text-xs mb-5">{String(i + 1).padStart(2, "0")} / 10</div>
-                <h3 className="font-display text-base uppercase mb-3 leading-tight">{t(c.name)}</h3>
-                <p className="text-sm text-white/55 mb-6 leading-relaxed">{t(c.desc)}</p>
-                <span className="text-signal font-bold text-[10px] uppercase tracking-widest group-hover:translate-x-1 inline-block transition-transform">
-                  {t("Ver categoría")} →
-                </span>
-              </Link>
-            ))}
+            {EQUIPMENT.map((c, i) => {
+              const img = EQUIPMENT_IMAGES[c.slug];
+              return (
+                <Link key={c.slug} to="/equipos/$categoria" params={{ categoria: c.slug }} className="group relative bg-anchor overflow-hidden block min-h-[320px]">
+                  {img && (
+                    <img src={img} alt={c.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-anchor via-anchor/85 to-anchor/30" />
+                  <div className="relative z-10 p-7 h-full flex flex-col">
+                    <div className="font-display text-signal text-xs mb-5">{String(i + 1).padStart(2, "0")} / 10</div>
+                    <h3 className="font-display text-base uppercase mb-3 leading-tight text-white mt-auto">{t(c.name)}</h3>
+                    <p className="text-sm text-white/70 mb-5 leading-relaxed">{t(c.desc)}</p>
+                    <span className="text-signal font-bold text-[10px] uppercase tracking-widest group-hover:translate-x-1 inline-block transition-transform">
+                      {t("Ver categoría")} →
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
