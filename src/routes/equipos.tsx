@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import ppeImg from "@/assets/equipment-ppe.jpg";
+import { EQUIPMENT_IMAGES } from "@/lib/equipment-images";
 import { useT } from "@/i18n/context";
 import { EQUIPMENT } from "@/data/kaee";
 
