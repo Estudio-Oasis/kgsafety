@@ -26,25 +26,25 @@ function EquiposPage() {
   return (
     <div>
       <section className="relative overflow-hidden border-b border-white/5">
-        <div className="grid md:grid-cols-2">
-          <div className="px-6 md:px-12 py-20 md:py-28 bg-anchor">
+        <div className="grid lg:grid-cols-2">
+          <div className="kg-on-dark px-6 md:px-12 py-16 md:py-24 lg:py-28 bg-anchor">
             <SectionLabel>{t("Catálogo de equipos")}</SectionLabel>
-            <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight text-white">
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
               {t("Equipos certificados,")}<br />
               <span className="text-signal">{t("trazables")}</span>{t(", garantizados.")}
             </h1>
-            <p className="text-lg md:text-xl text-white/70 max-w-xl mb-10 leading-relaxed">
+            <p className="text-base md:text-lg text-white/70 max-w-xl mb-10 leading-relaxed">
               {t("Más de 30 marcas de representación. Asesoría en selección, fichas técnicas y cotización inmediata para venta, renta y certificación.")}
             </p>
-            <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
+            <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
               {t("Solicitar catálogo PDF")}
             </Link>
           </div>
-          <div className="relative min-h-[300px] md:min-h-full">
+          <div className="relative min-h-[260px] lg:min-h-[480px]">
             <img src={ppeImg} alt="Arnés y equipo de protección personal certificado" loading="eager" width={1600} height={1000} className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-anchor/40 md:to-transparent" />
-            <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 bg-brand-navy text-white px-5 py-3 shadow-[5px_5px_0_0_var(--signal,#F5C500)]">
-              <div className="font-display text-xs uppercase tracking-[0.25em]">30+ marcas</div>
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[color:var(--brand-navy)]/40 lg:to-transparent" />
+            <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-brand-navy text-white px-4 py-2 md:px-5 md:py-3 shadow-[5px_5px_0_0_var(--signal,#F5C500)]">
+              <div className="font-display text-[11px] md:text-xs uppercase tracking-[0.25em]">30+ marcas</div>
             </div>
           </div>
         </div>
