@@ -27,7 +27,7 @@ function EquiposPage() {
     <div>
       <section className="relative overflow-hidden border-b border-white/5">
         <div className="grid lg:grid-cols-2">
-          <div className="kg-on-dark px-6 md:px-12 py-16 md:py-24 lg:py-28 bg-anchor">
+          <div className="kg-on-dark px-6 md:px-12 py-16 md:py-24 lg:py-28 bg-brand-navy">
             <SectionLabel>{t("Catálogo de equipos")}</SectionLabel>
             <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
               {t("Equipos certificados,")}<br />
