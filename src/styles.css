@@ -316,3 +316,27 @@
   .animate-mobile-in,
   .pulse-cta { animation: none !important; }
 }
+
+/* === Mobile typography & overflow safety ===
+   Big uppercase display headings and bento titles overflow narrow tiles
+   on mobile. Force long words to break instead of clipping. */
+.font-display,
+h1, h2, h3 {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+}
+
+/* Tile titles inside bento should never push out of their box */
+.kg-bento, .kg-on-dark, [class*="rounded-[var(--bento-radius"] {
+  min-width: 0;
+}
+.kg-bento *, [class*="rounded-[var(--bento-radius"] * {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  /* Tame mega display headings on small screens */
+  h1.font-display { font-size: clamp(1.875rem, 8.5vw, 2.5rem); line-height: 1.05; }
+  h2.font-display { font-size: clamp(1.5rem, 7vw, 2rem);    line-height: 1.1; }
+}
