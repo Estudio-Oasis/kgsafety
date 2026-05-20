@@ -143,7 +143,7 @@ export function BentoTile(props: TileProps) {
           </div>
         )}
         {title && (
-          <div className="font-display uppercase leading-[1.05] tracking-tight text-lg md:text-xl lg:text-2xl mb-2">
+          <div className="font-display uppercase leading-[1.05] tracking-tight text-base sm:text-lg md:text-xl lg:text-2xl mb-2 break-words [overflow-wrap:anywhere] hyphens-auto">
             {title}
           </div>
         )}
