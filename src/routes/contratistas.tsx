@@ -42,7 +42,7 @@ function ContratistasPage() {
       <section className="relative overflow-hidden border-b border-white/5">
 
         <div className="grid md:grid-cols-2">
-          <div className="px-6 md:px-12 py-20 md:py-28 bg-brand-navy text-white">
+          <div className="kg-on-dark px-6 md:px-12 py-20 md:py-28 bg-brand-navy text-white">
             <SectionLabel>{t("P.N.P.C.")}</SectionLabel>
             <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
               {t("Programa Nacional de")}<br />
