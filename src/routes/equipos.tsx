@@ -29,9 +29,10 @@ function EquiposPage() {
         <div className="grid lg:grid-cols-2">
           <div className="kg-on-dark px-6 md:px-12 py-16 md:py-24 lg:py-28 bg-brand-navy">
             <SectionLabel>{t("Catálogo de equipos")}</SectionLabel>
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl mb-6 uppercase leading-[1.05] text-white break-words">
-              {t("Equipos certificados,")}<br />
-              <span className="text-signal">{t("trazables")}</span>{t(" y garantizados.")}
+            <h1 className="font-display text-3xl md:text-4xl xl:text-5xl mb-6 uppercase leading-[1.05] text-white">
+              {t("Equipos certificados.")}<br />
+              <span className="text-signal">{t("Trazables.")}</span><br />
+              {t("Garantizados.")}
             </h1>
             <p className="text-base md:text-lg text-white/70 max-w-xl mb-10 leading-relaxed">
               {t("Más de 30 marcas de representación. Asesoría en selección, fichas técnicas y cotización inmediata para venta, renta y certificación.")}
