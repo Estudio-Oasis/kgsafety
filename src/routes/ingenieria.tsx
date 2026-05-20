@@ -45,16 +45,16 @@ function IngenieriaPage() {
           <img src={officeImg} alt="" loading="eager" width={1600} height={1000} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/85 to-brand-navy/40" />
         </div>
-        <div className="max-w-5xl relative z-10">
+        <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Ingeniería aplicada")}</SectionLabel>
-          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight text-white">
+          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
             {t("Sistemas de anclaje")}<br />
             <span className="text-signal">{t("diseñados")}</span> {t("a medida.")}
           </h1>
-          <p className="text-lg md:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
             {t("Líneas de vida, anclajes, plataformas y estructuras de obra civil. Ingeniería certificada para cada estructura, cada persona, cada detalle.")}
           </p>
-          <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
+          <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
             {t("Agendar diagnóstico")}
           </Link>
         </div>
