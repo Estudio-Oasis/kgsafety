@@ -44,7 +44,7 @@ function EquiposPage() {
           <div className="relative min-h-[260px] lg:min-h-[480px]">
             <img src={ppeImg} alt="Arnés y equipo de protección personal certificado" loading="eager" width={1600} height={1000} className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[color:var(--brand-navy)]/40 lg:to-transparent" />
-            <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-brand-navy text-white px-4 py-2 md:px-5 md:py-3 shadow-[5px_5px_0_0_var(--signal,#F5C500)]">
+            <div className="kg-on-dark absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-brand-navy text-white px-4 py-2 md:px-5 md:py-3 shadow-[5px_5px_0_0_var(--signal,#F5C500)]">
               <div className="font-display text-[11px] md:text-xs uppercase tracking-[0.25em]">30+ marcas</div>
             </div>
           </div>
