@@ -321,11 +321,11 @@ function Index() {
 
             {/* Divisiones */}
             <BentoTile span="md:col-span-2" variant="dark" eyebrow="KAEE Group" title={t("5 divisiones")}>
-              <div className="mt-3 space-y-1.5">
+              <div className="mt-3 space-y-2">
                 {DIVISIONS.map((d) => (
-                  <div key={d.tag} className="flex items-baseline gap-2 text-xs">
-                    <span className="font-display text-sm w-12 shrink-0" style={{ color: "var(--signal)" }}>{d.tag}</span>
-                    <span className="leading-tight" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
+                  <div key={d.tag} className="grid grid-cols-[auto_1fr] items-baseline gap-x-3 text-xs">
+                    <span className="font-display text-sm whitespace-nowrap" style={{ color: "var(--signal)" }}>{d.tag}</span>
+                    <span className="leading-snug" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
                   </div>
                 ))}
               </div>
