@@ -95,12 +95,12 @@ function Index() {
 
             {/* Certificación + países en UN solo tile compacto */}
             <BentoTile span="md:col-span-2" variant="dark">
-              <div className="grid grid-cols-2 gap-4 h-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 h-full">
                 <div className="flex flex-col">
                   <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>STPS · DC-3</div>
                   <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>{t("Registro oficial")}</div>
                 </div>
-                <div className="flex flex-col border-l pl-4" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
+                <div className="flex flex-col sm:border-l sm:pl-4 pt-3 sm:pt-0 border-t sm:border-t-0" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
                   <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>{t("3 países")}</div>
                   <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>MX · CO · CL</div>
                 </div>
