@@ -19,21 +19,20 @@ export const Route = createFileRoute("/soluciones")({
 function SolucionesPage() {
   return (
     <div>
-      <section className="relative px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)] overflow-hidden">
-
+      <section className="relative px-6 md:px-12 py-16 md:py-24 lg:py-28 border-b border-[color:var(--border)] overflow-hidden">
         <div className="absolute inset-0">
           <img src={plantImg} alt="" loading="eager" width={1600} height={900} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/95 via-brand-navy/80 to-brand-navy/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[color:var(--brand-navy)] via-[color:var(--brand-navy)]/85 to-[color:var(--brand-navy)]/55" />
         </div>
-        <div className="max-w-5xl relative z-10">
+        <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>Soluciones a la medida</SectionLabel>
-          <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight text-white">
+          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
             Aplicaciones <span className="text-signal">y</span> sectores
           </h1>
-          <p className="text-lg md:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
+          <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
             Cinco familias de aplicaciones · veintidós industrias atendidas con ingeniería y capacitación KAEE Group.
           </p>
-          <Link to="/contacto" className="inline-block bg-signal text-[color:var(--anchor-fixed)] px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.45)]">
+          <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.45)]">
             Cotizar solución
           </Link>
         </div>
@@ -44,11 +43,11 @@ function SolucionesPage() {
         <div className="max-w-7xl mx-auto">
           <SectionLabel>Aplicaciones</SectionLabel>
           <h2 className="font-display text-2xl md:text-4xl uppercase mb-10 text-[color:var(--on-surface)]">Cinco frentes técnicos</h2>
-          <div className="grid md:grid-cols-5 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
             {SOLUTIONS.map((s, i) => (
               <div key={s} className="bg-[color:var(--surface)] p-6">
                 <div className="font-display text-signal text-xs mb-4">{String(i + 1).padStart(2, "0")} / 05</div>
-                <h3 className="font-display text-base uppercase tracking-tight text-[color:var(--on-surface)]">{s}</h3>
+                <h3 className="font-display text-sm md:text-base uppercase tracking-tight text-[color:var(--on-surface)] leading-tight">{s}</h3>
               </div>
             ))}
           </div>
