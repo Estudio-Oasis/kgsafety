@@ -12,6 +12,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
+import { ScrollRappellers } from "@/components/site/ScrollRappellers";
 import { ThemeProvider } from "@/theme/context";
 import { LanguageProvider, useT } from "@/i18n/context";
 
@@ -158,6 +159,7 @@ function RootComponent() {
             </main>
             <SiteFooter />
             <WhatsAppFloat />
+            <ScrollRappellers />
           </div>
         </LanguageProvider>
       </ThemeProvider>
