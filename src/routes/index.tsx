@@ -95,12 +95,12 @@ function Index() {
 
             {/* Certificación + países en UN solo tile compacto */}
             <BentoTile span="md:col-span-2" variant="dark">
-              <div className="grid grid-cols-2 gap-4 h-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 h-full">
                 <div className="flex flex-col">
                   <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>STPS · DC-3</div>
                   <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>{t("Registro oficial")}</div>
                 </div>
-                <div className="flex flex-col border-l pl-4" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
+                <div className="flex flex-col sm:border-l sm:pl-4 pt-3 sm:pt-0 border-t sm:border-t-0" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
                   <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>{t("3 países")}</div>
                   <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>MX · CO · CL</div>
                 </div>
@@ -321,11 +321,11 @@ function Index() {
 
             {/* Divisiones */}
             <BentoTile span="md:col-span-2" variant="dark" eyebrow="KAEE Group" title={t("5 divisiones")}>
-              <div className="mt-3 space-y-1.5">
+              <div className="mt-3 space-y-2">
                 {DIVISIONS.map((d) => (
-                  <div key={d.tag} className="flex items-baseline gap-2 text-xs">
-                    <span className="font-display text-sm w-12 shrink-0" style={{ color: "var(--signal)" }}>{d.tag}</span>
-                    <span className="leading-tight" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
+                  <div key={d.tag} className="grid grid-cols-[auto_1fr] items-baseline gap-x-3 text-xs">
+                    <span className="font-display text-sm whitespace-nowrap" style={{ color: "var(--signal)" }}>{d.tag}</span>
+                    <span className="leading-snug" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
                   </div>
                 ))}
               </div>
