@@ -153,6 +153,20 @@
   .text-white\/70 { color: color-mix(in oklab, var(--on-surface) 84%, transparent) !important; }
   .text-white\/80 { color: color-mix(in oklab, var(--on-surface) 90%, transparent) !important; }
 
+  /* When a region is explicitly placed on a dark surface (e.g. hero with
+   * navy overlay), opt out of the navy-text override so white reads as white. */
+  .kg-on-dark, .kg-on-dark * { color: #ffffff; }
+  .kg-on-dark .text-white          { color: #ffffff !important; }
+  .kg-on-dark .text-white\/40      { color: rgba(255,255,255,0.4) !important; }
+  .kg-on-dark .text-white\/50      { color: rgba(255,255,255,0.5) !important; }
+  .kg-on-dark .text-white\/55      { color: rgba(255,255,255,0.55) !important; }
+  .kg-on-dark .text-white\/60      { color: rgba(255,255,255,0.6) !important; }
+  .kg-on-dark .text-white\/70      { color: rgba(255,255,255,0.7) !important; }
+  .kg-on-dark .text-white\/80      { color: rgba(255,255,255,0.8) !important; }
+  .kg-on-dark .text-white\/85      { color: rgba(255,255,255,0.85) !important; }
+  .kg-on-dark .text-signal         { color: var(--signal) !important; }
+  .kg-on-dark .text-anchor         { color: var(--anchor-fixed) !important; }
+
   .border-white\/5  { border-color: color-mix(in oklab, var(--on-surface) 7%, transparent) !important; }
   .border-white\/10 { border-color: color-mix(in oklab, var(--on-surface) 12%, transparent) !important; }
   .border-white\/20 { border-color: color-mix(in oklab, var(--on-surface) 22%, transparent) !important; }
@@ -160,10 +174,11 @@
   .bg-white\/5  { background-color: color-mix(in oklab, var(--on-surface) 4%, transparent) !important; }
   .hover\:bg-white\/5:hover { background-color: color-mix(in oklab, var(--on-surface) 5%, transparent) !important; }
 
-  /* Hero gradient — was from-anchor → surface for proper mix */
-  .from-anchor { --tw-gradient-from: var(--surface) !important; }
-  .via-anchor  { --tw-gradient-via:  var(--surface) !important; }
-  .to-anchor   { --tw-gradient-to:   var(--surface) !important; }
+  /* Hero gradient — anchor utilities map to LITERAL navy so dark image
+   * overlays actually darken (don't get remapped to white surface). */
+  .from-anchor { --tw-gradient-from: var(--brand-navy) !important; }
+  .via-anchor  { --tw-gradient-via:  var(--brand-navy) !important; }
+  .to-anchor   { --tw-gradient-to:   var(--brand-navy) !important; }
 
   /* Industrial blue helpers */
   .bg-brand-blue   { background-color: var(--brand-blue) !important; }
