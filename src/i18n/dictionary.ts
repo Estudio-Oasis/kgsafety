@@ -244,7 +244,7 @@ export const en: Record<string, string> = {
   "Sistemas LVH overhead y a nivel: structural, rigid rail y cable base.":
     "LVH overhead and at-level systems: structural, rigid rail and cable base.",
   "Anclajes": "Anchors",
-  "Móviles, portátiles, temporales, removibles, individuales o colectivos. Compra o renta.":
+  "Móviles, portátiles, temporales, removibles, individuales o colectivos. Compra e instalación.":
     "Mobile, portable, temporary, removable, individual or collective. Purchase or rental.",
   "Hand Rails": "Hand Rails",
   "Barandales fijos y removibles para acceso seguro a zonas perimetrales.":
@@ -292,7 +292,7 @@ export const en: Record<string, string> = {
   "Equipos certificados,": "Certified equipment,",
   "trazables": "traceable",
   ", garantizados.": ", guaranteed.",
-  "Más de 30 marcas de representación. Asesoría en selección, fichas técnicas y cotización inmediata para venta, renta y certificación.":
+  "Más de 30 marcas de representación. Asesoría en selección, fichas técnicas y cotización inmediata para venta y certificación.":
     "Over 30 represented brands. Selection advisory, datasheets and instant quotes for sale, rental and certification.",
   "Solicitar catálogo PDF": "Request PDF catalog",
   "Categorías": "Categories",
