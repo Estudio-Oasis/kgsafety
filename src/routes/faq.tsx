@@ -7,7 +7,7 @@ export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
       { title: "Preguntas Frecuentes · KG Safety" },
-      { name: "description", content: "Respuestas sobre capacitación DC-3, ingeniería de líneas de vida, certificación, renta de equipos y cobertura nacional KAEE Group." },
+      { name: "description", content: "Respuestas sobre capacitación DC-3, ingeniería de líneas de vida, certificación, programas de mantenimiento y cobertura nacional KAEE Group." },
       { property: "og:title", content: "Preguntas Frecuentes · KG Safety" },
       { property: "og:description", content: "Las dudas más comunes sobre nuestros servicios y cursos." },
     ],

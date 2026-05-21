@@ -22,7 +22,7 @@ export const Route = createFileRoute("/ingenieria")({
 const SERVICES = [
   { titleKey: "Líneas de Vida Verticales", descKey: "Sistemas LVV con cable y rigid rail para escaleras, torres y silos." },
   { titleKey: "Líneas de Vida Horizontales", descKey: "Sistemas LVH overhead y a nivel: structural, rigid rail y cable base." },
-  { titleKey: "Anclajes", descKey: "Móviles, portátiles, temporales, removibles, individuales o colectivos. Compra o renta." },
+  { titleKey: "Anclajes", descKey: "Móviles, portátiles, temporales, removibles, individuales o colectivos. Compra e instalación." },
   { titleKey: "Hand Rails", descKey: "Barandales fijos y removibles para acceso seguro a zonas perimetrales." },
   { titleKey: "Plataformas y estructuras", descKey: "Plataformas elevadoras y obra civil a medida con departamento propio." },
   { titleKey: "Supervisión y certificación", descKey: "Auditorías, pruebas de carga y verificación periódica de sistemas." },

@@ -2,7 +2,7 @@
 // All copy preserved literally where possible.
 
 export type CourseLevel = {
-  code: "A" | "M" | "C" | "P";
+  code: "A" | "M" | "C";
   name: string;
   hours: string;
   desc: string;
@@ -17,10 +17,9 @@ export type Course = {
 };
 
 const STANDARD_LEVELS = (area: string): CourseLevel[] => [
-  { code: "A", name: "Autorizado",  hours: "8 h",  desc: `Persona autorizada para ejecutar tareas de ${area} con uso correcto del EPP y procedimientos seguros.` },
-  { code: "M", name: "Monitor",     hours: "16 h", desc: `Monitor capaz de supervisar cuadrillas y verificar condiciones de seguridad durante trabajos de ${area}.` },
-  { code: "C", name: "Competente",  hours: "24 h", desc: `Persona competente con criterio para identificar riesgos, planear maniobras y emitir permisos de ${area}.` },
-  { code: "P", name: "Profesional", hours: "40 h", desc: `Profesional certificado para diseñar planes, capacitar internamente y firmar protocolos de ${area}.` },
+  { code: "A", name: "Básico / Autorizado", hours: "8 h",  desc: `Persona autorizada para ejecutar tareas de ${area} con uso correcto del EPP y procedimientos seguros.` },
+  { code: "M", name: "Supervisor / Monitor", hours: "16 h", desc: `Monitor capaz de supervisar cuadrillas y verificar condiciones de seguridad durante trabajos de ${area}.` },
+  { code: "C", name: "Jefe de Seguridad / Competente", hours: "24 h", desc: `Persona competente con criterio para identificar riesgos, planear maniobras y emitir permisos de ${area}.` },
 ];
 
 export const COURSES: Course[] = [
@@ -45,15 +44,25 @@ export const COURSES: Course[] = [
   { slug: "herramientas",  name: "Manejo de Herramientas", short: "Herramientas",
     desc: "Uso, inspección y mantenimiento seguro de herramientas manuales y eléctricas.",
     levels: STANDARD_LEVELS("manejo de herramientas") },
-  { slug: "incendios",     name: "Incendios",             short: "Incendios",
+  { slug: "primeros-auxilios", name: "Primeros Auxilios", short: "Primeros Auxilios",
+    desc: "Atención inicial de emergencias médicas en sitio: RCP, hemorragias, trauma y manejo de víctima.",
+    levels: STANDARD_LEVELS("primeros auxilios") },
+  { slug: "extintores",    name: "Manejo de Extintores",  short: "Extintores",
     desc: "Prevención, brigadas y combate con extintor portátil bajo NOM-002-STPS.",
-    levels: STANDARD_LEVELS("incendios") },
+    levels: STANDARD_LEVELS("manejo de extintores") },
   { slug: "montacargas",   name: "Montacargas",           short: "Montacargas",
     desc: "Operación segura, inspección y maniobras certificadas de montacargas.",
     levels: STANDARD_LEVELS("montacargas") },
-  { slug: "plataformas",   name: "Uso de Plataformas",    short: "Plataformas",
-    desc: "Operación segura de manlifts, tijeras y plataformas articuladas.",
-    levels: STANDARD_LEVELS("plataformas elevadoras") },
+  { slug: "osha-10",       name: "OSHA 10 horas",         short: "OSHA 10 h",
+    desc: "Programa oficial OSHA Outreach de 10 horas para personal operativo en construcción e industria general.",
+    levels: [
+      { code: "A", name: "OSHA 10", hours: "10 h", desc: "Programa Outreach OSHA de 10 horas con tarjeta oficial DOL." },
+    ] },
+  { slug: "osha-30",       name: "OSHA 30 horas",         short: "OSHA 30 h",
+    desc: "Programa oficial OSHA Outreach de 30 horas para supervisores y mandos medios en construcción e industria general.",
+    levels: [
+      { code: "C", name: "OSHA 30", hours: "30 h", desc: "Programa Outreach OSHA de 30 horas con tarjeta oficial DOL para supervisores." },
+    ] },
 ];
 
 export type EquipmentCategory = {
@@ -122,9 +131,6 @@ export const ENGINEERING: EngineeringService[] = [
   { slug: "instalacion", name: "Instalación",
     desc: "Instalación de líneas de vida, anclajes y sistemas removibles con instaladores certificados.",
     bullets: ["Instaladores certificados", "Cobertura nacional", "Acta entrega-recepción", "Plan de mantenimiento"] },
-  { slug: "renta", name: "Renta de Equipo",
-    desc: "Renta de barandas, sistemas contra caídas y andamios por proyecto u obra.",
-    bullets: ["Barandas", "Sistemas contra caídas", "Andamios", "Logística incluida"] },
 ];
 
 export const INDUSTRIES = [
@@ -135,9 +141,33 @@ export const INDUSTRIES = [
   "Anuncios Publicitarios", "Puentes", "Presas", "Centros Comerciales", "Estadios",
 ];
 
-export const SOLUTIONS = [
-  "Silos", "Techos", "Espacios Confinados", "Construcción", "Rack de Tubería",
+export type SolutionFamily = {
+  slug: string;
+  name: string;
+  desc: string;
+  apps: string[];
+};
+
+export const SOLUTION_FAMILIES: SolutionFamily[] = [
+  { slug: "alturas", name: "Trabajos en Altura",
+    desc: "Sistemas de protección contra caídas para cualquier estructura y altura de trabajo.",
+    apps: ["Silos", "Techos industriales", "Torres y antenas", "Puentes y presas", "Estadios", "Anuncios publicitarios", "Rack de almacenamiento", "Domos"] },
+  { slug: "confinados", name: "Espacios Confinados",
+    desc: "Ingreso, rescate y monitoreo en tanques, ductos, fosas y atmósferas peligrosas.",
+    apps: ["Tanques", "Ductos y tuberías", "Fosas y registros", "Reactores", "Silos cerrados"] },
+  { slug: "ingenieria", name: "Ingeniería Estructural",
+    desc: "Diseño, cálculo y fabricación de sistemas pre-fabricados y a la medida.",
+    apps: ["Líneas de vida horizontales", "Líneas de vida verticales", "Anclajes certificados", "Barandales auto-soportados", "Plataformas pre-fabricadas", "Protectores de domo"] },
+  { slug: "construccion", name: "Construcción y Obra",
+    desc: "Acompañamiento de seguridad en obra civil, montaje industrial y mantenimiento mayor.",
+    apps: ["Construcción nueva", "Mantenimiento mayor", "Paros de planta", "Montaje de estructuras", "Rack de tubería"] },
+  { slug: "mantenimiento", name: "Mantenimiento Profesional",
+    desc: "Mantenimiento preventivo y correctivo residencial e industrial: limpieza, pintura, impermeabilización y obra civil.",
+    apps: ["Limpieza industrial", "Pintura", "Impermeabilización", "Obra civil", "Electricidad", "Programas preventivos"] },
 ];
+
+// Legacy flat list kept for backwards compat — derived from families.
+export const SOLUTIONS = SOLUTION_FAMILIES.map((f) => f.name);
 
 export const PNPC_STATS = [
   { value: "11,789", label: "Personas Capacitadas" },
@@ -172,11 +202,11 @@ export const CLIENTS_FULL = [
 
 export const FAQS = [
   { q: "¿Qué es el método K.A.E.E.?", a: "Knowledge, Analysis, Engineering & Elimination: nuestra metodología propietaria para reducir a cero los accidentes en trabajos en altura." },
-  { q: "¿Sus cursos están registrados ante STPS?", a: "Sí. Entregamos DC-3 oficial, certificado de cumplimiento y credencial con candados anti-falsificación." },
-  { q: "¿Tienen cobertura nacional?", a: "Sí. Operamos en toda la República Mexicana, con presencia adicional en Colombia y Chile." },
-  { q: "¿Manejan renta de equipos?", a: "Sí. Rentamos barandas, sistemas contra caídas y andamios por proyecto u obra, con logística incluida." },
+  { q: "¿Sus cursos están registrados ante STPS?", a: "Sí. Entregamos DC-3 oficial y certificado de cumplimiento con registro verificable en línea." },
+  { q: "¿Tienen cobertura internacional?", a: "Sede en México (Toluca) con operación en Colombia, Estados Unidos y Argentina, y cobertura LATAM bajo la marca KG Safety Latam." },
   { q: "¿Cuánto tarda una cotización?", a: "Le respondemos el mismo día. Para ingeniería en sitio, agendamos visita técnica dentro de 72 horas hábiles." },
   { q: "¿Trabajan con contratistas externos?", a: "Sí, a través del Programa Nacional de Profesionalización a Contratistas (P.N.P.C.) que estandariza la seguridad de sus proveedores." },
-  { q: "¿Cuáles son los niveles de capacitación?", a: "Cuatro niveles: Autorizado (8 h), Monitor (16 h), Competente (24 h) y Profesional (40 h)." },
+  { q: "¿Cuáles son los niveles de capacitación?", a: "Tres niveles: Básico / Autorizado (8 h), Supervisor / Monitor (16 h) y Jefe de Seguridad / Competente (24 h). Adicionalmente impartimos OSHA 10 y OSHA 30." },
   { q: "¿Qué normas cumplen sus sistemas?", a: "NOM-009-STPS, NOM-033-STPS, OSHA 1910/1926, ANSI Z359, EN-795 y CSA Z259." },
+  { q: "¿Puedo auto-facturar?", a: "Sí. En la sección Facturación accede al portal externo con su folio de cotización o referencia para generar su factura." },
 ];

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/capacitacion")({
   head: () => ({
     meta: [
       { title: "Capacitación DC-3 · KG Safety" },
-      { name: "description", content: "Programas DC-3 en 3 niveles para trabajos en altura, espacios confinados, andamios y más. Certificado, credencial y registro STPS." },
+      { name: "description", content: "Programas DC-3 en 3 niveles para trabajos en altura, espacios confinados, andamios y más. Certificado y registro STPS, OSHA y NSC." },
       { property: "og:title", content: "Capacitación DC-3 · KG Safety" },
       { property: "og:description", content: "Tres niveles de capacitación certificada con cobertura nacional." },
       { property: "og:url", content: "/capacitacion" },
@@ -23,10 +23,10 @@ export const Route = createFileRoute("/capacitacion")({
 const LEVELS = [
   { n: "01", badgeKey: "Básico / Autorizado", hoursKey: "8 horas",
     descKey: "El participante conocerá los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
-    bullets: ["DC-3 oficial", "Certificado de cumplimiento", "Credencial con candados anti-falsificación"] },
+    bullets: ["DC-3 oficial", "Certificado de cumplimiento", "Registro STPS verificable"] },
   { n: "02", badgeKey: "Supervisor / Monitor", hoursKey: "16 horas",
     descKey: "Capacita en supervisión de trabajadores, evaluación de condiciones de seguridad y maniobras de rescate.",
-    bullets: ["DC-3 oficial", "Certificado", "Credencial profesional"] },
+    bullets: ["DC-3 oficial", "Certificado", "Criterio de supervisión"] },
   { n: "03", badgeKey: "Jefe de Seguridad / Competente", hoursKey: "24 horas",
     descKey: "Cubre normativas nacionales e internacionales, diseño de anclajes, planes de trabajo y capacidad para impartir cursos internos.",
     bullets: ["DC-3 oficial", "Certificado Competent Person", "Diseño de anclajes"] },
@@ -46,8 +46,8 @@ function CapacitacionPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Capacitación certificada")}</SectionLabel>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
-            {t("DC-3, certificado y")}<br />
-            <span className="text-signal">{t("credencial")}</span> {t("oficial.")}
+            {t("DC-3 y certificado")}<br />
+            <span className="text-signal">{t("oficial")}</span> {t("STPS · OSHA · NSC.")}
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
             {t("Tres niveles · doce áreas · capacitadores certificados por KAEE Group FPCS, STPS, OSHA y NSC. Cobertura nacional con programas de recertificación anualizada.")}
@@ -65,8 +65,8 @@ function CapacitacionPage() {
         </div>
         <div className="bg-signal text-anchor p-8 md:p-12 flex flex-col justify-center">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3">{t("Realismo operativo")}</div>
-          <div className="font-display text-3xl md:text-4xl uppercase leading-tight mb-3">10 áreas técnicas</div>
-          <p className="text-sm leading-relaxed">{t("Alturas, confinados, andamios, calor, eléctrico, LOTO, primeros auxilios y más.")}</p>
+          <div className="font-display text-3xl md:text-4xl uppercase leading-tight mb-3">12 áreas técnicas</div>
+          <p className="text-sm leading-relaxed">{t("Alturas, confinados, andamios, calor, eléctrico, LOTO, primeros auxilios, extintores, OSHA 10 y 30 y más.")}</p>
         </div>
       </section>
 
@@ -165,8 +165,8 @@ function CapacitacionPage() {
               "Seguimiento directo de CURP.",
               "Registro de asistencia y aprobación del curso.",
               "DC-3 emitido y verificable en línea.",
-              "Credencial con múltiples candados anti-falsificación.",
               "Certificado de cumplimiento para identidad corporativa.",
+              "Cumplimiento REPSE y auditable por STPS.",
             ].map((c) => (
               <li key={c} className="flex gap-4 text-white/70 leading-relaxed">
                 <span className="text-signal font-display shrink-0">+</span>

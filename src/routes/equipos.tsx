@@ -12,7 +12,7 @@ export const Route = createFileRoute("/equipos")({
       { title: "Equipos certificados · EPP, anclajes, líneas de vida · KG Safety" },
       { name: "description", content: "Catálogo WoLL + S@H: EPP, anclajes, líneas de vida, barandales, domos, andamios, plataformas, pasos de gato y escalas con marcas líderes." },
       { property: "og:title", content: "Equipos certificados · KG Safety" },
-      { property: "og:description", content: "Diez familias de producto con venta, renta y certificación." },
+      { property: "og:description", content: "Diez familias de producto con venta y certificación." },
       { property: "og:url", content: "/equipos" },
     ],
     links: [{ rel: "canonical", href: "/equipos" }],
@@ -35,7 +35,7 @@ function EquiposPage() {
               {t("Garantizados.")}
             </h1>
             <p className="text-base md:text-lg text-white/70 max-w-xl mb-10 leading-relaxed">
-              {t("Más de 30 marcas de representación. Asesoría en selección, fichas técnicas y cotización inmediata para venta, renta y certificación.")}
+              {t("Más de 30 marcas de representación. Asesoría en selección, fichas técnicas y cotización inmediata para venta y certificación.")}
             </p>
             <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
               {t("Solicitar catálogo PDF")}

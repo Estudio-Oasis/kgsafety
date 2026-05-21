@@ -13,6 +13,7 @@ import { Route as SolucionesRouteImport } from './routes/soluciones'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
 import { Route as IngenieriaRouteImport } from './routes/ingenieria'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as FacturacionRouteImport } from './routes/facturacion'
 import { Route as EquiposRouteImport } from './routes/equipos'
 import { Route as ContratistasRouteImport } from './routes/contratistas'
 import { Route as ContactoRouteImport } from './routes/contacto'
@@ -41,6 +42,11 @@ const IngenieriaRoute = IngenieriaRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FacturacionRoute = FacturacionRouteImport.update({
+  id: '/facturacion',
+  path: '/facturacion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EquiposRoute = EquiposRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
   '/equipos': typeof EquiposRouteWithChildren
+  '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
   '/equipos': typeof EquiposRouteWithChildren
+  '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
   '/equipos': typeof EquiposRouteWithChildren
+  '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/contratistas'
     | '/equipos'
+    | '/facturacion'
     | '/faq'
     | '/ingenieria'
     | '/nosotros'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/contratistas'
     | '/equipos'
+    | '/facturacion'
     | '/faq'
     | '/ingenieria'
     | '/nosotros'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/contratistas'
     | '/equipos'
+    | '/facturacion'
     | '/faq'
     | '/ingenieria'
     | '/nosotros'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   ContactoRoute: typeof ContactoRoute
   ContratistasRoute: typeof ContratistasRoute
   EquiposRoute: typeof EquiposRouteWithChildren
+  FacturacionRoute: typeof FacturacionRoute
   FaqRoute: typeof FaqRoute
   IngenieriaRoute: typeof IngenieriaRouteWithChildren
   NosotrosRoute: typeof NosotrosRoute
@@ -224,6 +237,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/facturacion': {
+      id: '/facturacion'
+      path: '/facturacion'
+      fullPath: '/facturacion'
+      preLoaderRoute: typeof FacturacionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/equipos': {
@@ -334,6 +354,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactoRoute: ContactoRoute,
   ContratistasRoute: ContratistasRoute,
   EquiposRoute: EquiposRouteWithChildren,
+  FacturacionRoute: FacturacionRoute,
   FaqRoute: FaqRoute,
   IngenieriaRoute: IngenieriaRouteWithChildren,
   NosotrosRoute: NosotrosRoute,
@@ -342,13 +363,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
