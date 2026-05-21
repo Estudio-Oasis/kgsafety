@@ -12,7 +12,7 @@ const NAV = [
   { to: "/soluciones", labelKey: "Soluciones" },
   { to: "/contratistas", labelKey: "P.N.P.C." },
   { to: "/nosotros", labelKey: "Nosotros" },
-  { to: "/blog", labelKey: "Blog" },
+  { to: "/facturacion", labelKey: "Facturación" },
   { to: "/faq", labelKey: "FAQ" },
 ] as const;
 

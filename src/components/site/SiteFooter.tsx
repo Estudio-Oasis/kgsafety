@@ -30,7 +30,7 @@ export function SiteFooter() {
             <li><Link to="/ingenieria" className="hover:text-signal">{t("Líneas de Vida")}</Link></li>
             <li><Link to="/equipos" className="hover:text-signal">{t("Equipos certificados")}</Link></li>
             <li><Link to="/contratistas" className="hover:text-signal">{t("P.N.P.C.")}</Link></li>
-            <li><Link to="/blog" className="hover:text-signal">{t("Blog")}</Link></li>
+            <li><Link to="/facturacion" className="hover:text-signal">{t("Facturación")}</Link></li>
             <li><Link to="/nosotros" className="hover:text-signal">{t("Nosotros")}</Link></li>
           </ul>
         </div>
@@ -42,6 +42,11 @@ export function SiteFooter() {
           <ul className="space-y-3 text-sm text-white/70">
             <li><a href="tel:+527228795076" className="hover:text-signal">+52 722 879 5076</a></li>
             <li><a href="mailto:ventas@kg-safety.com" className="hover:text-signal">ventas@kg-safety.com</a></li>
+            <li>
+              <a href="https://instagram.com/kg_safety" target="_blank" rel="noopener noreferrer" className="hover:text-signal">
+                Instagram · @kg_safety
+              </a>
+            </li>
             <li className="text-white/50">
               José María Pino Suárez 304-1<br />
               Col. 5 de Mayo, Toluca<br />
