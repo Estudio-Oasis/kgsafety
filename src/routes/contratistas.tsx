@@ -21,9 +21,9 @@ const BENEFITS = [
   "Control y registro de contratistas en tres niveles de capacitación.",
   "Reglas de operación claras dentro de cada planta.",
   "Acceso a base de datos nacional de contratistas inscritos.",
-  "Renta de sistemas de anclaje especializados para trabajos de baja frecuencia.",
   "Reducción de tiempos muertos previo a AST y EPP.",
   "Auditoría completa por STPS, REPSE y clientes.",
+  "Comunicación trazable entre contratista, mantenimiento, compras y safety.",
 ];
 
 const PROBLEMS = [

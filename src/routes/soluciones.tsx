@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import plantImg from "@/assets/industries-plant.jpg";
-import { INDUSTRIES, SOLUTIONS } from "@/data/kaee";
+import { INDUSTRIES, SOLUTION_FAMILIES } from "@/data/kaee";
 
 export const Route = createFileRoute("/soluciones")({
   component: SolucionesPage,
   head: () => ({
     meta: [
       { title: "Soluciones por industria y aplicación · KG Safety" },
-      { name: "description", content: "Soluciones de seguridad para silos, techos, espacios confinados, construcción y rack de tubería en 22 industrias." },
+      { name: "description", content: "Familias de soluciones de seguridad: trabajos en altura, espacios confinados, ingeniería estructural, construcción y mantenimiento profesional." },
       { property: "og:title", content: "Soluciones · KG Safety" },
       { property: "og:description", content: "Especialistas en alturas para industria pesada, alimenticia, farmacéutica, energética y más." },
     ],
@@ -30,7 +30,7 @@ function SolucionesPage() {
             Aplicaciones <span className="text-signal">y</span> sectores
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
-            Cinco familias de aplicaciones · veintidós industrias atendidas con ingeniería y capacitación KAEE Group.
+            Familias técnicas con decenas de aplicaciones · 22+ industrias atendidas con ingeniería y capacitación KAEE Group.
           </p>
           <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.45)]">
             Cotizar solución
@@ -38,17 +38,24 @@ function SolucionesPage() {
         </div>
       </section>
 
-
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
-          <SectionLabel>Aplicaciones</SectionLabel>
-          <h2 className="font-display text-2xl md:text-4xl uppercase mb-10 text-[color:var(--on-surface)]">Cinco frentes técnicos</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
-            {SOLUTIONS.map((s, i) => (
-              <div key={s} className="bg-[color:var(--surface)] p-6">
-                <div className="font-display text-signal text-xs mb-4">{String(i + 1).padStart(2, "0")} / 05</div>
-                <h3 className="font-display text-sm md:text-base uppercase tracking-tight text-[color:var(--on-surface)] leading-tight">{s}</h3>
-              </div>
+          <SectionLabel>Familias de aplicación</SectionLabel>
+          <h2 className="font-display text-2xl md:text-4xl uppercase mb-10 text-[color:var(--on-surface)]">Una solución por cada frente</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
+            {SOLUTION_FAMILIES.map((f, i) => (
+              <article key={f.slug} className="bg-[color:var(--surface)] p-7 flex flex-col">
+                <div className="font-display text-signal text-xs mb-4">{String(i + 1).padStart(2, "0")} / {String(SOLUTION_FAMILIES.length).padStart(2, "0")}</div>
+                <h3 className="font-display text-xl md:text-2xl uppercase tracking-tight text-[color:var(--on-surface)] leading-tight mb-3">{f.name}</h3>
+                <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_65%,transparent)] leading-relaxed mb-5">{f.desc}</p>
+                <ul className="flex flex-wrap gap-1.5 mt-auto">
+                  {f.apps.map((a) => (
+                    <li key={a} className="text-[10px] font-bold uppercase tracking-widest border border-[color:var(--border)] px-2 py-1 text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)]">
+                      {a}
+                    </li>
+                  ))}
+                </ul>
+              </article>
             ))}
           </div>
         </div>
@@ -57,7 +64,7 @@ function SolucionesPage() {
       <section className="px-6 md:px-12 py-16 md:py-24 bg-[color:var(--surface-2)] border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <SectionLabel>Industrias atendidas</SectionLabel>
-          <h2 className="font-display text-2xl md:text-4xl uppercase mb-10 text-[color:var(--on-surface)]">22 sectores · cobertura nacional</h2>
+          <h2 className="font-display text-2xl md:text-4xl uppercase mb-10 text-[color:var(--on-surface)]">22 sectores · cobertura LATAM</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {INDUSTRIES.map((ind) => (
               <div key={ind} className="kg-bento p-4 text-sm font-bold uppercase tracking-tight text-[color:var(--on-surface)]">
