@@ -54,7 +54,8 @@
   --color-ink: var(--on-surface);
 
   --font-display: 'Michroma', 'Arial Narrow', Arial, sans-serif;
-  --font-body: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --font-heading: 'Archivo Black', 'Arial Black', Arial, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 :root {
