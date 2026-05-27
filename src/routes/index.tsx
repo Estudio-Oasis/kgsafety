@@ -324,17 +324,16 @@ function Index() {
               </div>
             </BentoTile>
 
-            {/* Divisiones */}
-            <BentoTile span="md:col-span-2" variant="dark" eyebrow="KAEE Group" title={t("5 divisiones")}>
-              <div className="mt-3 space-y-2">
-                {DIVISIONS.map((d) => (
-                  <div key={d.tag} className="grid grid-cols-[auto_1fr] items-baseline gap-x-3 text-xs">
-                    <span className="font-display text-sm whitespace-nowrap" style={{ color: "var(--signal)" }}>{d.tag}</span>
-                    <span className="leading-snug" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
-                  </div>
-                ))}
-              </div>
+            {/* Entregables auditables — síntesis */}
+            <BentoTile span="md:col-span-2" variant="dark" eyebrow={t("Cierre auditable")} title={t("Evidencia documental")}>
+              <p className="mt-2 text-xs md:text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.78)" }}>
+                {t("Análisis de riesgo, plan de rescate, certificados, DC-3 y bitácora de inspección en cada proyecto.")}
+              </p>
+              <Link to="/cumplimiento" className="mt-auto pt-3 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--signal)" }}>
+                {t("Ver cumplimiento")} →
+              </Link>
             </BentoTile>
+
           </BentoGrid>
         </div>
       </section>
@@ -345,21 +344,26 @@ function Index() {
           <BentoGrid>
             <BentoTile span="col-span-2 md:col-span-4 md:row-span-2" variant="image" image={ctaImg}>
               <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3" style={{ color: "var(--signal)" }}>
-                {t("Cotice en menos de 24 h")}
+                {t("Respuesta el mismo día hábil")}
               </div>
               <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-4" style={{ color: "#fff" }}>
-                {t("Comparta su necesidad")}<br />
-                <span style={{ color: "var(--signal)" }}>{t("respondemos hoy.")}</span>
+                {t("Comparta su necesidad,")}
+                <br />
+                <span style={{ color: "var(--signal)" }}>{t("le respondemos hoy.")}</span>
               </h2>
               <p className="text-sm md:text-base max-w-xl mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
-                {t("Equipo, capacitación o ingeniería. Un especialista lo contactará el mismo día.")}
+                {t("Equipo, capacitación, ingeniería o auditoría. Un especialista lo contacta el mismo día.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
                 <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
-                  {t("Solicitar cotización")}
+                  {t("Solicitar diagnóstico")}
                 </Link>
                 <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
                   {t("WhatsApp directo")}
+                </a>
+              </div>
+            </BentoTile>
+
                 </a>
               </div>
             </BentoTile>
