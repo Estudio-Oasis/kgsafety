@@ -103,7 +103,7 @@ export function BentoTile(props: TileProps) {
   const inner = (
     <div
       className={cn(
-        "group relative overflow-hidden flex flex-col p-5 md:p-6 rounded-[var(--bento-radius,1.25rem)]",
+        "group relative overflow-hidden flex flex-col p-4 md:p-6 rounded-[var(--bento-radius,1.25rem)]",
         "border transition-all duration-300 ease-out",
         interactive && "hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(15,27,61,0.45)] cursor-pointer",
         "min-h-[150px] h-full",
