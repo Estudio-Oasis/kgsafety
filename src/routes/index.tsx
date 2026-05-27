@@ -2,7 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/i18n/context";
 import { BentoGrid, BentoTile } from "@/components/bento/Bento";
 import { realImagesIn } from "@/lib/real-image";
-import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES, DIVISIONS } from "@/data/kaee";
+import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES } from "@/data/kaee";
+import { DifferentiatorBlock } from "@/components/site/DifferentiatorBlock";
+import { DivisionsBlock } from "@/components/site/DivisionsBlock";
+import { ClientLogosBand } from "@/components/site/ClientLogosBand";
+import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
 import alturasImg from "@/assets/courses/alturas.jpg";
@@ -15,6 +19,7 @@ import eppImg from "@/assets/equipment/epp.jpg";
 import lvImg from "@/assets/equipment/lineas-de-vida.jpg";
 import anclajesImg from "@/assets/equipment/anclajes.jpg";
 import plataformasImg from "@/assets/equipment/plataformas.jpg";
+
 
 const COURSE_IMG: Record<string, string> = {
   alturas: alturasImg,
@@ -36,15 +41,16 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "KG Safety · 12 años eliminando riesgos de caída en México" },
-      { name: "description", content: "KAEE Group: capacitación DC-3, ingeniería de líneas de vida y EPP certificado. 30M+ horas-hombre supervisadas sin accidentes." },
-      { property: "og:title", content: "KG Safety · Bento de seguridad industrial" },
-      { property: "og:description", content: "Capacitación, equipos, ingeniería y consultoría para empresas Clase Mundial." },
+      { title: "KG Safety · Seguridad en altura lista para auditoría" },
+      { name: "description", content: "Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar. 30M+ horas-hombre sin accidentes." },
+      { property: "og:title", content: "KG Safety · Seguridad en altura lista para auditoría" },
+      { property: "og:description", content: "Integrador de seguridad en altura: diagnóstico, ingeniería, instalación, certificación, capacitación y documentación auditable." },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
 });
+
 
 function Index() {
   const { t } = useT();
@@ -64,23 +70,25 @@ function Index() {
               span="col-span-2 md:col-span-4 md:row-span-3"
               variant="image"
               image={heroImg}
-              eyebrow={<span style={{ color: "var(--signal)" }}>{t("Líder en ingeniería de alturas")}</span>}
+              eyebrow={<span style={{ color: "var(--signal)" }}>{t("Integrador de seguridad en altura · WE NEVER FALL")}</span>}
             >
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6" style={{ color: "#fff" }}>
-                {t("WE NEVER")} <span style={{ color: "var(--signal)" }}>{t("FALL.")}</span>
+              <h1 className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.0] uppercase mb-4 md:mb-6" style={{ color: "#fff" }}>
+                {t("Seguridad en altura")}{" "}
+                <span style={{ color: "var(--signal)" }}>{t("lista para auditoría.")}</span>
               </h1>
-              <p className="text-sm md:text-base max-w-lg leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
-                {t("Soluciones integrales en seguridad industrial para empresas Clase Mundial.")}
+              <p className="text-sm md:text-base max-w-xl leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.88)" }}>
+                {t("Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
                 <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
-                  {t("Cotizar ahora")} →
+                  {t("Solicitar diagnóstico")} →
                 </Link>
-                <Link to="/ingenieria" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
-                  {t("Líneas de vida")}
+                <Link to="/servicios" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
+                  {t("Ver soluciones")}
                 </Link>
               </div>
             </BentoTile>
+
 
             {/* KPI grande */}
             <BentoTile span="col-span-2 md:col-span-2 md:row-span-2" variant="accent">
@@ -108,25 +116,20 @@ function Index() {
             </BentoTile>
           </BentoGrid>
 
-          {/* ===== Logos clientes — grilla limpia ===== */}
-          <div className="mt-6 md:mt-8 px-2">
-            <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-center mb-5" style={{ color: "color-mix(in oklab, var(--on-surface) 55%, transparent)" }}>
-              {t("Confiado por líderes de la industria")}
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-6 gap-y-6 items-center">
-              {clientLogos.slice(0, 10).map((src, i) => (
-                <div key={i} className="flex items-center justify-center h-12 md:h-14">
-                  <img
-                    src={src}
-                    alt=""
-                    className="max-h-full max-w-[120px] w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition duration-300"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
+
+      {/* ============== DIFERENCIADOR ============== */}
+      <DifferentiatorBlock />
+
+      {/* ============== 5 DIVISIONES ============== */}
+      <DivisionsBlock />
+
+      {/* ============== CLIENTES ============== */}
+      <ClientLogosBand variant="light" />
+
+
+
 
       {/* ============== SERVICIOS BENTO ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-y border-[color:var(--border)]">
@@ -134,15 +137,17 @@ function Index() {
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-2">
-                {t("División técnica")}
+                {t("Servicios")}
               </div>
               <h2 className="font-display text-2xl md:text-4xl uppercase leading-tight">
-                {t("Cuatro frentes contra la")} <span className="text-signal kg-highlight">{t("gravedad")}</span>
+                {t("Capacidades operativas")}{" "}
+                <span className="text-signal kg-highlight">{t("para alto riesgo")}</span>
               </h2>
             </div>
-            <Link to="/soluciones" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
-              {t("Ver todas las soluciones")} →
+            <Link to="/servicios" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
+              {t("Ver todos los servicios")} →
             </Link>
+
           </div>
 
           <BentoGrid>
@@ -319,20 +324,23 @@ function Index() {
               </div>
             </BentoTile>
 
-            {/* Divisiones */}
-            <BentoTile span="md:col-span-2" variant="dark" eyebrow="KAEE Group" title={t("5 divisiones")}>
-              <div className="mt-3 space-y-2">
-                {DIVISIONS.map((d) => (
-                  <div key={d.tag} className="grid grid-cols-[auto_1fr] items-baseline gap-x-3 text-xs">
-                    <span className="font-display text-sm whitespace-nowrap" style={{ color: "var(--signal)" }}>{d.tag}</span>
-                    <span className="leading-snug" style={{ color: "rgba(255,255,255,0.78)" }}>{d.name}</span>
-                  </div>
-                ))}
-              </div>
+            {/* Entregables auditables — síntesis */}
+            <BentoTile span="md:col-span-2" variant="dark" eyebrow={t("Cierre auditable")} title={t("Evidencia documental")}>
+              <p className="mt-2 text-xs md:text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.78)" }}>
+                {t("Análisis de riesgo, plan de rescate, certificados, DC-3 y bitácora de inspección en cada proyecto.")}
+              </p>
+              <Link to="/cumplimiento" className="mt-auto pt-3 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--signal)" }}>
+                {t("Ver cumplimiento")} →
+              </Link>
             </BentoTile>
+
           </BentoGrid>
         </div>
       </section>
+
+      {/* ============== ENTREGABLES AUDITABLES ============== */}
+      <AuditableDeliverables variant="light" />
+
 
       {/* ============== FINAL CTA BENTO ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-t border-[color:var(--border)]">
@@ -340,24 +348,27 @@ function Index() {
           <BentoGrid>
             <BentoTile span="col-span-2 md:col-span-4 md:row-span-2" variant="image" image={ctaImg}>
               <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3" style={{ color: "var(--signal)" }}>
-                {t("Cotice en menos de 24 h")}
+                {t("Respuesta el mismo día hábil")}
               </div>
               <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-4" style={{ color: "#fff" }}>
-                {t("Comparta su necesidad")}<br />
-                <span style={{ color: "var(--signal)" }}>{t("respondemos hoy.")}</span>
+                {t("Comparta su necesidad,")}
+                <br />
+                <span style={{ color: "var(--signal)" }}>{t("le respondemos hoy.")}</span>
               </h2>
               <p className="text-sm md:text-base max-w-xl mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
-                {t("Equipo, capacitación o ingeniería. Un especialista lo contactará el mismo día.")}
+                {t("Equipo, capacitación, ingeniería o auditoría. Un especialista lo contacta el mismo día.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
                 <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
-                  {t("Solicitar cotización")}
+                  {t("Solicitar diagnóstico")}
                 </Link>
                 <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
                   {t("WhatsApp directo")}
                 </a>
               </div>
             </BentoTile>
+
+
 
             <BentoTile span="md:col-span-2" variant="accent" href="tel:+527228795076" eyebrow={t("Llamada directa")} title="+52 722 879 5076" cta={t("Llamar ahora")} />
             <BentoTile span="md:col-span-2" variant="neutral" eyebrow={t("Certificados")}>
