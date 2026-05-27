@@ -70,23 +70,25 @@ function Index() {
               span="col-span-2 md:col-span-4 md:row-span-3"
               variant="image"
               image={heroImg}
-              eyebrow={<span style={{ color: "var(--signal)" }}>{t("Líder en ingeniería de alturas")}</span>}
+              eyebrow={<span style={{ color: "var(--signal)" }}>{t("Integrador de seguridad en altura · WE NEVER FALL")}</span>}
             >
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[0.95] uppercase mb-4 md:mb-6" style={{ color: "#fff" }}>
-                {t("WE NEVER")} <span style={{ color: "var(--signal)" }}>{t("FALL.")}</span>
+              <h1 className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.0] uppercase mb-4 md:mb-6" style={{ color: "#fff" }}>
+                {t("Seguridad en altura")}{" "}
+                <span style={{ color: "var(--signal)" }}>{t("lista para auditoría.")}</span>
               </h1>
-              <p className="text-sm md:text-base max-w-lg leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
-                {t("Soluciones integrales en seguridad industrial para empresas Clase Mundial.")}
+              <p className="text-sm md:text-base max-w-xl leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.88)" }}>
+                {t("Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
                 <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
-                  {t("Cotizar ahora")} →
+                  {t("Solicitar diagnóstico")} →
                 </Link>
-                <Link to="/ingenieria" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
-                  {t("Líneas de vida")}
+                <Link to="/servicios" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
+                  {t("Ver soluciones")}
                 </Link>
               </div>
             </BentoTile>
+
 
             {/* KPI grande */}
             <BentoTile span="col-span-2 md:col-span-2 md:row-span-2" variant="accent">
@@ -114,23 +116,20 @@ function Index() {
             </BentoTile>
           </BentoGrid>
 
-          {/* ===== Logos clientes — grilla limpia ===== */}
-          <div className="mt-6 md:mt-8 px-2">
-            <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-center mb-5" style={{ color: "color-mix(in oklab, var(--on-surface) 55%, transparent)" }}>
-              {t("Confiado por líderes de la industria")}
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-6 gap-y-6 items-center">
-              {clientLogos.slice(0, 10).map((src, i) => (
-                <div key={i} className="flex items-center justify-center h-12 md:h-14">
-                  <img
-                    src={src}
-                    alt=""
-                    className="max-h-full max-w-[120px] w-auto object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition duration-300"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+        </div>
+      </section>
+
+      {/* ============== DIFERENCIADOR ============== */}
+      <DifferentiatorBlock />
+
+      {/* ============== 5 DIVISIONES ============== */}
+      <DivisionsBlock />
+
+      {/* ============== CLIENTES ============== */}
+      <ClientLogosBand variant="light" />
+
+      <section className="hidden" aria-hidden>
+
         </div>
       </section>
 
