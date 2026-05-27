@@ -346,3 +346,96 @@ export function fmtDate(iso: string) {
 export function fmtMoney(n: number) {
   return n.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
 }
+
+// ============= LABELS DE VENCIMIENTO =============
+export function expiryLabel(c: Certification): string {
+  const dl = daysLeft(c);
+  if (dl < 0) {
+    const n = Math.abs(dl);
+    return `Vencida hace ${n} ${n === 1 ? "día" : "días"}`;
+  }
+  if (dl === 0) return "Vence hoy";
+  return `Vence en ${dl} ${dl === 1 ? "día" : "días"}`;
+}
+
+// ============= METADATOS DERIVADOS =============
+const KG_TEAM = [
+  "Ing. Karim Gómez",
+  "Ing. Alejandro Rivera",
+  "Ing. Mónica Trejo",
+  "Ing. Pablo Estrada",
+  "Ing. Diana Vega",
+];
+
+export function responsableKGForPlant(plantSlug: string): string {
+  const i = PLANTS.findIndex((p) => p.slug === plantSlug);
+  return KG_TEAM[Math.max(0, i) % KG_TEAM.length];
+}
+
+export function ultimaActualizacionPlant(plantSlug: string): string {
+  const ps = projectsByPlant(plantSlug)
+    .slice()
+    .sort((a, b) => b.fecha.localeCompare(a.fecha));
+  return ps[0]?.fecha ?? "2025-01-01";
+}
+
+export function ultimaActualizacionProject(p: Project): string {
+  // En prototipo: última actualización = fecha + 5 días (cierre documental).
+  const d = new Date(p.fecha);
+  d.setDate(d.getDate() + 5);
+  return d.toISOString().slice(0, 10);
+}
+
+export type NextExpiry = { label: string; fecha: string; state: CertState } | null;
+
+export function nextExpiryForPlant(plantSlug: string): NextExpiry {
+  const certs = certsByPlant(plantSlug)
+    .slice()
+    .sort((a, b) => a.vencimiento.localeCompare(b.vencimiento));
+  if (!certs.length) return null;
+  // Prioriza vencidas, luego más cercana.
+  const vencida = certs.find((c) => certState(c) === "vencido");
+  const c = vencida ?? certs[0];
+  const sys = systemById(c.systemId);
+  return { label: sys?.type ?? "Sistema instalado", fecha: c.vencimiento, state: certState(c) };
+}
+
+// ============= HISTORIAL (TIMELINE) DEL PROYECTO =============
+export type ProjectEvent = { fecha: string; label: string; desc: string };
+
+export function buildProjectTimeline(p: Project): ProjectEvent[] {
+  const base = new Date(p.fecha);
+  const offset = (n: number) => {
+    const d = new Date(base);
+    d.setDate(d.getDate() + n);
+    return d.toISOString().slice(0, 10);
+  };
+  return [
+    {
+      fecha: offset(-21),
+      label: "Cotización enviada",
+      desc: `Propuesta técnica enviada al cliente para ${p.type.toLowerCase()}.`,
+    },
+    {
+      fecha: offset(-12),
+      label: "Orden de compra recibida",
+      desc: "Cliente confirma OC y se programa intervención en sitio.",
+    },
+    {
+      fecha: offset(0),
+      label: "Servicio ejecutado",
+      desc: `${p.responsable} y cuadrilla KG Safety ejecutan trabajo en planta.`,
+    },
+    {
+      fecha: offset(2),
+      label: "Documentos cargados",
+      desc: "Evidencia fotográfica, bitácora y acta de entrega disponibles en el portal.",
+    },
+    {
+      fecha: offset(5),
+      label: "Certificado emitido",
+      desc: "Certificado de cumplimiento firmado y disponible para descarga.",
+    },
+  ];
+}
+
