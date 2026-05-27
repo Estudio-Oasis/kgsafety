@@ -10,11 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SolucionesRouteImport } from './routes/soluciones'
+import { Route as ServiciosRouteImport } from './routes/servicios'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
 import { Route as IngenieriaRouteImport } from './routes/ingenieria'
+import { Route as IndustriasRouteImport } from './routes/industrias'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as FacturacionRouteImport } from './routes/facturacion'
 import { Route as EquiposRouteImport } from './routes/equipos'
+import { Route as CumplimientoRouteImport } from './routes/cumplimiento'
 import { Route as ContratistasRouteImport } from './routes/contratistas'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as CapacitacionRouteImport } from './routes/capacitacion'
@@ -29,6 +32,11 @@ const SolucionesRoute = SolucionesRouteImport.update({
   path: '/soluciones',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiciosRoute = ServiciosRouteImport.update({
+  id: '/servicios',
+  path: '/servicios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NosotrosRoute = NosotrosRouteImport.update({
   id: '/nosotros',
   path: '/nosotros',
@@ -37,6 +45,11 @@ const NosotrosRoute = NosotrosRouteImport.update({
 const IngenieriaRoute = IngenieriaRouteImport.update({
   id: '/ingenieria',
   path: '/ingenieria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriasRoute = IndustriasRouteImport.update({
+  id: '/industrias',
+  path: '/industrias',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -52,6 +65,11 @@ const FacturacionRoute = FacturacionRouteImport.update({
 const EquiposRoute = EquiposRouteImport.update({
   id: '/equipos',
   path: '/equipos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CumplimientoRoute = CumplimientoRouteImport.update({
+  id: '/cumplimiento',
+  path: '/cumplimiento',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContratistasRoute = ContratistasRouteImport.update({
@@ -101,11 +119,14 @@ export interface FileRoutesByFullPath {
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
+  '/cumplimiento': typeof CumplimientoRoute
   '/equipos': typeof EquiposRouteWithChildren
   '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
+  '/industrias': typeof IndustriasRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
+  '/servicios': typeof ServiciosRoute
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
@@ -117,11 +138,14 @@ export interface FileRoutesByTo {
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
+  '/cumplimiento': typeof CumplimientoRoute
   '/equipos': typeof EquiposRouteWithChildren
   '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
+  '/industrias': typeof IndustriasRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
+  '/servicios': typeof ServiciosRoute
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
@@ -134,11 +158,14 @@ export interface FileRoutesById {
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
+  '/cumplimiento': typeof CumplimientoRoute
   '/equipos': typeof EquiposRouteWithChildren
   '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
+  '/industrias': typeof IndustriasRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
+  '/servicios': typeof ServiciosRoute
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
@@ -152,11 +179,14 @@ export interface FileRouteTypes {
     | '/capacitacion'
     | '/contacto'
     | '/contratistas'
+    | '/cumplimiento'
     | '/equipos'
     | '/facturacion'
     | '/faq'
+    | '/industrias'
     | '/ingenieria'
     | '/nosotros'
+    | '/servicios'
     | '/soluciones'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
@@ -168,11 +198,14 @@ export interface FileRouteTypes {
     | '/capacitacion'
     | '/contacto'
     | '/contratistas'
+    | '/cumplimiento'
     | '/equipos'
     | '/facturacion'
     | '/faq'
+    | '/industrias'
     | '/ingenieria'
     | '/nosotros'
+    | '/servicios'
     | '/soluciones'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
@@ -184,11 +217,14 @@ export interface FileRouteTypes {
     | '/capacitacion'
     | '/contacto'
     | '/contratistas'
+    | '/cumplimiento'
     | '/equipos'
     | '/facturacion'
     | '/faq'
+    | '/industrias'
     | '/ingenieria'
     | '/nosotros'
+    | '/servicios'
     | '/soluciones'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
@@ -201,11 +237,14 @@ export interface RootRouteChildren {
   CapacitacionRoute: typeof CapacitacionRouteWithChildren
   ContactoRoute: typeof ContactoRoute
   ContratistasRoute: typeof ContratistasRoute
+  CumplimientoRoute: typeof CumplimientoRoute
   EquiposRoute: typeof EquiposRouteWithChildren
   FacturacionRoute: typeof FacturacionRoute
   FaqRoute: typeof FaqRoute
+  IndustriasRoute: typeof IndustriasRoute
   IngenieriaRoute: typeof IngenieriaRouteWithChildren
   NosotrosRoute: typeof NosotrosRoute
+  ServiciosRoute: typeof ServiciosRoute
   SolucionesRoute: typeof SolucionesRoute
 }
 
@@ -216,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/soluciones'
       fullPath: '/soluciones'
       preLoaderRoute: typeof SolucionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios': {
+      id: '/servicios'
+      path: '/servicios'
+      fullPath: '/servicios'
+      preLoaderRoute: typeof ServiciosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nosotros': {
@@ -230,6 +276,13 @@ declare module '@tanstack/react-router' {
       path: '/ingenieria'
       fullPath: '/ingenieria'
       preLoaderRoute: typeof IngenieriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industrias': {
+      id: '/industrias'
+      path: '/industrias'
+      fullPath: '/industrias'
+      preLoaderRoute: typeof IndustriasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -251,6 +304,13 @@ declare module '@tanstack/react-router' {
       path: '/equipos'
       fullPath: '/equipos'
       preLoaderRoute: typeof EquiposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento': {
+      id: '/cumplimiento'
+      path: '/cumplimiento'
+      fullPath: '/cumplimiento'
+      preLoaderRoute: typeof CumplimientoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contratistas': {
@@ -353,11 +413,14 @@ const rootRouteChildren: RootRouteChildren = {
   CapacitacionRoute: CapacitacionRouteWithChildren,
   ContactoRoute: ContactoRoute,
   ContratistasRoute: ContratistasRoute,
+  CumplimientoRoute: CumplimientoRoute,
   EquiposRoute: EquiposRouteWithChildren,
   FacturacionRoute: FacturacionRoute,
   FaqRoute: FaqRoute,
+  IndustriasRoute: IndustriasRoute,
   IngenieriaRoute: IngenieriaRouteWithChildren,
   NosotrosRoute: NosotrosRoute,
+  ServiciosRoute: ServiciosRoute,
   SolucionesRoute: SolucionesRoute,
 }
 export const routeTree = rootRouteImport
