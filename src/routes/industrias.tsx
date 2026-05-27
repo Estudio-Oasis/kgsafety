@@ -12,7 +12,7 @@ export const Route = createFileRoute("/industrias")({
       { property: "og:title", content: "Industrias · KG Safety" },
       { property: "og:description", content: "22 sectores con experiencia técnica en alturas, ingeniería de líneas de vida y P.N.P.C." },
     ],
-    links: [{ rel: "canonical", href: "/industrias" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/industrias" }],
   }),
 });
 

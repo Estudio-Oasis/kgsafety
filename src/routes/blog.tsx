@@ -16,9 +16,9 @@ export const Route = createFileRoute("/blog")({
       },
       { property: "og:title", content: "Síguenos · KG Safety" },
       { property: "og:description", content: "Redes sociales y artículos técnicos de KG Safety." },
-      { property: "og:url", content: "/blog" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/blog" },
     ],
-    links: [{ rel: "canonical", href: "/blog" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/blog" }],
   }),
 });
 

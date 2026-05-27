@@ -13,9 +13,9 @@ export const Route = createFileRoute("/equipos")({
       { name: "description", content: "Catálogo WoLL + S@H: EPP, anclajes, líneas de vida, barandales, domos, andamios, plataformas, pasos de gato y escalas con marcas líderes." },
       { property: "og:title", content: "Equipos certificados · KG Safety" },
       { property: "og:description", content: "Diez familias de producto con venta y certificación." },
-      { property: "og:url", content: "/equipos" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/equipos" },
     ],
-    links: [{ rel: "canonical", href: "/equipos" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/equipos" }],
   }),
 });
 

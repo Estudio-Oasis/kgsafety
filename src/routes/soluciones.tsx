@@ -12,7 +12,7 @@ export const Route = createFileRoute("/soluciones")({
       { property: "og:title", content: "Soluciones · KG Safety" },
       { property: "og:description", content: "Especialistas en alturas para industria pesada, alimenticia, farmacéutica, energética y más." },
     ],
-    links: [{ rel: "canonical", href: "/soluciones" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/soluciones" }],
   }),
 });
 

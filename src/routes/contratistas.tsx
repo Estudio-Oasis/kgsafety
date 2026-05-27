@@ -11,9 +11,9 @@ export const Route = createFileRoute("/contratistas")({
       { name: "description", content: "Programa Nacional de Profesionalización a Contratistas. Estandarice la seguridad de sus proveedores externos con base de datos nacional." },
       { property: "og:title", content: "P.N.P.C. · KG Safety" },
       { property: "og:description", content: "Control, capacitación y registro nacional de contratistas en seguridad industrial." },
-      { property: "og:url", content: "/contratistas" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/contratistas" },
     ],
-    links: [{ rel: "canonical", href: "/contratistas" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/contratistas" }],
   }),
 });
 

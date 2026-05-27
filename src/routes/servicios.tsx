@@ -12,7 +12,7 @@ export const Route = createFileRoute("/servicios")({
       { property: "og:title", content: "Servicios · KG Safety" },
       { property: "og:description", content: "Capacitación, equipos, ingeniería y P.N.P.C. — todo el portafolio operativo en un solo lugar." },
     ],
-    links: [{ rel: "canonical", href: "/servicios" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/servicios" }],
   }),
 });
 

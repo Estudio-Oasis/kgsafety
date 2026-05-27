@@ -23,9 +23,9 @@ export const Route = createFileRoute("/nosotros")({
       { name: "description", content: "KG Fall Protection Engineering: diseño e implementación de sistemas de protección contra caídas con el método propietario K.A.E.E." },
       { property: "og:title", content: "Nosotros · KG Safety" },
       { property: "og:description", content: "Conozca el método K.A.E.E., nuestros valores y nuestro equipo." },
-      { property: "og:url", content: "/nosotros" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/nosotros" },
     ],
-    links: [{ rel: "canonical", href: "/nosotros" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/nosotros" }],
   }),
 });
 

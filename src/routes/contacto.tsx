@@ -11,9 +11,9 @@ export const Route = createFileRoute("/contacto")({
       { name: "description", content: "Solicite una cotización en menos de 24 horas. Teléfono, WhatsApp y oficinas en Toluca, Estado de México." },
       { property: "og:title", content: "Contacto · KG Safety" },
       { property: "og:description", content: "Cotice equipos, capacitación o ingeniería. Respuesta el mismo día." },
-      { property: "og:url", content: "/contacto" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/contacto" },
     ],
-    links: [{ rel: "canonical", href: "/contacto" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/contacto" }],
   }),
 });
 

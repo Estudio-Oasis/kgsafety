@@ -13,9 +13,9 @@ export const Route = createFileRoute("/ingenieria")({
       { name: "description", content: "Diseño, fabricación e instalación de líneas de vida verticales y horizontales, anclajes y plataformas bajo NOM-009-STPS y OSHA." },
       { property: "og:title", content: "Ingeniería · KG Safety" },
       { property: "og:description", content: "Sistemas de anclaje y líneas de vida diseñados a medida con certificación." },
-      { property: "og:url", content: "/ingenieria" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/ingenieria" },
     ],
-    links: [{ rel: "canonical", href: "/ingenieria" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/ingenieria" }],
   }),
 });
 
