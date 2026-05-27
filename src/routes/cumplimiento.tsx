@@ -41,8 +41,8 @@ function CumplimientoPage() {
         <div className="max-w-5xl relative z-10">
           <SectionLabel>Cumplimiento normativo</SectionLabel>
           <h1 className="font-display text-4xl md:text-6xl uppercase leading-[1.05] mb-6" style={{ color: "#fff" }}>
-            La evidencia que su <span className="text-signal">auditor</span> pide.<br />
-            <span className="text-signal">Emitida por nosotros.</span>
+            La evidencia que su <span className="text-signal">auditor</span> pide,{" "}<br />
+            <span className="text-signal">emitida por un equipo técnico.</span>
           </h1>
           <p className="text-lg md:text-xl max-w-3xl leading-relaxed" style={{ color: "rgba(255,255,255,0.85)" }}>
             Cada trabajo cierra con su carpeta completa: análisis de riesgo, plan de rescate, DC-3 oficial, certificados de equipo y bitácora de inspección. Sin observaciones en auditoría.
