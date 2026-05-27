@@ -137,15 +137,17 @@ function Index() {
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-2">
-                {t("División técnica")}
+                {t("Servicios")}
               </div>
               <h2 className="font-display text-2xl md:text-4xl uppercase leading-tight">
-                {t("Cuatro frentes contra la")} <span className="text-signal kg-highlight">{t("gravedad")}</span>
+                {t("Capacidades operativas")}{" "}
+                <span className="text-signal kg-highlight">{t("para alto riesgo")}</span>
               </h2>
             </div>
-            <Link to="/soluciones" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
-              {t("Ver todas las soluciones")} →
+            <Link to="/servicios" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
+              {t("Ver todos los servicios")} →
             </Link>
+
           </div>
 
           <BentoGrid>
