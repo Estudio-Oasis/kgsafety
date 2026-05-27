@@ -128,10 +128,8 @@ function Index() {
       {/* ============== CLIENTES ============== */}
       <ClientLogosBand variant="light" />
 
-      <section className="hidden" aria-hidden>
 
-        </div>
-      </section>
+
 
       {/* ============== SERVICIOS BENTO ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-y border-[color:var(--border)]">
