@@ -1,115 +1,98 @@
-# Pivote a diseño Bento Box + imágenes reales
 
-## Objetivo
+# Plan completo KG Safety — 4 sprints
 
-Rediseñar la home y las páginas índice (capacitación, equipos, ingeniería, soluciones) con un sistema **bento-box** moderno — mosaico de tiles de distinto tamaño, jerarquía asimétrica, alta densidad de información sin sentirse cargado — y reemplazar las imágenes generadas por IA con **fotos reales** extraídas del sitio viejo (kg-safety.com) complementadas con generadas donde falte cobertura.
+Trabajo grande. Lo divido en 4 entregas dentro de este mismo plan. Cada sprint deja el sitio funcionando y desplegable; tú decides si seguimos al siguiente o pausamos.
 
-Páginas de detalle (`/capacitacion/$curso`, `/equipos/$categoria`, `/ingenieria/$servicio`, contacto, FAQ, nosotros, blog) conservan el layout actual pero heredan los tokens visuales (color, tipografía, sombras de los tiles) para coherencia.
+## Sprint 1 — Base comercial y confianza
 
----
+**Objetivo:** que el sitio deje de verse incompleto.
 
-## Fase 1 — Extracción de imágenes reales del sitio viejo
+1. **Auditoría y corrección de copy** en todas las rutas (`index`, `capacitacion`, `equipos`, `ingenieria`, `soluciones`, `contratistas`, `facturacion`, `contacto`, `blog`, `faq`, `nosotros`, header/footer, `dictionary.ts`).
+   - Reparar frases pegadas tipo *"Comparta su necesidadrespondemos hoy"*, *"DC-3 y certificadooficial"*.
+   - Acentos faltantes, mayúsculas/minúsculas inconsistentes.
+   - Mantener `WE NEVER FALL` solo como slogan visual, no como estructura.
 
-1. Script Node en `/tmp` que recorre las 80 carpetas de `site-capture/` en Google Drive vía gateway.
-2. Para cada carpeta: descarga el `.html`, parsea con `cheerio` y extrae `<img src>`, `<source srcset>`, `background-image:` y atributos `data-src`.
-3. Resuelve URLs relativas contra `https://kg-safety.com/` y descarga las imágenes únicas (deduplicación por hash).
-4. Clasifica por nombre/ruta en buckets:
-   - `equipos/` (arneses, líneas de vida, anclajes, andamios, plataformas, montacargas, EPP)
-   - `cursos/` (alturas, espacios confinados, LOTO, incendios, calor, eléctrica, plataformas, andamios, montacargas, herramientas)
-   - `ingenieria/` (lv, anclajes, domos, barandales, escalas, pasos, instalación, supervisión)
-   - `industrias/` (plantas, refinerías, fotos de obra)
-   - `equipo-humano/` (instructores, oficina, certificados)
-   - `marcas/` (logos Petzl, 3M, MSA, etc.)
-5. Guarda en `src/assets/real/<bucket>/<slug>.jpg`. Optimiza con `sharp` (max 1600px ancho, JPEG q80) si está disponible — si no, las deja tal cual.
-6. Genera `src/data/real-assets.ts` con un mapa `{ bucket: string[] }` para que los componentes elijan imágenes por categoría sin hardcodear paths.
+2. **Hero home nuevo** (`src/routes/index.tsx`):
+   - H1: *Seguridad en altura lista para auditoría.*
+   - Sub: *Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar.*
+   - CTAs: *Solicitar diagnóstico* / *Ver soluciones*.
+   - Conservar look industrial premium (Michroma + paleta navy/signal).
 
-**Si falta cobertura** (ej. no hay foto clara de "espacios confinados"), genero 1–2 imágenes con `imagegen` que respeten la paleta del sitio (acero, signal, anchor) y las mezclo en el mismo bucket.
+3. **Bloque diferenciador** (componente nuevo `DifferentiatorBlock`), insertado en home después de la barra de métricas:
+   - *"No somos solo capacitadores. No somos solo distribuidores de EPP. No somos solo instaladores de líneas de vida."*
+   - Texto integrador (diagnóstico → ingeniería → instalación → certificación → capacitación → documentación).
+   - Reemplaza la sección *"Cuatro frentes contra la gravedad"* por *"Un sistema completo contra el riesgo"* con las 5 divisiones: **W@H, MS&S, WoLL, S@H, SoNs**.
 
-## Fase 2 — Sistema de diseño Bento
+4. **Navegación reestructurada** (`SiteHeader.tsx` + footer):
+   - Desktop: Inicio · Servicios · Capacitación · Ingeniería · Equipos · P.N.P.C. · Industrias · Nosotros · Facturación · Contacto.
+   - Mobile: agrupar bajo *Soluciones* (Servicios + Industrias + Ingeniería + Equipos).
+   - Rótulo `P.N.P.C.` apunta a `/contratistas` (Programa Nacional de Profesionalización a Contratistas) con subtítulo aclaratorio en la página.
 
-Tokens nuevos en `src/styles.css`:
+5. **Facturación con enlaces reales** (`src/routes/facturacion.tsx`):
+   - 3 acciones: *Obtener factura* → `kg-safety.com/facturar/proceso`, *Ingresar a administración* → `admin-factura-cliente.noilmx.com`, *Contactar facturación* → `mailto:vianey-contadora@kg-safety.com`.
+   - Tel `+52 1 722 799 0719` y WhatsApp `527222532753` visibles.
 
-- `--bento-radius: 1.25rem` — esquinas suaves uniformes.
-- `--bento-border: 1px solid color-mix(in oklab, var(--on-surface) 12%, transparent)`.
-- `--bento-shadow: 0 1px 0 0 color-mix(...) inset, 0 24px 48px -24px var(--anchor)/40%`.
-- `--bento-bg-1`, `--bento-bg-2`, `--bento-bg-accent` — tres "tonos" de tile (neutro claro, neutro medio, accent signal/navy).
-- `--bento-gap: 12px md:16px`.
+6. **Banda de clientes/logos** como grilla sobria de nombres en texto (Michroma, sin fondos): FEMSA, Coca-Cola, Holcim, Unilever, ALPLA, Canacintra, Envases, APM Terminals, Gamesa, PetStar, Sigma Alimentos, Tupperware, Owens-Illinois, Merck, Santa Clara. Va en home y `/nosotros`. Título: *Experiencia con operaciones industriales de alto estándar.*
 
-Componente reutilizable `src/components/bento/BentoTile.tsx`:
+## Sprint 2 — Arquitectura principal
 
-```tsx
-<BentoTile span="col-span-2 row-span-2" variant="accent" image={img} eyebrow="..." title="..." cta="...">
-  {children}
-</BentoTile>
-```
+**Crear rutas:**
 
-Variantes: `neutral | dark | accent | image | stat | list`. Maneja:
-- imagen de fondo con overlay/grain,
-- número grande (KPIs: "30M+ horas-hombre"),
-- lista compacta (chips),
-- CTA "→" en esquina inferior.
+- `src/routes/servicios.tsx` — índice con 8 servicios (Entrenamiento, Consultoría, Asesoría, Soluciones personalizadas, Supervisión, Certificación, Instalación, Renta). H1: *Servicios especializados para controlar trabajos de alto riesgo de principio a fin.* Cada tarjeta: descripción breve + entregables + CTA *Solicitar diagnóstico*.
+- `src/routes/industrias.tsx` — 10 industrias con riesgos típicos por sector.
+- `src/routes/cumplimiento.tsx` — H1: *Certeza jurídica para trabajos de alto riesgo.* Secciones: NOM-009-STPS-2011, STPS/DC-3, OSHA/ANSI Z359/EN, análisis de riesgo, plan de rescate, permisos de trabajo, evidencia documental, auditorías internas, inspección anual. Cross-link a `/contratistas` (P.N.P.C.).
 
-Grilla maestra `BentoGrid` con CSS Grid `grid-cols-6 auto-rows-[clamp(120px,14vw,180px)]`, gap por token. Soporta hijo con `span` arbitrario.
+**Rehacer:**
 
-## Fase 3 — Rediseño home (`src/routes/index.tsx`)
+- `src/routes/nosotros.tsx` — H1: *De KAEE a KG Safety: conocimiento, análisis, ingeniería y eliminación de riesgos.* Secciones: historia, metodología K.A.E.E. (Knowledge / Analysis / Engineering / Elimination), 5 divisiones (W@H, MS&S, WoLL, S@H, SoNs), clientes y normas.
+- `src/routes/faq.tsx` — 12 preguntas reales del documento (DC-3, inspección de líneas de vida, instalación de otras marcas, multisede, auditorías urgentes, plan de rescate, etc.).
 
-Layout en 4 bloques bento, todos con CSS Grid 6×N:
+**Bloque reutilizable** `AuditableDeliverables.tsx` con los 12 entregables ("Entregables que sí puede defender ante una auditoría"), insertado en home, `/servicios` e `/ingenieria`.
 
-**Bloque 1 — Hero bento (6×4)**
-- Tile grande 4×3: titular "We never fall." + sub + CTA primario, fondo con foto real (trabajador en altura).
-- Tile 2×2: KPI "30M+" horas-hombre sin accidentes.
-- Tile 2×1: certificación STPS / DC-3.
-- Tile 2×1: WhatsApp directo / tel.
-- Tile 6×1 (banda inferior): logos de clientes (Cemex, Bimbo, etc., scroll-marquee).
+## Sprint 3 — Páginas profundas
 
-**Bloque 2 — Servicios bento (6×3)**
-4 tiles asimétricos: Capacitación (3×2 con foto curso), Equipos (3×1), Ingeniería (2×2), Contratistas (4×1). Cada uno linkea a su índice.
+**Servicios individuales** — ruta dinámica `src/routes/servicios.$servicio.tsx` + datos en `src/data/kaee.ts` (`SERVICES_DETAIL`). Slugs: `consultoria, asesoria, soluciones-personalizadas, supervision, certificacion, instalacion, renta, analisis-de-riesgo, plan-de-rescate, inspeccion-certificacion-anual`. Plantilla: problema → qué resuelve → qué incluye → entregables → normas → cuándo contratarlo → CTA.
 
-**Bloque 3 — Cursos top (6×2)**
-Mosaico de 6 tiles iguales con los cursos más buscados (Alturas, Confinados, LOTO, Plataformas, Andamios, Incendios), thumbnail + nombre + horas.
+**Capacitación** — completar `src/routes/capacitacion.$curso.tsx` para los 10 cursos: `alturas, confinados, andamios, loto, electricidad, calor, herramientas, incendios, montacargas, plataformas`. Cada uno con niveles (Autorizado/Monitor/Competente/Profesional), duraciones, qué aprende, dirigido a, incluye (manual, DC-3, certificado), CTA *Inscribir grupo*. Ya existe estructura — completar contenido específico por curso en `COURSES`.
 
-**Bloque 4 — Prueba social bento (6×3)**
-Tile testimonio grande 3×2 + tile "industrias servidas" (chips) 3×1 + tile "30 años" 3×1 + CTA contacto 3×2.
+**Equipos** — convertir `src/routes/equipos.$categoria.tsx` en páginas únicas por categoría: `epp, conexion, anclajes, lineas-de-vida, barandales, domos, andamios, plataformas, pasos, escalas`. Plantilla: descripción técnica → subcategorías → aplicaciones → normas → criterios de selección → ficha técnica/trazabilidad → CTA *Cotizar equipos certificados*.
 
-Animación de entrada por tile (stagger con `motion/react` ya disponible si está, si no CSS `@starting-style` o `IntersectionObserver`).
+**Reforzar `/ingenieria` y `/contratistas`** con bloque de entregables auditables y CTAs específicos.
 
-## Fase 4 — Rediseño páginas índice
+## Sprint 4 — Conversión, SEO y pulido
 
-Mismo lenguaje bento:
+1. **SEO** en `head()` de cada ruta:
+   - Home: *KG Safety · Seguridad en altura lista para auditoría*
+   - Capacitación: *Capacitación DC-3 para trabajos en altura y alto riesgo · KG Safety*
+   - Ingeniería, Equipos, Cumplimiento, Facturación según documento.
+   - Meta descriptions con keywords: NOM-009-STPS, DC-3, líneas de vida, EPP certificado, auditoría STPS.
 
-- **`/capacitacion`** — Hero bento + grilla bento de 10 cursos (tile cada uno con foto, niveles disponibles como pills).
-- **`/equipos`** — Hero + grilla de 8 categorías + tile "marcas" con logos reales.
-- **`/ingenieria`** — Hero + grilla de 6 servicios (lv, anclajes, domos, barandales, escalas, pasos) con foto.
-- **`/soluciones`** — Bento de industrias con foto real por sector.
+2. **CTAs globales** — barrido para reemplazar genéricos (*Saber más, Ver más, Enviar, Leer más*) por accionables (*Solicitar diagnóstico, Agendar visita técnica, Cotizar capacitación, Cotizar equipos, Preparar auditoría, Hablar con un especialista, Solicitar inspección anual, Inscribir grupo*).
 
-Header/footer no cambian (ya están bien).
+3. **Validación mobile** — viewport 375–414px en todas las páginas nuevas, navegación colapsada, banda de logos scrollable.
 
-## Fase 5 — Sustitución de imágenes generadas
+4. **Validación de links** — verificar que no quedan `to="/blog"` o rutas eliminadas; cross-links coherentes.
 
-Reemplazar usos de `src/assets/*.jpg` (generadas) por las reales de `src/assets/real/`. Borrar las generadas que ya no se usan.
-
-## Fase 6 — QA
-
-- Revisar en viewport actual (946×774) que la grilla colapse a 2 col en mobile, 4 en tablet, 6 en desktop.
-- Verificar contraste de texto sobre imágenes (overlay obligatorio).
-- Build + ver `routeTree.gen.ts` se regenere.
-- Snapshot rápido de la home y una página índice.
+5. **Consistencia visual** — todas las páginas nuevas heredan tokens bento (`--bento-radius`, `--bento-shadow`, `--bento-bg-*`) y tipografía Michroma/Archivo Black/Plus Jakarta Sans ya cargada.
 
 ---
 
 ## Detalles técnicos
 
-- **Dependencias**: agregar `cheerio` solo en `/tmp` (no entra al bundle); `sharp` opcional vía `nix` si está; si no, omito optimización.
-- **Drive download**: stream binario vía `GET .../files/{id}?alt=media` con los mismos headers `Authorization: Bearer LOVABLE_API_KEY` + `X-Connection-Api-Key: GOOGLE_DRIVE_API_KEY`. No usar Node en server runtime — todo se ejecuta en `/dev-server` durante build/dev time.
-- **Bundle**: las ~80 capturas pesan; **solo las imágenes reales extraídas** (no los screenshots de sección ni los HTML) entran a `src/assets/real/`. Estimo 40–80 imágenes finales, ~5–10 MB total.
-- **Compatibilidad**: bento usa CSS Grid nativo + Tailwind v4 utilities, sin libs extra.
-- **Riesgos**:
-  - Si las imágenes del sitio viejo ya no están online (404), me apoyo más en generadas — te aviso en el resumen final.
-  - Algunas imágenes pueden tener marca de agua o ser stock con licencia ambigua: descarto y reemplazo con generadas.
+- **Rutas nuevas creadas** (Sprints 2-3): `servicios.tsx`, `servicios.$servicio.tsx`, `industrias.tsx`, `cumplimiento.tsx`. No tocar `routeTree.gen.ts` — lo regenera el plugin de Vite.
+- **Datos** en `src/data/kaee.ts`: extender con `SERVICES`, `SERVICES_DETAIL`, `INDUSTRIES`, `COMPLIANCE_TOPICS`, `AUDIT_DELIVERABLES`, `CLIENT_LOGOS`. Actualizar `COURSES` y `EQUIPMENT_CATEGORIES` con contenido completo por slug.
+- **Componentes nuevos**: `DifferentiatorBlock`, `AuditableDeliverables`, `ClientLogosBand`, `DivisionsBlock` (W@H/MS&S/WoLL/S@H/SoNs) — todos en `src/components/site/`.
+- **i18n**: `dictionary.ts` recibe nuevas claves para nav, CTAs globales y headings. Mantengo ES como default y replico EN.
+- **Sin nuevas dependencias** ni cambios en backend, server functions o auth.
+- **Header mobile**: agrupador *Soluciones* implementado con el componente `NavigationMenu` (shadcn) ya disponible.
 
 ## Lo que NO toco
 
-- Páginas de detalle (`*.$param.tsx`) — solo heredan tokens, no se rediseñan.
-- Header, footer, WhatsApp float, i18n, theme.
-- Datos en `src/data/kaee.ts` (estructura de cursos/equipos).
-- Rutas / SEO existentes.
+- Sistema bento existente, paleta y tipografía cargadas.
+- WhatsApp float, mini-juego de rappel, scroll rappellers, world clock bar.
+- Theme dark/light, i18n context, router bootstrap, `src/server.ts`.
+- Imágenes reales en `src/assets/real/` (las reutilizo donde aplique).
+
+## Modo de entrega
+
+Voy sprint por sprint. Al terminar cada uno te resumo qué cambió y espero luz verde antes de seguir, para que puedas validar contenido (especialmente fichas de cursos/servicios/equipos donde el texto técnico debe ser correcto).
