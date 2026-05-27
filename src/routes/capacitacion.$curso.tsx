@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { SectionLabel } from "@/components/site/SectionLabel";
-import { COURSES, type Course } from "@/data/kaee";
+import { COURSES, courseDetail, type Course } from "@/data/kaee";
 
 export const Route = createFileRoute("/capacitacion/$curso")({
   component: CoursePage,
@@ -34,6 +34,8 @@ function CoursePage() {
   const course = Route.useLoaderData() as Course;
   const [active, setActive] = useState(course.levels[0].code);
   const lvl = course.levels.find((l) => l.code === active)!;
+  const detail = courseDetail(course.slug);
+
 
   return (
     <div>
@@ -81,7 +83,7 @@ function CoursePage() {
               {lvl.desc}
             </p>
             <ul className="grid sm:grid-cols-2 gap-3 mb-8 border-t border-[color:var(--border)] pt-6">
-              {["DC-3 oficial STPS", "Certificado de cumplimiento", "Credencial anti-falsificación", "Material didáctico KAEE"].map((b) => (
+              {detail.deliverables.map((b) => (
                 <li key={b} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] flex items-center gap-3">
                   <span className="w-1.5 h-1.5 bg-signal" /> {b}
                 </li>
@@ -93,6 +95,49 @@ function CoursePage() {
           </div>
         </div>
       </section>
+
+      {/* DETALLE TÉCNICO */}
+      <section className="px-6 md:px-12 py-16 md:py-20 border-b border-[color:var(--border)]">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
+          {detail.audience && (
+            <div className="bg-[color:var(--surface)] p-7">
+              <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Dirigido a</div>
+              <ul className="space-y-2">
+                {detail.audience.map((a) => (
+                  <li key={a} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)] flex items-start gap-2">
+                    <span className="text-signal shrink-0">→</span>
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {detail.norms && (
+            <div className="bg-[color:var(--surface)] p-7">
+              <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Normas aplicables</div>
+              <ul className="flex flex-wrap gap-1.5">
+                {detail.norms.map((n) => (
+                  <li key={n} className="text-[10px] font-bold uppercase tracking-widest border border-[color:var(--border)] px-2 py-1 text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)]">
+                    {n}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="bg-[color:var(--surface)] p-7">
+            <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Evaluación</div>
+            <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)] leading-relaxed">{detail.evaluation}</p>
+            {detail.practice && (
+              <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_65%,transparent)] leading-relaxed mt-3 pt-3 border-t border-[color:var(--border)]">
+                <span className="font-bold uppercase tracking-widest text-[10px] text-brand-blue block mb-1">Práctica</span>
+                {detail.practice}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+
 
       <section className="px-6 md:px-12 py-16 bg-[color:var(--surface-2)] border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">

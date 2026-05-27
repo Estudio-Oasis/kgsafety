@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
-import { EQUIPMENT, type EquipmentCategory } from "@/data/kaee";
+import { EQUIPMENT, EQUIPMENT_DETAILS, type EquipmentCategory } from "@/data/kaee";
 
 export const Route = createFileRoute("/equipos/$categoria")({
   component: CategoryPage,
@@ -31,6 +31,7 @@ export const Route = createFileRoute("/equipos/$categoria")({
 
 function CategoryPage() {
   const cat = Route.useLoaderData() as EquipmentCategory;
+  const detail = EQUIPMENT_DETAILS[cat.slug] ?? {};
   return (
     <div>
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
