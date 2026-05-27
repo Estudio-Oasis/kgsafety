@@ -45,9 +45,9 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar. 30M+ horas-hombre sin accidentes." },
       { property: "og:title", content: "KG Safety · Seguridad en altura lista para auditoría" },
       { property: "og:description", content: "Integrador de seguridad en altura: diagnóstico, ingeniería, instalación, certificación, capacitación y documentación auditable." },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/" }],
   }),
 });
 

@@ -18,9 +18,9 @@ export const Route = createFileRoute("/facturacion")({
       { name: "description", content: "Genere su factura electrónica con su folio de cotización o referencia. Portal de auto-facturación, administración y soporte directo de KG Safety." },
       { property: "og:title", content: "Facturación electrónica · KG Safety" },
       { property: "og:description", content: "Portal de auto-facturación, administración y soporte." },
-      { property: "og:url", content: "/facturacion" },
+      { property: "og:url", content: "https://kgsafety.lovable.app/facturacion" },
     ],
-    links: [{ rel: "canonical", href: "/facturacion" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/facturacion" }],
   }),
 });
 

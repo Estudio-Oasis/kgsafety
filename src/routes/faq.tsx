@@ -11,7 +11,7 @@ export const Route = createFileRoute("/faq")({
       { property: "og:title", content: "Preguntas Frecuentes · KG Safety" },
       { property: "og:description", content: "Las dudas más comunes sobre nuestros servicios y cursos." },
     ],
-    links: [{ rel: "canonical", href: "/faq" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/faq" }],
   }),
 });
 

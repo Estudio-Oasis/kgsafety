@@ -11,7 +11,7 @@ export const Route = createFileRoute("/cumplimiento")({
       { property: "og:title", content: "Cumplimiento · KG Safety" },
       { property: "og:description", content: "Toda la evidencia documental que su auditor necesita — emitida por KG Safety." },
     ],
-    links: [{ rel: "canonical", href: "/cumplimiento" }],
+    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/cumplimiento" }],
   }),
 });
 
