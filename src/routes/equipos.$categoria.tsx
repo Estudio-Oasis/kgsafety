@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
-import { EQUIPMENT, type EquipmentCategory } from "@/data/kaee";
+import { EQUIPMENT, EQUIPMENT_DETAILS, type EquipmentCategory } from "@/data/kaee";
 
 export const Route = createFileRoute("/equipos/$categoria")({
   component: CategoryPage,
@@ -31,6 +31,7 @@ export const Route = createFileRoute("/equipos/$categoria")({
 
 function CategoryPage() {
   const cat = Route.useLoaderData() as EquipmentCategory;
+  const detail = EQUIPMENT_DETAILS[cat.slug] ?? {};
   return (
     <div>
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
@@ -59,6 +60,49 @@ function CategoryPage() {
           </div>
         </div>
       </section>
+
+      {/* DETALLE TÉCNICO */}
+      {(detail.norms || detail.brands || detail.targets) && (
+        <section className="px-6 md:px-12 py-16 md:py-20 border-b border-[color:var(--border)]">
+          <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
+            {detail.norms && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Normas aplicables</div>
+                <ul className="flex flex-wrap gap-1.5">
+                  {detail.norms.map((n) => (
+                    <li key={n} className="text-[10px] font-bold uppercase tracking-widest border border-[color:var(--border)] px-2 py-1 text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)]">{n}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {detail.brands && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Marcas representadas</div>
+                <ul className="flex flex-wrap gap-2">
+                  {detail.brands.map((b) => (
+                    <li key={b} className="font-display text-sm uppercase tracking-tight text-[color:var(--on-surface)]">{b}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {detail.targets && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Aplicaciones típicas</div>
+                <ul className="space-y-2">
+                  {detail.targets.map((t) => (
+                    <li key={t} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)] flex items-start gap-2">
+                      <span className="text-signal shrink-0">→</span>
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+
 
       <section className="px-6 md:px-12 py-16 bg-[color:var(--surface-2)] border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
