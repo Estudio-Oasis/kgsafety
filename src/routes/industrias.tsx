@@ -68,8 +68,8 @@ function IndustriasPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{INDUSTRIES.length}+ sectores · cobertura LATAM</SectionLabel>
           <h1 className="font-display text-4xl md:text-6xl uppercase leading-[1.05] mb-6" style={{ color: "#fff" }}>
-            Cada industria<br />
-            <span className="text-signal">tiene su riesgo crítico.</span>
+            Cada industria tiene un riesgo crítico.{" "}<br />
+            <span className="text-signal">Nosotros lo hacemos auditable.</span>
           </h1>
           <p className="text-lg md:text-xl max-w-2xl leading-relaxed" style={{ color: "rgba(255,255,255,0.85)" }}>
             Diseñamos protocolos por sector: lo que funciona en una planta de alimentos no aplica en una torre eólica. Ingeniería y capacitación adaptadas a su operación.

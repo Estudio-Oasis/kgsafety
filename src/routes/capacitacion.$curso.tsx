@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { SectionLabel } from "@/components/site/SectionLabel";
-import { COURSES, courseDetail, type Course } from "@/data/kaee";
+import { COURSES, courseDetail, courseDeep, type Course } from "@/data/kaee";
 
 export const Route = createFileRoute("/capacitacion/$curso")({
   component: CoursePage,
@@ -35,6 +35,7 @@ function CoursePage() {
   const [active, setActive] = useState(course.levels[0].code);
   const lvl = course.levels.find((l) => l.code === active)!;
   const detail = courseDetail(course.slug);
+  const deep = courseDeep(course.slug);
 
 
   return (
@@ -136,6 +137,50 @@ function CoursePage() {
           </div>
         </div>
       </section>
+
+      {/* CONTENIDO ÚNICO POR CURSO */}
+      {(deep.risks || deep.syllabus || deep.apps) && (
+        <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
+            {deep.risks && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Riesgos que controla</div>
+                <ul className="space-y-2">
+                  {deep.risks.map((r) => (
+                    <li key={r} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] flex gap-2"><span className="text-signal">→</span>{r}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {deep.syllabus && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Temario</div>
+                <ul className="space-y-2">
+                  {deep.syllabus.map((s) => (
+                    <li key={s} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] flex gap-2"><span className="text-signal">→</span>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {deep.apps && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Aplicaciones industriales</div>
+                <ul className="space-y-2">
+                  {deep.apps.map((a) => (
+                    <li key={a} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] flex gap-2"><span className="text-signal">→</span>{a}</li>
+                  ))}
+                </ul>
+                {deep.duration && (
+                  <div className="mt-4 pt-4 border-t border-[color:var(--border)] text-xs uppercase tracking-widest text-brand-blue font-bold">
+                    Duración: {deep.duration}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
 
 
 

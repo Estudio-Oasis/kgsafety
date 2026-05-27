@@ -1,53 +1,62 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
-import { COURSES, EQUIPMENT, ENGINEERING, SOLUTION_FAMILIES } from "@/data/kaee";
+import { COURSES, EQUIPMENT, ENGINEERING, SOLUTION_FAMILIES, SERVICE_DETAILS, DIVISIONS } from "@/data/kaee";
 
 export const Route = createFileRoute("/servicios")({
   component: ServiciosPage,
   head: () => ({
     meta: [
-      { title: "Servicios · Capacitación, equipos e ingeniería · KG Safety" },
-      { name: "description", content: "Catálogo integral de servicios KG Safety: capacitación DC-3, equipos certificados, ingeniería de líneas de vida, supervisión, certificación e instalación." },
+      { title: "Servicios · Un sistema completo contra el riesgo · KG Safety" },
+      { name: "description", content: "Cinco divisiones operativas KG Safety: W@H capacitación, MS&S consultoría e ingeniería, WoLL líneas de vida, S@H equipos y SoNs operaciones. Un solo estándar de seguridad." },
       { property: "og:title", content: "Servicios · KG Safety" },
-      { property: "og:description", content: "Capacitación, equipos, ingeniería y P.N.P.C. — todo el portafolio operativo en un solo lugar." },
+      { property: "og:description", content: "Cinco frentes. Un solo estándar de seguridad — capacitación, equipos, ingeniería, contratistas y operación." },
+      { property: "og:url", content: "https://kgsafety.lovable.app/servicios" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/servicios" }],
   }),
 });
 
-const PILLARS = [
+const FRONTS = [
   {
-    tag: "01",
-    title: "Capacitación",
+    tag: "W@H",
+    title: "Working at Heights",
     to: "/capacitacion" as const,
-    desc: "10 áreas técnicas en 3 niveles. DC-3 oficial STPS, OSHA 10 y OSHA 30.",
-    stat: `${COURSES.length} cursos`,
+    desc: "Capacitación DC-3 oficial STPS, OSHA 10 y OSHA 30. Presencial y en línea.",
+    stat: `${COURSES.length} cursos · 3 niveles`,
     cta: "Ver cursos",
   },
   {
-    tag: "02",
-    title: "Equipos Safety@Heights",
+    tag: "MS&S",
+    title: "Mantenimiento, Servicios & Soluciones",
+    to: "/cumplimiento" as const,
+    desc: "Consultoría, asesoría, supervisión, certificación e instalación.",
+    stat: `${SERVICE_DETAILS.length} servicios técnicos`,
+    cta: "Ver servicios",
+  },
+  {
+    tag: "WoLL",
+    title: "Working on Life Lines",
+    to: "/ingenieria" as const,
+    desc: "Líneas de vida, anclajes, barandales, andamios, plataformas, pasos de gato y escalas.",
+    stat: `${ENGINEERING.length} líneas`,
+    cta: "Ver ingeniería",
+  },
+  {
+    tag: "S@H",
+    title: "Safety @ Heights",
     to: "/equipos" as const,
-    desc: "Catálogo certificado: EPP, conexión, anclajes, líneas de vida, andamios y plataformas.",
+    desc: "Catálogo de EPP y equipo certificado con trazabilidad y garantía.",
     stat: `${EQUIPMENT.length} categorías`,
     cta: "Ver catálogo",
   },
   {
-    tag: "03",
-    title: "Ingeniería WoLL",
-    to: "/ingenieria" as const,
-    desc: "Asesoría, consultoría, soluciones a la medida, supervisión, certificación e instalación.",
-    stat: `${ENGINEERING.length} servicios`,
-    cta: "Ver ingeniería",
-  },
-  {
-    tag: "04",
-    title: "P.N.P.C. Contratistas",
+    tag: "SoNs",
+    title: "SoNs · P.N.P.C. y operación",
     to: "/contratistas" as const,
-    desc: "Programa Nacional de Profesionalización a Contratistas — estandariza la seguridad de tus proveedores.",
+    desc: "Programa Nacional de Profesionalización a Contratistas y operación de inmuebles especializados.",
     stat: "2,094+ contratistas",
-    cta: "Ver programa",
+    cta: "Ver P.N.P.C.",
   },
 ];
 
@@ -59,11 +68,11 @@ function ServiciosPage() {
         <div className="max-w-6xl relative z-10">
           <SectionLabel>Portafolio operativo</SectionLabel>
           <h1 className="font-display text-4xl md:text-6xl uppercase leading-[1.05] mb-6" style={{ color: "#fff" }}>
-            Cuatro pilares.<br />
-            <span className="text-signal">Una sola responsabilidad: que vuelvan a casa.</span>
+            Un sistema completo{" "}<br />
+            <span className="text-signal">contra el riesgo.</span>
           </h1>
           <p className="text-lg md:text-xl max-w-3xl leading-relaxed" style={{ color: "rgba(255,255,255,0.85)" }}>
-            Capacitación, equipos, ingeniería y programa de contratistas. Todo el ciclo de seguridad en altura — diseñado, ejecutado y auditado por el mismo equipo.
+            Cinco frentes operativos. Un solo estándar de seguridad. Capacitación, ingeniería, equipos, contratistas y operación — diseñados, ejecutados y auditados por el mismo equipo.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link to="/contacto" className="bg-signal text-anchor px-8 py-4 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors">
@@ -76,15 +85,15 @@ function ServiciosPage() {
         </div>
       </section>
 
-      {/* PILARES */}
+      {/* 5 FRENTES */}
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
-          <SectionLabel>Los 4 pilares</SectionLabel>
+          <SectionLabel>Cinco divisiones · un solo equipo</SectionLabel>
           <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-12 text-[color:var(--on-surface)]">
-            Cada servicio se contrata <span className="text-signal">por separado o como sistema.</span>
+            Cada división se contrata <span className="text-signal">por separado o como sistema.</span>
           </h2>
-          <div className="grid md:grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
-            {PILLARS.map((p) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
+            {FRONTS.map((p) => (
               <Link key={p.tag} to={p.to} className="bg-[color:var(--surface)] p-8 flex flex-col group hover:bg-[color:var(--surface-2)] transition-colors">
                 <div className="font-display text-signal text-xs mb-4 tracking-[0.22em]">{p.tag}</div>
                 <h3 className="font-display text-2xl md:text-3xl uppercase tracking-tight text-[color:var(--on-surface)] leading-tight mb-3">{p.title}</h3>
@@ -96,11 +105,43 @@ function ServiciosPage() {
               </Link>
             ))}
           </div>
+          <div className="mt-3 text-[11px] uppercase tracking-[0.22em] text-[color:color-mix(in_oklab,var(--on-surface)_60%,transparent)]">
+            5 divisiones operativas: {DIVISIONS.map((d) => d.tag).join(" · ")}
+          </div>
+        </div>
+      </section>
+
+      {/* CATÁLOGO MS&S — SERVICIOS INDIVIDUALES */}
+      <section className="px-6 md:px-12 py-16 md:py-24 bg-[color:var(--surface-2)] border-b border-[color:var(--border)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <SectionLabel>Servicios técnicos MS&S</SectionLabel>
+              <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight text-[color:var(--on-surface)]">
+                Páginas con <span className="text-signal">profundidad técnica</span>
+              </h2>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {SERVICE_DETAILS.map((s) => (
+              <Link
+                key={s.slug}
+                to="/servicios/$servicio"
+                params={{ servicio: s.slug }}
+                className="kg-bento p-6 flex flex-col group"
+              >
+                <div className="font-display text-signal text-[10px] tracking-[0.22em] mb-3">{s.parent ?? "MS&S"}</div>
+                <h3 className="font-display text-lg uppercase tracking-tight text-[color:var(--on-surface)] mb-2 leading-tight">{s.name}</h3>
+                <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_65%,transparent)] leading-relaxed mb-4">{s.short}</p>
+                <span className="mt-auto text-[11px] font-bold uppercase tracking-[0.22em] text-signal group-hover:translate-x-1 transition-transform">Ver servicio →</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* FAMILIAS DE SOLUCIONES */}
-      <section className="px-6 md:px-12 py-16 md:py-24 bg-[color:var(--surface-2)] border-b border-[color:var(--border)]">
+      <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
             <div>

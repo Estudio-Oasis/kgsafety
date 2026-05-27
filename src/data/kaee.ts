@@ -198,6 +198,8 @@ export const CLIENTS_FULL = [
   "BIMBO", "NESTLÉ", "CEMEX", "HEINEKEN", "GRUPO MODELO", "PEMEX",
   "VOLKSWAGEN", "FORD", "NISSAN", "BAYER", "DANONE", "PROCTER & GAMBLE",
   "L'ORÉAL", "KIMBERLY-CLARK", "ARCA CONTINENTAL",
+  "PIRELLI", "GENERAL MOTORS", "PFIZER", "CARGILL", "JOHNSON & JOHNSON",
+  "CONOCO PHILLIPS", "VESTAS", "PEPSICO",
 ];
 
 export const FAQS = [
@@ -393,3 +395,233 @@ export const ENGINEERING_DETAILS: Record<string, DetailBlock> = {
     targets: ["Cobertura nacional", "Instaladores certificados", "Materiales con trazabilidad"],
   },
 };
+
+// ===== Sprint 5 — Servicios individuales =====
+
+export type ServiceDetail = {
+  slug: string;
+  name: string;
+  short: string;          // tagline/H1 secondary
+  problem: string;        // qué dolor resuelve
+  includes: string[];     // qué incluye
+  deliverables: string[]; // entregables documentales
+  norms: string[];        // normas relacionadas
+  whenToHire: string[];   // cuándo contratarlo
+  parent?: "WoLL" | "MS&S" | "W@H" | "S@H" | "SoNs";
+};
+
+export const SERVICE_DETAILS: ServiceDetail[] = [
+  {
+    slug: "consultoria",
+    name: "Consultoría técnica en sitio",
+    short: "Visita técnica, mediciones y propuesta integral con un ingeniero responsable.",
+    problem: "Su planta tiene riesgo en altura pero nadie ha mapeado dónde, cuántos usuarios, qué frecuencia ni qué sistema cumple norma.",
+    includes: ["Visita técnica con ingeniero", "Mediciones y levantamiento", "Cálculo preliminar de cargas", "Propuesta técnico-económica priorizada"],
+    deliverables: ["Reporte de visita firmado", "Levantamiento fotográfico", "Memoria de cálculo preliminar", "Propuesta integral PDF"],
+    norms: ["NOM-009-STPS", "ANSI Z359", "EN 795"],
+    whenToHire: ["Inicio de proyecto", "Antes de auditoría externa", "Cambio de uso de planta", "Nuevo CapEx HSE"],
+    parent: "MS&S",
+  },
+  {
+    slug: "asesoria",
+    name: "Asesoría normativa",
+    short: "Acompañamiento técnico-normativo sin visita obligatoria. Para resolver dudas de cumplimiento.",
+    problem: "Tiene observaciones de auditoría o STPS y no sabe qué norma aplica ni qué evidencia entregar.",
+    includes: ["Revisión documental", "Mapeo normativo (STPS/OSHA/ANSI)", "Recomendaciones por escrito", "Sesión de aclaración con su equipo HSE"],
+    deliverables: ["Dictamen normativo", "Matriz NOM/OSHA/ANSI", "Plan de cierre de hallazgos"],
+    norms: ["NOM-009-STPS", "NOM-033-STPS", "OSHA 1910/1926", "ANSI Z359"],
+    whenToHire: ["Después de una observación", "Antes de una auditoría", "Cambio normativo reciente"],
+    parent: "MS&S",
+  },
+  {
+    slug: "soluciones-personalizadas",
+    name: "Soluciones personalizadas",
+    short: "Diseño y fabricación de sistemas a la medida cuando el catálogo no resuelve.",
+    problem: "Su estructura es atípica: silo irregular, techo curvo, equipo único. Ningún sistema estándar funciona.",
+    includes: ["Diseño mecánico", "Memoria de cálculo", "Fabricación bajo plano", "Pruebas de carga en campo"],
+    deliverables: ["Planos de fabricación", "Memoria de cálculo firmada", "Reporte de pruebas de carga", "Manual de usuario"],
+    norms: ["EN 795 tipo D", "ANSI Z359.6", "NOM-009-STPS"],
+    whenToHire: ["Estructuras atípicas", "Restricciones arquitectónicas", "Requisitos de cliente final"],
+    parent: "WoLL",
+  },
+  {
+    slug: "supervision",
+    name: "Supervisión de obra y maniobras",
+    short: "Ingeniero o técnico HSE en sitio durante trabajos de alto riesgo o paros de planta.",
+    problem: "Necesita un responsable técnico independiente que firme permisos, vigile cuadrillas y deje evidencia auditable.",
+    includes: ["Vigilancia operativa diaria", "Emisión de permisos de trabajo", "Bitácora HSE", "Auditorías relámpago a contratistas"],
+    deliverables: ["Permisos de trabajo firmados", "Bitácora diaria", "Memoria fotográfica", "Informe final con hallazgos"],
+    norms: ["NOM-031-STPS", "NOM-009-STPS", "OSHA 1926"],
+    whenToHire: ["Paros de planta", "Maniobras críticas", "Obra de alto riesgo", "Auditorías de cliente"],
+    parent: "MS&S",
+  },
+  {
+    slug: "certificacion",
+    name: "Certificación e inspección anual",
+    short: "Pruebas de carga, verificación periódica y re-certificación de sistemas y EPP.",
+    problem: "Sus líneas de vida, anclajes o EPP llevan años en operación sin certificación vigente — auditoría no los aceptará.",
+    includes: ["Pruebas de carga", "Verificación visual y dimensional", "Re-certificación documental", "Etiquetado de inspección"],
+    deliverables: ["Certificado anual por sistema", "Reporte de pruebas firmado", "Etiqueta de inspección con QR", "Calendario de re-certificación"],
+    norms: ["ANSI Z359.7", "EN 365", "NOM-009-STPS"],
+    whenToHire: ["Anualmente", "Después de una caída", "Cambio de uso", "Antes de auditoría externa"],
+    parent: "MS&S",
+  },
+  {
+    slug: "instalacion",
+    name: "Instalación certificada",
+    short: "Instalación de líneas de vida, anclajes y sistemas con instaladores propios certificados.",
+    problem: "Compró el sistema pero el proveedor no lo instala, o lo instalan electricistas sin certificación — pierde la garantía.",
+    includes: ["Instaladores propios certificados", "Cobertura nacional", "Pruebas de carga post-instalación", "Acta entrega-recepción"],
+    deliverables: ["Acta entrega-recepción firmada", "Reporte de pruebas de carga", "Manual de usuario", "Plan de mantenimiento anual"],
+    norms: ["EN 795", "ANSI Z359.18", "NOM-009-STPS"],
+    whenToHire: ["Sistemas nuevos", "Ampliaciones", "Reubicación de planta"],
+    parent: "WoLL",
+  },
+  {
+    slug: "renta",
+    name: "Renta de equipo y plataformas",
+    short: "EPP, líneas de vida temporales y plataformas en renta para proyectos puntuales.",
+    problem: "Tiene un proyecto de 2 semanas — no le conviene comprar EPP, plataformas o líneas de vida que después no usará.",
+    includes: ["EPP en renta con trazabilidad", "Líneas de vida temporales", "Plataformas y andamios", "Logística entrega/retiro"],
+    deliverables: ["Contrato de renta", "Ficha técnica del equipo", "Certificado de inspección pre-renta", "Bitácora de uso"],
+    norms: ["ANSI Z359", "NOM-009-STPS"],
+    whenToHire: ["Paros de planta", "Mantenimiento mayor", "Obra de corto plazo", "Pico estacional"],
+    parent: "S@H",
+  },
+  {
+    slug: "analisis-de-riesgo",
+    name: "Análisis de riesgo en altura",
+    short: "Identificación, evaluación y priorización del riesgo de caída por punto de trabajo.",
+    problem: "Sabe que hay riesgo pero no tiene matriz, prioridades ni evidencia documental para defender decisiones.",
+    includes: ["Identificación de tareas críticas", "Evaluación HRN/JSA", "Matriz de riesgo por punto", "Plan de mitigación priorizado"],
+    deliverables: ["Matriz de riesgo en altura", "JSA por tarea", "Plan de mitigación con CapEx estimado"],
+    norms: ["NOM-030-STPS", "ANSI/AIHA Z10", "ISO 31000"],
+    whenToHire: ["Antes de diseñar el sistema", "Después de un incidente", "Cambio de proceso"],
+    parent: "MS&S",
+  },
+  {
+    slug: "plan-de-rescate",
+    name: "Plan de rescate en altura",
+    short: "Procedimiento, equipo y brigada entrenada para rescatar a un trabajador suspendido en menos de 6 minutos.",
+    problem: "Tiene arneses y líneas de vida — pero si alguien queda suspendido, nadie sabe qué hacer. El trauma por suspensión mata.",
+    includes: ["Procedimiento por escenario", "Selección y compra de equipo de rescate", "Capacitación de brigada", "Simulacro anual"],
+    deliverables: ["Plan de rescate por planta", "Procedimiento por escenario", "Constancia de brigada entrenada", "Bitácora de simulacro"],
+    norms: ["NOM-009-STPS art. 13", "ANSI Z359.4", "OSHA 1910.146"],
+    whenToHire: ["Obligatorio con cualquier sistema de protección contra caídas", "Después de un incidente"],
+    parent: "W@H",
+  },
+  {
+    slug: "inspeccion-certificacion-anual",
+    name: "Inspección y certificación anual",
+    short: "Programa anual de inspección documental y física de sistemas y EPP de protección contra caídas.",
+    problem: "No tiene un calendario claro de inspecciones — cuando viene auditoría, no encuentra los reportes ni las etiquetas.",
+    includes: ["Inventario de sistemas y EPP", "Calendario de inspección", "Inspección visual y de carga", "Reporte y etiquetado"],
+    deliverables: ["Inventario digital con QR", "Calendario anual de inspección", "Reportes firmados por sistema", "Etiquetas físicas vigentes"],
+    norms: ["ANSI Z359.7", "EN 365", "NOM-009-STPS"],
+    whenToHire: ["Anualmente", "Inicio de programa HSE", "Cambio de proveedor anterior"],
+    parent: "MS&S",
+  },
+];
+
+export const serviceDetail = (slug: string) => SERVICE_DETAILS.find((s) => s.slug === slug);
+
+// ===== Sprint 5 — Curso enriquecido =====
+export type CourseDeep = {
+  risks?: string[];           // riesgos específicos que controla
+  syllabus?: string[];        // temario
+  apps?: string[];            // aplicaciones industriales
+  duration?: string;          // duración resumen
+};
+export const COURSE_DEEP: Record<string, CourseDeep> = {
+  alturas: {
+    risks: ["Caída a distinto nivel > 1.8 m", "Falla de anclaje", "Trauma por suspensión", "Caída de objetos"],
+    syllabus: ["Marco normativo NOM-009 / ANSI Z359 / OSHA 1926", "Componentes del sistema personal de detención de caídas", "Cálculo de distancia de caída libre y total", "Selección de anclajes y conectores", "Plan de rescate y trauma por suspensión", "Inspección y descarte de EPP", "Práctica con arnés, línea de vida y rescate"],
+    apps: ["Techos industriales", "Silos y tanques", "Torres y antenas", "Estructuras temporales"],
+    duration: "8 / 16 / 24 horas según nivel",
+  },
+  confinados: {
+    risks: ["Atmósferas IDLH", "Deficiencia de oxígeno", "Atrapamiento", "Inundación súbita"],
+    syllabus: ["NOM-033-STPS / OSHA 1910.146", "Permiso de ingreso", "Monitoreo atmosférico de 4 gases", "Ventilación forzada", "Rescate vertical no-entry", "Práctica de ingreso y extracción"],
+    apps: ["Tanques", "Ductos y tuberías", "Fosas y registros", "Reactores", "Silos cerrados"],
+    duration: "8 / 16 / 24 horas según nivel",
+  },
+  herramientas: {
+    risks: ["Proyección de partículas", "Cortes y aplastamiento", "Caída de herramienta desde altura", "Energías peligrosas"],
+    syllabus: ["NOM-017-STPS", "Inspección pre-uso", "Amarre de herramienta en altura (drop prevention)", "Mantenimiento y descarte", "Bitácora de herramienta"],
+    apps: ["Mantenimiento industrial", "Construcción", "Trabajo en altura con herramienta"],
+    duration: "8 horas",
+  },
+  extintores: {
+    risks: ["Incendio incipiente clases A/B/C/D/K", "Propagación", "Asfixia por humo"],
+    syllabus: ["NOM-002-STPS / NFPA 10", "Identificación de clase de fuego", "Selección y operación de extintor portátil", "Brigadas y comunicación", "Práctica con fuego real controlado"],
+    apps: ["Brigadas internas", "Almacenes", "Talleres", "Oficinas"],
+    duration: "8 horas",
+  },
+  andamios: {
+    risks: ["Colapso por mal armado", "Caída de altura", "Caída de material", "Sobrecarga"],
+    syllabus: ["NOM-009-STPS / OSHA 1926 Subparte L", "Tipos: multidireccional, fachada, suspendido", "Armado seguro y tarjeta verde/roja", "Plataforma y baranda", "Inspección diaria"],
+    apps: ["Obra civil", "Mantenimiento de fachadas", "Paros de planta"],
+    duration: "8 / 16 / 24 horas según nivel",
+  },
+};
+export const courseDeep = (slug: string) => COURSE_DEEP[slug] ?? {};
+
+// ===== Sprint 5 — Equipos enriquecidos =====
+export type EquipmentDeep = {
+  subcategories?: string[];   // tipos / variantes
+  selection?: string[];       // criterios de selección
+  docs?: string[];            // documentos entregables
+};
+export const EQUIPMENT_DEEP: Record<string, EquipmentDeep> = {
+  epp: {
+    subcategories: ["Arnés de cuerpo completo", "Cascos clase E/G", "Calzado dieléctrico", "Guantes mecánicos / químicos", "Protección facial y ocular", "Protección auditiva"],
+    selection: ["Tarea y peligro dominante", "Talla y antropometría", "Compatibilidad con otros EPP", "Frecuencia de uso", "Condiciones ambientales"],
+    docs: ["Ficha técnica", "Certificado ANSI/EN", "Manual del usuario", "Etiqueta de inspección"],
+  },
+  conexion: {
+    subcategories: ["Eslinga con amortiguador simple", "Eslinga doble pernera Y", "Retráctil 2.5 / 6 / 15 m", "Eslinga de posicionamiento", "Mosquetones triple seguro"],
+    selection: ["Distancia de caída disponible", "Número de puntos de anclaje", "Movilidad requerida", "Carga / factor de caída"],
+    docs: ["Ficha técnica", "Certificado ANSI Z359.13", "Bitácora de inspección"],
+  },
+  anclajes: {
+    subcategories: ["Anillo D", "Push-Lock", "Postes individuales", "Platos para concreto/metal/madera", "Anclajes removibles"],
+    selection: ["Sustrato (concreto/metal/madera)", "Carga estática requerida (22 kN)", "Permanente vs removible", "Acceso para inspección"],
+    docs: ["Memoria de cálculo", "Ficha técnica", "Certificado EN 795", "Etiqueta con torque"],
+  },
+  "lineas-de-vida": {
+    subcategories: ["Horizontales en cable", "Horizontales en riel", "Verticales en cable con freno", "Verticales en riel", "Temporales", "Over Head / Roof Top / Man Safe", "Inclinadas", "Montadas sobre pared"],
+    selection: ["Número de usuarios simultáneos", "Tipo de superficie y pendiente", "Frecuencia y duración de uso", "Ruta y geometría", "Plan de rescate", "Distancia de caída disponible"],
+    docs: ["Memoria de cálculo", "Planos as-built", "Certificado anual", "Bitácora de inspección", "Plan de rescate"],
+  },
+  barandales: {
+    subcategories: ["Fijo concreto / lámina / pesas / rolado / engargolado", "Removible concreto / lámina / pesas"],
+    selection: ["Permanente vs temporal", "Carga horizontal (200 lbf OSHA)", "Sustrato y método de fijación", "Estética y arquitectura"],
+    docs: ["Memoria de cálculo", "Planos de fabricación", "Acta entrega-recepción"],
+  },
+  domos: {
+    subcategories: ["Protector fijo", "Protector removible", "Rejilla", "Estructural traslúcido"],
+    selection: ["Tipo de domo (traslúcido/opaco)", "Carga puntual y distribuida", "Acceso para mantenimiento", "Compatibilidad con sistema de fijación"],
+    docs: ["Ficha técnica", "Memoria de cálculo", "Garantía estructural"],
+  },
+  andamios: {
+    subcategories: ["Multidireccional", "De seguridad", "Suspendido", "Móvil"],
+    selection: ["Altura y geometría", "Carga de trabajo (luz/media/pesada)", "Tiempo de obra", "Acceso al sitio"],
+    docs: ["Tarjeta verde/roja", "Memoria de cálculo", "Bitácora diaria"],
+  },
+  plataformas: {
+    subcategories: ["Fija construida en sitio", "Prefabricada modular", "Fabricada a medida", "Móvil / Manlift"],
+    selection: ["Frecuencia de uso", "Carga y número de usuarios", "Restricciones arquitectónicas", "Norma de barandal y rodapié"],
+    docs: ["Memoria de cálculo", "Planos", "Acta entrega-recepción", "Manual del usuario"],
+  },
+  pasos: {
+    subcategories: ["Metálicos", "Sintéticos / fibra de vidrio dieléctrica", "Con jaula de seguridad", "Con sistema vertical certificado"],
+    selection: ["Altura total", "Riesgo eléctrico", "Norma OSHA 1910.23 / NOM-001", "Compatibilidad con sistema vertical"],
+    docs: ["Ficha técnica", "Memoria de cálculo", "Certificado de instalación"],
+  },
+  escalas: {
+    subcategories: ["Verticales con guarda-hombre", "Marinas con sistema vertical", "Inclinadas", "Removibles"],
+    selection: ["Altura total y descansos", "Frecuencia de uso", "Riesgo eléctrico", "Norma EN 14122 / OSHA 1910.23"],
+    docs: ["Ficha técnica", "Planos as-built", "Certificado de instalación"],
+  },
+};
+export const equipmentDeep = (slug: string) => EQUIPMENT_DEEP[slug] ?? {};

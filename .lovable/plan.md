@@ -1,98 +1,96 @@
 
-# Plan completo KG Safety — 4 sprints
+# Sprint 5 — Profundidad, precisión y credibilidad
 
-Trabajo grande. Lo divido en 4 entregas dentro de este mismo plan. Cada sprint deja el sitio funcionando y desplegable; tú decides si seguimos al siguiente o pausamos.
+No se cambia la dirección visual. Se completa producto siguiendo la auditoría del 2026-05-27.
 
-## Sprint 1 — Base comercial y confianza
+## 1. Corregir microcopy "pegado" en todo el sitio
 
-**Objetivo:** que el sitio deje de verse incompleto.
+Causa raíz: en varios JSX, dos `{t("…")}` o `<br/>` adyacentes se renderizan sin espacio. Auditar y corregir:
 
-1. **Auditoría y corrección de copy** en todas las rutas (`index`, `capacitacion`, `equipos`, `ingenieria`, `soluciones`, `contratistas`, `facturacion`, `contacto`, `blog`, `faq`, `nosotros`, header/footer, `dictionary.ts`).
-   - Reparar frases pegadas tipo *"Comparta su necesidadrespondemos hoy"*, *"DC-3 y certificadooficial"*.
-   - Acentos faltantes, mayúsculas/minúsculas inconsistentes.
-   - Mantener `WE NEVER FALL` solo como slogan visual, no como estructura.
+- `index.tsx`: "Comparta su necesidad, le respondemos hoy." (añadir espacio entre fragmentos).
+- `index.tsx`: "Equipos certificados. Trazables. Garantizados." y "DC-3 y certificado oficial STPS · OSHA · NSC."
+- `capacitacion.tsx`: "Cursos disponibles."
+- `industrias.tsx`: H1 → "Cada industria tiene un riesgo crítico. Nosotros lo hacemos auditable."
+- `ingenieria.tsx`: H1 → "Sistemas de anclaje diseñados desde el riesgo real."
+- `contratistas.tsx`: "Programa Nacional de Profesionalización a Contratistas." y "Operación bajo control total."
+- `contacto.tsx`: "Cuéntenos su proyecto. Respondemos hoy." (o variante fuerte "Comparta su riesgo. Lo convertimos en un plan técnico.").
 
-2. **Hero home nuevo** (`src/routes/index.tsx`):
-   - H1: *Seguridad en altura lista para auditoría.*
-   - Sub: *Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar.*
-   - CTAs: *Solicitar diagnóstico* / *Ver soluciones*.
-   - Conservar look industrial premium (Michroma + paleta navy/signal).
+QA: buscar regex `[a-záéíóúñ][A-ZÁÉÍÓÚÑ]` y comas/puntos sin espacio en strings de rutas.
 
-3. **Bloque diferenciador** (componente nuevo `DifferentiatorBlock`), insertado en home después de la barra de métricas:
-   - *"No somos solo capacitadores. No somos solo distribuidores de EPP. No somos solo instaladores de líneas de vida."*
-   - Texto integrador (diagnóstico → ingeniería → instalación → certificación → capacitación → documentación).
-   - Reemplaza la sección *"Cuatro frentes contra la gravedad"* por *"Un sistema completo contra el riesgo"* con las 5 divisiones: **W@H, MS&S, WoLL, S@H, SoNs**.
+## 2. Páginas individuales de servicios (eliminar 404)
 
-4. **Navegación reestructurada** (`SiteHeader.tsx` + footer):
-   - Desktop: Inicio · Servicios · Capacitación · Ingeniería · Equipos · P.N.P.C. · Industrias · Nosotros · Facturación · Contacto.
-   - Mobile: agrupar bajo *Soluciones* (Servicios + Industrias + Ingeniería + Equipos).
-   - Rótulo `P.N.P.C.` apunta a `/contratistas` (Programa Nacional de Profesionalización a Contratistas) con subtítulo aclaratorio en la página.
+Crear ruta dinámica `src/routes/servicios.$servicio.tsx` + data en `src/data/kaee.ts` (`SERVICE_DETAILS`), con slugs:
 
-5. **Facturación con enlaces reales** (`src/routes/facturacion.tsx`):
-   - 3 acciones: *Obtener factura* → `kg-safety.com/facturar/proceso`, *Ingresar a administración* → `admin-factura-cliente.noilmx.com`, *Contactar facturación* → `mailto:vianey-contadora@kg-safety.com`.
-   - Tel `+52 1 722 799 0719` y WhatsApp `527222532753` visibles.
+```text
+consultoria, asesoria, soluciones-personalizadas, supervision,
+certificacion, instalacion, renta, analisis-de-riesgo,
+plan-de-rescate, inspeccion-certificacion-anual
+```
 
-6. **Banda de clientes/logos** como grilla sobria de nombres en texto (Michroma, sin fondos): FEMSA, Coca-Cola, Holcim, Unilever, ALPLA, Canacintra, Envases, APM Terminals, Gamesa, PetStar, Sigma Alimentos, Tupperware, Owens-Illinois, Merck, Santa Clara. Va en home y `/nosotros`. Título: *Experiencia con operaciones industriales de alto estándar.*
+Cada página: H1, problema que resuelve, qué incluye, entregables, normas relacionadas, cuándo contratarlo, CTA "Solicitar diagnóstico". Linkear desde `/servicios` y `/ingenieria` donde aplique. `head()` propio (title, description, canonical, og:*).
 
-## Sprint 2 — Arquitectura principal
+## 3. Contenido único por curso
 
-**Crear rutas:**
+Enriquecer `COURSE_DETAILS` en `src/data/kaee.ts` con campos: riesgos específicos, temario por nivel (Autorizado / Monitor / Competente / Profesional), duración, perfil, práctica, entregables, normas, aplicaciones industriales. Actualizar `capacitacion.$curso.tsx` para renderizar todos esos bloques (no solo los 3 actuales). Cubrir mínimo: alturas, confinados, herramientas, incendios, plataformas, primeros-auxilios, izaje, rescate, bloqueo-etiquetado, electricidad.
 
-- `src/routes/servicios.tsx` — índice con 8 servicios (Entrenamiento, Consultoría, Asesoría, Soluciones personalizadas, Supervisión, Certificación, Instalación, Renta). H1: *Servicios especializados para controlar trabajos de alto riesgo de principio a fin.* Cada tarjeta: descripción breve + entregables + CTA *Solicitar diagnóstico*.
-- `src/routes/industrias.tsx` — 10 industrias con riesgos típicos por sector.
-- `src/routes/cumplimiento.tsx` — H1: *Certeza jurídica para trabajos de alto riesgo.* Secciones: NOM-009-STPS-2011, STPS/DC-3, OSHA/ANSI Z359/EN, análisis de riesgo, plan de rescate, permisos de trabajo, evidencia documental, auditorías internas, inspección anual. Cross-link a `/contratistas` (P.N.P.C.).
+## 4. Contenido único por categoría de equipos
 
-**Rehacer:**
+Enriquecer `EQUIPMENT_DETAILS` en `kaee.ts` con: subcategorías/tipos, aplicaciones, criterios de selección, materiales/sistemas, marcas, normas, entregables documentales, CTA específico. Actualizar `equipos.$categoria.tsx` para 10 categorías (epp, anclajes, lineas-de-vida, barandales, domos, andamios, plataformas, pasos, escalas, conexión).
 
-- `src/routes/nosotros.tsx` — H1: *De KAEE a KG Safety: conocimiento, análisis, ingeniería y eliminación de riesgos.* Secciones: historia, metodología K.A.E.E. (Knowledge / Analysis / Engineering / Elimination), 5 divisiones (W@H, MS&S, WoLL, S@H, SoNs), clientes y normas.
-- `src/routes/faq.tsx` — 12 preguntas reales del documento (DC-3, inspección de líneas de vida, instalación de otras marcas, multisede, auditorías urgentes, plan de rescate, etc.).
+Ejemplo líneas de vida: horizontales/verticales/temporales/Over Head/Roof Top/Man Safe/inclinadas/pared; cable/riel/cinta; criterios usuarios, superficie, frecuencia, ruta, rescate, certificación, inspección anual.
 
-**Bloque reutilizable** `AuditableDeliverables.tsx` con los 12 entregables ("Entregables que sí puede defender ante una auditoría"), insertado en home, `/servicios` e `/ingenieria`.
+## 5. Alinear `/servicios` con la home (5 divisiones)
 
-## Sprint 3 — Páginas profundas
+Reemplazar "Cuatro pilares. Una sola responsabilidad…" por:
 
-**Servicios individuales** — ruta dinámica `src/routes/servicios.$servicio.tsx` + datos en `src/data/kaee.ts` (`SERVICES_DETAIL`). Slugs: `consultoria, asesoria, soluciones-personalizadas, supervision, certificacion, instalacion, renta, analisis-de-riesgo, plan-de-rescate, inspeccion-certificacion-anual`. Plantilla: problema → qué resuelve → qué incluye → entregables → normas → cuándo contratarlo → CTA.
+```text
+H1: Un sistema completo contra el riesgo.
+Sub: Cinco frentes operativos. Un solo estándar de seguridad.
+```
 
-**Capacitación** — completar `src/routes/capacitacion.$curso.tsx` para los 10 cursos: `alturas, confinados, andamios, loto, electricidad, calor, herramientas, incendios, montacargas, plataformas`. Cada uno con niveles (Autorizado/Monitor/Competente/Profesional), duraciones, qué aprende, dirigido a, incluye (manual, DC-3, certificado), CTA *Inscribir grupo*. Ya existe estructura — completar contenido específico por curso en `COURSES`.
+Listar W@H, MS&S, WoLL, S@H y SoNs como divisiones (no como 4 pilares). Mantener el grid existente con un quinto bloque (P.N.P.C. queda dentro de SoNs / referenciado aparte).
 
-**Equipos** — convertir `src/routes/equipos.$categoria.tsx` en páginas únicas por categoría: `epp, conexion, anclajes, lineas-de-vida, barandales, domos, andamios, plataformas, pasos, escalas`. Plantilla: descripción técnica → subcategorías → aplicaciones → normas → criterios de selección → ficha técnica/trazabilidad → CTA *Cotizar equipos certificados*.
+## 6. Expandir FAQ
 
-**Reforzar `/ingenieria` y `/contratistas`** con bloque de entregables auditables y CTAs específicos.
+Reescribir `faq.tsx` con preguntas reales agrupadas:
 
-## Sprint 4 — Conversión, SEO y pulido
+- Documentos y auditoría (DC-3, ficha técnica, certificados, bitácoras).
+- Capacitación (en planta, niveles, validez, instructores).
+- Inspección y mantenimiento de líneas de vida (anual, otras marcas).
+- Normas aplicables (NOM-009, NOM-033, ANSI Z359, OSHA).
+- Plan de rescate, auditorías urgentes, cotización, tiempos.
 
-1. **SEO** en `head()` de cada ruta:
-   - Home: *KG Safety · Seguridad en altura lista para auditoría*
-   - Capacitación: *Capacitación DC-3 para trabajos en altura y alto riesgo · KG Safety*
-   - Ingeniería, Equipos, Cumplimiento, Facturación según documento.
-   - Meta descriptions con keywords: NOM-009-STPS, DC-3, líneas de vida, EPP certificado, auditoría STPS.
+Mínimo 18 preguntas. Añadir JSON-LD `FAQPage`.
 
-2. **CTAs globales** — barrido para reemplazar genéricos (*Saber más, Ver más, Enviar, Leer más*) por accionables (*Solicitar diagnóstico, Agendar visita técnica, Cotizar capacitación, Cotizar equipos, Preparar auditoría, Hablar con un especialista, Solicitar inspección anual, Inscribir grupo*).
+## 7. Clientes nuevos
 
-3. **Validación mobile** — viewport 375–414px en todas las páginas nuevas, navegación colapsada, banda de logos scrollable.
+Agregar a `CLIENTS_FULL` en `kaee.ts`: Pirelli, General Motors, Pfizer, Cargill, Johnson & Johnson, Conoco Phillips, Vestas, PepsiCo. Reflejados en home (ClientLogosBand) e `industrias.tsx`.
 
-4. **Validación de links** — verificar que no quedan `to="/blog"` o rutas eliminadas; cross-links coherentes.
+## 8. Pulir CTA / copy clave de home y cumplimiento
 
-5. **Consistencia visual** — todas las páginas nuevas heredan tokens bento (`--bento-radius`, `--bento-shadow`, `--bento-bg-*`) y tipografía Michroma/Archivo Black/Plus Jakarta Sans ya cargada.
+- Home CTA final → "Comparta su riesgo. Le respondemos con un plan técnico." + subcopy técnico (planta, tipo de trabajo, usuarios, fecha crítica).
+- `cumplimiento.tsx` H1 → "La evidencia que su auditor pide, emitida por un equipo técnico."
 
----
+## Fuera de alcance
 
-## Detalles técnicos
+- `/portal` de clientes (se difiere; auditoría lo marca como no bloqueante).
+- Cambios de dirección creativa / paleta / tipografía.
 
-- **Rutas nuevas creadas** (Sprints 2-3): `servicios.tsx`, `servicios.$servicio.tsx`, `industrias.tsx`, `cumplimiento.tsx`. No tocar `routeTree.gen.ts` — lo regenera el plugin de Vite.
-- **Datos** en `src/data/kaee.ts`: extender con `SERVICES`, `SERVICES_DETAIL`, `INDUSTRIES`, `COMPLIANCE_TOPICS`, `AUDIT_DELIVERABLES`, `CLIENT_LOGOS`. Actualizar `COURSES` y `EQUIPMENT_CATEGORIES` con contenido completo por slug.
-- **Componentes nuevos**: `DifferentiatorBlock`, `AuditableDeliverables`, `ClientLogosBand`, `DivisionsBlock` (W@H/MS&S/WoLL/S@H/SoNs) — todos en `src/components/site/`.
-- **i18n**: `dictionary.ts` recibe nuevas claves para nav, CTAs globales y headings. Mantengo ES como default y replico EN.
-- **Sin nuevas dependencias** ni cambios en backend, server functions o auth.
-- **Header mobile**: agrupador *Soluciones* implementado con el componente `NavigationMenu` (shadcn) ya disponible.
+## Detalle técnico
 
-## Lo que NO toco
+- Rutas TanStack file-based: nueva `servicios.$servicio.tsx` y, si se requiere, splits dentro de `equipos.$categoria.tsx` siguen siendo dinámicas (no nuevos archivos por slug).
+- `kaee.ts` crecerá con `SERVICE_DETAILS`, ampliación de `COURSE_DETAILS` y `EQUIPMENT_DETAILS` (estructuras tipadas, helpers `serviceDetail(slug)`).
+- `head()` en cada ruta nueva con `title`, `description`, canonical absoluto (`https://kgsafety.lovable.app/...`), `og:title`, `og:description`, `og:url`.
+- FAQ: añadir `scripts: [{ type: "application/ld+json", children: JSON.stringify({@type: "FAQPage", mainEntity: [...] }) }]`.
+- Microcopy fix: revisar JSX que une fragmentos `{t("…")}{t("…")}` o `<br/>` sin espacio; introducir espacio explícito o consolidar strings.
+- Sin cambios de schema, sin nuevos paquetes.
 
-- Sistema bento existente, paleta y tipografía cargadas.
-- WhatsApp float, mini-juego de rappel, scroll rappellers, world clock bar.
-- Theme dark/light, i18n context, router bootstrap, `src/server.ts`.
-- Imágenes reales en `src/assets/real/` (las reutilizo donde aplique).
+## Orden de ejecución
 
-## Modo de entrega
-
-Voy sprint por sprint. Al terminar cada uno te resumo qué cambió y espero luz verde antes de seguir, para que puedas validar contenido (especialmente fichas de cursos/servicios/equipos donde el texto técnico debe ser correcto).
+1. Fix microcopy (rápido, alto impacto).
+2. `kaee.ts`: ampliar datos (services, courses, equipment, clientes).
+3. Crear `servicios.$servicio.tsx` + enlaces.
+4. Actualizar `capacitacion.$curso.tsx` y `equipos.$categoria.tsx` para renderizar datos enriquecidos.
+5. Reescribir `/servicios` (5 frentes).
+6. Reescribir `/faq` + JSON-LD.
+7. Pulir CTAs (home, cumplimiento, contacto).
