@@ -7,13 +7,26 @@ import {
   projectsByPlant,
   DOCUMENTS,
   certState,
-  daysLeft,
+  expiryLabel,
   fmtDate,
   labelDoc,
   systemById,
+  responsableKGForPlant,
+  ultimaActualizacionPlant,
+  nextExpiryForPlant,
 } from "@/data/portal";
-import { PageHeader, Panel, StatCard, StatusBadge, ActionBtn } from "@/components/portal/PortalUI";
-import { Download } from "lucide-react";
+import {
+  PageHeader,
+  Panel,
+  StatCard,
+  StatusBadge,
+  ActionBtn,
+  MetaCard,
+  NoAccess,
+} from "@/components/portal/PortalUI";
+import { Download, Eye, Copy } from "lucide-react";
+import { usePortalSession } from "@/hooks/use-portal-session";
+import { simAction } from "@/components/portal/PortalUI";
 
 export const Route = createFileRoute("/portal/plantas/$slug")({
   component: PlantaDetail,
@@ -21,13 +34,28 @@ export const Route = createFileRoute("/portal/plantas/$slug")({
 
 function PlantaDetail() {
   const { slug } = Route.useParams();
+  const { session } = usePortalSession();
   const plant = plantBySlug(slug);
   if (!plant) throw notFound();
+
+  // Guard de acceso
+  if (session) {
+    if (session.role === "cliente-corp" && plant.clientSlug !== session.clientSlug) {
+      return <NoAccess message="Esta planta pertenece a otra empresa." />;
+    }
+    if (session.role === "cliente-planta" && plant.slug !== session.plantSlug) {
+      return <NoAccess message="Solo tiene acceso a su planta asignada." />;
+    }
+  }
+
   const client = clientBySlug(plant.clientSlug);
   const systems = systemsByPlant(slug);
   const certs = certsByPlant(slug);
   const projects = projectsByPlant(slug);
   const docs = DOCUMENTS.filter((d) => d.plantSlug === slug);
+  const respKG = responsableKGForPlant(slug);
+  const ultima = ultimaActualizacionPlant(slug);
+  const proxVenc = nextExpiryForPlant(slug);
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -36,7 +64,19 @@ function PlantaDetail() {
           ← {client.name}
         </Link>
       )}
-      <PageHeader eyebrow={plant.industry} title={plant.name} subtitle={`${plant.location} · Responsable: ${plant.responsable} · ${plant.email}`} />
+      <PageHeader eyebrow={plant.industry} title={plant.name} subtitle={`${plant.location} · ${plant.email}`} />
+
+      {/* Metadatos clave */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <MetaCard label="Responsable del cliente" value={plant.responsable} hint={plant.email} />
+        <MetaCard label="Responsable KG Safety" value={respKG} hint="Líder técnico asignado" />
+        <MetaCard label="Última actualización" value={fmtDate(ultima)} hint="Basado en proyectos registrados" />
+        <MetaCard
+          label="Próximo vencimiento"
+          value={proxVenc ? proxVenc.label : "—"}
+          hint={proxVenc ? `${fmtDate(proxVenc.fecha)} · ${proxVenc.state === "vencido" ? "vencido" : proxVenc.state.replace("por-vencer-", "≤") + "d"}` : "Sin certificaciones registradas"}
+        />
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard label="Sistemas instalados" value={systems.length} />
@@ -66,14 +106,13 @@ function PlantaDetail() {
             {certs.map((c) => {
               const sys = systemById(c.systemId);
               const state = certState(c);
-              const dl = daysLeft(c);
               return (
                 <li key={c.id} className="px-4 py-3 flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-xs font-bold truncate">{sys?.type}</p>
                     <p className="text-[11px] text-[color:var(--muted-fg)]">Vence {fmtDate(c.vencimiento)}</p>
                   </div>
-                  <StatusBadge state={state} label={dl < 0 ? `${Math.abs(dl)}d vencido` : `${dl}d`} />
+                  <StatusBadge state={state} label={expiryLabel(c)} />
                 </li>
               );
             })}
@@ -121,7 +160,11 @@ function PlantaDetail() {
                   <p className="text-xs font-bold truncate">{d.name}</p>
                   <p className="text-[11px] text-[color:var(--muted-fg)]">{labelDoc(d.type)} · {d.size} · {fmtDate(d.fecha)}</p>
                 </div>
-                <ActionBtn><Download size={11} /> Descargar</ActionBtn>
+                <div className="inline-flex gap-1.5 flex-wrap justify-end shrink-0">
+                  <ActionBtn onClick={() => simAction("Vista previa simulada")} title="Ver"><Eye size={11} /> Ver</ActionBtn>
+                  <ActionBtn title="Descargar"><Download size={11} /> Descargar</ActionBtn>
+                  <ActionBtn onClick={() => simAction("Enlace copiado (simulado)")} title="Copiar enlace"><Copy size={11} /> Copiar enlace</ActionBtn>
+                </div>
               </li>
             ))}
           </ul>
