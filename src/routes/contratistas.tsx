@@ -45,8 +45,8 @@ function ContratistasPage() {
           <div className="kg-on-dark px-6 md:px-12 py-20 md:py-28 bg-brand-navy text-white">
             <SectionLabel>{t("P.N.P.C.")}</SectionLabel>
             <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
-              {t("Programa Nacional de")}<br />
-              <span className="text-signal">{t("Profesionalización")}</span><br />
+              {t("Programa Nacional de")}{" "}<br />
+              <span className="text-signal">{t("Profesionalización")}</span>{" "}<br />
               {t("a Contratistas.")}
             </h1>
             <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
@@ -84,7 +84,7 @@ function ContratistasPage() {
           <div>
             <SectionLabel>{t("Beneficios")}</SectionLabel>
             <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
-              {t("Operación bajo")}<br />{t("control total.")}
+              {t("Operación bajo")}{" "}<br />{t("control total.")}
             </h2>
             <p className="text-white/60 leading-relaxed mb-8">
               {t("El P.N.P.C. permite controlar a los contratistas en los tres niveles de capacitación y al personal interno para una comunicación correcta entre ambas partes.")}

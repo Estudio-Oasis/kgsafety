@@ -48,8 +48,8 @@ function IngenieriaPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Ingeniería aplicada")}</SectionLabel>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
-            {t("Sistemas de anclaje")}<br />
-            <span className="text-signal">{t("diseñados")}</span> {t("a medida.")}
+            {t("Sistemas de anclaje")}{" "}<br />
+            <span className="text-signal">{t("diseñados")}</span> {t("desde el riesgo real.")}
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
             {t("Líneas de vida, anclajes, plataformas y estructuras de obra civil. Ingeniería certificada para cada estructura, cada persona, cada detalle.")}

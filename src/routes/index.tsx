@@ -351,12 +351,12 @@ function Index() {
                 {t("Respuesta el mismo día hábil")}
               </div>
               <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-4" style={{ color: "#fff" }}>
-                {t("Comparta su necesidad,")}
+                {t("Comparta su riesgo.")}{" "}
                 <br />
-                <span style={{ color: "var(--signal)" }}>{t("le respondemos hoy.")}</span>
+                <span style={{ color: "var(--signal)" }}>{t("Le respondemos con un plan técnico.")}</span>
               </h2>
               <p className="text-sm md:text-base max-w-xl mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
-                {t("Equipo, capacitación, ingeniería o auditoría. Un especialista lo contacta el mismo día.")}
+                {t("Indíquenos planta, tipo de trabajo, número de usuarios y fecha crítica. Un especialista le dirá si necesita capacitación, equipo, visita técnica, certificación o plan de rescate.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
                 <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>

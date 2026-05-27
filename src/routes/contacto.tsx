@@ -54,8 +54,8 @@ function ContactoPage() {
         <div className="max-w-5xl">
           <SectionLabel>{t("Cotización en 24 horas")}</SectionLabel>
           <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
-            {t("Cuéntenos su proyecto.")}<br />
-            <span className="text-signal">{t("Respondemos hoy.")}</span>
+            {t("Comparta su riesgo.")}{" "}<br />
+            <span className="text-signal">{t("Lo convertimos en un plan técnico.")}</span>
           </h1>
           <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
             {t("Comparta detalles de equipos, capacitación o ingeniería. Un especialista lo contacta el mismo día hábil.")}

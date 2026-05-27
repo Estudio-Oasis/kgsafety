@@ -46,7 +46,7 @@ function CapacitacionPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Capacitación certificada")}</SectionLabel>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
-            {t("DC-3 y certificado")}<br />
+            {t("DC-3 y certificado")}{" "}<br />
             <span className="text-signal">{t("oficial")}</span> {t("STPS · OSHA · NSC.")}
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
@@ -105,7 +105,7 @@ function CapacitacionPage() {
           <div>
             <SectionLabel>{t("12 áreas")}</SectionLabel>
             <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
-              {t("Cursos")}<br />{t("disponibles")}
+              {t("Cursos")}{" "}<br />{t("disponibles")}
             </h2>
             <p className="text-white/60 mb-8 leading-relaxed">
               {t("Temarios homologados, instructores certificados y emisión documental con certeza jurídica. Registro de CURP y verificación en línea.")}
