@@ -103,7 +103,7 @@ export function BentoTile(props: TileProps) {
   const inner = (
     <div
       className={cn(
-        "group relative overflow-hidden flex flex-col p-5 md:p-6 rounded-[var(--bento-radius,1.25rem)]",
+        "group relative overflow-hidden flex flex-col p-4 md:p-6 rounded-[var(--bento-radius,1.25rem)]",
         "border transition-all duration-300 ease-out",
         interactive && "hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(15,27,61,0.45)] cursor-pointer",
         "min-h-[150px] h-full",
@@ -143,7 +143,7 @@ export function BentoTile(props: TileProps) {
           </div>
         )}
         {title && (
-          <div className="font-display uppercase leading-[1.05] tracking-tight text-base sm:text-lg md:text-xl lg:text-2xl mb-2 break-words [overflow-wrap:anywhere] hyphens-auto">
+          <div className="font-display uppercase leading-[1.05] tracking-tight text-[clamp(0.72rem,3.4vw,0.95rem)] sm:text-base md:text-xl lg:text-2xl mb-2 [overflow-wrap:break-word] hyphens-none">
             {title}
           </div>
         )}

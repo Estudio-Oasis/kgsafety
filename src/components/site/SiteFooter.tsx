@@ -60,9 +60,9 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 px-6 md:px-12 py-6 flex flex-col md:flex-row justify-between gap-4 text-[10px] tracking-widest uppercase text-white/40">
+      <div className="border-t border-white/10 px-6 md:px-12 py-6 pb-24 md:pb-6 flex flex-col md:flex-row justify-between gap-4 text-[10px] tracking-widest uppercase text-white/40">
         <div>{t("© 2025 KG Fall Protection Engineering · Toluca · Querétaro · CDMX")}</div>
-        <div className="flex gap-6">
+        <div className="flex flex-wrap gap-x-6 gap-y-2">
           <span>STPS</span>
           <span>OSHA</span>
           <span>ANSI Z359</span>

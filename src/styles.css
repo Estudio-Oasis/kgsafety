@@ -319,13 +319,15 @@
 }
 
 /* === Mobile typography & overflow safety ===
-   Big uppercase display headings and bento titles overflow narrow tiles
-   on mobile. Force long words to break instead of clipping. */
+   Headings should wrap between words, never split a word mid-letter
+   (e.g. "ELECTRICI/DAD", "DOCUMEN/TAL"). break-word only kicks in when
+   a single word truly doesn't fit on its own line. */
 .font-display,
 h1, h2, h3 {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   word-break: normal;
-  hyphens: auto;
+  hyphens: none;
+  text-wrap: balance;
 }
 
 /* Tile titles inside bento should never push out of their box */
@@ -336,8 +338,26 @@ h1, h2, h3 {
   min-width: 0;
 }
 
+/* Keep page from overflowing horizontally on mobile because of fixed rope */
+html, body { overflow-x: hidden; }
+
 @media (max-width: 640px) {
   /* Tame mega display headings on small screens */
   h1.font-display { font-size: clamp(1.875rem, 8.5vw, 2.5rem); line-height: 1.05; }
   h2.font-display { font-size: clamp(1.5rem, 7vw, 2rem);    line-height: 1.1; }
+  /* Tighter uppercase tracking on mobile so wide words like ELECTRICIDAD
+     and DOCUMENTAL fit on a single line in bento tiles. */
+  .font-display.uppercase, h1.uppercase, h2.uppercase, h3.uppercase {
+    letter-spacing: -0.01em;
+  }
+  /* Michroma is a very wide monospaced display font. Inside narrow bento
+     tiles on mobile, words like ELECTRICIDAD / PLATAFORMAS / COMPONENTES
+     overflow no matter the size. Swap to the body font for tile titles
+     only on mobile — full Michroma still applies on tablet and up. */
+  .kg-bento .font-display,
+  [class*="rounded-[var(--bento-radius"] .font-display {
+    font-family: var(--font-body, system-ui, sans-serif);
+    letter-spacing: 0;
+    font-weight: 700;
+  }
 }
