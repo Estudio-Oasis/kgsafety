@@ -60,7 +60,7 @@ function PortalLogin() {
         <div className="relative z-10">
           <p className="text-[10px] uppercase tracking-widest text-signal mb-3">Portal de clientes y operaciones</p>
           <h1 className="font-display text-4xl md:text-5xl uppercase leading-[1.05] mb-5">
-            Su historial técnico,<br />
+            Su historial técnico,{" "}<br />
             <span className="text-signal">en un solo lugar.</span>
           </h1>
           <p className="text-sm text-white/70 max-w-md leading-relaxed">

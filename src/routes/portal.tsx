@@ -32,7 +32,7 @@ type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; roles:
 const NAV: NavItem[] = [
   { to: "/portal", label: "Dashboard", icon: LayoutDashboard, roles: ["cliente-corp", "cliente-planta", "admin-kg", "equipo-kg"] },
   { to: "/portal/clientes", label: "Clientes", icon: Building2, roles: ["admin-kg"] },
-  { to: "/portal/proyectos", label: "Proyectos", icon: Briefcase, roles: ["cliente-corp", "cliente-planta", "admin-kg"] },
+  { to: "/portal/proyectos", label: "Proyectos", icon: Briefcase, roles: ["cliente-corp", "cliente-planta", "admin-kg", "equipo-kg"] },
   { to: "/portal/certificaciones", label: "Certificaciones", icon: ShieldCheck, roles: ["cliente-corp", "cliente-planta", "admin-kg"] },
   { to: "/portal/documentos", label: "Documentos", icon: FileText, roles: ["cliente-corp", "cliente-planta", "admin-kg"] },
   { to: "/portal/facturacion", label: "Facturación", icon: Receipt, roles: ["cliente-corp", "cliente-planta", "admin-kg"] },

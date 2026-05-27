@@ -1,114 +1,135 @@
+# Sprint 7 — QA y refinamiento del Portal
 
-# Portal KG Safety — Prototipo funcional (Etapa 1 + 2)
+Solo retoques de prototipo. No se toca el sitio público ni se agregan pantallas nuevas.
 
-Implementar el portal privado B2B como prototipo navegable con datos ficticios y roles simulados (sin backend, sin login real). Cubre los 5 prompts del brief en un solo sprint dividido en bloques.
+## 1. Login fiable (`/portal/login` → `/portal`)
 
-## Alcance
+**Causa raíz**: `usePortalSession` mantiene su estado en cada componente. Al hacer `login()` en la página de login, se escribe `localStorage`, pero el listener del layout (`portal.tsx`) solo reacciona al evento `storage` — que **no se dispara en la misma pestaña**. Resultado: a veces el layout aún ve `session === null` cuando llega a `/portal` y rebota a `/portal/login`.
 
-- Prototipo visual completo (Etapa 1 del brief)
-- Roles simulados con switcher (Etapa 2)
-- Sin Lovable Cloud, sin auth real, sin uploads reales (Etapas 3-6 quedan fuera)
+**Fix en `src/hooks/use-portal-session.ts`**:
+- Compartir estado entre instancias con un pequeño pub/sub en módulo (Set de setters) o `window.dispatchEvent(new Event("kg-portal-session"))` después de `login`/`logout`.
+- Suscribirse a ambos eventos (`storage` + `kg-portal-session`) en el `useEffect`.
+- En `login()` y `logout()`, además de `setSession`, notificar a los demás suscriptores para que el layout vea la nueva sesión de inmediato.
 
-## Estructura de rutas
+Con eso, el `navigate({ to: "/portal" })` en `portal.login.tsx` siempre encuentra `session` ya hidratada y no rebota.
 
-```text
-/portal/login           → login simulado con selector de rol
-/portal                 → layout con sidebar + dashboard
-/portal/clientes        → lista de clientes
-/portal/clientes/$slug  → vista empresa (plantas asociadas)
-/portal/plantas/$slug   → vista planta (sistemas, certificaciones, proyectos)
-/portal/proyectos       → historial con filtros
-/portal/proyectos/$id   → detalle de proyecto + documentos
-/portal/certificaciones → vencimientos agrupados por urgencia
-/portal/documentos      → biblioteca descargable con filtros
-/portal/facturacion     → facturas ficticias
-/portal/biblioteca      → biblioteca interna KG (solo admin/equipo)
-/portal/admin           → panel admin (solo admin)
-```
+## 2. Microcopy del login
 
-Convención TanStack: layout pathless `_portal.tsx` con sidebar + `<Outlet/>`, hijos como `_portal.portal.tsx`, etc. O bien usar `portal.tsx` como layout con `<Outlet/>` y archivos `portal.clientes.tsx`. Se usará la segunda (más simple, sin underscore).
+`src/routes/portal.login.tsx` línea 63:
+- Antes: `Su historial técnico,<br />` (sin espacio tras la coma).
+- Después: `Su historial técnico,{" "}<br />` para que el extracto siempre lea `Su historial técnico, en un solo lugar.`
 
-## Datos ficticios (`src/data/portal.ts`)
+Pasada rápida a títulos cercanos por si hay otros casos `,<br />` pegados en `portal.*`.
 
-Un solo módulo con tipos + arrays mock:
+## 3. Lógica de vencimientos en certificaciones
 
-- `CLIENTS` (16): FEMSA, Holcim, Merck, Coca-Cola, PetStar, Pirelli, Pfizer, Cargill, J&J, Owens Illinois, Unilever, Tupperware, Vestas, Gamesa, PepsiCo, GM, Conoco
-- `PLANTS` (12+): cada una con cliente, ubicación, industria, responsable
-- `SYSTEMS`: línea de vida horizontal/vertical, anclajes, barandales, escalas marinas
-- `PROJECTS` (~25): tipo, planta, fecha, responsable KG, estatus, documentos asociados
-- `CERTIFICATIONS`: sistema, planta, fecha emisión, vencimiento, estado calculado (vigente/por-vencer-30/por-vencer-60/vencido)
-- `DOCUMENTS`: tipo (factura/cotización/OC/certificado/ficha/reporte/evidencia), proyecto, fecha, url ficticia
-- `INVOICES`: folio, fecha, proyecto, monto, estado
-- `LIBRARY`: documentos internos por categoría (presentaciones, fichas, formatos, manuales, normas)
-- `ALERTS`: críticas, derivadas de certificaciones vencidas/por vencer
-
-## Roles (simulados en localStorage)
+En `src/routes/portal.certificaciones.tsx` (línea 72) cambiar el label del `StatusBadge`:
 
 ```ts
-type Role = 'cliente-corp' | 'cliente-planta' | 'admin-kg' | 'equipo-kg'
-type Session = { role: Role; clientSlug?: string; plantSlug?: string; name: string }
+const label =
+  dl < 0
+    ? `Vencida hace ${Math.abs(dl)} días`
+    : dl === 0
+      ? "Vence hoy"
+      : `Vence en ${dl} días`;
 ```
 
-Hook `usePortalSession()` lee/escribe `localStorage['kg-portal-session']`. Layout redirige a `/portal/login` si no hay sesión. Filtros aplicados en cada vista según rol:
+Mantener colores ya existentes (`danger`/`warn`/`ok`) en `StatusBadge`. Verificar el mismo patrón en el dashboard (`portal.index.tsx`) y en `portal.plantas.$slug.tsx` si reusan la misma lógica.
 
-- `cliente-corp` → solo su empresa y plantas
-- `cliente-planta` → solo su planta
-- `admin-kg` → todo + `/portal/admin`
-- `equipo-kg` → biblioteca interna, sin clientes
+## 4. Restricciones por rol (auditoría)
 
-## Componentes nuevos (`src/components/portal/`)
+Pasada de revisión por cada ruta `/portal/*`:
 
-- `PortalSidebar.tsx` — nav lateral con secciones según rol
-- `PortalHeader.tsx` — breadcrumb, rol activo, botón "cambiar rol" (logout simulado)
-- `StatusBadge.tsx` — chips: vigente/verde, por-vencer/amarillo, vencido/rojo, pendiente/gris, revisión/morado
-- `StatCard.tsx` — tarjetas resumen del dashboard
-- `DataTable.tsx` — tabla genérica con filtros (usa shadcn `table` + `input` + `select`)
-- `DocumentRow.tsx` — fila con acciones: Ver, Descargar, Copiar enlace (toast simulado)
-- `ExpiryGroup.tsx` — agrupador de certificaciones por urgencia
+| Ruta | cliente-corp | cliente-planta | equipo-kg | admin-kg |
+|---|---|---|---|---|
+| `/portal` dashboard | KPIs de su empresa | KPIs de su planta | KPIs operativos KG | global |
+| `/portal/clientes` | ❌ (oculto en sidebar) | ❌ | ❌ | ✅ |
+| `/portal/clientes/$slug` | solo si coincide con su `clientSlug` | ❌ | ❌ | ✅ |
+| `/portal/plantas/$slug` | solo plantas de su empresa | solo su planta | ✅ | ✅ |
+| `/portal/proyectos` | filtrado por `clientSlug` | filtrado por `plantSlug` | asignados a KG | global |
+| `/portal/certificaciones` | filtrado por empresa | filtrado por planta | (no en sidebar) | global |
+| `/portal/documentos` | filtrado por empresa | filtrado por planta | (no en sidebar) | global |
+| `/portal/facturacion` | filtrado por empresa | filtrado por empresa de su planta | ❌ | global |
+| `/portal/biblioteca` | ❌ | ❌ | ✅ | ✅ |
+| `/portal/admin` | ❌ | ❌ | ❌ | ✅ |
 
-## Pantallas
+Acciones:
+- Ajustar el array `NAV` en `src/routes/portal.tsx` para reflejar la tabla (quitar Documentos/Certificaciones del menú de `equipo-kg`, etc.).
+- En cada ruta detalle (`portal.clientes.$slug.tsx`, `portal.plantas.$slug.tsx`, `portal.proyectos.$id.tsx`), si la sesión no debería ver ese recurso, mostrar un panel "Sin acceso" en lugar de los datos.
+- Reusar los filtros ya existentes (`session.clientSlug`, `session.plantSlug`) y centralizar el helper en `src/data/portal.ts` (`canSeeClient`, `canSeePlant`, `canSeeProject`).
 
-1. **Login** (`/portal/login`): card centrada, 4 botones de rol (Cliente corp / Cliente planta / Admin / Equipo). Selector de cliente para roles cliente. Guarda sesión y redirige a `/portal`.
-2. **Dashboard** (`/portal`): 4 StatCards (certificaciones por vencer, sistemas, proyectos activos, alertas críticas) + 3 paneles (próximos vencimientos, últimos proyectos, documentos recientes).
-3. **Clientes** (`/portal/clientes`): grid de cards con logo placeholder + nº plantas + nº certificaciones vigentes.
-4. **Empresa** (`/portal/clientes/$slug`): tabs plantas / proyectos / documentos. KPIs arriba.
-5. **Planta** (`/portal/plantas/$slug`): header con datos planta, sistemas instalados, certificaciones con estado, proyectos históricos, documentos.
-6. **Proyectos** (`/portal/proyectos`): DataTable con filtros tipo/cliente/planta/estatus.
-7. **Detalle proyecto** (`/portal/proyectos/$id`): metadatos + lista de documentos clasificados + historial.
-8. **Certificaciones** (`/portal/certificaciones`): 4 ExpiryGroups (vencidas → vigentes).
-9. **Documentos** (`/portal/documentos`): filtros por tipo + tabla.
-10. **Facturación** (`/portal/facturacion`): tabla con PDF/XML simulados.
-11. **Biblioteca KG** (`/portal/biblioteca`): solo admin/equipo. Cards por categoría → lista de archivos.
-12. **Admin** (`/portal/admin`): solo admin. Tabs clientes/plantas/usuarios/proyectos/vencimientos con botones simulados (toast "Acción simulada").
+## 5. Acciones explícitas en documentos y facturación
 
-## SEO y nav
+`src/components/portal/PortalUI.tsx`: añadir un `RowActions` con botones consistentes (ícono + label).
 
-- Todas las rutas `/portal/*` con `<meta name="robots" content="noindex">` en `head()` — es área privada.
-- Agregar enlace "Portal" en header público (link discreto a `/portal/login`).
+En `src/routes/portal.documentos.tsx` cada fila debe mostrar:
+- **Ver** (Eye)
+- **Descargar** (Download)
+- **Copiar enlace** (Link)
 
-## Diseño
+En `src/routes/portal.facturacion.tsx` cada fila:
+- **Ver**
+- **PDF** (FileText)
+- **XML** (Code)
+- **Copiar enlace**
 
-Mantiene tokens existentes (oklch en `src/styles.css`). Estética dashboard densa, no landing: tablas, sidebars, badges. Reusar shadcn `card`, `table`, `tabs`, `badge`, `button`, `input`, `select`, `dialog`. Tipografía heredada del sitio.
+Todos disparan el toast `"Acción simulada — prototipo"` (no descargas reales).
 
-## Acciones simuladas
+## 6. Historial del proyecto
 
-Todos los botones (Descargar, Ver PDF, Crear, Editar, Asignar usuario) muestran toast "Acción simulada — prototipo". No descargas reales.
+En `src/routes/portal.proyectos.$id.tsx`, debajo de la cabecera, agregar bloque "Historial del proyecto" generado a partir del `id` (determinístico, no aleatorio en render) con eventos:
+- Cotización enviada
+- Orden de compra recibida
+- Servicio ejecutado
+- Certificado emitido
+- Documentos cargados
 
-## Orden de implementación
+Render como timeline vertical (punto + fecha + título + descripción corta). Datos viven en `src/data/portal.ts` como helper `buildProjectTimeline(projectId)`.
 
-1. `src/data/portal.ts` + tipos + datos ficticios
-2. `src/hooks/use-portal-session.ts` + `src/components/portal/*`
-3. Layout `portal.tsx` + login
-4. Dashboard + clientes + planta + empresa
-5. Proyectos + detalle + certificaciones + documentos + facturación
-6. Biblioteca + admin
-7. Link discreto en header público + verificación visual por rol
+## 7. Metadatos en plantas y proyectos
 
-## Fuera de alcance
+Añadir en `Plant` y `Project` (en `src/data/portal.ts`):
+- `responsableCliente: string`
+- `responsableKG: string`
+- `ultimaActualizacion: string` (ISO)
+- `proximoVencimiento?: { label: string; fecha: string }` derivado de certificaciones de esa planta/proyecto
 
-- Lovable Cloud / Supabase / auth real
-- Uploads reales / generación de PDFs
-- Notificaciones por email
-- Integración con facturación real
+Mostrar esos cuatro datos como tarjetas resumen en:
+- `portal.plantas.$slug.tsx`
+- `portal.proyectos.$id.tsx`
 
-Esto se aborda en sprints posteriores (Etapas 3-6 del brief).
+## 8. Conoco Phillips → "Energía / Infraestructura"
+
+En `src/data/portal.ts`:
+- `{ slug: "conoco", name: "Conoco Phillips", industry: "Energía / Infraestructura", plants: 1 }`
+- Revisar `PLANTS` y filtros de `industrias.tsx` por si "Petrolera" sigue apareciendo.
+
+## 9. `noindex` en `/portal/*`
+
+Verificar que TODAS las rutas portal tengan `head().meta` con `{ name: "robots", content: "noindex, nofollow" }`:
+- `portal.tsx` ✅
+- `portal.login.tsx` ✅
+- Falta auditar: `portal.index.tsx`, `portal.clientes.index.tsx`, `portal.clientes.$slug.tsx`, `portal.plantas.$slug.tsx`, `portal.proyectos.index.tsx`, `portal.proyectos.$id.tsx`, `portal.certificaciones.tsx`, `portal.documentos.tsx`, `portal.facturacion.tsx`, `portal.biblioteca.tsx`, `portal.admin.tsx`. Añadir `head()` con `noindex` donde falte.
+
+También excluir `/portal*` del `src/routes/sitemap[.]xml.ts` si está listado.
+
+## 10. Sin navbar ni footer público en rutas internas
+
+Ya está implementado en `src/routes/__root.tsx` con guard por `pathname.startsWith("/portal")`. Verificación rápida: revisar también que no aparezcan widgets globales (cookie banner, WhatsApp flotante) sobre el portal; si aparecen, aplicar el mismo guard.
+
+## Detalles técnicos
+
+- Cambios solo en frontend (`src/routes/portal.*`, `src/hooks/use-portal-session.ts`, `src/data/portal.ts`, `src/components/portal/PortalUI.tsx`, `src/routes/__root.tsx`).
+- Sin backend, sin Lovable Cloud — sigue siendo prototipo con datos ficticios y `localStorage`.
+- Sin nuevas dependencias.
+- Tipos: ampliar `Plant` y `Project` con campos opcionales para no romper datos existentes; rellenar en el seed.
+
+## Orden de ejecución
+
+1. Fix de `usePortalSession` (desbloquea pruebas de los demás puntos).
+2. Microcopy + Conoco + `noindex` (cambios pequeños).
+3. Lógica de vencimientos (texto y dashboard).
+4. Permisos por rol (NAV + guards en rutas detalle).
+5. Acciones explícitas en documentos/facturación.
+6. Metadatos de planta/proyecto + historial de proyecto.
+7. Verificación final navegando los 4 roles.

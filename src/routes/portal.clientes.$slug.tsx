@@ -7,7 +7,8 @@ import {
   certState,
   fmtDate,
 } from "@/data/portal";
-import { PageHeader, Panel, StatCard, StatusBadge } from "@/components/portal/PortalUI";
+import { PageHeader, Panel, StatCard, StatusBadge, NoAccess } from "@/components/portal/PortalUI";
+import { usePortalSession } from "@/hooks/use-portal-session";
 
 export const Route = createFileRoute("/portal/clientes/$slug")({
   component: ClienteDetail,
@@ -15,8 +16,22 @@ export const Route = createFileRoute("/portal/clientes/$slug")({
 
 function ClienteDetail() {
   const { slug } = Route.useParams();
+  const { session } = usePortalSession();
   const client = clientBySlug(slug);
   if (!client) throw notFound();
+
+  if (session) {
+    if (session.role === "cliente-corp" && session.clientSlug !== slug) {
+      return <NoAccess message="Esta empresa no corresponde a su acceso." />;
+    }
+    if (session.role === "cliente-planta") {
+      return <NoAccess message="Su acceso es a nivel planta, no a la ficha completa de la empresa." />;
+    }
+    if (session.role === "equipo-kg") {
+      return <NoAccess message="Esta vista es para clientes y administración KG Safety." />;
+    }
+  }
+
   const plants = plantsByClient(slug);
   const plantSlugs = plants.map((p) => p.slug);
   const projects = projectsByClient(slug);
@@ -24,6 +39,7 @@ function ClienteDetail() {
   const vigentes = certs.filter((c) => certState(c) === "vigente").length;
   const porVencer = certs.filter((c) => ["por-vencer-30", "por-vencer-60"].includes(certState(c))).length;
   const vencidos = certs.filter((c) => certState(c) === "vencido").length;
+
 
   return (
     <div className="max-w-7xl mx-auto">

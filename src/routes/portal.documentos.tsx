@@ -75,10 +75,10 @@ function DocsPage() {
                   <td className="px-4 py-2.5 text-[color:var(--muted-fg)]">{fmtDate(d.fecha)}</td>
                   <td className="px-4 py-2.5 text-[color:var(--muted-fg)]">{d.size}</td>
                   <td className="px-4 py-2.5 text-right">
-                    <div className="inline-flex gap-1.5">
-                      <ActionBtn onClick={() => simAction("Vista previa simulada")}><Eye size={11} /></ActionBtn>
-                      <ActionBtn><Download size={11} /></ActionBtn>
-                      <ActionBtn onClick={() => simAction("Enlace copiado (simulado)")}><Copy size={11} /></ActionBtn>
+                    <div className="inline-flex gap-1.5 flex-wrap justify-end">
+                      <ActionBtn onClick={() => simAction("Vista previa simulada")} title="Ver"><Eye size={11} /> Ver</ActionBtn>
+                      <ActionBtn title="Descargar"><Download size={11} /> Descargar</ActionBtn>
+                      <ActionBtn onClick={() => simAction("Enlace copiado (simulado)")} title="Copiar enlace"><Copy size={11} /> Copiar enlace</ActionBtn>
                     </div>
                   </td>
                 </tr>

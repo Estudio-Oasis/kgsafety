@@ -111,10 +111,12 @@ export function ActionBtn({
   children,
   onClick,
   variant = "ghost",
+  title,
 }: {
   children: ReactNode;
   onClick?: () => void;
   variant?: "ghost" | "primary";
+  title?: string;
 }) {
   const base =
     variant === "primary"
@@ -123,6 +125,7 @@ export function ActionBtn({
   return (
     <button
       type="button"
+      title={title}
       onClick={onClick ?? (() => simAction())}
       className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider border transition-colors ${base}`}
     >
@@ -130,3 +133,32 @@ export function ActionBtn({
     </button>
   );
 }
+
+export function MetaCard({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: ReactNode;
+  hint?: string;
+}) {
+  return (
+    <div className="bg-[color:var(--surface)] border border-[color:var(--border)] p-4">
+      <p className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] mb-1">{label}</p>
+      <p className="text-sm font-bold text-[color:var(--on-surface)] leading-snug">{value}</p>
+      {hint && <p className="text-[11px] text-[color:var(--muted-fg)] mt-1">{hint}</p>}
+    </div>
+  );
+}
+
+export function NoAccess({ title = "Sin acceso", message }: { title?: string; message: string }) {
+  return (
+    <div className="max-w-2xl mx-auto py-20 text-center">
+      <p className="text-xs uppercase tracking-widest text-red-500 mb-2">Acceso restringido</p>
+      <h1 className="font-display text-2xl uppercase">{title}</h1>
+      <p className="mt-3 text-sm text-[color:var(--muted-fg)]">{message}</p>
+    </div>
+  );
+}
+
