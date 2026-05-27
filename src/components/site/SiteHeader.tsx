@@ -90,6 +90,13 @@ export function SiteHeader() {
         </button>
 
         <Link
+          to="/portal/login"
+          className="hidden md:inline-block text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] hover:text-brand-blue transition-colors px-2"
+        >
+          {t("Portal clientes")}
+        </Link>
+
+        <Link
           to="/contacto"
           className="hidden md:inline-block bg-signal text-[color:var(--anchor-fixed)] px-4 lg:px-5 py-2.5 font-bold text-[11px] uppercase tracking-tighter border-2 border-[color:var(--anchor-fixed)] hover:bg-white transition-all shadow-[3px_3px_0_0_var(--anchor-fixed)]"
         >
