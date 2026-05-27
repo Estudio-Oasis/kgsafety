@@ -364,9 +364,7 @@ function Index() {
               </div>
             </BentoTile>
 
-                </a>
-              </div>
-            </BentoTile>
+
 
             <BentoTile span="md:col-span-2" variant="accent" href="tel:+527228795076" eyebrow={t("Llamada directa")} title="+52 722 879 5076" cta={t("Llamar ahora")} />
             <BentoTile span="md:col-span-2" variant="neutral" eyebrow={t("Certificados")}>
