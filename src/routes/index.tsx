@@ -338,6 +338,10 @@ function Index() {
         </div>
       </section>
 
+      {/* ============== ENTREGABLES AUDITABLES ============== */}
+      <AuditableDeliverables variant="light" />
+
+
       {/* ============== FINAL CTA BENTO ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-t border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
