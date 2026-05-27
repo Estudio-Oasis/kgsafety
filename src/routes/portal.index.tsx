@@ -10,7 +10,7 @@ import {
   PROJECTS,
   SYSTEMS,
   certState,
-  daysLeft,
+  expiryLabel,
   fmtDate,
   fmtMoney,
   labelDoc,
@@ -18,6 +18,7 @@ import {
   systemById,
 } from "@/data/portal";
 import { StatCard, Panel, PageHeader, StatusBadge, ActionBtn } from "@/components/portal/PortalUI";
+
 
 export const Route = createFileRoute("/portal/")({
   component: Dashboard,
@@ -88,7 +89,6 @@ function Dashboard() {
               const sys = systemById(c.systemId);
               const plant = plantBySlug(c.plantSlug);
               const state = certState(c);
-              const dl = daysLeft(c);
               return (
                 <li key={c.id} className="px-4 py-3 flex items-center justify-between gap-3">
                   <div className="min-w-0">
@@ -96,7 +96,7 @@ function Dashboard() {
                     <p className="text-[11px] text-[color:var(--muted-fg)] truncate">{plant?.name}</p>
                   </div>
                   <div className="text-right">
-                    <StatusBadge state={state} label={dl < 0 ? `${Math.abs(dl)}d vencido` : `${dl}d restantes`} />
+                    <StatusBadge state={state} label={expiryLabel(c)} />
                   </div>
                 </li>
               );

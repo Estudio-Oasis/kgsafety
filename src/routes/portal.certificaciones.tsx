@@ -6,12 +6,13 @@ import {
   plantBySlug,
   systemById,
   certState,
-  daysLeft,
+  expiryLabel,
   fmtDate,
   type CertState,
 } from "@/data/portal";
 import { PageHeader, Panel, StatusBadge, ActionBtn } from "@/components/portal/PortalUI";
 import { Download } from "lucide-react";
+
 
 export const Route = createFileRoute("/portal/certificaciones")({
   component: CertsPage,
@@ -61,7 +62,6 @@ function CertsPage() {
                   {items.map((c) => {
                     const sys = systemById(c.systemId);
                     const plant = plantBySlug(c.plantSlug);
-                    const dl = daysLeft(c);
                     return (
                       <tr key={c.id} className="hover:bg-[color:var(--muted)]/20">
                         <td className="px-4 py-2.5 font-bold">{sys?.type}</td>
@@ -69,7 +69,7 @@ function CertsPage() {
                         <td className="px-4 py-2.5 text-[color:var(--muted-fg)]">{fmtDate(c.ultima)}</td>
                         <td className="px-4 py-2.5 text-[color:var(--muted-fg)]">{fmtDate(c.vencimiento)}</td>
                         <td className="px-4 py-2.5">
-                          <StatusBadge state={g.key} label={dl < 0 ? `${Math.abs(dl)}d vencido` : `${dl}d restantes`} />
+                          <StatusBadge state={g.key} label={expiryLabel(c)} />
                         </td>
                         <td className="px-4 py-2.5 text-right">
                           <ActionBtn variant={g.tone === "danger" ? "primary" : "ghost"}>

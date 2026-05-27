@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { Download } from "lucide-react";
+import { Download, Eye, Copy, FileCode2 } from "lucide-react";
 import { usePortalSession } from "@/hooks/use-portal-session";
 import { INVOICES, projectById, plantBySlug, fmtDate, fmtMoney } from "@/data/portal";
-import { PageHeader, Panel, StatCard, StatusBadge, ActionBtn } from "@/components/portal/PortalUI";
+import { PageHeader, Panel, StatCard, StatusBadge, ActionBtn, simAction } from "@/components/portal/PortalUI";
+
 
 export const Route = createFileRoute("/portal/facturacion")({
   component: FacturacionPortal,
@@ -66,9 +67,11 @@ function FacturacionPortal() {
                     />
                   </td>
                   <td className="px-4 py-2.5 text-right">
-                    <div className="inline-flex gap-1.5">
-                      <ActionBtn><Download size={11} /> PDF</ActionBtn>
-                      <ActionBtn><Download size={11} /> XML</ActionBtn>
+                    <div className="inline-flex gap-1.5 flex-wrap justify-end">
+                      <ActionBtn onClick={() => simAction("Vista previa simulada")} title="Ver"><Eye size={11} /> Ver</ActionBtn>
+                      <ActionBtn title="Descargar PDF"><Download size={11} /> PDF</ActionBtn>
+                      <ActionBtn title="Descargar XML"><FileCode2 size={11} /> XML</ActionBtn>
+                      <ActionBtn onClick={() => simAction("Enlace copiado (simulado)")} title="Copiar enlace"><Copy size={11} /> Copiar enlace</ActionBtn>
                     </div>
                   </td>
                 </tr>
