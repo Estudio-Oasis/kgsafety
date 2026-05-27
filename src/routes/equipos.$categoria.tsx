@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
-import { EQUIPMENT, EQUIPMENT_DETAILS, type EquipmentCategory } from "@/data/kaee";
+import { EQUIPMENT, EQUIPMENT_DETAILS, equipmentDeep, type EquipmentCategory } from "@/data/kaee";
 
 export const Route = createFileRoute("/equipos/$categoria")({
   component: CategoryPage,
@@ -32,6 +32,7 @@ export const Route = createFileRoute("/equipos/$categoria")({
 function CategoryPage() {
   const cat = Route.useLoaderData() as EquipmentCategory;
   const detail = EQUIPMENT_DETAILS[cat.slug] ?? {};
+  const deep = equipmentDeep(cat.slug);
   return (
     <div>
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
@@ -101,6 +102,50 @@ function CategoryPage() {
           </div>
         </section>
       )}
+
+      {/* CONTENIDO ÚNICO POR CATEGORÍA */}
+      {(deep.subcategories || deep.selection || deep.docs) && (
+        <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
+            {deep.subcategories && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Tipos / subcategorías</div>
+                <ul className="space-y-2">
+                  {deep.subcategories.map((s) => (
+                    <li key={s} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] flex gap-2"><span className="text-signal">→</span>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {deep.selection && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Criterios de selección</div>
+                <ul className="space-y-2">
+                  {deep.selection.map((s) => (
+                    <li key={s} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] flex gap-2"><span className="text-signal">→</span>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {deep.docs && (
+              <div className="bg-[color:var(--surface)] p-7">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Documentos entregables</div>
+                <ul className="space-y-2">
+                  {deep.docs.map((d) => (
+                    <li key={d} className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_80%,transparent)] flex gap-2"><span className="text-signal">→</span>{d}</li>
+                  ))}
+                </ul>
+                <div className="mt-4 pt-4 border-t border-[color:var(--border)]">
+                  <Link to="/contacto" className="text-[11px] font-bold uppercase tracking-[0.22em] text-signal hover:underline">
+                    Cotizar {cat.name.split("—")[0].trim().toLowerCase()} →
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
 
 
 
