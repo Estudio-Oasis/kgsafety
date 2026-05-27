@@ -2,7 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/i18n/context";
 import { BentoGrid, BentoTile } from "@/components/bento/Bento";
 import { realImagesIn } from "@/lib/real-image";
-import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES, DIVISIONS } from "@/data/kaee";
+import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES } from "@/data/kaee";
+import { DifferentiatorBlock } from "@/components/site/DifferentiatorBlock";
+import { DivisionsBlock } from "@/components/site/DivisionsBlock";
+import { ClientLogosBand } from "@/components/site/ClientLogosBand";
+import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
 import alturasImg from "@/assets/courses/alturas.jpg";
@@ -15,6 +19,7 @@ import eppImg from "@/assets/equipment/epp.jpg";
 import lvImg from "@/assets/equipment/lineas-de-vida.jpg";
 import anclajesImg from "@/assets/equipment/anclajes.jpg";
 import plataformasImg from "@/assets/equipment/plataformas.jpg";
+
 
 const COURSE_IMG: Record<string, string> = {
   alturas: alturasImg,
@@ -36,15 +41,16 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "KG Safety · 12 años eliminando riesgos de caída en México" },
-      { name: "description", content: "KAEE Group: capacitación DC-3, ingeniería de líneas de vida y EPP certificado. 30M+ horas-hombre supervisadas sin accidentes." },
-      { property: "og:title", content: "KG Safety · Bento de seguridad industrial" },
-      { property: "og:description", content: "Capacitación, equipos, ingeniería y consultoría para empresas Clase Mundial." },
+      { title: "KG Safety · Seguridad en altura lista para auditoría" },
+      { name: "description", content: "Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar. 30M+ horas-hombre sin accidentes." },
+      { property: "og:title", content: "KG Safety · Seguridad en altura lista para auditoría" },
+      { property: "og:description", content: "Integrador de seguridad en altura: diagnóstico, ingeniería, instalación, certificación, capacitación y documentación auditable." },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
 });
+
 
 function Index() {
   const { t } = useT();
