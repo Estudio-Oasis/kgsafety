@@ -117,7 +117,7 @@ export const CLIENTS: Client[] = [
   { slug: "gamesa", name: "Gamesa Eólica", industry: "Energía eólica", plants: 1 },
   { slug: "pepsico", name: "PepsiCo", industry: "Alimentos y bebidas", plants: 1 },
   { slug: "gm", name: "General Motors", industry: "Automotriz", plants: 1 },
-  { slug: "conoco", name: "Conoco Phillips", industry: "Petrolera", plants: 1 },
+  { slug: "conoco", name: "Conoco Phillips", industry: "Energía / Infraestructura", plants: 1 },
   { slug: "tupperware", name: "Tupperware", industry: "Plásticos", plants: 1 },
 ];
 
@@ -138,7 +138,7 @@ export const PLANTS: Plant[] = [
   { slug: "jnj-juarez", name: "Johnson & Johnson Juárez", clientSlug: "jnj", location: "Cd. Juárez, Chih.", industry: "Cuidado personal", responsable: "Ing. Alfredo Mejía", email: "amejia@jnj.com" },
   { slug: "owens-toluca", name: "Owens Illinois Toluca", clientSlug: "owens", location: "Toluca, Edo. Méx.", industry: "Vidrio", responsable: "Ing. Karina Soto", email: "ksoto@o-i.com" },
   { slug: "pepsico-mexicali", name: "PepsiCo Mexicali", clientSlug: "pepsico", location: "Mexicali, B.C.", industry: "Alimentos", responsable: "Ing. Andrés Téllez", email: "atellez@pepsico.com" },
-  { slug: "conoco-altamira", name: "Conoco Phillips Altamira", clientSlug: "conoco", location: "Altamira, Tamps.", industry: "Petrolera", responsable: "Ing. Fernanda Ruiz", email: "fruiz@conocophillips.com" },
+  { slug: "conoco-altamira", name: "Conoco Phillips Altamira", clientSlug: "conoco", location: "Altamira, Tamps.", industry: "Energía / Infraestructura", responsable: "Ing. Fernanda Ruiz", email: "fruiz@conocophillips.com" },
   { slug: "tupperware-atlacomulco", name: "Tupperware Atlacomulco", clientSlug: "tupperware", location: "Atlacomulco, Edo. Méx.", industry: "Plásticos", responsable: "Ing. Sergio Aguilar", email: "saguilar@tupperware.com" },
 ];
 
