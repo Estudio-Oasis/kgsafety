@@ -23,6 +23,7 @@ import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as CapacitacionRouteImport } from './routes/capacitacion'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServiciosServicioRouteImport } from './routes/servicios.$servicio'
 import { Route as IngenieriaServicioRouteImport } from './routes/ingenieria.$servicio'
 import { Route as EquiposCategoriaRouteImport } from './routes/equipos.$categoria'
 import { Route as CapacitacionCursoRouteImport } from './routes/capacitacion.$curso'
@@ -97,6 +98,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiciosServicioRoute = ServiciosServicioRouteImport.update({
+  id: '/$servicio',
+  path: '/$servicio',
+  getParentRoute: () => ServiciosRoute,
+} as any)
 const IngenieriaServicioRoute = IngenieriaServicioRouteImport.update({
   id: '/$servicio',
   path: '/$servicio',
@@ -126,11 +132,12 @@ export interface FileRoutesByFullPath {
   '/industrias': typeof IndustriasRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
-  '/servicios': typeof ServiciosRoute
+  '/servicios': typeof ServiciosRouteWithChildren
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
+  '/servicios/$servicio': typeof ServiciosServicioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -145,11 +152,12 @@ export interface FileRoutesByTo {
   '/industrias': typeof IndustriasRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
-  '/servicios': typeof ServiciosRoute
+  '/servicios': typeof ServiciosRouteWithChildren
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
+  '/servicios/$servicio': typeof ServiciosServicioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -165,11 +173,12 @@ export interface FileRoutesById {
   '/industrias': typeof IndustriasRoute
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
-  '/servicios': typeof ServiciosRoute
+  '/servicios': typeof ServiciosRouteWithChildren
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
+  '/servicios/$servicio': typeof ServiciosServicioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
+    | '/servicios/$servicio'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
+    | '/servicios/$servicio'
   id:
     | '__root__'
     | '/'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
+    | '/servicios/$servicio'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -244,7 +256,7 @@ export interface RootRouteChildren {
   IndustriasRoute: typeof IndustriasRoute
   IngenieriaRoute: typeof IngenieriaRouteWithChildren
   NosotrosRoute: typeof NosotrosRoute
-  ServiciosRoute: typeof ServiciosRoute
+  ServiciosRoute: typeof ServiciosRouteWithChildren
   SolucionesRoute: typeof SolucionesRoute
 }
 
@@ -348,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servicios/$servicio': {
+      id: '/servicios/$servicio'
+      path: '/$servicio'
+      fullPath: '/servicios/$servicio'
+      preLoaderRoute: typeof ServiciosServicioRouteImport
+      parentRoute: typeof ServiciosRoute
+    }
     '/ingenieria/$servicio': {
       id: '/ingenieria/$servicio'
       path: '/$servicio'
@@ -407,6 +426,18 @@ const IngenieriaRouteWithChildren = IngenieriaRoute._addFileChildren(
   IngenieriaRouteChildren,
 )
 
+interface ServiciosRouteChildren {
+  ServiciosServicioRoute: typeof ServiciosServicioRoute
+}
+
+const ServiciosRouteChildren: ServiciosRouteChildren = {
+  ServiciosServicioRoute: ServiciosServicioRoute,
+}
+
+const ServiciosRouteWithChildren = ServiciosRoute._addFileChildren(
+  ServiciosRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlogRoute: BlogRoute,
@@ -420,7 +451,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndustriasRoute: IndustriasRoute,
   IngenieriaRoute: IngenieriaRouteWithChildren,
   NosotrosRoute: NosotrosRoute,
-  ServiciosRoute: ServiciosRoute,
+  ServiciosRoute: ServiciosRouteWithChildren,
   SolucionesRoute: SolucionesRoute,
 }
 export const routeTree = rootRouteImport
