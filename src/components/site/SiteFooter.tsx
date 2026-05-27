@@ -23,17 +23,20 @@ export function SiteFooter() {
 
         <div>
           <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-5">
-            {t("Servicios")}
+            {t("Soluciones")}
           </h4>
           <ul className="space-y-3 text-sm text-white/70">
+            <li><Link to="/servicios" className="hover:text-signal">{t("Servicios")}</Link></li>
             <li><Link to="/capacitacion" className="hover:text-signal">{t("Capacitación DC-3")}</Link></li>
-            <li><Link to="/ingenieria" className="hover:text-signal">{t("Líneas de Vida")}</Link></li>
+            <li><Link to="/ingenieria" className="hover:text-signal">{t("Líneas de vida")}</Link></li>
             <li><Link to="/equipos" className="hover:text-signal">{t("Equipos certificados")}</Link></li>
             <li><Link to="/contratistas" className="hover:text-signal">{t("P.N.P.C.")}</Link></li>
-            <li><Link to="/facturacion" className="hover:text-signal">{t("Facturación")}</Link></li>
+            <li><Link to="/industrias" className="hover:text-signal">{t("Industrias")}</Link></li>
             <li><Link to="/nosotros" className="hover:text-signal">{t("Nosotros")}</Link></li>
+            <li><Link to="/facturacion" className="hover:text-signal">{t("Facturación")}</Link></li>
           </ul>
         </div>
+
 
         <div>
           <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-5">
