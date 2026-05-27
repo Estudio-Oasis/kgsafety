@@ -1,96 +1,114 @@
 
-# Sprint 5 — Profundidad, precisión y credibilidad
+# Portal KG Safety — Prototipo funcional (Etapa 1 + 2)
 
-No se cambia la dirección visual. Se completa producto siguiendo la auditoría del 2026-05-27.
+Implementar el portal privado B2B como prototipo navegable con datos ficticios y roles simulados (sin backend, sin login real). Cubre los 5 prompts del brief en un solo sprint dividido en bloques.
 
-## 1. Corregir microcopy "pegado" en todo el sitio
+## Alcance
 
-Causa raíz: en varios JSX, dos `{t("…")}` o `<br/>` adyacentes se renderizan sin espacio. Auditar y corregir:
+- Prototipo visual completo (Etapa 1 del brief)
+- Roles simulados con switcher (Etapa 2)
+- Sin Lovable Cloud, sin auth real, sin uploads reales (Etapas 3-6 quedan fuera)
 
-- `index.tsx`: "Comparta su necesidad, le respondemos hoy." (añadir espacio entre fragmentos).
-- `index.tsx`: "Equipos certificados. Trazables. Garantizados." y "DC-3 y certificado oficial STPS · OSHA · NSC."
-- `capacitacion.tsx`: "Cursos disponibles."
-- `industrias.tsx`: H1 → "Cada industria tiene un riesgo crítico. Nosotros lo hacemos auditable."
-- `ingenieria.tsx`: H1 → "Sistemas de anclaje diseñados desde el riesgo real."
-- `contratistas.tsx`: "Programa Nacional de Profesionalización a Contratistas." y "Operación bajo control total."
-- `contacto.tsx`: "Cuéntenos su proyecto. Respondemos hoy." (o variante fuerte "Comparta su riesgo. Lo convertimos en un plan técnico.").
-
-QA: buscar regex `[a-záéíóúñ][A-ZÁÉÍÓÚÑ]` y comas/puntos sin espacio en strings de rutas.
-
-## 2. Páginas individuales de servicios (eliminar 404)
-
-Crear ruta dinámica `src/routes/servicios.$servicio.tsx` + data en `src/data/kaee.ts` (`SERVICE_DETAILS`), con slugs:
+## Estructura de rutas
 
 ```text
-consultoria, asesoria, soluciones-personalizadas, supervision,
-certificacion, instalacion, renta, analisis-de-riesgo,
-plan-de-rescate, inspeccion-certificacion-anual
+/portal/login           → login simulado con selector de rol
+/portal                 → layout con sidebar + dashboard
+/portal/clientes        → lista de clientes
+/portal/clientes/$slug  → vista empresa (plantas asociadas)
+/portal/plantas/$slug   → vista planta (sistemas, certificaciones, proyectos)
+/portal/proyectos       → historial con filtros
+/portal/proyectos/$id   → detalle de proyecto + documentos
+/portal/certificaciones → vencimientos agrupados por urgencia
+/portal/documentos      → biblioteca descargable con filtros
+/portal/facturacion     → facturas ficticias
+/portal/biblioteca      → biblioteca interna KG (solo admin/equipo)
+/portal/admin           → panel admin (solo admin)
 ```
 
-Cada página: H1, problema que resuelve, qué incluye, entregables, normas relacionadas, cuándo contratarlo, CTA "Solicitar diagnóstico". Linkear desde `/servicios` y `/ingenieria` donde aplique. `head()` propio (title, description, canonical, og:*).
+Convención TanStack: layout pathless `_portal.tsx` con sidebar + `<Outlet/>`, hijos como `_portal.portal.tsx`, etc. O bien usar `portal.tsx` como layout con `<Outlet/>` y archivos `portal.clientes.tsx`. Se usará la segunda (más simple, sin underscore).
 
-## 3. Contenido único por curso
+## Datos ficticios (`src/data/portal.ts`)
 
-Enriquecer `COURSE_DETAILS` en `src/data/kaee.ts` con campos: riesgos específicos, temario por nivel (Autorizado / Monitor / Competente / Profesional), duración, perfil, práctica, entregables, normas, aplicaciones industriales. Actualizar `capacitacion.$curso.tsx` para renderizar todos esos bloques (no solo los 3 actuales). Cubrir mínimo: alturas, confinados, herramientas, incendios, plataformas, primeros-auxilios, izaje, rescate, bloqueo-etiquetado, electricidad.
+Un solo módulo con tipos + arrays mock:
 
-## 4. Contenido único por categoría de equipos
+- `CLIENTS` (16): FEMSA, Holcim, Merck, Coca-Cola, PetStar, Pirelli, Pfizer, Cargill, J&J, Owens Illinois, Unilever, Tupperware, Vestas, Gamesa, PepsiCo, GM, Conoco
+- `PLANTS` (12+): cada una con cliente, ubicación, industria, responsable
+- `SYSTEMS`: línea de vida horizontal/vertical, anclajes, barandales, escalas marinas
+- `PROJECTS` (~25): tipo, planta, fecha, responsable KG, estatus, documentos asociados
+- `CERTIFICATIONS`: sistema, planta, fecha emisión, vencimiento, estado calculado (vigente/por-vencer-30/por-vencer-60/vencido)
+- `DOCUMENTS`: tipo (factura/cotización/OC/certificado/ficha/reporte/evidencia), proyecto, fecha, url ficticia
+- `INVOICES`: folio, fecha, proyecto, monto, estado
+- `LIBRARY`: documentos internos por categoría (presentaciones, fichas, formatos, manuales, normas)
+- `ALERTS`: críticas, derivadas de certificaciones vencidas/por vencer
 
-Enriquecer `EQUIPMENT_DETAILS` en `kaee.ts` con: subcategorías/tipos, aplicaciones, criterios de selección, materiales/sistemas, marcas, normas, entregables documentales, CTA específico. Actualizar `equipos.$categoria.tsx` para 10 categorías (epp, anclajes, lineas-de-vida, barandales, domos, andamios, plataformas, pasos, escalas, conexión).
+## Roles (simulados en localStorage)
 
-Ejemplo líneas de vida: horizontales/verticales/temporales/Over Head/Roof Top/Man Safe/inclinadas/pared; cable/riel/cinta; criterios usuarios, superficie, frecuencia, ruta, rescate, certificación, inspección anual.
-
-## 5. Alinear `/servicios` con la home (5 divisiones)
-
-Reemplazar "Cuatro pilares. Una sola responsabilidad…" por:
-
-```text
-H1: Un sistema completo contra el riesgo.
-Sub: Cinco frentes operativos. Un solo estándar de seguridad.
+```ts
+type Role = 'cliente-corp' | 'cliente-planta' | 'admin-kg' | 'equipo-kg'
+type Session = { role: Role; clientSlug?: string; plantSlug?: string; name: string }
 ```
 
-Listar W@H, MS&S, WoLL, S@H y SoNs como divisiones (no como 4 pilares). Mantener el grid existente con un quinto bloque (P.N.P.C. queda dentro de SoNs / referenciado aparte).
+Hook `usePortalSession()` lee/escribe `localStorage['kg-portal-session']`. Layout redirige a `/portal/login` si no hay sesión. Filtros aplicados en cada vista según rol:
 
-## 6. Expandir FAQ
+- `cliente-corp` → solo su empresa y plantas
+- `cliente-planta` → solo su planta
+- `admin-kg` → todo + `/portal/admin`
+- `equipo-kg` → biblioteca interna, sin clientes
 
-Reescribir `faq.tsx` con preguntas reales agrupadas:
+## Componentes nuevos (`src/components/portal/`)
 
-- Documentos y auditoría (DC-3, ficha técnica, certificados, bitácoras).
-- Capacitación (en planta, niveles, validez, instructores).
-- Inspección y mantenimiento de líneas de vida (anual, otras marcas).
-- Normas aplicables (NOM-009, NOM-033, ANSI Z359, OSHA).
-- Plan de rescate, auditorías urgentes, cotización, tiempos.
+- `PortalSidebar.tsx` — nav lateral con secciones según rol
+- `PortalHeader.tsx` — breadcrumb, rol activo, botón "cambiar rol" (logout simulado)
+- `StatusBadge.tsx` — chips: vigente/verde, por-vencer/amarillo, vencido/rojo, pendiente/gris, revisión/morado
+- `StatCard.tsx` — tarjetas resumen del dashboard
+- `DataTable.tsx` — tabla genérica con filtros (usa shadcn `table` + `input` + `select`)
+- `DocumentRow.tsx` — fila con acciones: Ver, Descargar, Copiar enlace (toast simulado)
+- `ExpiryGroup.tsx` — agrupador de certificaciones por urgencia
 
-Mínimo 18 preguntas. Añadir JSON-LD `FAQPage`.
+## Pantallas
 
-## 7. Clientes nuevos
+1. **Login** (`/portal/login`): card centrada, 4 botones de rol (Cliente corp / Cliente planta / Admin / Equipo). Selector de cliente para roles cliente. Guarda sesión y redirige a `/portal`.
+2. **Dashboard** (`/portal`): 4 StatCards (certificaciones por vencer, sistemas, proyectos activos, alertas críticas) + 3 paneles (próximos vencimientos, últimos proyectos, documentos recientes).
+3. **Clientes** (`/portal/clientes`): grid de cards con logo placeholder + nº plantas + nº certificaciones vigentes.
+4. **Empresa** (`/portal/clientes/$slug`): tabs plantas / proyectos / documentos. KPIs arriba.
+5. **Planta** (`/portal/plantas/$slug`): header con datos planta, sistemas instalados, certificaciones con estado, proyectos históricos, documentos.
+6. **Proyectos** (`/portal/proyectos`): DataTable con filtros tipo/cliente/planta/estatus.
+7. **Detalle proyecto** (`/portal/proyectos/$id`): metadatos + lista de documentos clasificados + historial.
+8. **Certificaciones** (`/portal/certificaciones`): 4 ExpiryGroups (vencidas → vigentes).
+9. **Documentos** (`/portal/documentos`): filtros por tipo + tabla.
+10. **Facturación** (`/portal/facturacion`): tabla con PDF/XML simulados.
+11. **Biblioteca KG** (`/portal/biblioteca`): solo admin/equipo. Cards por categoría → lista de archivos.
+12. **Admin** (`/portal/admin`): solo admin. Tabs clientes/plantas/usuarios/proyectos/vencimientos con botones simulados (toast "Acción simulada").
 
-Agregar a `CLIENTS_FULL` en `kaee.ts`: Pirelli, General Motors, Pfizer, Cargill, Johnson & Johnson, Conoco Phillips, Vestas, PepsiCo. Reflejados en home (ClientLogosBand) e `industrias.tsx`.
+## SEO y nav
 
-## 8. Pulir CTA / copy clave de home y cumplimiento
+- Todas las rutas `/portal/*` con `<meta name="robots" content="noindex">` en `head()` — es área privada.
+- Agregar enlace "Portal" en header público (link discreto a `/portal/login`).
 
-- Home CTA final → "Comparta su riesgo. Le respondemos con un plan técnico." + subcopy técnico (planta, tipo de trabajo, usuarios, fecha crítica).
-- `cumplimiento.tsx` H1 → "La evidencia que su auditor pide, emitida por un equipo técnico."
+## Diseño
+
+Mantiene tokens existentes (oklch en `src/styles.css`). Estética dashboard densa, no landing: tablas, sidebars, badges. Reusar shadcn `card`, `table`, `tabs`, `badge`, `button`, `input`, `select`, `dialog`. Tipografía heredada del sitio.
+
+## Acciones simuladas
+
+Todos los botones (Descargar, Ver PDF, Crear, Editar, Asignar usuario) muestran toast "Acción simulada — prototipo". No descargas reales.
+
+## Orden de implementación
+
+1. `src/data/portal.ts` + tipos + datos ficticios
+2. `src/hooks/use-portal-session.ts` + `src/components/portal/*`
+3. Layout `portal.tsx` + login
+4. Dashboard + clientes + planta + empresa
+5. Proyectos + detalle + certificaciones + documentos + facturación
+6. Biblioteca + admin
+7. Link discreto en header público + verificación visual por rol
 
 ## Fuera de alcance
 
-- `/portal` de clientes (se difiere; auditoría lo marca como no bloqueante).
-- Cambios de dirección creativa / paleta / tipografía.
+- Lovable Cloud / Supabase / auth real
+- Uploads reales / generación de PDFs
+- Notificaciones por email
+- Integración con facturación real
 
-## Detalle técnico
-
-- Rutas TanStack file-based: nueva `servicios.$servicio.tsx` y, si se requiere, splits dentro de `equipos.$categoria.tsx` siguen siendo dinámicas (no nuevos archivos por slug).
-- `kaee.ts` crecerá con `SERVICE_DETAILS`, ampliación de `COURSE_DETAILS` y `EQUIPMENT_DETAILS` (estructuras tipadas, helpers `serviceDetail(slug)`).
-- `head()` en cada ruta nueva con `title`, `description`, canonical absoluto (`https://kgsafety.lovable.app/...`), `og:title`, `og:description`, `og:url`.
-- FAQ: añadir `scripts: [{ type: "application/ld+json", children: JSON.stringify({@type: "FAQPage", mainEntity: [...] }) }]`.
-- Microcopy fix: revisar JSX que une fragmentos `{t("…")}{t("…")}` o `<br/>` sin espacio; introducir espacio explícito o consolidar strings.
-- Sin cambios de schema, sin nuevos paquetes.
-
-## Orden de ejecución
-
-1. Fix microcopy (rápido, alto impacto).
-2. `kaee.ts`: ampliar datos (services, courses, equipment, clientes).
-3. Crear `servicios.$servicio.tsx` + enlaces.
-4. Actualizar `capacitacion.$curso.tsx` y `equipos.$categoria.tsx` para renderizar datos enriquecidos.
-5. Reescribir `/servicios` (5 frentes).
-6. Reescribir `/faq` + JSON-LD.
-7. Pulir CTAs (home, cumplimiento, contacto).
+Esto se aborda en sprints posteriores (Etapas 3-6 del brief).
