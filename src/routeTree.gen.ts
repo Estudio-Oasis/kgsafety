@@ -27,10 +27,17 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as ServiciosServicioRouteImport } from './routes/servicios.$servicio'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
+import { Route as PortalFacturacionRouteImport } from './routes/portal.facturacion'
+import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
+import { Route as PortalCertificacionesRouteImport } from './routes/portal.certificaciones'
+import { Route as PortalBibliotecaRouteImport } from './routes/portal.biblioteca'
+import { Route as PortalAdminRouteImport } from './routes/portal.admin'
 import { Route as IngenieriaServicioRouteImport } from './routes/ingenieria.$servicio'
 import { Route as EquiposCategoriaRouteImport } from './routes/equipos.$categoria'
 import { Route as CapacitacionCursoRouteImport } from './routes/capacitacion.$curso'
+import { Route as PortalProyectosIndexRouteImport } from './routes/portal.proyectos.index'
 import { Route as PortalClientesIndexRouteImport } from './routes/portal.clientes.index'
+import { Route as PortalProyectosIdRouteImport } from './routes/portal.proyectos.$id'
 import { Route as PortalPlantasSlugRouteImport } from './routes/portal.plantas.$slug'
 import { Route as PortalClientesSlugRouteImport } from './routes/portal.clientes.$slug'
 
@@ -124,6 +131,31 @@ const PortalLoginRoute = PortalLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalFacturacionRoute = PortalFacturacionRouteImport.update({
+  id: '/facturacion',
+  path: '/facturacion',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalDocumentosRoute = PortalDocumentosRouteImport.update({
+  id: '/documentos',
+  path: '/documentos',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalCertificacionesRoute = PortalCertificacionesRouteImport.update({
+  id: '/certificaciones',
+  path: '/certificaciones',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalBibliotecaRoute = PortalBibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalAdminRoute = PortalAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => PortalRoute,
+} as any)
 const IngenieriaServicioRoute = IngenieriaServicioRouteImport.update({
   id: '/$servicio',
   path: '/$servicio',
@@ -139,9 +171,19 @@ const CapacitacionCursoRoute = CapacitacionCursoRouteImport.update({
   path: '/$curso',
   getParentRoute: () => CapacitacionRoute,
 } as any)
+const PortalProyectosIndexRoute = PortalProyectosIndexRouteImport.update({
+  id: '/proyectos/',
+  path: '/proyectos/',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalClientesIndexRoute = PortalClientesIndexRouteImport.update({
   id: '/clientes/',
   path: '/clientes/',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalProyectosIdRoute = PortalProyectosIdRouteImport.update({
+  id: '/proyectos/$id',
+  path: '/proyectos/$id',
   getParentRoute: () => PortalRoute,
 } as any)
 const PortalPlantasSlugRoute = PortalPlantasSlugRouteImport.update({
@@ -174,12 +216,19 @@ export interface FileRoutesByFullPath {
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
+  '/portal/admin': typeof PortalAdminRoute
+  '/portal/biblioteca': typeof PortalBibliotecaRoute
+  '/portal/certificaciones': typeof PortalCertificacionesRoute
+  '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/login': typeof PortalLoginRoute
   '/servicios/$servicio': typeof ServiciosServicioRoute
   '/portal/': typeof PortalIndexRoute
   '/portal/clientes/$slug': typeof PortalClientesSlugRoute
   '/portal/plantas/$slug': typeof PortalPlantasSlugRoute
+  '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes/': typeof PortalClientesIndexRoute
+  '/portal/proyectos/': typeof PortalProyectosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -199,12 +248,19 @@ export interface FileRoutesByTo {
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
+  '/portal/admin': typeof PortalAdminRoute
+  '/portal/biblioteca': typeof PortalBibliotecaRoute
+  '/portal/certificaciones': typeof PortalCertificacionesRoute
+  '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/login': typeof PortalLoginRoute
   '/servicios/$servicio': typeof ServiciosServicioRoute
   '/portal': typeof PortalIndexRoute
   '/portal/clientes/$slug': typeof PortalClientesSlugRoute
   '/portal/plantas/$slug': typeof PortalPlantasSlugRoute
+  '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes': typeof PortalClientesIndexRoute
+  '/portal/proyectos': typeof PortalProyectosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -226,12 +282,19 @@ export interface FileRoutesById {
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
+  '/portal/admin': typeof PortalAdminRoute
+  '/portal/biblioteca': typeof PortalBibliotecaRoute
+  '/portal/certificaciones': typeof PortalCertificacionesRoute
+  '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/login': typeof PortalLoginRoute
   '/servicios/$servicio': typeof ServiciosServicioRoute
   '/portal/': typeof PortalIndexRoute
   '/portal/clientes/$slug': typeof PortalClientesSlugRoute
   '/portal/plantas/$slug': typeof PortalPlantasSlugRoute
+  '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes/': typeof PortalClientesIndexRoute
+  '/portal/proyectos/': typeof PortalProyectosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -254,12 +317,19 @@ export interface FileRouteTypes {
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
+    | '/portal/admin'
+    | '/portal/biblioteca'
+    | '/portal/certificaciones'
+    | '/portal/documentos'
+    | '/portal/facturacion'
     | '/portal/login'
     | '/servicios/$servicio'
     | '/portal/'
     | '/portal/clientes/$slug'
     | '/portal/plantas/$slug'
+    | '/portal/proyectos/$id'
     | '/portal/clientes/'
+    | '/portal/proyectos/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -279,12 +349,19 @@ export interface FileRouteTypes {
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
+    | '/portal/admin'
+    | '/portal/biblioteca'
+    | '/portal/certificaciones'
+    | '/portal/documentos'
+    | '/portal/facturacion'
     | '/portal/login'
     | '/servicios/$servicio'
     | '/portal'
     | '/portal/clientes/$slug'
     | '/portal/plantas/$slug'
+    | '/portal/proyectos/$id'
     | '/portal/clientes'
+    | '/portal/proyectos'
   id:
     | '__root__'
     | '/'
@@ -305,12 +382,19 @@ export interface FileRouteTypes {
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
+    | '/portal/admin'
+    | '/portal/biblioteca'
+    | '/portal/certificaciones'
+    | '/portal/documentos'
+    | '/portal/facturacion'
     | '/portal/login'
     | '/servicios/$servicio'
     | '/portal/'
     | '/portal/clientes/$slug'
     | '/portal/plantas/$slug'
+    | '/portal/proyectos/$id'
     | '/portal/clientes/'
+    | '/portal/proyectos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -459,6 +543,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalLoginRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/facturacion': {
+      id: '/portal/facturacion'
+      path: '/facturacion'
+      fullPath: '/portal/facturacion'
+      preLoaderRoute: typeof PortalFacturacionRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/documentos': {
+      id: '/portal/documentos'
+      path: '/documentos'
+      fullPath: '/portal/documentos'
+      preLoaderRoute: typeof PortalDocumentosRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/certificaciones': {
+      id: '/portal/certificaciones'
+      path: '/certificaciones'
+      fullPath: '/portal/certificaciones'
+      preLoaderRoute: typeof PortalCertificacionesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/biblioteca': {
+      id: '/portal/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/portal/biblioteca'
+      preLoaderRoute: typeof PortalBibliotecaRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/admin': {
+      id: '/portal/admin'
+      path: '/admin'
+      fullPath: '/portal/admin'
+      preLoaderRoute: typeof PortalAdminRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/ingenieria/$servicio': {
       id: '/ingenieria/$servicio'
       path: '/$servicio'
@@ -480,11 +599,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CapacitacionCursoRouteImport
       parentRoute: typeof CapacitacionRoute
     }
+    '/portal/proyectos/': {
+      id: '/portal/proyectos/'
+      path: '/proyectos'
+      fullPath: '/portal/proyectos/'
+      preLoaderRoute: typeof PortalProyectosIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/clientes/': {
       id: '/portal/clientes/'
       path: '/clientes'
       fullPath: '/portal/clientes/'
       preLoaderRoute: typeof PortalClientesIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/proyectos/$id': {
+      id: '/portal/proyectos/$id'
+      path: '/proyectos/$id'
+      fullPath: '/portal/proyectos/$id'
+      preLoaderRoute: typeof PortalProyectosIdRouteImport
       parentRoute: typeof PortalRoute
     }
     '/portal/plantas/$slug': {
@@ -540,19 +673,33 @@ const IngenieriaRouteWithChildren = IngenieriaRoute._addFileChildren(
 )
 
 interface PortalRouteChildren {
+  PortalAdminRoute: typeof PortalAdminRoute
+  PortalBibliotecaRoute: typeof PortalBibliotecaRoute
+  PortalCertificacionesRoute: typeof PortalCertificacionesRoute
+  PortalDocumentosRoute: typeof PortalDocumentosRoute
+  PortalFacturacionRoute: typeof PortalFacturacionRoute
   PortalLoginRoute: typeof PortalLoginRoute
   PortalIndexRoute: typeof PortalIndexRoute
   PortalClientesSlugRoute: typeof PortalClientesSlugRoute
   PortalPlantasSlugRoute: typeof PortalPlantasSlugRoute
+  PortalProyectosIdRoute: typeof PortalProyectosIdRoute
   PortalClientesIndexRoute: typeof PortalClientesIndexRoute
+  PortalProyectosIndexRoute: typeof PortalProyectosIndexRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
+  PortalAdminRoute: PortalAdminRoute,
+  PortalBibliotecaRoute: PortalBibliotecaRoute,
+  PortalCertificacionesRoute: PortalCertificacionesRoute,
+  PortalDocumentosRoute: PortalDocumentosRoute,
+  PortalFacturacionRoute: PortalFacturacionRoute,
   PortalLoginRoute: PortalLoginRoute,
   PortalIndexRoute: PortalIndexRoute,
   PortalClientesSlugRoute: PortalClientesSlugRoute,
   PortalPlantasSlugRoute: PortalPlantasSlugRoute,
+  PortalProyectosIdRoute: PortalProyectosIdRoute,
   PortalClientesIndexRoute: PortalClientesIndexRoute,
+  PortalProyectosIndexRoute: PortalProyectosIndexRoute,
 }
 
 const PortalRouteWithChildren =
