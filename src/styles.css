@@ -350,4 +350,14 @@ html, body { overflow-x: hidden; }
   .font-display.uppercase, h1.uppercase, h2.uppercase, h3.uppercase {
     letter-spacing: -0.01em;
   }
+  /* Michroma is a very wide monospaced display font. Inside narrow bento
+     tiles on mobile, words like ELECTRICIDAD / PLATAFORMAS / COMPONENTES
+     overflow no matter the size. Swap to the body font for tile titles
+     only on mobile — full Michroma still applies on tablet and up. */
+  .kg-bento .font-display,
+  [class*="rounded-[var(--bento-radius"] .font-display {
+    font-family: var(--font-body, system-ui, sans-serif);
+    letter-spacing: 0;
+    font-weight: 700;
+  }
 }
