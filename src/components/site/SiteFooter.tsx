@@ -56,7 +56,7 @@ export function SiteFooter() {
               Estado de México, C.P. 50090
             </li>
             <li className="text-white/50">{t("Lun a Vie · 9:00 – 18:00")}</li>
-          </ul>
+        <div>{t("© 2025 KG Fall Protection Engineering · Toluca · CDMX · Bogotá · Houston · Toronto")}</div>
         </div>
       </div>
 

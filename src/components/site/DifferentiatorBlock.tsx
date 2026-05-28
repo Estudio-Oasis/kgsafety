@@ -35,12 +35,24 @@ export function DifferentiatorBlock() {
                 {line}
               </li>
             ))}
-          </ul>
           <p className="text-base md:text-lg leading-relaxed text-[color:color-mix(in_oklab,var(--on-surface)_78%,transparent)] max-w-xl">
             {t(
               "KG Safety integra diagnóstico, ingeniería, instalación, certificación, capacitación y documentación para que cada solución sea técnicamente correcta, operativamente viable y auditable.",
             )}
           </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[color:color-mix(in_oklab,var(--on-surface)_60%,transparent)] mr-1 self-center">
+              {t("Cumplimos normativa nacional e internacional:")}
+            </span>
+            {["STPS", "OSHA", "ANSI Z359", "NOM-009", "EN-795"].map((n) => (
+              <span
+                key={n}
+                className="text-[10px] font-display uppercase tracking-[0.22em] px-2.5 py-1 border border-[color:var(--border)] rounded-full text-[color:var(--on-surface)]"
+              >
+                {n}
+              </span>
+            ))}
+          </div>
         </div>
         <ol className="grid grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
           {pillars.map((p) => (

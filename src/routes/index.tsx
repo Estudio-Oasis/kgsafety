@@ -41,14 +41,15 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "KG Safety · Seguridad en altura lista para auditoría" },
-      { name: "description", content: "Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar. 30M+ horas-hombre sin accidentes." },
-      { property: "og:title", content: "KG Safety · Seguridad en altura lista para auditoría" },
+      { title: "KG Safety · Eliminación total de riesgos de caída" },
+      { name: "description", content: "Ingeniería aplicada a la eliminación total de riesgos de caída. Capacitación DC-3, sistemas certificados e ingeniería para industria pesada. 30M+ horas-hombre sin accidentes." },
+      { property: "og:title", content: "KG Safety · Eliminación total de riesgos de caída" },
       { property: "og:description", content: "Integrador de seguridad en altura: diagnóstico, ingeniería, instalación, certificación, capacitación y documentación auditable." },
       { property: "og:url", content: "https://kgsafety.lovable.app/" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/" }],
   }),
+});
 });
 
 
@@ -58,6 +59,7 @@ function Index() {
   const topCourses = COURSES.slice(0, 6);
   const topEquip = EQUIPMENT.filter((e) => EQUIP_IMG[e.slug]).slice(0, 4);
   const restEquip = EQUIPMENT.filter((e) => !EQUIP_IMG[e.slug]).slice(0, 4);
+  void topEquip; void restEquip; void clientLogos;
 
   return (
     <div className="bg-[color:var(--surface)] text-[color:var(--on-surface)]">
@@ -73,15 +75,15 @@ function Index() {
               eyebrow={<span style={{ color: "var(--signal)" }}>{t("Integrador de seguridad en altura · WE NEVER FALL")}</span>}
             >
               <h1 className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.0] uppercase mb-4 md:mb-6" style={{ color: "#fff" }}>
-                {t("Seguridad en altura")}{" "}
-                <span style={{ color: "var(--signal)" }}>{t("lista para auditoría.")}</span>
+                {t("Ingeniería aplicada a la")}{" "}
+                <span style={{ color: "var(--signal)" }}>{t("eliminación total de riesgos de caída.")}</span>
               </h1>
-              <p className="text-sm md:text-base max-w-xl leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.88)" }}>
-                {t("Ingeniería, capacitación DC-3, sistemas certificados y evidencia documental para operaciones industriales de alto estándar.")}
+              <p className="text-sm md:text-base max-w-md md:max-w-xl leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.88)" }}>
+                {t("Capacitación DC-3, sistemas certificados e ingeniería para industria pesada.")}
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
                 <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
-                  {t("Solicitar diagnóstico")} →
+                  {t("Hablar con un especialista")} →
                 </Link>
                 <Link to="/servicios" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
                   {t("Ver soluciones")}
@@ -109,8 +111,8 @@ function Index() {
                   <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>{t("Registro oficial")}</div>
                 </div>
                 <div className="flex flex-col sm:border-l sm:pl-4 pt-3 sm:pt-0 border-t sm:border-t-0" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
-                  <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>{t("3 países")}</div>
-                  <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>MX · CO · CL</div>
+                  <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>{t("5 países")}</div>
+                  <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>MX · CO · CL · US · CA</div>
                 </div>
               </div>
             </BentoTile>
@@ -184,9 +186,10 @@ function Index() {
               span="md:col-span-1"
               variant="accent"
               to="/contratistas"
-              eyebrow="04"
-              title="P.N.P.C."
-              cta={t("Programa")}
+              eyebrow="04 / P.N.P.C."
+              title={t("Filtro de contratistas")}
+              description={t("Profesionalizamos a sus proveedores externos antes de operar en planta.")}
+              cta={t("Conocer el programa")}
             />
           </BentoGrid>
         </div>
@@ -232,112 +235,6 @@ function Index() {
         </div>
       </section>
 
-      {/* ============== CATÁLOGO EQUIPOS ============== */}
-      <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-y border-[color:var(--border)]">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8 flex items-end justify-between flex-wrap gap-4">
-            <div>
-              <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-2">
-                {t("Catálogo Safety@Heights")}
-              </div>
-              <h2 className="font-display text-2xl md:text-4xl uppercase">
-                {t("Equipos certificados")}
-              </h2>
-            </div>
-            <Link to="/equipos" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
-              {t("Ver catálogo completo")} →
-            </Link>
-          </div>
-
-          <BentoGrid cols="grid-cols-2 md:grid-cols-6" rows="auto-rows-[minmax(180px,auto)] md:auto-rows-[minmax(200px,auto)]">
-            {/* 4 categorías con foto */}
-            {topEquip.map((e, i) => {
-              const featured = i === 0;
-              return (
-                <BentoTile
-                  key={e.slug}
-                  span={featured ? "col-span-2 md:col-span-3 md:row-span-2" : "md:col-span-3"}
-                  variant="image"
-                  image={EQUIP_IMG[e.slug]}
-                  to="/equipos/$categoria"
-                  params={{ categoria: e.slug }}
-                  eyebrow={`${e.items.length} ${t("items")}`}
-                  title={e.name.split("—")[0].trim()}
-                  description={featured ? e.desc : undefined}
-                  cta={t("Ver categoría")}
-                />
-              );
-            })}
-            {/* 4 categorías sin foto en barra inferior */}
-            {restEquip.map((e) => (
-              <BentoTile
-                key={e.slug}
-                span="md:col-span-3 lg:col-span-3"
-                variant="neutral"
-                to="/equipos/$categoria"
-                params={{ categoria: e.slug }}
-                eyebrow={`${e.items.length} ${t("items")}`}
-                title={e.name.split("—")[0].trim()}
-                description={e.desc}
-                cta={t("Ver")}
-              />
-            ))}
-          </BentoGrid>
-        </div>
-      </section>
-
-      {/* ============== PRUEBA SOCIAL BENTO ============== */}
-      <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto">
-          <BentoGrid>
-            {/* Testimonio grande */}
-            <BentoTile span="col-span-2 md:col-span-3 md:row-span-2" variant="dark">
-              <div className="font-display text-5xl leading-none mb-4" style={{ color: "var(--signal)" }}>"</div>
-              <p className="italic leading-relaxed text-base md:text-lg mb-4" style={{ color: "rgba(255,255,255,0.95)" }}>
-                {TESTIMONIALS[0].quote}
-              </p>
-              <div className="mt-auto pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.18)" }}>
-                <div className="font-bold text-sm" style={{ color: "#fff" }}>{TESTIMONIALS[0].name}</div>
-                <div className="text-xs uppercase tracking-widest mt-1" style={{ color: "var(--signal)" }}>{TESTIMONIALS[0].role}</div>
-              </div>
-            </BentoTile>
-
-            {/* PNPC stats */}
-            {PNPC_STATS.slice(0, 2).map((s, i) => (
-              <BentoTile key={s.label} span="md:col-span-3" variant={i === 0 ? "accent" : "stat"}>
-                <div className="font-display text-5xl md:text-6xl leading-none mb-2">{s.value}</div>
-                <div className="text-[10px] uppercase tracking-[0.22em] font-bold opacity-80">{t(s.label)}</div>
-              </BentoTile>
-            ))}
-
-            {/* Industrias chips */}
-            <BentoTile span="col-span-2 md:col-span-4" variant="neutral" eyebrow={t("22 sectores")} title={t("Industrias atendidas")}>
-              <div className="flex flex-wrap gap-1.5 mt-3">
-                {INDUSTRIES.slice(0, 14).map((ind) => (
-                  <span key={ind} className="text-[10px] uppercase tracking-[0.15em] border border-[color:var(--border)] px-2 py-1 rounded-full">
-                    {ind}
-                  </span>
-                ))}
-                <span className="text-[10px] uppercase tracking-[0.15em] text-brand-blue font-bold px-2 py-1">
-                  +{INDUSTRIES.length - 14}
-                </span>
-              </div>
-            </BentoTile>
-
-            {/* Entregables auditables — síntesis */}
-            <BentoTile span="md:col-span-2" variant="dark" eyebrow={t("Cierre auditable")} title={t("Evidencia documental")}>
-              <p className="mt-2 text-xs md:text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.78)" }}>
-                {t("Análisis de riesgo, plan de rescate, certificados, DC-3 y bitácora de inspección en cada proyecto.")}
-              </p>
-              <Link to="/cumplimiento" className="mt-auto pt-3 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--signal)" }}>
-                {t("Ver cumplimiento")} →
-              </Link>
-            </BentoTile>
-
-          </BentoGrid>
-        </div>
-      </section>
-
       {/* ============== ENTREGABLES AUDITABLES ============== */}
       <AuditableDeliverables variant="light" />
 
@@ -360,7 +257,7 @@ function Index() {
               </p>
               <div className="flex flex-wrap gap-3 mt-auto relative z-10">
                 <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
-                  {t("Solicitar diagnóstico")}
+                  {t("Hablar con un especialista")}
                 </Link>
                 <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
                   {t("WhatsApp directo")}

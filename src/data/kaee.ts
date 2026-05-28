@@ -186,11 +186,11 @@ export const TESTIMONIALS = [
 ];
 
 export const DIVISIONS = [
-  { tag: "W@H",  name: "Working at Heights",      desc: "Capacitación y entrenamiento — presencial y en línea." },
-  { tag: "MS&S", name: "Mantenimiento, Servicios & Soluciones", desc: "Consultoría, asesoría, supervisión, certificación e instalación." },
-  { tag: "WoLL", name: "Working on Life Lines",   desc: "Líneas de vida, anclajes, barandales, andamios, plataformas, pasos de gato y escalas." },
-  { tag: "S@H",  name: "Safety @ Heights",        desc: "Tienda en línea de EPP y equipo certificado." },
-  { tag: "SoNs", name: "SoNs Real State",         desc: "Mantenimiento, venta y renta de inmuebles especializados en alturas." },
+  { tag: "01", name: "Capacitación",            desc: "Cursos DC-3, OSHA y entrenamiento técnico — presencial y en línea." },
+  { tag: "02", name: "Servicios técnicos",      desc: "Consultoría, asesoría, supervisión, certificación e instalación." },
+  { tag: "03", name: "Ingeniería",              desc: "Líneas de vida, anclajes, barandales, andamios, plataformas y escalas." },
+  { tag: "04", name: "Equipo certificado",      desc: "EPP y equipo para trabajo en altura bajo norma internacional." },
+  { tag: "05", name: "Inmuebles especializados", desc: "Mantenimiento, venta y renta de inmuebles aptos para trabajo en altura." },
 ];
 
 export const CLIENTS_FULL = [
@@ -205,7 +205,7 @@ export const CLIENTS_FULL = [
 export const FAQS = [
   { q: "¿Qué es el método K.A.E.E.?", a: "Knowledge, Analysis, Engineering & Elimination: nuestra metodología propietaria para reducir a cero los accidentes en trabajos en altura." },
   { q: "¿Sus cursos están registrados ante STPS?", a: "Sí. Entregamos DC-3 oficial y certificado de cumplimiento con registro verificable en línea." },
-  { q: "¿Tienen cobertura internacional?", a: "Sede en México (Toluca) con operación en Colombia, Estados Unidos y Argentina, y cobertura LATAM bajo la marca KG Safety Latam." },
+  { q: "¿Tienen cobertura internacional?", a: "Sede en México (Toluca) con operación directa en México, Colombia, Chile, Estados Unidos y Canadá, y cobertura LATAM bajo la marca KG Safety Latam." },
   { q: "¿Cuánto tarda una cotización?", a: "Le respondemos el mismo día. Para ingeniería en sitio, agendamos visita técnica dentro de 72 horas hábiles." },
   { q: "¿Trabajan con contratistas externos?", a: "Sí, a través del Programa Nacional de Profesionalización a Contratistas (P.N.P.C.) que estandariza la seguridad de sus proveedores." },
   { q: "¿Cuáles son los niveles de capacitación?", a: "Tres niveles: Básico / Autorizado (8 h), Supervisor / Monitor (16 h) y Jefe de Seguridad / Competente (24 h). Adicionalmente impartimos OSHA 10 y OSHA 30." },

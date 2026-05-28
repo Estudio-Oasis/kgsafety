@@ -3,16 +3,16 @@ import { useT } from "@/i18n/context";
 import { DIVISIONS } from "@/data/kaee";
 
 const DIVISION_LINKS: Record<string, string> = {
-  "W@H": "/capacitacion",
-  "MS&S": "/servicios",
-  "WoLL": "/ingenieria",
-  "S@H": "/equipos",
-  "SoNs": "/servicios",
+  "01": "/capacitacion",
+  "02": "/servicios",
+  "03": "/ingenieria",
+  "04": "/equipos",
+  "05": "/servicios",
 };
 
 /**
- * "Un sistema completo contra el riesgo" — reemplaza la sección
- * "Cuatro frentes contra la gravedad". Muestra las 5 divisiones reales.
+ * "Un sistema completo contra el riesgo" — 5 áreas operativas
+ * sin marcas externas: solo números, nombre funcional y descripción.
  */
 export function DivisionsBlock() {
   const { t } = useT();
@@ -30,7 +30,7 @@ export function DivisionsBlock() {
             </h2>
             <p className="mt-3 max-w-2xl text-sm md:text-base text-[color:color-mix(in_oklab,var(--on-surface)_72%,transparent)]">
               {t(
-                "Cinco divisiones operativas que cubren capacitación, servicios técnicos, ingeniería, equipo certificado e infraestructura especializada.",
+                "Cinco áreas operativas que cubren capacitación, servicios técnicos, ingeniería, equipo certificado e infraestructura especializada — bajo una sola marca: KG Safety.",
               )}
             </p>
           </div>
@@ -46,12 +46,12 @@ export function DivisionsBlock() {
           {DIVISIONS.map((d) => (
             <li key={d.tag} className="bg-[color:var(--surface)] p-5 md:p-6 flex flex-col">
               <span
-                className="font-display text-2xl md:text-3xl mb-2"
-                style={{ color: "var(--brand-blue)" }}
+                className="font-display text-xs tracking-[0.25em] mb-3"
+                style={{ color: "var(--signal)" }}
               >
                 {d.tag}
               </span>
-              <span className="font-display text-[11px] uppercase tracking-[0.18em] text-[color:var(--on-surface)] mb-3 leading-snug">
+              <span className="font-display text-base md:text-lg uppercase tracking-tight text-[color:var(--on-surface)] mb-3 leading-snug">
                 {t(d.name)}
               </span>
               <p className="text-xs md:text-sm leading-relaxed text-[color:color-mix(in_oklab,var(--on-surface)_70%,transparent)] mb-4">
@@ -61,7 +61,7 @@ export function DivisionsBlock() {
                 to={DIVISION_LINKS[d.tag] ?? "/servicios"}
                 className="mt-auto text-[10px] font-bold uppercase tracking-[0.22em] text-brand-blue hover:text-signal transition-colors"
               >
-                {t("Ver división")} →
+                {t("Ver área")} →
               </Link>
             </li>
           ))}
