@@ -126,8 +126,41 @@ function Index() {
       {/* ============== 5 DIVISIONES ============== */}
       <DivisionsBlock />
 
+      {/* ============== EVIDENCIA DOCUMENTAL (CTA compacto) ============== */}
+      <section className="px-4 md:px-8 lg:px-12 py-8 md:py-10 bg-[color:var(--surface)]">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            to="/cumplimiento"
+            className="group block rounded-lg bg-[color:var(--anchor-fixed)] text-white p-6 md:p-8 border border-white/10 transition-all duration-200 hover:border-[color:var(--signal)] hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--signal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--surface)] active:scale-[0.99]"
+          >
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="max-w-xl">
+                <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-2" style={{ color: "var(--signal)" }}>
+                  {t("Cierre auditable")}
+                </div>
+                <h3 className="font-display text-xl md:text-2xl uppercase leading-tight mb-2">
+                  {t("Evidencia documental")}
+                </h3>
+                <p className="text-sm text-white/70 leading-relaxed">
+                  {t("Análisis de riesgo, plan de rescate, certificados, DC-3 y bitácora de inspección en cada proyecto.")}
+                </p>
+              </div>
+              <span
+                className="self-start md:self-auto inline-flex items-center gap-2 font-display text-[11px] uppercase tracking-[0.25em] whitespace-nowrap"
+                style={{ color: "var(--signal)" }}
+              >
+                {t("Ver cumplimiento")}
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </span>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* ============== CLIENTES ============== */}
       <ClientLogosBand variant="light" />
+
+
 
 
 
