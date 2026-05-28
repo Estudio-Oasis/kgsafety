@@ -32,27 +32,20 @@ export function ClientLogosBand({
             {t("Operaciones industriales clase mundial confían en KG Safety.")}
           </h2>
         </div>
-        <ul
-          className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-px ${
-            isDark
-              ? "bg-white/10 border border-white/10"
-              : "bg-[color:var(--border)] border border-[color:var(--border)]"
-          }`}
-        >
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
           {logos.map((src, i) => (
             <li
               key={src}
-              className={`flex items-center justify-center px-4 py-6 md:py-8 ${
-                isDark ? "bg-[color:var(--anchor-fixed)]" : "bg-[color:var(--surface-2)]"
+              className={`flex items-center justify-center px-4 py-6 md:py-8 rounded-md border ${
+                isDark
+                  ? "bg-white border-white/10"
+                  : "bg-[color:var(--surface-2)] border-[color:var(--border)]"
               }`}
             >
               <img
                 src={src}
                 alt={`Cliente destacado ${i + 1}`}
-                loading="lazy"
-                className={`max-h-12 md:max-h-16 w-auto object-contain transition-all duration-300 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 ${
-                  isDark ? "invert brightness-0 contrast-200" : ""
-                }`}
+                className="max-h-14 md:max-h-16 w-auto object-contain"
               />
             </li>
           ))}
@@ -61,3 +54,4 @@ export function ClientLogosBand({
     </section>
   );
 }
+
