@@ -45,7 +45,6 @@ export function ClientLogosBand({
               <img
                 src={src}
                 alt={`Cliente destacado ${i + 1}`}
-                loading="lazy"
                 className="max-h-14 md:max-h-16 w-auto object-contain"
               />
             </li>
