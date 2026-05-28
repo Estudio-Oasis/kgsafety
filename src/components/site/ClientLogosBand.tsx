@@ -32,10 +32,7 @@ export function ClientLogosBand({
             {t("Operaciones industriales clase mundial confían en KG Safety.")}
           </h2>
         </div>
-        <ul
-        <ul
-          className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4`}
-        >
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
           {logos.map((src, i) => (
             <li
               key={src}
@@ -54,4 +51,8 @@ export function ClientLogosBand({
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
 }
+
