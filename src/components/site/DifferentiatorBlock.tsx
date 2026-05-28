@@ -35,6 +35,7 @@ export function DifferentiatorBlock() {
                 {line}
               </li>
             ))}
+          </ul>
           <p className="text-base md:text-lg leading-relaxed text-[color:color-mix(in_oklab,var(--on-surface)_78%,transparent)] max-w-xl">
             {t(
               "KG Safety integra diagnóstico, ingeniería, instalación, certificación, capacitación y documentación para que cada solución sea técnicamente correcta, operativamente viable y auditable.",

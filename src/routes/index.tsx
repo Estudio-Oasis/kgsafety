@@ -50,7 +50,6 @@ export const Route = createFileRoute("/")({
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/" }],
   }),
 });
-});
 
 
 function Index() {
