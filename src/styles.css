@@ -325,9 +325,18 @@
 .font-display,
 h1, h2, h3 {
   overflow-wrap: break-word;
-  word-break: normal;
+  word-break: keep-all;
   hyphens: none;
   text-wrap: balance;
+}
+
+/* Párrafos: evitar justificado en móvil (causa palabras cortadas y huérfanas)
+   y mejorar el reparto natural de líneas. */
+p {
+  text-align: left;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  hyphens: none;
 }
 
 /* Tile titles inside bento should never push out of their box */

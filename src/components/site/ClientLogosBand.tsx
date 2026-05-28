@@ -1,14 +1,8 @@
 import { useT } from "@/i18n/context";
-
-const CLIENTS = [
-  "FEMSA", "Coca-Cola", "Holcim", "Unilever", "ALPLA", "Canacintra",
-  "Envases", "APM Terminals", "Gamesa", "PetStar", "Sigma Alimentos",
-  "Tupperware", "Owens-Illinois", "Merck", "Santa Clara",
-];
+import { realImagesIn } from "@/lib/real-image";
 
 /**
- * Grilla sobria de nombres de clientes — sin logos PNG, solo tipografía
- * Michroma. Va en home y /nosotros.
+ * Banda de clientes destacados con logotipos reales (PNG).
  */
 export function ClientLogosBand({
   variant = "light",
@@ -17,6 +11,7 @@ export function ClientLogosBand({
 }) {
   const { t } = useT();
   const isDark = variant === "dark";
+  const logos = realImagesIn("logos-clientes");
   return (
     <section
       className={`px-4 md:px-8 lg:px-12 py-14 md:py-20 border-y border-[color:var(--border)] ${
@@ -31,25 +26,34 @@ export function ClientLogosBand({
             className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3"
             style={{ color: "var(--signal)" }}
           >
-            {t("Clientes")}
+            {t("Clientes destacados")}
           </div>
           <h2 className="font-display text-xl md:text-3xl uppercase leading-tight max-w-3xl mx-auto">
-            {t("Experiencia con operaciones industriales de alto estándar.")}
+            {t("Operaciones industriales clase mundial confían en KG Safety.")}
           </h2>
         </div>
         <ul
           className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-px ${
-            isDark ? "bg-white/10 border border-white/10" : "bg-[color:var(--border)] border border-[color:var(--border)]"
+            isDark
+              ? "bg-white/10 border border-white/10"
+              : "bg-[color:var(--border)] border border-[color:var(--border)]"
           }`}
         >
-          {CLIENTS.map((name) => (
+          {logos.map((src, i) => (
             <li
-              key={name}
-              className={`flex items-center justify-center text-center px-3 py-5 md:py-6 font-display text-[11px] md:text-xs uppercase tracking-[0.18em] leading-tight ${
-                isDark ? "bg-[color:var(--anchor-fixed)] text-white/85" : "bg-[color:var(--surface-2)] text-[color:var(--on-surface)]"
+              key={src}
+              className={`flex items-center justify-center px-4 py-6 md:py-8 ${
+                isDark ? "bg-[color:var(--anchor-fixed)]" : "bg-[color:var(--surface-2)]"
               }`}
             >
-              {name}
+              <img
+                src={src}
+                alt={`Cliente destacado ${i + 1}`}
+                loading="lazy"
+                className={`max-h-12 md:max-h-16 w-auto object-contain transition-all duration-300 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 ${
+                  isDark ? "invert brightness-0 contrast-200" : ""
+                }`}
+              />
             </li>
           ))}
         </ul>

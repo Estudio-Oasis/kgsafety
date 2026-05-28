@@ -1,135 +1,84 @@
-# Sprint 7 — QA y refinamiento del Portal
 
-Solo retoques de prototipo. No se toca el sitio público ni se agregan pantallas nuevas.
+# Limpieza de home + ajustes de marca
 
-## 1. Login fiable (`/portal/login` → `/portal`)
+Cambios solo de frontend (copy, layout, datos). Sin tocar backend ni rutas nuevas.
 
-**Causa raíz**: `usePortalSession` mantiene su estado en cada componente. Al hacer `login()` en la página de login, se escribe `localStorage`, pero el listener del layout (`portal.tsx`) solo reacciona al evento `storage` — que **no se dispara en la misma pestaña**. Resultado: a veces el layout aún ve `session === null` cuando llega a `/portal` y rebota a `/portal/login`.
+## 1. Hero (`src/routes/index.tsx`)
 
-**Fix en `src/hooks/use-portal-session.ts`**:
-- Compartir estado entre instancias con un pequeño pub/sub en módulo (Set de setters) o `window.dispatchEvent(new Event("kg-portal-session"))` después de `login`/`logout`.
-- Suscribirse a ambos eventos (`storage` + `kg-portal-session`) en el `useEffect`.
-- En `login()` y `logout()`, además de `setSession`, notificar a los demás suscriptores para que el layout vea la nueva sesión de inmediato.
+- Reemplazar headline "Seguridad en altura **lista para auditoría**" por algo más directo:
+  `Ingeniería aplicada a la **eliminación total** de riesgos de caída.`
+- Subcopy: quitar "para operaciones industriales de alto estándar" (ya queda implícito); dejar: `Capacitación DC-3, sistemas certificados e ingeniería para industria pesada.`
+- CTA principal: "Solicitar diagnóstico" → **"Hablar con un especialista"** (más claro que "Dx").
+- CTA secundario "Ver soluciones" se queda.
+- Tile inferior: "3 países · MX · CO · CL" → **"5 países"** con `MX · CO · CL · US · CA`.
+- Actualizar `<title>` y `og:title` a la nueva claim.
+- CTA del bloque final ("Solicitar diagnóstico") también pasa a "Hablar con un especialista".
 
-Con eso, el `navigate({ to: "/portal" })` en `portal.login.tsx` siempre encuentra `session` ya hidratada y no rebota.
+## 2. FAQ + cobertura (`src/data/kaee.ts`)
 
-## 2. Microcopy del login
+- FAQ "¿Tienen cobertura internacional?": actualizar a operación en **México, Colombia, Chile, Estados Unidos y Canadá**.
 
-`src/routes/portal.login.tsx` línea 63:
-- Antes: `Su historial técnico,<br />` (sin espacio tras la coma).
-- Después: `Su historial técnico,{" "}<br />` para que el extracto siempre lea `Su historial técnico, en un solo lugar.`
+## 3. Depurar densidad de la home (`src/routes/index.tsx`)
 
-Pasada rápida a títulos cercanos por si hay otros casos `,<br />` pegados en `portal.*`.
+El usuario quiere que se sienta menos saturada. Eliminar dos secciones de relleno:
 
-## 3. Lógica de vencimientos en certificaciones
+- Quitar la sección **"Prueba social bento"** completa (testimonio + 2 PNPC stats + chips industrias + tile evidencia) — la prueba social ya queda en la banda de logos y los entregables.
+- Quitar la sección **"Catálogo equipos"** de la home (vive en `/equipos`). Conservar solo cursos como catálogo destacado.
+- Resultado: Hero → Diferenciador → Divisiones → Clientes → Servicios bento → Catálogo cursos → Entregables auditables → CTA final. Más respirable.
 
-En `src/routes/portal.certificaciones.tsx` (línea 72) cambiar el label del `StatusBadge`:
+## 4. Divisiones sin marcas externas (`src/components/site/DivisionsBlock.tsx` + `src/data/kaee.ts`)
 
-```ts
-const label =
-  dl < 0
-    ? `Vencida hace ${Math.abs(dl)} días`
-    : dl === 0
-      ? "Vence hoy"
-      : `Vence en ${dl} días`;
-```
+Las marcas Wall, SoNs Real State, etc. ya no operan como entidades separadas. Mantener los 5 íconos/áreas pero **sin el nombre de compañía**:
 
-Mantener colores ya existentes (`danger`/`warn`/`ok`) en `StatusBadge`. Verificar el mismo patrón en el dashboard (`portal.index.tsx`) y en `portal.plantas.$slug.tsx` si reusan la misma lógica.
+- `DIVISIONS` en `kaee.ts`: cambiar `tag` y `name` a descripciones funcionales en lugar de submarcas:
+  - `Capacitación` — Cursos DC-3, OSHA y entrenamiento técnico.
+  - `Servicios técnicos` — Consultoría, supervisión, certificación e instalación.
+  - `Ingeniería` — Líneas de vida, anclajes, barandales, andamios.
+  - `Equipo certificado` — EPP y equipo para trabajo en altura.
+  - `Inmuebles especializados` — Mantenimiento y renta de espacios para altura.
+- En `DivisionsBlock.tsx` quitar la columna grande con la sigla `W@H / MS&S / WoLL…`; dejar solo número `01–05` + nombre + descripción + link.
 
-## 4. Restricciones por rol (auditoría)
+## 5. Clientes destacados con logos (`src/components/site/ClientLogosBand.tsx`)
 
-Pasada de revisión por cada ruta `/portal/*`:
+- Renombrar el título a **"Clientes destacados"** (quitar "Experiencia con operaciones industriales de alto estándar").
+- Reemplazar la grilla de nombres por imágenes reales: usar `realImagesIn("logos-clientes")` (10 PNGs ya disponibles en `src/data/real-assets.ts`).
+- Render: grilla 2/3/5 columnas, cada celda con `<img>` centrada, `object-contain`, alto fijo (~64-80px), filtro `grayscale` + `opacity-70` con hover full color. Fondo claro.
+- Mantener variante `light/dark`.
 
-| Ruta | cliente-corp | cliente-planta | equipo-kg | admin-kg |
-|---|---|---|---|---|
-| `/portal` dashboard | KPIs de su empresa | KPIs de su planta | KPIs operativos KG | global |
-| `/portal/clientes` | ❌ (oculto en sidebar) | ❌ | ❌ | ✅ |
-| `/portal/clientes/$slug` | solo si coincide con su `clientSlug` | ❌ | ❌ | ✅ |
-| `/portal/plantas/$slug` | solo plantas de su empresa | solo su planta | ✅ | ✅ |
-| `/portal/proyectos` | filtrado por `clientSlug` | filtrado por `plantSlug` | asignados a KG | global |
-| `/portal/certificaciones` | filtrado por empresa | filtrado por planta | (no en sidebar) | global |
-| `/portal/documentos` | filtrado por empresa | filtrado por planta | (no en sidebar) | global |
-| `/portal/facturacion` | filtrado por empresa | filtrado por empresa de su planta | ❌ | global |
-| `/portal/biblioteca` | ❌ | ❌ | ✅ | ✅ |
-| `/portal/admin` | ❌ | ❌ | ❌ | ✅ |
+## 6. Normativa internacional (`src/routes/index.tsx` — tile servicios + bloque diferenciador)
 
-Acciones:
-- Ajustar el array `NAV` en `src/routes/portal.tsx` para reflejar la tabla (quitar Documentos/Certificaciones del menú de `equipo-kg`, etc.).
-- En cada ruta detalle (`portal.clientes.$slug.tsx`, `portal.plantas.$slug.tsx`, `portal.proyectos.$id.tsx`), si la sesión no debería ver ese recurso, mostrar un panel "Sin acceso" en lugar de los datos.
-- Reusar los filtros ya existentes (`session.clientSlug`, `session.plantSlug`) y centralizar el helper en `src/data/portal.ts` (`canSeeClient`, `canSeePlant`, `canSeeProject`).
+- En el tile "Cursos DC-3 certificados": ya menciona `STPS, OSHA y ANSI Z359`, conservar.
+- En el bloque **DifferentiatorBlock**: agregar un párrafo o badge breve indicando: `Cumplimos normativa nacional e internacional: STPS · OSHA · ANSI Z359.` para que sea explícito en la home.
 
-## 5. Acciones explícitas en documentos y facturación
+## 7. P.N.P.C. con más peso (`src/routes/index.tsx`)
 
-`src/components/portal/PortalUI.tsx`: añadir un `RowActions` con botones consistentes (ícono + label).
+- Tile actual del bento de servicios: `04 · P.N.P.C.` con solo "Programa". Reforzar copy:
+  - Title: `P.N.P.C.`
+  - Description: `Programa que profesionaliza a sus contratistas externos y los filtra por competencias antes de operar en planta.`
+  - CTA: `Conocer el programa`.
 
-En `src/routes/portal.documentos.tsx` cada fila debe mostrar:
-- **Ver** (Eye)
-- **Descargar** (Download)
-- **Copiar enlace** (Link)
+## 8. Justificación / wrap en móvil (`src/styles.css`)
 
-En `src/routes/portal.facturacion.tsx` cada fila:
-- **Ver**
-- **PDF** (FileText)
-- **XML** (Code)
-- **Copiar enlace**
+El reporte del usuario: en móvil las palabras quedan recortadas con 1-2 letras en el segundo renglón.
 
-Todos disparan el toast `"Acción simulada — prototipo"` (no descargas reales).
+- Revisar reglas globales `.kg-on-dark p, .font-display` — quitar cualquier `text-align: justify` residual.
+- Asegurar `text-wrap: pretty` en párrafos largos (mejor que `balance` para >3 líneas).
+- En headlines display móvil: bajar `letter-spacing` apretado y permitir `word-break: normal` + `hyphens: none` (ya está). Validar que el ancho del contenedor no fuerce roturas absurdas — revisar `max-w-xl` en hero subcopy a `max-w-md` en mobile.
 
-## 6. Historial del proyecto
+## 9. Footer (`src/components/site/SiteFooter.tsx`)
 
-En `src/routes/portal.proyectos.$id.tsx`, debajo de la cabecera, agregar bloque "Historial del proyecto" generado a partir del `id` (determinístico, no aleatorio en render) con eventos:
-- Cotización enviada
-- Orden de compra recibida
-- Servicio ejecutado
-- Certificado emitido
-- Documentos cargados
+- Cambiar línea "Toluca · Querétaro · CDMX" final del copyright a `Toluca · CDMX · Bogotá · Houston · Toronto` para reflejar los 5 países.
 
-Render como timeline vertical (punto + fecha + título + descripción corta). Datos viven en `src/data/portal.ts` como helper `buildProjectTimeline(projectId)`.
+## Técnico (resumen rápido)
 
-## 7. Metadatos en plantas y proyectos
+| Archivo | Cambio |
+|---|---|
+| `src/routes/index.tsx` | Hero copy, CTAs, tile países, quitar 2 secciones, refuerzo PNPC |
+| `src/data/kaee.ts` | Reescribir `DIVISIONS` sin submarcas; FAQ cobertura 5 países |
+| `src/components/site/DivisionsBlock.tsx` | Quitar sigla grande, usar número + nombre funcional |
+| `src/components/site/ClientLogosBand.tsx` | Render con `<img>` desde `REAL_ASSETS["logos-clientes"]`, título "Clientes destacados" |
+| `src/components/site/DifferentiatorBlock.tsx` | Línea de normativa internacional (STPS · OSHA · ANSI) |
+| `src/components/site/SiteFooter.tsx` | Ciudades en 5 países |
+| `src/styles.css` | Ajustes mobile wrap/justify en headlines y párrafos |
 
-Añadir en `Plant` y `Project` (en `src/data/portal.ts`):
-- `responsableCliente: string`
-- `responsableKG: string`
-- `ultimaActualizacion: string` (ISO)
-- `proximoVencimiento?: { label: string; fecha: string }` derivado de certificaciones de esa planta/proyecto
-
-Mostrar esos cuatro datos como tarjetas resumen en:
-- `portal.plantas.$slug.tsx`
-- `portal.proyectos.$id.tsx`
-
-## 8. Conoco Phillips → "Energía / Infraestructura"
-
-En `src/data/portal.ts`:
-- `{ slug: "conoco", name: "Conoco Phillips", industry: "Energía / Infraestructura", plants: 1 }`
-- Revisar `PLANTS` y filtros de `industrias.tsx` por si "Petrolera" sigue apareciendo.
-
-## 9. `noindex` en `/portal/*`
-
-Verificar que TODAS las rutas portal tengan `head().meta` con `{ name: "robots", content: "noindex, nofollow" }`:
-- `portal.tsx` ✅
-- `portal.login.tsx` ✅
-- Falta auditar: `portal.index.tsx`, `portal.clientes.index.tsx`, `portal.clientes.$slug.tsx`, `portal.plantas.$slug.tsx`, `portal.proyectos.index.tsx`, `portal.proyectos.$id.tsx`, `portal.certificaciones.tsx`, `portal.documentos.tsx`, `portal.facturacion.tsx`, `portal.biblioteca.tsx`, `portal.admin.tsx`. Añadir `head()` con `noindex` donde falte.
-
-También excluir `/portal*` del `src/routes/sitemap[.]xml.ts` si está listado.
-
-## 10. Sin navbar ni footer público en rutas internas
-
-Ya está implementado en `src/routes/__root.tsx` con guard por `pathname.startsWith("/portal")`. Verificación rápida: revisar también que no aparezcan widgets globales (cookie banner, WhatsApp flotante) sobre el portal; si aparecen, aplicar el mismo guard.
-
-## Detalles técnicos
-
-- Cambios solo en frontend (`src/routes/portal.*`, `src/hooks/use-portal-session.ts`, `src/data/portal.ts`, `src/components/portal/PortalUI.tsx`, `src/routes/__root.tsx`).
-- Sin backend, sin Lovable Cloud — sigue siendo prototipo con datos ficticios y `localStorage`.
-- Sin nuevas dependencias.
-- Tipos: ampliar `Plant` y `Project` con campos opcionales para no romper datos existentes; rellenar en el seed.
-
-## Orden de ejecución
-
-1. Fix de `usePortalSession` (desbloquea pruebas de los demás puntos).
-2. Microcopy + Conoco + `noindex` (cambios pequeños).
-3. Lógica de vencimientos (texto y dashboard).
-4. Permisos por rol (NAV + guards en rutas detalle).
-5. Acciones explícitas en documentos/facturación.
-6. Metadatos de planta/proyecto + historial de proyecto.
-7. Verificación final navegando los 4 roles.
+No se toca el portal, ni rutas internas, ni datos de cursos/equipos.
