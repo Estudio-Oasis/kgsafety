@@ -6,7 +6,7 @@ import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES } from "@/data
 import { DifferentiatorBlock } from "@/components/site/DifferentiatorBlock";
 import { DivisionsBlock } from "@/components/site/DivisionsBlock";
 import { ClientLogosBand } from "@/components/site/ClientLogosBand";
-import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
+
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
 import alturasImg from "@/assets/courses/alturas.jpg";
@@ -234,8 +234,8 @@ function Index() {
         </div>
       </section>
 
-      {/* ============== ENTREGABLES AUDITABLES ============== */}
-      <AuditableDeliverables variant="light" />
+
+
 
 
       {/* ============== FINAL CTA BENTO ============== */}
