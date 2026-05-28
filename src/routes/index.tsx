@@ -234,8 +234,8 @@ function Index() {
         </div>
       </section>
 
-      {/* ============== ENTREGABLES AUDITABLES ============== */}
-      <AuditableDeliverables variant="light" />
+
+
 
 
       {/* ============== FINAL CTA BENTO ============== */}
