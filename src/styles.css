@@ -261,6 +261,44 @@
   letter-spacing: 0.18em;
   font-size: 10px;
 }
+.kg-pill-tech {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: color-mix(in oklab, var(--signal) 12%, transparent);
+  border: 1px solid color-mix(in oklab, var(--signal) 45%, transparent);
+  color: var(--signal);
+  padding: 0.4rem 0.8rem 0.4rem 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+.kg-pill-tech .kg-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--signal);
+  display: inline-block;
+  animation: kg-led-pulse 1.6s ease-in-out infinite;
+}
+@keyframes kg-led-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 6px 1px color-mix(in oklab, var(--signal) 80%, transparent),
+                0 0 14px 2px color-mix(in oklab, var(--signal) 45%, transparent);
+  }
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 2px 0 color-mix(in oklab, var(--signal) 30%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kg-pill-tech .kg-led { animation: none; }
+}
 .kg-highlight {
   background: linear-gradient(180deg, transparent 62%, color-mix(in oklab, var(--signal) 75%, transparent) 62%);
   padding: 0 0.15em;
