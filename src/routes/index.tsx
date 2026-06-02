@@ -64,12 +64,12 @@ function Index() {
     <div className="bg-[color:var(--surface)] text-[color:var(--on-surface)]">
       {/* ============== HERO ============== */}
       <section className="px-4 md:px-8 lg:px-12 pt-6 md:pt-10 pb-10">
-        <div className="max-w-7xl mx-auto grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-6 md:auto-rows-[minmax(170px,auto)]">
+        <div className="max-w-7xl mx-auto grid gap-3 md:gap-4 grid-cols-1 lg:grid-cols-6 lg:auto-rows-[minmax(170px,auto)]">
 
           {/* HERO TILE — split: navy block + image */}
-          <div className="md:col-span-4 md:row-span-3 rounded-[var(--bento-radius,1.25rem)] overflow-hidden border border-[color:var(--brand-navy)] kg-on-dark bg-[color:var(--brand-navy)] flex flex-col md:flex-row min-h-[460px] md:min-h-[520px]">
+          <div className="lg:col-span-4 lg:row-span-3 rounded-[var(--bento-radius,1.25rem)] overflow-hidden border border-[color:var(--brand-navy)] kg-on-dark bg-[color:var(--brand-navy)] flex flex-col lg:flex-row min-h-[460px] lg:min-h-[520px]">
             {/* Image */}
-            <div className="relative md:order-2 md:w-[42%] h-[200px] md:h-auto shrink-0">
+            <div className="relative lg:order-2 lg:w-[42%] h-[220px] md:h-[280px] lg:h-auto shrink-0">
               <img
                 src={heroImg}
                 alt={t("Técnico industrial trabajando en altura con arnés certificado")}
@@ -77,7 +77,7 @@ function Index() {
               />
               {/* Soft navy edge fade — only at the seam, image stays visible */}
               <div
-                className="absolute inset-0 pointer-events-none md:bg-[linear-gradient(90deg,var(--brand-navy)_0%,transparent_22%)] bg-[linear-gradient(180deg,transparent_60%,var(--brand-navy)_100%)]"
+                className="absolute inset-0 pointer-events-none lg:bg-[linear-gradient(90deg,var(--brand-navy)_0%,transparent_22%)] bg-[linear-gradient(180deg,transparent_60%,var(--brand-navy)_100%)]"
               />
               <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-[0.25em] px-2 py-1 bg-black/40 backdrop-blur-sm text-white rounded">
                 {t("En campo · 2026")}
@@ -85,7 +85,7 @@ function Index() {
             </div>
 
             {/* Copy */}
-            <div className="md:order-1 md:w-[58%] p-6 md:p-9 lg:p-11 flex flex-col">
+            <div className="lg:order-1 lg:w-[58%] p-6 md:p-8 lg:p-11 flex flex-col">
               <span className="kg-pill-tech self-start mb-5">
                 <span className="kg-led" aria-hidden />
                 {t("Integrador de seguridad en altura · WE NEVER FALL")}
@@ -95,7 +95,7 @@ function Index() {
                 <span className="block text-4xl md:text-6xl lg:text-7xl text-white">
                   {t("Cero caídas.")}
                 </span>
-                <span className="block text-2xl md:text-4xl lg:text-5xl mt-2" style={{ color: "var(--signal)" }}>
+                <span className="block text-2xl md:text-3xl lg:text-5xl mt-2" style={{ color: "var(--signal)" }}>
                   {t("Ingeniería que las elimina.")}
                 </span>
               </h1>
@@ -124,7 +124,7 @@ function Index() {
           </div>
 
           {/* KPI 30M+ */}
-          <div className="md:col-span-2 md:row-span-2 rounded-[var(--bento-radius,1.25rem)] border-2 border-[color:var(--anchor-fixed)] bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] p-6 md:p-7 flex flex-col relative overflow-hidden">
+          <div className="lg:col-span-2 lg:row-span-2 rounded-[var(--bento-radius,1.25rem)] border-2 border-[color:var(--anchor-fixed)] bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] p-6 md:p-7 flex flex-col relative overflow-hidden min-h-[240px]">
             <span className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-[0.22em] bg-[color:var(--anchor-fixed)] text-[color:var(--signal)] px-2 py-1 rounded">
               {t("Sin accidentes")}
             </span>
@@ -153,8 +153,8 @@ function Index() {
             </div>
           </div>
 
-          {/* Registro + países — fila inferior derecha, divisor central, sin huecos */}
-          <div className="md:col-span-2 rounded-[var(--bento-radius,1.25rem)] border border-[color:var(--brand-navy)] bg-[color:var(--brand-navy)] kg-on-dark grid grid-cols-2 divide-x divide-white/15 overflow-hidden">
+          {/* Registro + países */}
+          <div className="lg:col-span-2 rounded-[var(--bento-radius,1.25rem)] border border-[color:var(--brand-navy)] bg-[color:var(--brand-navy)] kg-on-dark grid grid-cols-2 divide-x divide-white/15 overflow-hidden min-h-[170px]">
             <div className="p-5 md:p-6 flex flex-col">
               <div className="flex items-center gap-2 mb-2">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ color: "var(--signal)" }}>
@@ -176,11 +176,12 @@ function Index() {
                 <span className="text-[9px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--signal)" }}>{t("5 países")}</span>
               </div>
               <div className="font-display text-base md:text-lg leading-tight mt-auto text-white">
-                MX · CO · CL<br/>US · CA
+                MX · CO · CL · US · CA
               </div>
               <div className="mt-1 h-[2px] w-8" style={{ background: "var(--signal)" }} />
             </div>
           </div>
+
 
         </div>
       </section>
