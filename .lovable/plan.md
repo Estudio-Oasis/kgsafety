@@ -1,84 +1,76 @@
 
-# Limpieza de home + ajustes de marca
+# Rediseño de Header + Hero (home)
 
-Cambios solo de frontend (copy, layout, datos). Sin tocar backend ni rutas nuevas.
+Objetivo: que la sección tope del sitio venda — header legible y jerárquico, imagen del hero protagonista (no tapada por texto), headline más impactante y menos denso, KPIs (30M+ / Registro oficial / 5 países) con más peso comercial. Mantener la paleta y tipografía actuales.
 
-## 1. Hero (`src/routes/index.tsx`)
+## 1. Header (`SiteHeader.tsx`)
 
-- Reemplazar headline "Seguridad en altura **lista para auditoría**" por algo más directo:
-  `Ingeniería aplicada a la **eliminación total** de riesgos de caída.`
-- Subcopy: quitar "para operaciones industriales de alto estándar" (ya queda implícito); dejar: `Capacitación DC-3, sistemas certificados e ingeniería para industria pesada.`
-- CTA principal: "Solicitar diagnóstico" → **"Hablar con un especialista"** (más claro que "Dx").
-- CTA secundario "Ver soluciones" se queda.
-- Tile inferior: "3 países · MX · CO · CL" → **"5 países"** con `MX · CO · CL · US · CA`.
-- Actualizar `<title>` y `og:title` a la nueva claim.
-- CTA del bloque final ("Solicitar diagnóstico") también pasa a "Hablar con un especialista".
+Problema actual: 9 links uniformes apretados + 4 botones (tema, idioma, portal, CTA) compitiendo a la misma jerarquía → ruidoso y el CTA "Solicitar diagnóstico" se corta en pantallas medianas.
 
-## 2. FAQ + cobertura (`src/data/kaee.ts`)
+Cambios:
+- **Two-row layout en desktop (≥xl)**:
+  - Fila 1 (utility bar, fondo navy delgado): idioma · tema · "Portal clientes" alineados a la derecha, tipografía 10px.
+  - Fila 2 (main bar, fondo surface): logo a la izquierda, nav central, CTA "Solicitar diagnóstico" a la derecha (no se corta).
+- **Agrupar nav** en 6 ítems visibles + dropdown "Más" para reducir densidad: `Servicios · Capacitación · Ingeniería · Equipos · Industrias · Nosotros` + dropdown con `P.N.P.C. · Facturación · Contacto · Cumplimiento · FAQ`.
+- **Estado activo** subrayado con `--signal` (2px) en vez de cambio de color sutil.
+- **CTA**: fondo `signal`, texto navy, sin doble borde grueso — limpio con sombra `shadow-[2px_2px_0_var(--anchor-fixed)]` y hover lift.
+- Mantener mobile menu actual (funciona bien).
 
-- FAQ "¿Tienen cobertura internacional?": actualizar a operación en **México, Colombia, Chile, Estados Unidos y Canadá**.
+## 2. Hero — imagen visible (`index.tsx`, hero tile)
 
-## 3. Depurar densidad de la home (`src/routes/index.tsx`)
+Problema: imagen detrás del headline blanco + amarillo invade el texto y se pierde.
 
-El usuario quiere que se sienta menos saturada. Eliminar dos secciones de relleno:
+Cambios estructurales del tile principal:
+- Cambiar de "imagen full con texto encima" a **layout split dentro del mismo tile** en desktop:
+  - Izquierda (~58%): bloque navy sólido con pill + headline + sub + CTAs (todo legible, sin imagen detrás).
+  - Derecha (~42%): la imagen del hero recortada limpia con un gradiente vertical sutil navy→transparente solo en el borde izquierdo para fundirse.
+- En móvil: imagen arriba como banda de ~180px, texto debajo en bloque navy (la imagen se ve completa, no se pelea con el texto).
+- Quitar el overlay oscuro global sobre la imagen.
 
-- Quitar la sección **"Prueba social bento"** completa (testimonio + 2 PNPC stats + chips industrias + tile evidencia) — la prueba social ya queda en la banda de logos y los entregables.
-- Quitar la sección **"Catálogo equipos"** de la home (vive en `/equipos`). Conservar solo cursos como catálogo destacado.
-- Resultado: Hero → Diferenciador → Divisiones → Clientes → Servicios bento → Catálogo cursos → Entregables auditables → CTA final. Más respirable.
+## 3. Pill "tech" con luz oscilante
 
-## 4. Divisiones sin marcas externas (`src/components/site/DivisionsBlock.tsx` + `src/data/kaee.ts`)
+Reemplazar el eyebrow `<span>` actual por un componente pill:
+```
+[●] INTEGRADOR DE SEGURIDAD EN ALTURA · WE NEVER FALL
+```
+- Pill con borde 1px `signal/40`, fondo `signal/10`, texto `signal`, padding compacto.
+- Punto LED (`●`) a la izquierda con animación CSS `kg-led-pulse` (opacity + box-shadow signal): 1.6s ease-in-out infinite, brillo de 100% → 40% → 100%. Respeta `prefers-reduced-motion`.
+- Definir el keyframe en `src/styles.css` junto a los existentes.
 
-Las marcas Wall, SoNs Real State, etc. ya no operan como entidades separadas. Mantener los 5 íconos/áreas pero **sin el nombre de compañía**:
+## 4. Headline más corto y con jerarquía
 
-- `DIVISIONS` en `kaee.ts`: cambiar `tag` y `name` a descripciones funcionales en lugar de submarcas:
-  - `Capacitación` — Cursos DC-3, OSHA y entrenamiento técnico.
-  - `Servicios técnicos` — Consultoría, supervisión, certificación e instalación.
-  - `Ingeniería` — Líneas de vida, anclajes, barandales, andamios.
-  - `Equipo certificado` — EPP y equipo para trabajo en altura.
-  - `Inmuebles especializados` — Mantenimiento y renta de espacios para altura.
-- En `DivisionsBlock.tsx` quitar la columna grande con la sigla `W@H / MS&S / WoLL…`; dejar solo número `01–05` + nombre + descripción + link.
+Actual: "Ingeniería aplicada a la **eliminación total de riesgos de caída**." → 8 palabras pesadas antes del punto fuerte.
 
-## 5. Clientes destacados con logos (`src/components/site/ClientLogosBand.tsx`)
+Propuesta:
+- Línea 1 (display, blanco, tamaño grande): **CERO CAÍDAS.**
+- Línea 2 (display, signal, medio): **Ingeniería que las elimina.**
+- Sub (gris claro): "Diagnóstico, sistemas certificados y capacitación DC-3 para industria pesada." → frase movida a sub para no perderla y darle más peso visual (sin bajar opacity).
+- Sub usa `text-white` puro (no 88%) sobre fondo navy sólido — se lee perfecto.
 
-- Renombrar el título a **"Clientes destacados"** (quitar "Experiencia con operaciones industriales de alto estándar").
-- Reemplazar la grilla de nombres por imágenes reales: usar `realImagesIn("logos-clientes")` (10 PNGs ya disponibles en `src/data/real-assets.ts`).
-- Render: grilla 2/3/5 columnas, cada celda con `<img>` centrada, `object-contain`, alto fijo (~64-80px), filtro `grayscale` + `opacity-70` con hover full color. Fondo claro.
-- Mantener variante `light/dark`.
+## 5. KPIs más comerciales (tiles derecha)
 
-## 6. Normativa internacional (`src/routes/index.tsx` — tile servicios + bloque diferenciador)
+Problema: 30M+ minimalista, "Registro oficial" + "5 países" se ven vacíos y aislados.
 
-- En el tile "Cursos DC-3 certificados": ya menciona `STPS, OSHA y ANSI Z359`, conservar.
-- En el bloque **DifferentiatorBlock**: agregar un párrafo o badge breve indicando: `Cumplimos normativa nacional e internacional: STPS · OSHA · ANSI Z359.` para que sea explícito en la home.
+Cambios:
+- **Tile 30M+ (amarillo)**: añadir mini-trend bar debajo del número (4 barras navy ascendentes) + badge "SIN ACCIDENTES" en negro arriba a la derecha. Footer "12 años · 200+ clientes" con icono ✓.
+- **Tile Registro/Países (navy)**: convertir en 2 mini-cards internas con icono (escudo para STPS, globo para países), border `signal` 2px abajo en cada una. En móvil ocupa ancho completo (ya lo hace) pero **eliminar el espacio vacío a la derecha** forzando `grid-cols-2` siempre (no `sm:`) — ambas mitades juntas con divisor central.
+- En móvil, el bento KPI inferior pasa de `col-span-2` con contenido apretado a la izquierda a layout 50/50 que rellena todo el ancho como el de 30M+.
 
-## 7. P.N.P.C. con más peso (`src/routes/index.tsx`)
+## 6. Detalles de implementación
 
-- Tile actual del bento de servicios: `04 · P.N.P.C.` con solo "Programa". Reforzar copy:
-  - Title: `P.N.P.C.`
-  - Description: `Programa que profesionaliza a sus contratistas externos y los filtra por competencias antes de operar en planta.`
-  - CTA: `Conocer el programa`.
+Archivos a tocar:
+- `src/components/site/SiteHeader.tsx` — refactor a 2 filas + dropdown "Más".
+- `src/routes/index.tsx` — rehacer los 3 tiles del hero bento (split layout, pill, headline nuevo, KPIs reforzados).
+- `src/styles.css` — añadir keyframe `kg-led-pulse` y clase `.kg-pill-tech`.
+- Sin cambios a `Bento.tsx` (los tiles aceptan children arbitrarios; el split se hace dentro del child).
 
-## 8. Justificación / wrap en móvil (`src/styles.css`)
+No se toca: tipografía global, paleta, footer, secciones posteriores.
 
-El reporte del usuario: en móvil las palabras quedan recortadas con 1-2 letras en el segundo renglón.
+## Resultado esperado
 
-- Revisar reglas globales `.kg-on-dark p, .font-display` — quitar cualquier `text-align: justify` residual.
-- Asegurar `text-wrap: pretty` en párrafos largos (mejor que `balance` para >3 líneas).
-- En headlines display móvil: bajar `letter-spacing` apretado y permitir `word-break: normal` + `hyphens: none` (ya está). Validar que el ancho del contenedor no fuerce roturas absurdas — revisar `max-w-xl` en hero subcopy a `max-w-md` en mobile.
-
-## 9. Footer (`src/components/site/SiteFooter.tsx`)
-
-- Cambiar línea "Toluca · Querétaro · CDMX" final del copyright a `Toluca · CDMX · Bogotá · Houston · Toronto` para reflejar los 5 países.
-
-## Técnico (resumen rápido)
-
-| Archivo | Cambio |
-|---|---|
-| `src/routes/index.tsx` | Hero copy, CTAs, tile países, quitar 2 secciones, refuerzo PNPC |
-| `src/data/kaee.ts` | Reescribir `DIVISIONS` sin submarcas; FAQ cobertura 5 países |
-| `src/components/site/DivisionsBlock.tsx` | Quitar sigla grande, usar número + nombre funcional |
-| `src/components/site/ClientLogosBand.tsx` | Render con `<img>` desde `REAL_ASSETS["logos-clientes"]`, título "Clientes destacados" |
-| `src/components/site/DifferentiatorBlock.tsx` | Línea de normativa internacional (STPS · OSHA · ANSI) |
-| `src/components/site/SiteFooter.tsx` | Ciudades en 5 países |
-| `src/styles.css` | Ajustes mobile wrap/justify en headlines y párrafos |
-
-No se toca el portal, ni rutas internas, ni datos de cursos/equipos.
+- Header escaneable en una pasada, sin links que se corten.
+- Imagen del hero visible al 100%, texto sobre fondo sólido legible.
+- Pill con LED que comunica "tech / monitoreo en vivo".
+- Headline corto y memorable ("CERO CAÍDAS") con la promesa técnica como segunda línea.
+- KPIs que se sienten como prueba comercial, no como adorno minimalista.
+- Móvil sin huecos: ambos bentos llenan el ancho completo.
