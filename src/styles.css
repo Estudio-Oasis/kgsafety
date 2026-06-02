@@ -411,7 +411,9 @@ html, body { overflow-x: hidden; }
      overflow no matter the size. Swap to the body font for tile titles
      only on mobile — full Michroma still applies on tablet and up. */
   .kg-bento .font-display,
-  [class*="rounded-[var(--bento-radius"] .font-display {
+  [class*="rounded-[var(--bento-radius"] .font-display,
+  ol.grid li .font-display,
+  ul li .font-display {
     font-family: var(--font-body, system-ui, sans-serif);
     letter-spacing: 0;
     font-weight: 700;
