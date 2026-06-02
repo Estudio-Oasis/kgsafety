@@ -194,36 +194,62 @@ function Index() {
       {/* ============== 5 DIVISIONES ============== */}
       <DivisionsBlock />
 
-      {/* ============== EVIDENCIA DOCUMENTAL (CTA compacto) ============== */}
-      <section className="px-4 md:px-8 lg:px-12 py-8 md:py-10 bg-[color:var(--surface)]">
+      {/* ============== EVIDENCIA DOCUMENTAL ============== */}
+      <section className="px-4 md:px-8 lg:px-12 py-10 md:py-14 bg-[color:var(--surface)]">
         <div className="max-w-7xl mx-auto">
           <Link
             to="/cumplimiento"
-            className="group block rounded-lg bg-[color:var(--anchor-fixed)] text-white p-6 md:p-8 border border-white/10 transition-all duration-200 hover:border-[color:var(--signal)] hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--signal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--surface)] active:scale-[0.99]"
+            className="group block rounded-xl bg-[color:var(--anchor-fixed)] text-white border border-white/10 overflow-hidden transition-all duration-200 hover:border-[color:var(--signal)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(15,27,61,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--signal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--surface)] active:scale-[0.995]"
           >
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div className="max-w-xl">
-                <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-2" style={{ color: "var(--signal)" }}>
-                  {t("Cierre auditable")}
+            <div className="grid md:grid-cols-[1.1fr_1fr] gap-0">
+              {/* Left: pitch */}
+              <div className="p-6 md:p-9 lg:p-10 flex flex-col">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-grid place-items-center w-6 h-6 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] text-xs font-bold">✓</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: "var(--signal)" }}>
+                    {t("Cierre auditable")}
+                  </span>
                 </div>
-                <h3 className="font-display text-xl md:text-2xl uppercase leading-tight mb-2">
-                  {t("Evidencia documental")}
+                <h3 className="font-display text-2xl md:text-3xl uppercase leading-tight mb-3 text-white">
+                  {t("Cada proyecto se entrega con la carpeta lista para auditoría.")}
                 </h3>
-                <p className="text-sm text-white/70 leading-relaxed">
-                  {t("Análisis de riesgo, plan de rescate, certificados, DC-3 y bitácora de inspección en cada proyecto.")}
+                <p className="text-sm md:text-base text-white/75 leading-relaxed mb-6 max-w-lg">
+                  {t("No te dejamos con la responsabilidad legal. Documentamos cada hora-hombre, cada anclaje, cada certificación.")}
                 </p>
+                <span
+                  className="self-start inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-bold text-[11px] uppercase tracking-[0.2em] bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] shadow-[3px_3px_0_0_rgba(0,0,0,0.25)] transition-transform group-hover:-translate-y-0.5"
+                >
+                  {t("Ver entregables")}
+                  <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+                </span>
               </div>
-              <span
-                className="self-start md:self-auto inline-flex items-center gap-2 font-display text-[11px] uppercase tracking-[0.25em] whitespace-nowrap"
-                style={{ color: "var(--signal)" }}
-              >
-                {t("Ver cumplimiento")}
-                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-              </span>
+
+              {/* Right: deliverables checklist */}
+              <div className="bg-white/[0.04] border-t md:border-t-0 md:border-l border-white/10 p-6 md:p-9 lg:p-10">
+                <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/55 mb-4">
+                  {t("Incluye en cada entrega")}
+                </div>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    t("Análisis de riesgo"),
+                    t("Plan de rescate"),
+                    t("Certificados de anclaje"),
+                    t("DC-3 oficiales"),
+                    t("Bitácora de inspección"),
+                    t("Memoria de cálculo"),
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-white/90">
+                      <span aria-hidden className="mt-0.5 inline-grid place-items-center w-4 h-4 rounded-sm border border-[color:var(--signal)] text-[color:var(--signal)] text-[10px] font-bold shrink-0">✓</span>
+                      <span className="leading-snug">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </Link>
         </div>
       </section>
+
 
       {/* ============== CLIENTES ============== */}
       <ClientLogosBand variant="light" />
