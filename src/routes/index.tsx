@@ -62,63 +62,129 @@ function Index() {
 
   return (
     <div className="bg-[color:var(--surface)] text-[color:var(--on-surface)]">
-      {/* ============== HERO BENTO ============== */}
-      <section className="px-4 md:px-8 lg:px-12 pt-8 md:pt-12 pb-10">
-        <div className="max-w-7xl mx-auto">
-          <BentoGrid rows="auto-rows-[minmax(140px,auto)] md:auto-rows-[minmax(170px,auto)]">
-            {/* Hero claim */}
-            <BentoTile
-              span="col-span-2 md:col-span-4 md:row-span-3"
-              variant="image"
-              image={heroImg}
-              eyebrow={<span style={{ color: "var(--signal)" }}>{t("Integrador de seguridad en altura · WE NEVER FALL")}</span>}
-            >
-              <h1 className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.0] uppercase mb-4 md:mb-6" style={{ color: "#fff" }}>
-                {t("Ingeniería aplicada a la")}{" "}
-                <span style={{ color: "var(--signal)" }}>{t("eliminación total de riesgos de caída.")}</span>
+      {/* ============== HERO ============== */}
+      <section className="px-4 md:px-8 lg:px-12 pt-6 md:pt-10 pb-10">
+        <div className="max-w-7xl mx-auto grid gap-3 md:gap-4 grid-cols-1 md:grid-cols-6 md:auto-rows-[minmax(170px,auto)]">
+
+          {/* HERO TILE — split: navy block + image */}
+          <div className="md:col-span-4 md:row-span-3 rounded-[var(--bento-radius,1.25rem)] overflow-hidden border border-[color:var(--brand-navy)] kg-on-dark bg-[color:var(--brand-navy)] flex flex-col md:flex-row min-h-[460px] md:min-h-[520px]">
+            {/* Image */}
+            <div className="relative md:order-2 md:w-[42%] h-[200px] md:h-auto shrink-0">
+              <img
+                src={heroImg}
+                alt={t("Técnico industrial trabajando en altura con arnés certificado")}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* Soft navy edge fade — only at the seam, image stays visible */}
+              <div
+                className="absolute inset-0 pointer-events-none md:bg-[linear-gradient(90deg,var(--brand-navy)_0%,transparent_22%)] bg-[linear-gradient(180deg,transparent_60%,var(--brand-navy)_100%)]"
+              />
+              <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-[0.25em] px-2 py-1 bg-black/40 backdrop-blur-sm text-white rounded">
+                {t("En campo · 2026")}
+              </span>
+            </div>
+
+            {/* Copy */}
+            <div className="md:order-1 md:w-[58%] p-6 md:p-9 lg:p-11 flex flex-col">
+              <span className="kg-pill-tech self-start mb-5">
+                <span className="kg-led" aria-hidden />
+                {t("Integrador de seguridad en altura · WE NEVER FALL")}
+              </span>
+
+              <h1 className="font-display uppercase leading-[0.95] tracking-tight mb-4 md:mb-5">
+                <span className="block text-4xl md:text-6xl lg:text-7xl text-white">
+                  {t("Cero caídas.")}
+                </span>
+                <span className="block text-2xl md:text-4xl lg:text-5xl mt-2" style={{ color: "var(--signal)" }}>
+                  {t("Ingeniería que las elimina.")}
+                </span>
               </h1>
-              <p className="text-sm md:text-base max-w-md md:max-w-xl leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.88)" }}>
-                {t("Capacitación DC-3, sistemas certificados e ingeniería para industria pesada.")}
+
+              <p className="text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mb-7 text-white">
+                {t("Diagnóstico, sistemas certificados y capacitación DC-3 para industria pesada.")}
               </p>
-              <div className="flex flex-wrap gap-3 mt-auto relative z-10">
-                <Link to="/contacto" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}>
+
+              <div className="flex flex-wrap gap-3 mt-auto">
+                <Link
+                  to="/contacto"
+                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md shadow-[3px_3px_0_0_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-transform"
+                  style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}
+                >
                   {t("Hablar con un especialista")} →
                 </Link>
-                <Link to="/servicios" className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md" style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)", background: "rgba(255,255,255,0.06)" }}>
+                <Link
+                  to="/servicios"
+                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md hover:bg-white/10 transition-colors"
+                  style={{ color: "#fff", border: "1px solid rgba(255,255,255,0.45)" }}
+                >
                   {t("Ver soluciones")}
                 </Link>
               </div>
-            </BentoTile>
+            </div>
+          </div>
 
+          {/* KPI 30M+ */}
+          <div className="md:col-span-2 md:row-span-2 rounded-[var(--bento-radius,1.25rem)] border-2 border-[color:var(--anchor-fixed)] bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] p-6 md:p-7 flex flex-col relative overflow-hidden">
+            <span className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-[0.22em] bg-[color:var(--anchor-fixed)] text-[color:var(--signal)] px-2 py-1 rounded">
+              {t("Sin accidentes")}
+            </span>
+            <div className="font-display text-6xl md:text-7xl lg:text-8xl leading-none mb-3">30M+</div>
+            <div className="text-[11px] uppercase tracking-[0.22em] font-bold leading-snug max-w-[80%]">
+              {t("Horas-hombre supervisadas")}
+            </div>
 
-            {/* KPI grande */}
-            <BentoTile span="col-span-2 md:col-span-2 md:row-span-2" variant="accent">
-              <div className="font-display text-5xl md:text-7xl leading-none mb-2">30M+</div>
-              <div className="text-[11px] uppercase tracking-[0.22em] font-bold leading-snug">
-                {t("Horas-hombre supervisadas sin accidentes")}
-              </div>
-              <div className="mt-auto text-[10px] uppercase tracking-[0.25em] opacity-80">
-                {t("12 años · 200+ clientes")}
-              </div>
-            </BentoTile>
+            {/* Mini trend bars */}
+            <div className="mt-5 flex items-end gap-1.5 h-10">
+              {[28, 44, 62, 84, 100].map((h, i) => (
+                <div
+                  key={i}
+                  className="w-2.5 rounded-sm bg-[color:var(--anchor-fixed)]"
+                  style={{ height: `${h}%`, opacity: 0.45 + i * 0.11 }}
+                />
+              ))}
+              <span className="ml-2 mb-0.5 text-[10px] font-bold tracking-widest uppercase opacity-80">
+                {t("12 años")}
+              </span>
+            </div>
 
-            {/* Certificación + países en UN solo tile compacto */}
-            <BentoTile span="md:col-span-2" variant="dark">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 h-full">
-                <div className="flex flex-col">
-                  <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>STPS · DC-3</div>
-                  <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>{t("Registro oficial")}</div>
-                </div>
-                <div className="flex flex-col sm:border-l sm:pl-4 pt-3 sm:pt-0 border-t sm:border-t-0" style={{ borderColor: "rgba(255,255,255,0.18)" }}>
-                  <div className="text-[9px] font-bold uppercase tracking-[0.22em] mb-1" style={{ color: "var(--signal)" }}>{t("5 países")}</div>
-                  <div className="font-display text-sm md:text-base leading-tight mt-auto" style={{ color: "#fff" }}>MX · CO · CL · US · CA</div>
-                </div>
+            <div className="mt-auto pt-4 flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] font-bold border-t border-[color:var(--anchor-fixed)]/20">
+              <span className="inline-grid place-items-center w-4 h-4 rounded-full bg-[color:var(--anchor-fixed)] text-[color:var(--signal)] text-[10px]">✓</span>
+              <span>{t("200+ clientes industriales")}</span>
+            </div>
+          </div>
+
+          {/* Registro + países — fila inferior derecha, divisor central, sin huecos */}
+          <div className="md:col-span-2 rounded-[var(--bento-radius,1.25rem)] border border-[color:var(--brand-navy)] bg-[color:var(--brand-navy)] kg-on-dark grid grid-cols-2 divide-x divide-white/15 overflow-hidden">
+            <div className="p-5 md:p-6 flex flex-col">
+              <div className="flex items-center gap-2 mb-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ color: "var(--signal)" }}>
+                  <path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3z" />
+                </svg>
+                <span className="text-[9px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--signal)" }}>STPS · DC-3</span>
               </div>
-            </BentoTile>
-          </BentoGrid>
+              <div className="font-display text-base md:text-lg leading-tight mt-auto text-white">
+                {t("Registro oficial")}
+              </div>
+              <div className="mt-1 h-[2px] w-8" style={{ background: "var(--signal)" }} />
+            </div>
+            <div className="p-5 md:p-6 flex flex-col">
+              <div className="flex items-center gap-2 mb-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" style={{ color: "var(--signal)" }}>
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18" />
+                </svg>
+                <span className="text-[9px] font-bold uppercase tracking-[0.22em]" style={{ color: "var(--signal)" }}>{t("5 países")}</span>
+              </div>
+              <div className="font-display text-base md:text-lg leading-tight mt-auto text-white">
+                MX · CO · CL<br/>US · CA
+              </div>
+              <div className="mt-1 h-[2px] w-8" style={{ background: "var(--signal)" }} />
+            </div>
+          </div>
 
         </div>
       </section>
+
 
       {/* ============== DIFERENCIADOR ============== */}
       <DifferentiatorBlock />
