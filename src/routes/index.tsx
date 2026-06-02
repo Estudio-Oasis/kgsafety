@@ -107,10 +107,11 @@ function Index() {
               <div className="flex flex-wrap gap-3 mt-auto">
                 <Link
                   to="/contacto"
-                  className="px-6 py-3 font-bold uppercase text-xs tracking-[0.2em] rounded-md shadow-[3px_3px_0_0_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-transform"
+                  className="inline-flex items-center gap-2 whitespace-nowrap px-5 md:px-6 py-3 font-bold uppercase text-[11px] md:text-xs tracking-[0.16em] md:tracking-[0.2em] rounded-md shadow-[3px_3px_0_0_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-transform"
                   style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}
                 >
-                  {t("Hablar con un especialista")} →
+                  <span>{t("Hablar con un especialista")}</span>
+                  <span aria-hidden>→</span>
                 </Link>
                 <Link
                   to="/servicios"
