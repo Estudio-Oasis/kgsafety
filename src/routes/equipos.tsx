@@ -25,7 +25,7 @@ const BRANDS = ["Petzl", "MSA", "3M", "Honeywell", "Capital Safety", "Tractel", 
 function EquiposPage() {
   const { t } = useT();
   return (
-    <div>
+    <div className="kg-on-dark bg-[color:var(--anchor-fixed)]">
       <section className="relative overflow-hidden border-b border-white/5">
         <div className="grid lg:grid-cols-2">
           <div className="kg-on-dark px-6 md:px-12 py-16 md:py-24 lg:py-28 bg-brand-navy">

@@ -40,7 +40,8 @@ const PROCESS = [
 function IngenieriaPage() {
   const { t } = useT();
   return (
-    <div>
+    <div className="kg-on-dark bg-[color:var(--anchor-fixed)]">
+
       <section className="relative px-6 md:px-12 py-20 md:py-28 border-b border-white/5 overflow-hidden">
         <div className="absolute inset-0">
           <img src={officeImg} alt="" loading="eager" width={1600} height={1000} className="w-full h-full object-cover" />
