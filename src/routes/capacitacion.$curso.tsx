@@ -19,13 +19,17 @@ export const Route = createFileRoute("/capacitacion/$curso")({
   head: ({ params }) => {
     const c = COURSES.find((x) => x.slug === params.curso);
     const title = c ? `${c.name} · KG Safety` : "Curso · KG Safety";
+    const url = `https://kgsafety.lovable.app/capacitacion/${params.curso}`;
     return {
       meta: [
         { title },
         { name: "description", content: c?.desc ?? "Curso de capacitación certificado KG Safety." },
         { property: "og:title", content: title },
         { property: "og:description", content: c?.desc ?? "" },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
       ],
+      links: [{ rel: "canonical", href: url }],
     };
   },
 });
