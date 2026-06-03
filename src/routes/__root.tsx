@@ -11,6 +11,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { WorldClockBar } from "@/components/site/WorldClockBar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 import { ScrollRappellers } from "@/components/site/ScrollRappellers";
