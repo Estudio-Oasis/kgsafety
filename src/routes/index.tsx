@@ -144,7 +144,7 @@ function Index() {
                 />
               ))}
               <span className="ml-2 mb-0.5 text-[10px] font-bold tracking-widest uppercase opacity-80">
-                {t("12 años")}
+                {t("12 años continuos")}
               </span>
             </div>
 
