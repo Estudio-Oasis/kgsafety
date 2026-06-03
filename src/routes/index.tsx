@@ -129,7 +129,7 @@ function Index() {
             <span className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-[0.22em] bg-[color:var(--anchor-fixed)] text-[color:var(--signal)] px-2 py-1 rounded">
               {t("Sin accidentes")}
             </span>
-            <div className="font-display text-[clamp(2.75rem,8vw,5.5rem)] leading-none mb-3 whitespace-nowrap">30M+</div>
+            <div className="font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-none mb-3 whitespace-nowrap [overflow-wrap:normal]">30M+</div>
             <div className="text-[11px] uppercase tracking-[0.22em] font-bold leading-snug max-w-[80%]">
               {t("Horas-hombre supervisadas")}
             </div>
