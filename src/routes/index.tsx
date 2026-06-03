@@ -92,7 +92,7 @@ function Index() {
               </span>
 
               <h1 className="font-display uppercase leading-[0.95] tracking-tight mb-4 md:mb-5">
-                <span className="block whitespace-nowrap text-[clamp(2.25rem,7vw,4.25rem)] text-white">
+                <span className="block text-[clamp(2rem,5.5vw,3.75rem)] text-white [overflow-wrap:normal] [word-break:keep-all]">
                   {t("Cero caídas.")}
                 </span>
                 <span className="block text-[clamp(1.35rem,4vw,2.5rem)] mt-2" style={{ color: "var(--signal)" }}>
