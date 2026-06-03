@@ -92,10 +92,10 @@ function Index() {
               </span>
 
               <h1 className="font-display uppercase leading-[0.95] tracking-tight mb-4 md:mb-5">
-                <span className="block text-4xl md:text-6xl lg:text-7xl text-white">
+                <span className="block text-[clamp(2rem,5.5vw,3.75rem)] text-white [overflow-wrap:normal] [word-break:keep-all]">
                   {t("Cero caídas.")}
                 </span>
-                <span className="block text-2xl md:text-3xl lg:text-5xl mt-2" style={{ color: "var(--signal)" }}>
+                <span className="block text-[clamp(1.35rem,4vw,2.5rem)] mt-2" style={{ color: "var(--signal)" }}>
                   {t("Ingeniería que las elimina.")}
                 </span>
               </h1>
@@ -129,7 +129,7 @@ function Index() {
             <span className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-[0.22em] bg-[color:var(--anchor-fixed)] text-[color:var(--signal)] px-2 py-1 rounded">
               {t("Sin accidentes")}
             </span>
-            <div className="font-display text-6xl md:text-7xl lg:text-8xl leading-none mb-3">30M+</div>
+            <div className="font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-none mb-3 whitespace-nowrap [overflow-wrap:normal]">30M+</div>
             <div className="text-[11px] uppercase tracking-[0.22em] font-bold leading-snug max-w-[80%]">
               {t("Horas-hombre supervisadas")}
             </div>
@@ -199,7 +199,7 @@ function Index() {
         <div className="max-w-7xl mx-auto">
           <Link
             to="/cumplimiento"
-            className="group block rounded-xl bg-[color:var(--anchor-fixed)] text-white border border-white/10 overflow-hidden transition-all duration-200 hover:border-[color:var(--signal)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(15,27,61,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--signal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--surface)] active:scale-[0.995]"
+            className="group block rounded-xl bg-[color:var(--anchor-fixed)] kg-on-dark text-white border border-white/10 overflow-hidden transition-all duration-200 hover:border-[color:var(--signal)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(15,27,61,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--signal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--surface)] active:scale-[0.995]"
           >
             <div className="grid md:grid-cols-[1.1fr_1fr] gap-0">
               {/* Left: pitch */}
@@ -313,7 +313,7 @@ function Index() {
               variant="accent"
               to="/contratistas"
               eyebrow="04 / P.N.P.C."
-              title={t("Filtro de contratistas")}
+              title={t("Contratistas")}
               description={t("Profesionalizamos a sus proveedores externos antes de operar en planta.")}
               cta={t("Conocer el programa")}
             />
