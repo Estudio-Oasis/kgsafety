@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 
 const CITIES = [
   { code: "MEX", labelEs: "CDMX", labelEn: "MEX", tz: "America/Mexico_City" },
+  { code: "RIO", labelEs: "RIO", labelEn: "RIO", tz: "America/Sao_Paulo" },
+  { code: "YTO", labelEs: "TOR", labelEn: "TOR", tz: "America/Toronto" },
   { code: "NYC", labelEs: "NYC", labelEn: "NYC", tz: "America/New_York" },
   { code: "LAX", labelEs: "LAX", labelEn: "LAX", tz: "America/Los_Angeles" },
   { code: "LON", labelEs: "LON", labelEn: "LDN", tz: "Europe/London" },
-  { code: "TYO", labelEs: "TYO", labelEn: "TYO", tz: "Asia/Tokyo" },
+  { code: "DXB", labelEs: "DXB", labelEn: "DXB", tz: "Asia/Dubai" },
+  { code: "HKG", labelEs: "HKG", labelEn: "HKG", tz: "Asia/Hong_Kong" },
+  { code: "SYD", labelEs: "SYD", labelEn: "SYD", tz: "Australia/Sydney" },
 ];
 
 function formatTime(tz: string, now: Date) {
