@@ -7,11 +7,12 @@ export const Route = createFileRoute("/servicios")({
   component: ServiciosPage,
   head: () => ({
     meta: [
-      { title: "Servicios · Un sistema completo contra el riesgo · KG Safety" },
-      { name: "description", content: "Cinco divisiones operativas KG Safety: W@H capacitación, MS&S consultoría e ingeniería, WoLL líneas de vida, S@H equipos y SoNs operaciones. Un solo estándar de seguridad." },
+      { title: "Servicios · Sistema integral contra el riesgo en altura · KG Safety" },
+      { name: "description", content: "Cinco divisiones operativas KG Safety: W@H capacitación DC-3, MS&S consultoría e ingeniería, WoLL líneas de vida, S@H equipos certificados y SoNs profesionalización de contratistas. Un solo estándar de seguridad." },
       { property: "og:title", content: "Servicios · KG Safety" },
-      { property: "og:description", content: "Cinco frentes. Un solo estándar de seguridad — capacitación, equipos, ingeniería, contratistas y operación." },
+      { property: "og:description", content: "Cinco divisiones · un solo estándar de seguridad: capacitación, ingeniería, equipos, contratistas y operación." },
       { property: "og:url", content: "https://kgsafety.lovable.app/servicios" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/servicios" }],
   }),

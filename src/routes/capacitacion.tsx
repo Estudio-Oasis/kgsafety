@@ -10,11 +10,12 @@ export const Route = createFileRoute("/capacitacion")({
   component: CapacitacionPage,
   head: () => ({
     meta: [
-      { title: "Capacitación DC-3 · KG Safety" },
-      { name: "description", content: "Programas DC-3 en 3 niveles para trabajos en altura, espacios confinados, andamios y más. Certificado y registro STPS, OSHA y NSC." },
-      { property: "og:title", content: "Capacitación DC-3 · KG Safety" },
-      { property: "og:description", content: "Tres niveles de capacitación certificada con cobertura nacional." },
+      { title: "Capacitación DC-3 oficial STPS · OSHA 10/30 · KG Safety" },
+      { name: "description", content: "Programas DC-3 oficiales STPS en 3 niveles (8h, 16h, 24h) para alturas, espacios confinados, andamios, LOTO y rescate. OSHA 10/30 y NSC. Cobertura nacional." },
+      { property: "og:title", content: "Capacitación DC-3 · OSHA · KG Safety" },
+      { property: "og:description", content: "Tres niveles de capacitación certificada · 12 áreas técnicas · DC-3 verificable en línea." },
       { property: "og:url", content: "https://kgsafety.lovable.app/capacitacion" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/capacitacion" }],
   }),
