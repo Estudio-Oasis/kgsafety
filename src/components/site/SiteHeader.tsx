@@ -145,16 +145,18 @@ export function SiteHeader() {
         <div className="flex items-center gap-2 md:gap-3 shrink-0">
           {/* Mobile-only theme + lang */}
           <button
+            type="button"
             onClick={toggleTheme}
             aria-label={t("Cambiar tema")}
-            className="lg:hidden p-2 bg-brand-navy text-white border border-brand-navy"
+            className="lg:hidden inline-flex items-center justify-center min-w-11 min-h-11 bg-brand-navy text-white border border-brand-navy rounded-md"
           >
-            {theme === "dark" ? <Sun size={16} strokeWidth={2.5} color="#F5C500" /> : <Moon size={16} strokeWidth={2.5} color="#ffffff" />}
+            {theme === "dark" ? <Sun size={18} strokeWidth={2.5} color="#F5C500" /> : <Moon size={18} strokeWidth={2.5} color="#ffffff" />}
           </button>
           <button
+            type="button"
             onClick={toggleLang}
             aria-label={t("Cambiar idioma")}
-            className="lg:hidden text-[11px] font-bold uppercase tracking-widest text-white bg-brand-blue px-3 py-1.5 border border-brand-blue"
+            className="lg:hidden inline-flex items-center justify-center min-w-11 min-h-11 text-[11px] font-bold uppercase tracking-widest text-white bg-brand-blue border border-brand-blue rounded-md"
           >
             {lang === "es" ? "EN" : "ES"}
           </button>
@@ -166,8 +168,11 @@ export function SiteHeader() {
             {t("Solicitar diagnóstico")} →
           </Link>
           <button
-            aria-label={t("Abrir menú")}
-            className="lg:hidden text-[color:var(--on-surface)] p-1"
+            type="button"
+            aria-label={open ? t("Cerrar menú") : t("Abrir menú")}
+            aria-expanded={open}
+            aria-controls="kg-mobile-nav"
+            className="lg:hidden inline-flex items-center justify-center min-w-11 min-h-11 text-[color:var(--on-surface)] rounded-md"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={22} /> : <Menu size={22} />}
@@ -177,7 +182,7 @@ export function SiteHeader() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="absolute top-full left-0 right-0 kg-header border-b border-[color:var(--border)] lg:hidden animate-mobile-in">
+        <div id="kg-mobile-nav" className="absolute top-full left-0 right-0 kg-header border-b border-[color:var(--border)] lg:hidden animate-mobile-in">
           <div className="flex flex-col p-6 gap-2 text-sm font-bold uppercase tracking-widest text-[color:color-mix(in_oklab,var(--on-surface)_85%,transparent)]">
             <Link
               to="/"
