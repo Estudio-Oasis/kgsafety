@@ -167,6 +167,7 @@ function RootComponent() {
       <ThemeProvider>
         <LanguageProvider>
           <div className="min-h-screen flex flex-col bg-anchor">
+            <WorldClockBar />
             <SiteHeader />
             <main className="flex-1">
               <Outlet />
