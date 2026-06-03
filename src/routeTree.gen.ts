@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SolucionesRouteImport } from './routes/soluciones'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServiciosRouteImport } from './routes/servicios'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
@@ -44,6 +45,11 @@ import { Route as PortalClientesSlugRouteImport } from './routes/portal.clientes
 const SolucionesRoute = SolucionesRouteImport.update({
   id: '/soluciones',
   path: '/soluciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServiciosRoute = ServiciosRouteImport.update({
@@ -212,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/nosotros': typeof NosotrosRoute
   '/portal': typeof PortalRouteWithChildren
   '/servicios': typeof ServiciosRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
@@ -244,6 +251,7 @@ export interface FileRoutesByTo {
   '/ingenieria': typeof IngenieriaRouteWithChildren
   '/nosotros': typeof NosotrosRoute
   '/servicios': typeof ServiciosRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
@@ -278,6 +286,7 @@ export interface FileRoutesById {
   '/nosotros': typeof NosotrosRoute
   '/portal': typeof PortalRouteWithChildren
   '/servicios': typeof ServiciosRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/soluciones': typeof SolucionesRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
@@ -313,6 +322,7 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/portal'
     | '/servicios'
+    | '/sitemap.xml'
     | '/soluciones'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/ingenieria'
     | '/nosotros'
     | '/servicios'
+    | '/sitemap.xml'
     | '/soluciones'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
@@ -378,6 +389,7 @@ export interface FileRouteTypes {
     | '/nosotros'
     | '/portal'
     | '/servicios'
+    | '/sitemap.xml'
     | '/soluciones'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
@@ -412,6 +424,7 @@ export interface RootRouteChildren {
   NosotrosRoute: typeof NosotrosRoute
   PortalRoute: typeof PortalRouteWithChildren
   ServiciosRoute: typeof ServiciosRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolucionesRoute: typeof SolucionesRoute
 }
 
@@ -422,6 +435,13 @@ declare module '@tanstack/react-router' {
       path: '/soluciones'
       fullPath: '/soluciones'
       preLoaderRoute: typeof SolucionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/servicios': {
@@ -732,6 +752,7 @@ const rootRouteChildren: RootRouteChildren = {
   NosotrosRoute: NosotrosRoute,
   PortalRoute: PortalRouteWithChildren,
   ServiciosRoute: ServiciosRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolucionesRoute: SolucionesRoute,
 }
 export const routeTree = rootRouteImport

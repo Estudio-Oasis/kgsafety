@@ -209,6 +209,16 @@
     background-color: var(--brand-blue);
     color: oklch(1 0 0);
   }
+
+  /* Global focus-visible — accesibilidad WCAG 2.4.7
+     Anillo amarillo signal con offset, sin estilos al hover. */
+  :where(a, button, [role="button"], input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  /* No mostrar outline en click de mouse */
+  :focus:not(:focus-visible) { outline: none; }
 }
 
 /* --------------------------------------------------------------- */

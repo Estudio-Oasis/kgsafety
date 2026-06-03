@@ -144,7 +144,7 @@ function Index() {
                 />
               ))}
               <span className="ml-2 mb-0.5 text-[10px] font-bold tracking-widest uppercase opacity-80">
-                {t("12 años")}
+                {t("12 años continuos")}
               </span>
             </div>
 
@@ -305,7 +305,7 @@ function Index() {
               image={lvImg}
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
-              title={t("Diseño WoLL")}
+              title={t("Líneas de vida (WoLL)")}
               cta={t("Diagnóstico")}
             />
             <BentoTile

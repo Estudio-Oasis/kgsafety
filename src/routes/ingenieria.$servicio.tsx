@@ -17,13 +17,17 @@ export const Route = createFileRoute("/ingenieria/$servicio")({
   ),
   head: ({ params }) => {
     const s = ENGINEERING.find((x) => x.slug === params.servicio);
+    const title = s ? `${s.name} · KG Safety` : "Ingeniería · KG Safety";
+    const url = `https://kgsafety.lovable.app/ingenieria/${params.servicio}`;
     return {
       meta: [
-        { title: s ? `${s.name} · KG Safety` : "Ingeniería · KG Safety" },
+        { title },
         { name: "description", content: s?.desc ?? "Ingeniería KG Safety." },
-        { property: "og:title", content: s ? `${s.name} · KG Safety` : "" },
+        { property: "og:title", content: title },
         { property: "og:description", content: s?.desc ?? "" },
+        { property: "og:url", content: url },
       ],
+      links: [{ rel: "canonical", href: url }],
     };
   },
 });

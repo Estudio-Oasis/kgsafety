@@ -10,6 +10,7 @@ export const Route = createFileRoute("/cumplimiento")({
       { name: "description", content: "Cumplimiento documental para auditoría STPS: NOM-009, NOM-033, OSHA, ANSI Z359, DC-3, plan de rescate, bitácora de inspección y evidencia integral." },
       { property: "og:title", content: "Cumplimiento · KG Safety" },
       { property: "og:description", content: "Toda la evidencia documental que su auditor necesita — emitida por KG Safety." },
+      { property: "og:url", content: "https://kgsafety.lovable.app/cumplimiento" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/cumplimiento" }],
   }),

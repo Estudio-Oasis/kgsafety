@@ -11,6 +11,7 @@ export const Route = createFileRoute("/soluciones")({
       { name: "description", content: "Familias de soluciones de seguridad: trabajos en altura, espacios confinados, ingeniería estructural, construcción y mantenimiento profesional." },
       { property: "og:title", content: "Soluciones · KG Safety" },
       { property: "og:description", content: "Especialistas en alturas para industria pesada, alimenticia, farmacéutica, energética y más." },
+      { property: "og:url", content: "https://kgsafety.lovable.app/soluciones" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/soluciones" }],
   }),

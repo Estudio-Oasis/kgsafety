@@ -98,8 +98,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Archivo+Black&family=Michroma&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap",
       },
-      { rel: "alternate", hrefLang: "es", href: "/" },
-      { rel: "alternate", hrefLang: "en", href: "/" },
     ],
     scripts: [
       {
@@ -109,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Organization",
           name: "KG Fall Protection Engineering",
           alternateName: "KG Safety",
-          url: "https://kg-safety.com",
+          url: "https://kgsafety.lovable.app",
           slogan: "We never fall.",
           address: {
             "@type": "PostalAddress",
@@ -120,6 +118,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             addressCountry: "MX",
           },
           telephone: "+52-722-879-5076",
+          sameAs: ["https://instagram.com/kg_safety"],
         }),
       },
     ],

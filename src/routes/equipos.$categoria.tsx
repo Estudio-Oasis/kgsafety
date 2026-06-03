@@ -18,13 +18,16 @@ export const Route = createFileRoute("/equipos/$categoria")({
   head: ({ params }) => {
     const c = EQUIPMENT.find((x) => x.slug === params.categoria);
     const title = c ? `${c.name} · KG Safety` : "Equipos · KG Safety";
+    const url = `https://kgsafety.lovable.app/equipos/${params.categoria}`;
     return {
       meta: [
         { title },
         { name: "description", content: c?.desc ?? "Equipos certificados KG Safety." },
         { property: "og:title", content: title },
         { property: "og:description", content: c?.desc ?? "" },
+        { property: "og:url", content: url },
       ],
+      links: [{ rel: "canonical", href: url }],
     };
   },
 });
