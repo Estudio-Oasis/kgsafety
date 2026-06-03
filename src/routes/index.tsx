@@ -305,7 +305,7 @@ function Index() {
               image={lvImg}
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
-              title={t("Diseño WoLL")}
+              title={t("Líneas de vida (WoLL)")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
