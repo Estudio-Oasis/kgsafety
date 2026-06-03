@@ -9,11 +9,12 @@ export const Route = createFileRoute("/equipos")({
   component: EquiposPage,
   head: () => ({
     meta: [
-      { title: "Equipos certificados · EPP, anclajes, líneas de vida · KG Safety" },
-      { name: "description", content: "Catálogo WoLL + S@H: EPP, anclajes, líneas de vida, barandales, domos, andamios, plataformas, pasos de gato y escalas con marcas líderes." },
+      { title: "Equipos certificados · EPP, anclajes y líneas de vida · KG Safety" },
+      { name: "description", content: "Catálogo WoLL + S@H: 10 familias de producto · EPP, anclajes, líneas de vida, barandales, domos, andamios, plataformas, pasos de gato y escalas. 30+ marcas líderes con venta, asesoría y certificación." },
       { property: "og:title", content: "Equipos certificados · KG Safety" },
-      { property: "og:description", content: "Diez familias de producto con venta y certificación." },
+      { property: "og:description", content: "10 líneas de producto · 30+ marcas representadas · venta, asesoría técnica y certificación de equipos." },
       { property: "og:url", content: "https://kgsafety.lovable.app/equipos" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/equipos" }],
   }),
@@ -24,7 +25,7 @@ const BRANDS = ["Petzl", "MSA", "3M", "Honeywell", "Capital Safety", "Tractel", 
 function EquiposPage() {
   const { t } = useT();
   return (
-    <div>
+    <div className="kg-on-dark bg-[color:var(--anchor-fixed)]">
       <section className="relative overflow-hidden border-b border-white/5">
         <div className="grid lg:grid-cols-2">
           <div className="kg-on-dark px-6 md:px-12 py-16 md:py-24 lg:py-28 bg-brand-navy">

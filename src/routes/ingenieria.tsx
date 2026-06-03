@@ -9,11 +9,12 @@ export const Route = createFileRoute("/ingenieria")({
   component: IngenieriaPage,
   head: () => ({
     meta: [
-      { title: "Ingeniería · Líneas de vida y anclajes · KG Safety" },
-      { name: "description", content: "Diseño, fabricación e instalación de líneas de vida verticales y horizontales, anclajes y plataformas bajo NOM-009-STPS y OSHA." },
-      { property: "og:title", content: "Ingeniería · KG Safety" },
-      { property: "og:description", content: "Sistemas de anclaje y líneas de vida diseñados a medida con certificación." },
+      { title: "Ingeniería · Líneas de vida, anclajes e instalación · KG Safety" },
+      { name: "description", content: "Diseño, fabricación, instalación y certificación de líneas de vida verticales y horizontales, anclajes, barandales y plataformas bajo NOM-009-STPS, OSHA, ANSI y EN-795." },
+      { property: "og:title", content: "Ingeniería · Líneas de vida y anclajes · KG Safety" },
+      { property: "og:description", content: "Seis frentes técnicos · ingeniería a medida · instalación nacional con pruebas de carga y plan de mantenimiento." },
       { property: "og:url", content: "https://kgsafety.lovable.app/ingenieria" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/ingenieria" }],
   }),
@@ -39,7 +40,8 @@ const PROCESS = [
 function IngenieriaPage() {
   const { t } = useT();
   return (
-    <div>
+    <div className="kg-on-dark bg-[color:var(--anchor-fixed)]">
+
       <section className="relative px-6 md:px-12 py-20 md:py-28 border-b border-white/5 overflow-hidden">
         <div className="absolute inset-0">
           <img src={officeImg} alt="" loading="eager" width={1600} height={1000} className="w-full h-full object-cover" />

@@ -24,8 +24,7 @@ export const REAL_ASSETS: Record<string, string[]> = {
     "logos-clientes/01870947f2.png",
     "logos-clientes/6ce47a420f.png",
     "logos-clientes/2092f918dc.png",
-    "logos-clientes/0babc8c2ab.png",
-    "logos-clientes/4fee262c92.png"
+    "logos-clientes/0babc8c2ab.png"
   ],
   "consultoria": [
     "consultoria/9210aa1b1e.png",
