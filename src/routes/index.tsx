@@ -259,21 +259,6 @@ function Index() {
       {/* ============== SERVICIOS BENTO ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-y border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-2">
-                {t("Servicios")}
-              </div>
-              <h2 className="font-display text-2xl md:text-4xl uppercase leading-tight">
-                {t("Capacidades operativas")}{" "}
-                <span className="text-signal kg-highlight">{t("para alto riesgo")}</span>
-              </h2>
-            </div>
-            <Link to="/servicios" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
-              {t("Ver todos los servicios")} →
-            </Link>
-
-          </div>
 
           <BentoGrid>
             <BentoTile
