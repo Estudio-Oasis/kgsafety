@@ -77,25 +77,31 @@ export function DifferentiatorBlock() {
           </div>
         </div>
 
-        {/* Pillars — typography that no longer cuts words mid-letter */}
-        <ol className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)] rounded-lg overflow-hidden">
-          {pillars.map((p) => (
-            <li
-              key={p.n}
-              className="bg-[color:var(--surface-2)] p-4 md:p-6 flex flex-col gap-2 min-w-0"
-            >
-              <span
-                className="font-display text-[11px] tracking-[0.25em]"
-                style={{ color: "var(--signal)" }}
+        {/* Método K.A.E.E. — 4 tiles con imagen de fondo */}
+        <div>
+          <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-3">
+            {t("Método registrado")}
+          </div>
+          <h3 className="font-display text-2xl md:text-3xl lg:text-4xl uppercase leading-tight mb-6 text-[color:var(--on-surface)]">
+            {t("Método")} <span className="text-signal">K.A.E.E.</span>
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            {kaee.map((k, i) => (
+              <article
+                key={i}
+                className="kg-on-dark relative overflow-hidden rounded-xl min-h-[200px] md:min-h-[220px] flex flex-col justify-end p-4 md:p-5 group"
               >
-                {p.n}
-              </span>
-              <span className="font-display uppercase leading-tight text-[color:var(--on-surface)] text-[13px] md:text-base lg:text-lg tracking-[-0.01em] break-words">
-                {p.k}
-              </span>
-            </li>
-          ))}
-        </ol>
+                <img src={k.img} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--brand-navy)] via-[color:var(--brand-navy)]/75 to-[color:var(--brand-navy)]/20" />
+                <div className="relative">
+                  <div className="font-display text-signal text-4xl md:text-5xl leading-none mb-2">{k.letter}</div>
+                  <h4 className="font-bold uppercase tracking-wider text-xs md:text-sm mb-1" style={{ color: "#ffffff" }}>{k.title}</h4>
+                  <p className="text-[11px] md:text-xs leading-snug" style={{ color: "rgba(255,255,255,0.85)" }}>{k.desc}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
