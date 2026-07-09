@@ -1,7 +1,11 @@
 import { useT } from "@/i18n/context";
+import kKnowledge from "@/assets/site/components__entrenamiento.jpg";
+import kAnalysis from "@/assets/site/banners__asesoria.jpg";
+import kEngineering from "@/assets/site/banners__ingenieria.jpg";
+import kElimination from "@/assets/site/banners__instalacion.jpg";
 
 /**
- * Bloque diferenciador competitivo.
+ * Bloque diferenciador competitivo + Método K.A.E.E.
  */
 export function DifferentiatorBlock() {
   const { t } = useT();
@@ -10,13 +14,11 @@ export function DifferentiatorBlock() {
     { strike: t("Distribuidores de EPP"), tag: t("solo") },
     { strike: t("Instaladores de líneas de vida"), tag: t("solo") },
   ];
-  const pillars = [
-    { n: "01", k: t("Diagnóstico") },
-    { n: "02", k: t("Ingeniería") },
-    { n: "03", k: t("Instalación") },
-    { n: "04", k: t("Certificación") },
-    { n: "05", k: t("Capacitación") },
-    { n: "06", k: t("Documentación") },
+  const kaee = [
+    { letter: "K", title: "Knowledge",   desc: t("Conocimiento bilateral para entendimiento claro entre cliente y equipo técnico."), img: kKnowledge },
+    { letter: "A", title: "Analysis",    desc: t("Análisis en común con el cliente para lograr comunicación y objetivos definidos."), img: kAnalysis },
+    { letter: "E", title: "Engineering", desc: t("Aplicación de cualquier método de ingeniería necesario para lograr los objetivos."), img: kEngineering },
+    { letter: "E", title: "Elimination", desc: t("Eliminación total de la problemática buscando el 100%."), img: kElimination },
   ];
   return (
     <section className="px-4 md:px-8 lg:px-12 py-14 md:py-20 bg-[color:var(--surface)] border-y border-[color:var(--border)]">
