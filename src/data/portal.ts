@@ -105,20 +105,33 @@ export type LibraryDoc = {
 export const CLIENTS: Client[] = [
   { slug: "femsa", name: "Coca-Cola FEMSA", industry: "Bebidas", plants: 2 },
   { slug: "holcim", name: "Holcim", industry: "Cemento", plants: 1 },
+  { slug: "unilever", name: "Unilever", industry: "Consumo", plants: 1 },
   { slug: "merck", name: "Merck", industry: "Farmacéutica", plants: 1 },
   { slug: "petstar", name: "PetStar", industry: "Reciclaje PET", plants: 1 },
+  { slug: "santa-clara", name: "Santa Clara", industry: "Lácteos", plants: 1 },
+  { slug: "bimbo", name: "Grupo Bimbo", industry: "Alimentos", plants: 1 },
+  { slug: "nestle", name: "Nestlé", industry: "Alimentos", plants: 1 },
+  { slug: "cemex", name: "Cemex", industry: "Cemento", plants: 1 },
+  { slug: "heineken", name: "Heineken", industry: "Bebidas", plants: 1 },
+  { slug: "grupo-modelo", name: "Grupo Modelo", industry: "Bebidas", plants: 1 },
+  { slug: "pemex", name: "Pemex", industry: "Energía / Infraestructura", plants: 1 },
+  { slug: "volkswagen", name: "Volkswagen", industry: "Automotriz", plants: 1 },
+  { slug: "ford", name: "Ford", industry: "Automotriz", plants: 1 },
+  { slug: "nissan", name: "Nissan", industry: "Automotriz", plants: 1 },
+  { slug: "bayer", name: "Bayer", industry: "Farmacéutica", plants: 1 },
+  { slug: "danone", name: "Danone", industry: "Lácteos", plants: 1 },
+  { slug: "pyg", name: "Procter & Gamble", industry: "Consumo", plants: 1 },
+  { slug: "loreal", name: "L'Oréal", industry: "Cuidado personal", plants: 1 },
+  { slug: "kimberly", name: "Kimberly-Clark", industry: "Consumo", plants: 1 },
+  { slug: "arca", name: "Arca Continental", industry: "Bebidas", plants: 1 },
   { slug: "pirelli", name: "Pirelli", industry: "Llantas", plants: 1 },
+  { slug: "gm", name: "General Motors", industry: "Automotriz", plants: 1 },
   { slug: "pfizer", name: "Pfizer", industry: "Farmacéutica", plants: 1 },
   { slug: "cargill", name: "Cargill", industry: "Agroindustria", plants: 1 },
   { slug: "jnj", name: "Johnson & Johnson", industry: "Cuidado personal", plants: 1 },
-  { slug: "owens", name: "Owens Illinois", industry: "Vidrio", plants: 1 },
-  { slug: "unilever", name: "Unilever", industry: "Consumo", plants: 1 },
-  { slug: "vestas", name: "Vestas", industry: "Energía eólica", plants: 1 },
-  { slug: "gamesa", name: "Gamesa Eólica", industry: "Energía eólica", plants: 1 },
-  { slug: "pepsico", name: "PepsiCo", industry: "Alimentos y bebidas", plants: 1 },
-  { slug: "gm", name: "General Motors", industry: "Automotriz", plants: 1 },
   { slug: "conoco", name: "Conoco Phillips", industry: "Energía / Infraestructura", plants: 1 },
-  { slug: "tupperware", name: "Tupperware", industry: "Plásticos", plants: 1 },
+  { slug: "vestas", name: "Vestas", industry: "Energía eólica", plants: 1 },
+  { slug: "pepsico", name: "PepsiCo", industry: "Alimentos y bebidas", plants: 1 },
 ];
 
 // ============= PLANTAS =============
@@ -132,15 +145,13 @@ export const PLANTS: Plant[] = [
   { slug: "pfizer-toluca", name: "Pfizer Toluca", clientSlug: "pfizer", location: "Toluca, Edo. Méx.", industry: "Farmacéutica", responsable: "Ing. Jorge Domínguez", email: "jdominguez@pfizer.com" },
   { slug: "cargill-atitalaquia", name: "Cargill Atitalaquia", clientSlug: "cargill", location: "Atitalaquia, Hgo.", industry: "Agroindustria", responsable: "Ing. Patricia Núñez", email: "pnunez@cargill.com" },
   { slug: "unilever-tultitlan", name: "Unilever Tultitlán", clientSlug: "unilever", location: "Tultitlán, Edo. Méx.", industry: "Consumo", responsable: "Ing. Mario Reyes", email: "mreyes@unilever.com" },
-  { slug: "gamesa-oaxaca", name: "Gamesa Eólica Oaxaca", clientSlug: "gamesa", location: "La Ventosa, Oax.", industry: "Eólica", responsable: "Ing. Daniela Estrada", email: "destrada@gamesa.com" },
   { slug: "vestas-norte", name: "Vestas Parque Norte", clientSlug: "vestas", location: "Reynosa, Tamps.", industry: "Eólica", responsable: "Ing. Hugo Pérez", email: "hperez@vestas.com" },
   { slug: "gm-silao", name: "General Motors Silao", clientSlug: "gm", location: "Silao, Gto.", industry: "Automotriz", responsable: "Ing. Verónica Luna", email: "vluna@gm.com" },
   { slug: "jnj-juarez", name: "Johnson & Johnson Juárez", clientSlug: "jnj", location: "Cd. Juárez, Chih.", industry: "Cuidado personal", responsable: "Ing. Alfredo Mejía", email: "amejia@jnj.com" },
-  { slug: "owens-toluca", name: "Owens Illinois Toluca", clientSlug: "owens", location: "Toluca, Edo. Méx.", industry: "Vidrio", responsable: "Ing. Karina Soto", email: "ksoto@o-i.com" },
   { slug: "pepsico-mexicali", name: "PepsiCo Mexicali", clientSlug: "pepsico", location: "Mexicali, B.C.", industry: "Alimentos", responsable: "Ing. Andrés Téllez", email: "atellez@pepsico.com" },
   { slug: "conoco-altamira", name: "Conoco Phillips Altamira", clientSlug: "conoco", location: "Altamira, Tamps.", industry: "Energía / Infraestructura", responsable: "Ing. Fernanda Ruiz", email: "fruiz@conocophillips.com" },
-  { slug: "tupperware-atlacomulco", name: "Tupperware Atlacomulco", clientSlug: "tupperware", location: "Atlacomulco, Edo. Méx.", industry: "Plásticos", responsable: "Ing. Sergio Aguilar", email: "saguilar@tupperware.com" },
 ];
+
 
 // ============= SISTEMAS INSTALADOS =============
 const SYSTEM_TYPES = [
