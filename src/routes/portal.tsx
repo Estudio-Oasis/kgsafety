@@ -63,12 +63,15 @@ function PortalLayout() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isLogin = pathname === "/portal/login";
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     if (ready && !session && !isLogin) {
       navigate({ to: "/portal/login" });
     }
   }, [ready, session, isLogin, navigate]);
+
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   if (isLogin) {
     return (
@@ -85,14 +88,11 @@ function PortalLayout() {
 
   const items = NAV.filter((n) => n.roles.includes(session.role));
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => { setMobileOpen(false); }, [pathname]);
-
   const handleLogout = () => {
     logout();
     navigate({ to: "/portal/login" });
   };
+
 
   const sidebar = (
     <>
