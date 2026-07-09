@@ -37,7 +37,12 @@ const LOGO_MAP: Record<string, string> = {
   jnj: "johnson-johnson",
   gm: "general-motors",
   conoco: "conoco-phillips",
+  pyg: "procter-gamble",
+  kimberly: "kimberly-clark",
+  arca: "arca-continental",
+  bimbo: "bimbo",
 };
+
 
 type Step = "role" | "cliente-empresa" | "cliente-planta" | "credenciales";
 
