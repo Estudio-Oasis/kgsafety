@@ -5,7 +5,7 @@ import { realImagesIn } from "@/lib/real-image";
 import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES } from "@/data/kaee";
 import { DifferentiatorBlock } from "@/components/site/DifferentiatorBlock";
 
-import { ClientLogosBand } from "@/components/site/ClientLogosBand";
+import { ClientLogosGrid } from "@/components/site/ClientLogosGrid";
 
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
@@ -249,7 +249,7 @@ function Index() {
 
 
       {/* ============== CLIENTES ============== */}
-      <ClientLogosBand variant="light" />
+      <ClientLogosGrid />
 
 
 
