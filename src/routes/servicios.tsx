@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
-import { COURSES, EQUIPMENT, ENGINEERING, SOLUTION_FAMILIES, SERVICE_DETAILS, DIVISIONS } from "@/data/kaee";
+import { SOLUTION_FAMILIES, SERVICE_DETAILS } from "@/data/kaee";
 
 export const Route = createFileRoute("/servicios")({
   component: ServiciosPage,
@@ -18,48 +18,6 @@ export const Route = createFileRoute("/servicios")({
   }),
 });
 
-const FRONTS = [
-  {
-    tag: "W@H",
-    title: "Working at Heights",
-    to: "/capacitacion" as const,
-    desc: "Capacitación DC-3 oficial STPS, OSHA 10 y OSHA 30. Presencial y en línea.",
-    stat: `${COURSES.length} cursos · 3 niveles`,
-    cta: "Ver cursos",
-  },
-  {
-    tag: "MS&S",
-    title: "Mantenimiento, Servicios & Soluciones",
-    to: "/cumplimiento" as const,
-    desc: "Consultoría, asesoría, supervisión, certificación e instalación.",
-    stat: `${SERVICE_DETAILS.length} servicios técnicos`,
-    cta: "Ver servicios",
-  },
-  {
-    tag: "WoLL",
-    title: "Working on Life Lines",
-    to: "/ingenieria" as const,
-    desc: "Líneas de vida, anclajes, barandales, andamios, plataformas, pasos de gato y escalas.",
-    stat: `${ENGINEERING.length} líneas`,
-    cta: "Ver ingeniería",
-  },
-  {
-    tag: "S@H",
-    title: "Safety @ Heights",
-    to: "/equipos" as const,
-    desc: "Catálogo de EPP y equipo certificado con trazabilidad y garantía.",
-    stat: `${EQUIPMENT.length} categorías`,
-    cta: "Ver catálogo",
-  },
-  {
-    tag: "SoNs",
-    title: "SoNs · P.N.P.C. y operación",
-    to: "/contratistas" as const,
-    desc: "Programa Nacional de Profesionalización a Contratistas y operación de inmuebles especializados.",
-    stat: "2,094+ contratistas",
-    cta: "Ver P.N.P.C.",
-  },
-];
 
 function ServiciosPage() {
   return (
