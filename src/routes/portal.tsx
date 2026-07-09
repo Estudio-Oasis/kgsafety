@@ -2,12 +2,14 @@ import { Link, Outlet, useNavigate, useRouterState, createFileRoute } from "@tan
 import { useEffect } from "react";
 import {
   LayoutDashboard,
-  Building2,
-  Factory,
-  Briefcase,
+  Layers,
   ShieldCheck,
+  Users,
   FileText,
+  CalendarClock,
+  Inbox,
   Receipt,
+  Building2,
   Library,
   Settings,
   LogOut,
@@ -29,16 +31,23 @@ export const Route = createFileRoute("/portal")({
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; roles: Role[] };
 
+const ALL_ROLES: Role[] = ["cliente-corp", "cliente-planta", "admin-kg", "equipo-kg"];
+const CLIENT_ROLES: Role[] = ["cliente-corp", "cliente-planta", "admin-kg"];
+
 const NAV: NavItem[] = [
-  { to: "/portal", label: "Dashboard", icon: LayoutDashboard, roles: ["cliente-corp", "cliente-planta", "admin-kg", "equipo-kg"] },
+  { to: "/portal", label: "Dashboard", icon: LayoutDashboard, roles: ALL_ROLES },
+  { to: "/portal/sistemas", label: "Mis sistemas y servicios", icon: Layers, roles: CLIENT_ROLES },
+  { to: "/portal/certificaciones", label: "Certificaciones y recertificaciones", icon: ShieldCheck, roles: CLIENT_ROLES },
+  { to: "/portal/personal", label: "Personal capacitado y DC-3", icon: Users, roles: CLIENT_ROLES },
+  { to: "/portal/constancias", label: "Constancias y fichas técnicas", icon: FileText, roles: CLIENT_ROLES },
+  { to: "/portal/calendario", label: "Calendario de cumplimiento", icon: CalendarClock, roles: CLIENT_ROLES },
+  { to: "/portal/solicitudes", label: "Solicitudes de servicio", icon: Inbox, roles: CLIENT_ROLES },
+  { to: "/portal/facturacion", label: "Facturación", icon: Receipt, roles: CLIENT_ROLES },
   { to: "/portal/clientes", label: "Clientes", icon: Building2, roles: ["admin-kg"] },
-  { to: "/portal/proyectos", label: "Proyectos", icon: Briefcase, roles: ["cliente-corp", "cliente-planta", "admin-kg", "equipo-kg"] },
-  { to: "/portal/certificaciones", label: "Certificaciones", icon: ShieldCheck, roles: ["cliente-corp", "cliente-planta", "admin-kg"] },
-  { to: "/portal/documentos", label: "Documentos", icon: FileText, roles: ["cliente-corp", "cliente-planta", "admin-kg"] },
-  { to: "/portal/facturacion", label: "Facturación", icon: Receipt, roles: ["cliente-corp", "cliente-planta", "admin-kg"] },
   { to: "/portal/biblioteca", label: "Biblioteca KG", icon: Library, roles: ["admin-kg", "equipo-kg"] },
   { to: "/portal/admin", label: "Panel admin", icon: Settings, roles: ["admin-kg"] },
 ];
+
 
 const ROLE_LABEL: Record<Role, string> = {
   "cliente-corp": "Cliente corporativo",
