@@ -86,32 +86,6 @@ function ServiciosPage() {
         </div>
       </section>
 
-      {/* 5 FRENTES */}
-      <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
-        <div className="max-w-7xl mx-auto">
-          <SectionLabel>Cinco divisiones · un solo equipo</SectionLabel>
-          <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-12 text-[color:var(--on-surface)]">
-            Cada división se contrata <span className="text-signal">por separado o como sistema.</span>
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
-            {FRONTS.map((p) => (
-              <Link key={p.tag} to={p.to} className="bg-[color:var(--surface)] p-8 flex flex-col group hover:bg-[color:var(--surface-2)] transition-colors">
-                <div className="font-display text-signal text-xs mb-4 tracking-[0.22em]">{p.tag}</div>
-                <h3 className="font-display text-2xl md:text-3xl uppercase tracking-tight text-[color:var(--on-surface)] leading-tight mb-3">{p.title}</h3>
-                <p className="text-[color:color-mix(in_oklab,var(--on-surface)_70%,transparent)] leading-relaxed mb-6">{p.desc}</p>
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-[color:var(--border)]">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-blue">{p.stat}</span>
-                  <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-signal group-hover:translate-x-1 transition-transform">{p.cta} →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="mt-3 text-[11px] uppercase tracking-[0.22em] text-[color:color-mix(in_oklab,var(--on-surface)_60%,transparent)]">
-            5 divisiones operativas: {DIVISIONS.map((d) => d.tag).join(" · ")}
-          </div>
-        </div>
-      </section>
-
       {/* CATÁLOGO MS&S — SERVICIOS INDIVIDUALES */}
       <section className="px-6 md:px-12 py-16 md:py-24 bg-[color:var(--surface-2)] border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
