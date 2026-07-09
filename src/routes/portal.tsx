@@ -1,5 +1,7 @@
 import { Link, Outlet, useNavigate, useRouterState, createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+
 import {
   LayoutDashboard,
   Layers,
