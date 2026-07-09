@@ -4,7 +4,7 @@ import { BentoGrid, BentoTile } from "@/components/bento/Bento";
 import { realImagesIn } from "@/lib/real-image";
 import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES } from "@/data/kaee";
 import { DifferentiatorBlock } from "@/components/site/DifferentiatorBlock";
-import { DivisionsBlock } from "@/components/site/DivisionsBlock";
+
 import { ClientLogosBand } from "@/components/site/ClientLogosBand";
 
 import heroImg from "@/assets/hero-clean.jpg";
