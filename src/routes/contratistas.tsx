@@ -41,24 +41,24 @@ function ContratistasPage() {
     <div>
       <section className="relative overflow-hidden border-b border-white/5">
 
-        <div className="grid md:grid-cols-2">
+        <div className="grid lg:grid-cols-2">
           <div className="kg-on-dark px-6 md:px-12 py-20 md:py-28 bg-brand-navy text-white">
             <SectionLabel>{t("P.N.P.C.")}</SectionLabel>
-            <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
-              {t("Programa Nacional de")}{" "}<br />
-              <span className="text-signal">{t("Profesionalización")}</span>{" "}<br />
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.08]">
+              {t("Programa Nacional de")}{" "}
+              <span className="text-signal">{t("Profesionalización")}</span>{" "}
               {t("a Contratistas.")}
             </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
+            <p className="text-base md:text-lg lg:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
               {t("10 años de implementación ininterrumpida en empresas multinacionales. Reducción a cero de accidentes en trabajos en altura bajo programa completo.")}
             </p>
             <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
               {t("Solicitar auditoría P.N.P.C.")}
             </Link>
           </div>
-          <div className="relative min-h-[320px] md:min-h-full">
+          <div className="relative min-h-[320px] lg:min-h-full">
             <img src={teamImg} alt="Equipo de contratistas con EPP" loading="eager" width={1600} height={1000} className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute top-6 right-6 md:top-10 md:right-10 bg-signal text-anchor px-5 py-3 shadow-[5px_5px_0_0_rgba(0,0,0,0.4)]">
+            <div className="absolute top-6 right-6 md:top-10 md:right-10 bg-signal text-anchor px-5 py-3 shadow-[5px_5px_0_0_rgba(0,0,0,0.4)] z-10">
               <div className="font-display text-xs uppercase tracking-[0.25em]">10 años · 0 accidentes</div>
             </div>
           </div>
@@ -80,16 +80,16 @@ function ContratistasPage() {
       </section>
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-          <div>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <div className="relative">
             <SectionLabel>{t("Beneficios")}</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
-              {t("Operación bajo")}{" "}<br />{t("control total.")}
+            <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight relative z-10">
+              {t("Operación bajo")}{" "}{t("control total.")}
             </h2>
-            <p className="text-white/60 leading-relaxed mb-8">
+            <p className="text-white/60 leading-relaxed mb-8 relative z-10">
               {t("El P.N.P.C. permite controlar a los contratistas en los tres niveles de capacitación y al personal interno para una comunicación correcta entre ambas partes.")}
             </p>
-            <div className="border-l-2 border-signal pl-6 py-4">
+            <div className="border-l-2 border-signal pl-6 py-4 relative z-10">
               <div className="font-display text-3xl md:text-4xl text-white mb-2">100%</div>
               <div className="text-[10px] uppercase tracking-[0.25em] text-white/50 leading-relaxed">
                 {t("Auditable por STPS,")}<br />{t("REPSE y clientes")}

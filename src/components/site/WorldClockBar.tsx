@@ -37,7 +37,7 @@ export function WorldClockBar() {
   }));
 
   return (
-    <div className="w-full bg-anchor border-b border-white/10 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-white/55 overflow-hidden">
+    <div className="w-full bg-anchor border-b border-white/10 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-white/55">
       {/* Desktop xl: static row, all cities visible */}
       <div className="hidden xl:flex justify-end items-center gap-6 px-12 py-1.5">
         {items.map((it) => (
@@ -48,8 +48,21 @@ export function WorldClockBar() {
         ))}
       </div>
 
-      {/* Tablet + Mobile (<xl): marquee */}
-      <div className="xl:hidden relative py-1.5">
+      {/* Tablet (md–lg): horizontal scroll, all cities reachable by swipe */}
+      <div
+        className="hidden md:flex xl:hidden overflow-x-auto items-center gap-6 px-6 py-1.5 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        aria-label="Horas mundiales"
+      >
+        {items.map((it) => (
+          <div key={it.code} className="flex items-center gap-2 shrink-0">
+            <span className="text-white/40">{it.code}</span>
+            <span className="text-signal tabular-nums">{it.time}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile (<md): marquee */}
+      <div className="md:hidden relative py-1.5 overflow-hidden">
         <div className="flex gap-8 whitespace-nowrap animate-marquee will-change-transform">
           {[...items, ...items].map((it, i) => (
             <div key={i} className="flex items-center gap-2 shrink-0">

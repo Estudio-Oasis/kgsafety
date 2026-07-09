@@ -264,7 +264,7 @@ function Index() {
 
           <BentoGrid>
             <BentoTile
-              span="col-span-2 md:col-span-3 md:row-span-2"
+              span="col-span-2 md:col-span-3"
               variant="image"
               image={alturasImg}
               to="/capacitacion"
@@ -284,16 +284,17 @@ function Index() {
               cta={t("Catálogo")}
             />
             <BentoTile
-              span="md:col-span-1"
+              span="col-span-2 md:col-span-3"
               variant="image"
               image={lvImg}
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
               title={t("Líneas de vida")}
+              description={t("Diseño, instalación y certificación NOM-009 / EN-795.")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
-              span="md:col-span-2"
+              span="col-span-2 md:col-span-3"
               variant="accent"
               to="/contratistas"
               eyebrow="04 / P.N.P.C."
@@ -378,7 +379,15 @@ function Index() {
 
 
 
-            <BentoTile span="md:col-span-2" variant="accent" href="tel:+527228795076" eyebrow={t("Llamada directa")} title="+52 722 879 5076" cta={t("Llamar ahora")} />
+            <BentoTile span="md:col-span-2" variant="accent" href="tel:+527228795076" eyebrow={t("Llamada directa")}>
+              <div className="font-display uppercase leading-[1.05] tracking-tight text-[clamp(1rem,1.8vw,1.35rem)] mb-3">
+                +52 722 879 5076
+              </div>
+              <div className="pt-1 text-[11px] font-bold uppercase tracking-[0.14em] flex items-center gap-2">
+                <span>{t("Llamar ahora")}</span>
+                <span aria-hidden>→</span>
+              </div>
+            </BentoTile>
             <BentoTile span="md:col-span-2" variant="neutral" eyebrow={t("Certificados")}>
               <div className="flex flex-wrap gap-2 mt-2 text-[10px] uppercase tracking-widest font-display opacity-70">
                 <span>STPS</span><span>OSHA</span><span>ANSI Z359</span>

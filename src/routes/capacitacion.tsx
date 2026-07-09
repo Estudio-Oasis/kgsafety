@@ -61,8 +61,8 @@ function CapacitacionPage() {
       </section>
 
       {/* visual band: confined space */}
-      <section className="relative border-b border-white/5 grid md:grid-cols-3">
-        <div className="md:col-span-2 relative h-64 md:h-80">
+      <section className="relative border-b border-white/5 grid lg:grid-cols-3">
+        <div className="lg:col-span-2 relative h-64 md:h-80">
           <img src={confinedImg} alt="Rescate en espacio confinado" loading="lazy" width={1600} height={1000} className="w-full h-full object-cover" />
         </div>
         <div className="bg-signal text-anchor p-8 md:p-12 flex flex-col justify-center">
@@ -103,11 +103,11 @@ function CapacitacionPage() {
       </section>
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>
             <SectionLabel>{t("12 áreas")}</SectionLabel>
             <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
-              {t("Cursos")}{" "}<br />{t("disponibles")}
+              {t("Cursos")} {t("disponibles")}
             </h2>
             <p className="text-white/60 mb-8 leading-relaxed">
               {t("Temarios homologados, instructores certificados y emisión documental con certeza jurídica. Registro de CURP y verificación en línea.")}
@@ -179,7 +179,7 @@ function CapacitacionPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-28 px-6 md:px-12 text-center">
+      <section className="pt-10 md:pt-14 pb-20 md:pb-28 px-6 md:px-12 text-center">
         <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
           {t("Inscriba a su equipo")} <span className="text-signal">{t("esta semana")}</span>.
         </h2>
