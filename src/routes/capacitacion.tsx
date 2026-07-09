@@ -179,7 +179,7 @@ function CapacitacionPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-28 px-6 md:px-12 text-center">
+      <section className="pt-10 md:pt-14 pb-20 md:pb-28 px-6 md:px-12 text-center">
         <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
           {t("Inscriba a su equipo")} <span className="text-signal">{t("esta semana")}</span>.
         </h2>
