@@ -38,15 +38,28 @@ export function WorldClockBar() {
 
   return (
     <div className="w-full bg-anchor border-b border-white/10 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-white/55 overflow-hidden">
-      {/* Desktop: static row */}
-      <div className="hidden md:flex justify-end items-center gap-6 px-12 py-1.5">
+      {/* Desktop xl: static row, all cities */}
+      <div className="hidden xl:flex justify-end items-center gap-6 px-12 py-1.5">
         {items.map((it) => (
-          <div key={it.code} className="flex items-center gap-2">
+          <div key={it.code} className="flex items-center gap-2 shrink-0">
             <span className="text-white/40">{it.code}</span>
             <span className="text-signal tabular-nums">{it.time}</span>
           </div>
         ))}
       </div>
+
+      {/* Tablet (md-lg): horizontal scroll, no cut-off */}
+      <div className="hidden md:block xl:hidden py-1.5">
+        <div className="flex justify-end items-center gap-4 px-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {items.map((it) => (
+            <div key={it.code} className="flex items-center gap-1.5 shrink-0">
+              <span className="text-white/40">{it.code}</span>
+              <span className="text-signal tabular-nums">{it.time}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
 
       {/* Mobile: marquee */}
       <div className="md:hidden relative py-1.5">
