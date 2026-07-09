@@ -50,9 +50,14 @@ export function StatCard({
     ok: "border-emerald-500/50",
   };
   return (
-    <div className={`bg-[color:var(--surface)] border ${tones[tone]} p-5`}>
-      <p className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] mb-2">{label}</p>
-      <p className="font-display text-3xl text-[color:var(--on-surface)] leading-none">{value}</p>
+    <div className={`bg-[color:var(--surface)] border ${tones[tone]} p-4 md:p-5 min-w-0`}>
+      <p className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] mb-2 truncate">{label}</p>
+      <p
+        className="font-display text-[color:var(--on-surface)] leading-none whitespace-nowrap [text-wrap:balance]"
+        style={{ fontSize: "clamp(1.25rem, 4.2vw, 1.875rem)" }}
+      >
+        {value}
+      </p>
       {hint && <p className="mt-2 text-xs text-[color:var(--muted-fg)]">{hint}</p>}
     </div>
   );
