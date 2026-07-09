@@ -44,14 +44,14 @@ function ServiciosPage() {
         </div>
       </section>
 
-      {/* CATÁLOGO MS&S — SERVICIOS INDIVIDUALES */}
+      {/* CATÁLOGO DE SERVICIOS TÉCNICOS */}
       <section className="px-6 md:px-12 py-16 md:py-24 bg-[color:var(--surface-2)] border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <SectionLabel>Servicios técnicos MS&S</SectionLabel>
+              <SectionLabel>Servicios técnicos</SectionLabel>
               <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight text-[color:var(--on-surface)]">
-                Páginas con <span className="text-signal">profundidad técnica</span>
+                Otros <span className="text-signal">servicios</span>
               </h2>
             </div>
           </div>
@@ -63,8 +63,8 @@ function ServiciosPage() {
                 params={{ servicio: s.slug }}
                 className="kg-bento p-6 flex flex-col group"
               >
-                <div className="font-display text-signal text-[10px] tracking-[0.22em] mb-3">{s.parent ?? "MS&S"}</div>
                 <h3 className="font-display text-lg uppercase tracking-tight text-[color:var(--on-surface)] mb-2 leading-tight">{s.name}</h3>
+
                 <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_65%,transparent)] leading-relaxed mb-4">{s.short}</p>
                 <span className="mt-auto text-[11px] font-bold uppercase tracking-[0.22em] text-signal group-hover:translate-x-1 transition-transform">Ver servicio →</span>
               </Link>

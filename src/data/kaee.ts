@@ -478,17 +478,6 @@ export const SERVICE_DETAILS: ServiceDetail[] = [
     parent: "WoLL",
   },
   {
-    slug: "renta",
-    name: "Renta de equipo y plataformas",
-    short: "EPP, líneas de vida temporales y plataformas en renta para proyectos puntuales.",
-    problem: "Tiene un proyecto de 2 semanas — no le conviene comprar EPP, plataformas o líneas de vida que después no usará.",
-    includes: ["EPP en renta con trazabilidad", "Líneas de vida temporales", "Plataformas y andamios", "Logística entrega/retiro"],
-    deliverables: ["Contrato de renta", "Ficha técnica del equipo", "Certificado de inspección pre-renta", "Bitácora de uso"],
-    norms: ["ANSI Z359", "NOM-009-STPS"],
-    whenToHire: ["Paros de planta", "Mantenimiento mayor", "Obra de corto plazo", "Pico estacional"],
-    parent: "S@H",
-  },
-  {
     slug: "analisis-de-riesgo",
     name: "Análisis de riesgo en altura",
     short: "Identificación, evaluación y priorización del riesgo de caída por punto de trabajo.",
