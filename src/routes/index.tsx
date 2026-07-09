@@ -191,9 +191,6 @@ function Index() {
       {/* ============== DIFERENCIADOR ============== */}
       <DifferentiatorBlock />
 
-      {/* ============== 5 DIVISIONES ============== */}
-      <DivisionsBlock />
-
       {/* ============== EVIDENCIA DOCUMENTAL ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-10 md:py-14 bg-[color:var(--surface)]">
         <div className="max-w-7xl mx-auto">
