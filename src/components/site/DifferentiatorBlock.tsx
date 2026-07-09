@@ -76,7 +76,7 @@ export function DifferentiatorBlock() {
         </div>
 
         {/* Pillars — typography that no longer cuts words mid-letter */}
-        <ol className="grid grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)] rounded-lg overflow-hidden">
+        <ol className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)] rounded-lg overflow-hidden">
           {pillars.map((p) => (
             <li
               key={p.n}
