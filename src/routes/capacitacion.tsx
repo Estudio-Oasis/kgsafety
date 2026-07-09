@@ -103,11 +103,11 @@ function CapacitacionPage() {
       </section>
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>
             <SectionLabel>{t("12 áreas")}</SectionLabel>
             <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
-              {t("Cursos")}{" "}<br />{t("disponibles")}
+              {t("Cursos")} {t("disponibles")}
             </h2>
             <p className="text-white/60 mb-8 leading-relaxed">
               {t("Temarios homologados, instructores certificados y emisión documental con certeza jurídica. Registro de CURP y verificación en línea.")}
