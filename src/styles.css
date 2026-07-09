@@ -391,11 +391,12 @@
    a single word truly doesn't fit on its own line. */
 .font-display,
 h1, h2, h3 {
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
   word-break: keep-all;
   hyphens: none;
   text-wrap: balance;
 }
+
 
 /* Párrafos: evitar justificado en móvil (causa palabras cortadas y huérfanas)
    y mejorar el reparto natural de líneas. */
