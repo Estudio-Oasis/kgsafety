@@ -241,7 +241,7 @@ function PortalLogin() {
                 Elija el logotipo de su empresa. Si no aparece, seleccione <b>Otros</b>.
               </p>
 
-              <ul className="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-[420px] overflow-y-auto pr-1 mb-3">
+              <ul className="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-[60vh] md:max-h-[520px] overflow-y-auto pr-1 mb-3">
                 {CLIENTS.map((c) => {
                   const url = logoBySlug(LOGO_MAP[c.slug] ?? c.slug);
                   return (
