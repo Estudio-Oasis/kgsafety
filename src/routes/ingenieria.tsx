@@ -128,7 +128,7 @@ function IngenieriaPage() {
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
           <div>
             <SectionLabel>{t("Construcción y mantenimiento")}</SectionLabel>
-            <h2 className="font-body font-black tracking-tight text-xl sm:text-2xl md:text-[1.75rem] lg:text-[2rem] mb-6 uppercase leading-[1.1] [overflow-wrap:normal] [word-break:normal] hyphens-none">
+            <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight [overflow-wrap:normal] [word-break:normal] hyphens-none">
               {t("Programas residenciales e industriales")}
             </h2>
             <p className="text-white/60 leading-relaxed mb-6">

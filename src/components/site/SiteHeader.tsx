@@ -13,11 +13,15 @@ const PRIMARY: NavItem[] = [
   { to: "/equipos", labelKey: "Equipos" },
   { to: "/contratistas", labelKey: "P.N.P.C." },
   { to: "/nosotros", labelKey: "Nosotros" },
+];
+
+const SECONDARY: NavItem[] = [
   { to: "/cumplimiento", labelKey: "Cumplimiento" },
   { to: "/facturacion", labelKey: "Facturación" },
   { to: "/faq", labelKey: "FAQ" },
   { to: "/contacto", labelKey: "Contacto" },
 ];
+
 
 const MOBILE_GROUPS: { label: string; items: NavItem[] }[] = [
   {
@@ -88,7 +92,7 @@ export function SiteHeader() {
         </Link>
 
         {/* Primary nav (desktop) */}
-        <div className="hidden lg:flex flex-1 justify-center items-center gap-3 xl:gap-5 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.14em] xl:tracking-[0.18em] text-[color:color-mix(in_oklab,var(--on-surface)_72%,transparent)]">
+        <div className="hidden lg:flex flex-1 justify-center items-center gap-2 xl:gap-4 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.12em] xl:tracking-[0.18em] text-[color:color-mix(in_oklab,var(--on-surface)_72%,transparent)]">
           {PRIMARY.map((item) => (
             <Link
               key={item.to}
@@ -99,7 +103,40 @@ export function SiteHeader() {
               {t(item.labelKey)}
             </Link>
           ))}
+          {SECONDARY.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="relative py-1 hidden xl:inline-block hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-[2px] after:bg-[color:var(--signal)] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
+              activeProps={{ className: "text-[color:var(--on-surface)] after:scale-x-100" }}
+            >
+              {t(item.labelKey)}
+            </Link>
+          ))}
+          <div className="relative xl:hidden group">
+            <button
+              type="button"
+              className="py-1 inline-flex items-center gap-1 hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap"
+            >
+              {t("Más")} <ChevronDown size={12} strokeWidth={2.5} />
+            </button>
+            <div className="absolute right-0 top-full pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-opacity">
+              <div className="min-w-[180px] bg-[color:var(--surface)] border border-[color:var(--border)] shadow-lg rounded-md p-2 flex flex-col gap-1">
+                {SECONDARY.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="px-3 py-2 rounded hover:bg-[color:var(--surface-2)] hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap"
+                    activeProps={{ className: "text-[color:var(--on-surface)] bg-[color:var(--surface-2)]" }}
+                  >
+                    {t(item.labelKey)}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
+
 
         {/* Right cluster */}
         <div className="flex items-center gap-2 md:gap-3 shrink-0">

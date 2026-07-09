@@ -143,9 +143,10 @@ export function BentoTile(props: TileProps) {
           </div>
         )}
         {title && (
-          <div className="font-display uppercase leading-[1.05] tracking-tight text-[clamp(0.72rem,3.4vw,0.95rem)] sm:text-base md:text-xl lg:text-2xl mb-2 [overflow-wrap:break-word] hyphens-none">
+          <div className="font-display uppercase leading-[1.05] tracking-tight text-[clamp(0.7rem,2.4vw,0.9rem)] sm:text-base md:text-lg lg:text-2xl mb-2 [overflow-wrap:normal] [word-break:keep-all] hyphens-none">
             {title}
           </div>
+
         )}
         {description && (
           <div className="text-sm leading-relaxed" style={{ color: v.muted }}>
