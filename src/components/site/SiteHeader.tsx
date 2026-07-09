@@ -46,19 +46,8 @@ const MOBILE_GROUPS: { label: string; items: NavItem[] }[] = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>("Soluciones");
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
   const { theme, toggle: toggleTheme } = useTheme();
   const { lang, toggle: toggleLang, t } = useT();
-
-  useEffect(() => {
-    if (!moreOpen) return;
-    const onDoc = (e: MouseEvent) => {
-      if (!moreRef.current?.contains(e.target as Node)) setMoreOpen(false);
-    };
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, [moreOpen]);
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md kg-header border-b border-[color:var(--border)]">
