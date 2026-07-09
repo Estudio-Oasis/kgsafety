@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react";
 import { useTheme } from "@/theme/context";
 import { useT } from "@/i18n/context";
