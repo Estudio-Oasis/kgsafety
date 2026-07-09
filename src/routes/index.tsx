@@ -100,8 +100,8 @@ function Index() {
                 </span>
               </h1>
 
-              <p className="text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mb-7 text-white">
-                {t("Diagnóstico, sistemas certificados y capacitación DC-3 para industria pesada.")}
+              <p className="text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mb-7 text-white text-left [text-wrap:pretty] [hyphens:none]">
+                {t("Diagnóstico, sistemas certificados y capacitación DC-3 para industria.")}
               </p>
 
               <div className="flex flex-wrap gap-3 mt-auto">
