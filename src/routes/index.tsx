@@ -249,7 +249,7 @@ function Index() {
 
 
       {/* ============== CLIENTES ============== */}
-      <ClientLogosBand variant="light" />
+      <ClientLogosGrid />
 
 
 
