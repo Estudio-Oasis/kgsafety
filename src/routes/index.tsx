@@ -264,7 +264,7 @@ function Index() {
 
           <BentoGrid>
             <BentoTile
-              span="col-span-2 md:col-span-3 md:row-span-2"
+              span="col-span-2 md:col-span-3"
               variant="image"
               image={alturasImg}
               to="/capacitacion"
@@ -284,16 +284,17 @@ function Index() {
               cta={t("Catálogo")}
             />
             <BentoTile
-              span="md:col-span-1"
+              span="col-span-2 md:col-span-3"
               variant="image"
               image={lvImg}
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
               title={t("Líneas de vida")}
+              description={t("Diseño, instalación y certificación NOM-009 / EN-795.")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
-              span="md:col-span-2"
+              span="col-span-2 md:col-span-3"
               variant="accent"
               to="/contratistas"
               eyebrow="04 / P.N.P.C."
