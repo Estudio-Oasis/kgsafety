@@ -156,16 +156,17 @@ export function BentoTile(props: TileProps) {
 
         {children}
         {cta && (
-          <div className="mt-auto pt-4 text-[11px] font-bold uppercase tracking-[0.22em] inline-flex items-center gap-2">
-            <span>{cta}</span>
+          <div className="mt-auto pt-4 text-[11px] font-bold uppercase tracking-[0.14em] flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
+            <span className="break-words">{cta}</span>
             <span
               aria-hidden
-              className="inline-block transition-transform duration-300 group-hover:translate-x-1"
+              className="inline-block shrink-0 transition-transform duration-300 group-hover:translate-x-1"
             >
               →
             </span>
           </div>
         )}
+
       </div>
     </div>
   );
