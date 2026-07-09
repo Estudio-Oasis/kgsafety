@@ -282,16 +282,16 @@ function Index() {
               cta={t("Catálogo")}
             />
             <BentoTile
-              span="md:col-span-2"
+              span="md:col-span-1"
               variant="image"
               image={lvImg}
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
-              title={t("Líneas de vida (WoLL)")}
+              title={t("Líneas de vida")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
-              span="md:col-span-1"
+              span="md:col-span-2"
               variant="accent"
               to="/contratistas"
               eyebrow="04 / P.N.P.C."
@@ -299,6 +299,7 @@ function Index() {
               description={t("Profesionalizamos a sus proveedores externos antes de operar en planta.")}
               cta={t("Conocer el programa")}
             />
+
           </BentoGrid>
         </div>
       </section>
