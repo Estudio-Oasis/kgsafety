@@ -73,12 +73,14 @@ export function Panel({
   children: ReactNode;
 }) {
   return (
-    <section className="bg-[color:var(--surface)] border border-[color:var(--border)]">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-[color:var(--border)]">
-        <h2 className="text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface)]">{title}</h2>
+    <section className="bg-[color:var(--surface)] border border-[color:var(--border)] min-w-0">
+      <header className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[color:var(--border)]">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface)] truncate">{title}</h2>
         {action}
       </header>
-      <div className="p-0">{children}</div>
+      <div className="portal-panel-body relative overflow-x-auto [-webkit-overflow-scrolling:touch]">
+        {children}
+      </div>
     </section>
   );
 }
