@@ -6,6 +6,8 @@ import { COURSES, EQUIPMENT, PNPC_STATS, TESTIMONIALS, INDUSTRIES } from "@/data
 import { DifferentiatorBlock } from "@/components/site/DifferentiatorBlock";
 
 import { ClientLogosGrid } from "@/components/site/ClientLogosGrid";
+import { InstagramFeed } from "@/components/site/InstagramFeed";
+
 
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
@@ -386,6 +388,9 @@ function Index() {
           </BentoGrid>
         </div>
       </section>
+
+      <InstagramFeed />
     </div>
   );
 }
+
