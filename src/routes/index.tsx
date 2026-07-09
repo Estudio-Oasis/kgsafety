@@ -388,6 +388,9 @@ function Index() {
           </BentoGrid>
         </div>
       </section>
+
+      <InstagramFeed />
     </div>
   );
 }
+
