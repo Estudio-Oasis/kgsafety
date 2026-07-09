@@ -61,8 +61,8 @@ function CapacitacionPage() {
       </section>
 
       {/* visual band: confined space */}
-      <section className="relative border-b border-white/5 grid md:grid-cols-3">
-        <div className="md:col-span-2 relative h-64 md:h-80">
+      <section className="relative border-b border-white/5 grid lg:grid-cols-3">
+        <div className="lg:col-span-2 relative h-64 md:h-80">
           <img src={confinedImg} alt="Rescate en espacio confinado" loading="lazy" width={1600} height={1000} className="w-full h-full object-cover" />
         </div>
         <div className="bg-signal text-anchor p-8 md:p-12 flex flex-col justify-center">
