@@ -13,11 +13,15 @@ const PRIMARY: NavItem[] = [
   { to: "/equipos", labelKey: "Equipos" },
   { to: "/contratistas", labelKey: "P.N.P.C." },
   { to: "/nosotros", labelKey: "Nosotros" },
+];
+
+const SECONDARY: NavItem[] = [
   { to: "/cumplimiento", labelKey: "Cumplimiento" },
   { to: "/facturacion", labelKey: "Facturación" },
   { to: "/faq", labelKey: "FAQ" },
   { to: "/contacto", labelKey: "Contacto" },
 ];
+
 
 const MOBILE_GROUPS: { label: string; items: NavItem[] }[] = [
   {
