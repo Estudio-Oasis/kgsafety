@@ -168,6 +168,12 @@
   .kg-on-dark .text-signal         { color: var(--signal) !important; }
   .kg-on-dark .text-anchor         { color: var(--anchor-fixed) !important; }
 
+  /* Inside a dark region, remap surface backgrounds to literal dark tones
+   * so white text stays readable (fixes white-on-white in cards). */
+  .kg-on-dark .bg-anchor { background-color: var(--brand-navy) !important; }
+  .kg-on-dark .bg-steel  { background-color: color-mix(in oklab, var(--brand-navy) 82%, #ffffff) !important; }
+  .kg-on-dark .hover\:bg-steel:hover { background-color: color-mix(in oklab, var(--brand-navy) 72%, #ffffff) !important; }
+
   .border-white\/5  { border-color: color-mix(in oklab, var(--on-surface) 7%, transparent) !important; }
   .border-white\/10 { border-color: color-mix(in oklab, var(--on-surface) 12%, transparent) !important; }
   .border-white\/20 { border-color: color-mix(in oklab, var(--on-surface) 22%, transparent) !important; }
