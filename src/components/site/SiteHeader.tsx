@@ -28,7 +28,6 @@ const MOBILE_GROUPS: { label: string; items: NavItem[] }[] = [
       { to: "/ingenieria", labelKey: "Ingeniería" },
       { to: "/equipos", labelKey: "Equipos" },
       { to: "/contratistas", labelKey: "P.N.P.C." },
-      { to: "/industrias", labelKey: "Industrias" },
     ],
   },
   {
