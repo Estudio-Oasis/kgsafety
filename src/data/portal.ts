@@ -439,3 +439,140 @@ export function buildProjectTimeline(p: Project): ProjectEvent[] {
   ];
 }
 
+// ============= PERSONAL CAPACITADO / DC-3 =============
+export type Worker = {
+  id: string;
+  nombre: string;
+  puesto: string;
+  plantSlug: string;
+  curso: string;
+  dc3: string;
+  emision: string;
+  vencimiento: string;
+  instructor: string;
+};
+
+const NOMBRES = [
+  "Juan Pérez Ramírez", "María López Sandoval", "Carlos Hernández Ruiz", "Ana Martínez Vega",
+  "Luis Torres Mendoza", "Sofía Ramírez Ortega", "Miguel Ángel Cruz", "Laura Domínguez",
+  "Roberto Salinas Vera", "Patricia Rojas Núñez", "Fernando Aguilar", "Gabriela Islas",
+  "Héctor Villanueva", "Andrea Chávez", "Ricardo Molina", "Verónica Guzmán",
+  "Jorge Palacios", "Diana Fuentes", "Alejandro Ríos", "Karen Meza",
+];
+const PUESTOS = ["Técnico mantenimiento", "Supervisor HSE", "Trabajador de altura", "Jefe de planta", "Coordinador seguridad", "Operador"];
+const CURSOS = [
+  "Trabajo seguro en alturas — Autorizado",
+  "Trabajo seguro en alturas — Supervisor",
+  "Rescate técnico en altura",
+  "Inspector de EPP",
+  "Espacios confinados",
+];
+
+export const WORKERS: Worker[] = PLANTS.flatMap((p, pi) => {
+  const count = 3 + (pi % 4);
+  return Array.from({ length: count }, (_, k) => {
+    const idx = (pi * 5 + k) % NOMBRES.length;
+    const bucket = (pi + k) % 4;
+    const offset = [-30, 40, 120, 400][bucket];
+    return {
+      id: `wrk-${p.slug}-${k + 1}`,
+      nombre: NOMBRES[idx],
+      puesto: PUESTOS[(pi + k) % PUESTOS.length],
+      plantSlug: p.slug,
+      curso: CURSOS[(pi + k) % CURSOS.length],
+      dc3: `DC3-${2024 + ((pi + k) % 2)}-${String(1000 + pi * 10 + k).padStart(5, "0")}`,
+      emision: daysFromNow(offset - 730),
+      vencimiento: daysFromNow(offset),
+      instructor: RESPONSABLES[(pi + k) % RESPONSABLES.length],
+    };
+  });
+});
+
+export function workersByPlant(plantSlug: string) {
+  return WORKERS.filter((w) => w.plantSlug === plantSlug);
+}
+export function workersByClient(clientSlug: string) {
+  const slugs = plantsByClient(clientSlug).map((p) => p.slug);
+  return WORKERS.filter((w) => slugs.includes(w.plantSlug));
+}
+export function dc3State(w: Worker): CertState {
+  const dias = Math.floor((new Date(w.vencimiento).getTime() - today.getTime()) / 86400000);
+  if (dias < 0) return "vencido";
+  if (dias <= 30) return "por-vencer-30";
+  if (dias <= 60) return "por-vencer-60";
+  return "vigente";
+}
+
+// ============= CALENDARIO DE CUMPLIMIENTO =============
+export type ComplianceEvent = {
+  id: string;
+  fecha: string;
+  tipo: "recertificacion" | "inspeccion" | "capacitacion" | "auditoria";
+  titulo: string;
+  plantSlug: string;
+  responsable: string;
+};
+
+export function complianceEventsForPlants(plantSlugs: string[]): ComplianceEvent[] {
+  const events: ComplianceEvent[] = [];
+  CERTIFICATIONS.filter((c) => plantSlugs.includes(c.plantSlug)).forEach((c) => {
+    const sys = systemById(c.systemId);
+    events.push({
+      id: `ev-cert-${c.id}`,
+      fecha: c.vencimiento,
+      tipo: "recertificacion",
+      titulo: `Recertificación · ${sys?.type ?? "Sistema"}`,
+      plantSlug: c.plantSlug,
+      responsable: responsableKGForPlant(c.plantSlug),
+    });
+  });
+  WORKERS.filter((w) => plantSlugs.includes(w.plantSlug)).forEach((w) => {
+    events.push({
+      id: `ev-dc3-${w.id}`,
+      fecha: w.vencimiento,
+      tipo: "capacitacion",
+      titulo: `Recapacitación · ${w.nombre}`,
+      plantSlug: w.plantSlug,
+      responsable: w.instructor,
+    });
+  });
+  plantSlugs.forEach((slug, i) => {
+    for (let q = 0; q < 4; q++) {
+      const month = String(1 + q * 3 + (i % 2)).padStart(2, "0");
+      events.push({
+        id: `ev-insp-${slug}-${q}`,
+        fecha: `2026-${month}-15`,
+        tipo: "inspeccion",
+        titulo: "Inspección visual programada",
+        plantSlug: slug,
+        responsable: responsableKGForPlant(slug),
+      });
+    }
+  });
+  return events.sort((a, b) => a.fecha.localeCompare(b.fecha));
+}
+
+// ============= SOLICITUDES DE SERVICIO =============
+export type ServiceRequest = {
+  id: string;
+  fecha: string;
+  plantSlug: string;
+  tipo: string;
+  descripcion: string;
+  status: "recibida" | "en-revision" | "cotizada" | "programada" | "cerrada";
+  solicitante: string;
+};
+
+export const SERVICE_REQUESTS: ServiceRequest[] = PLANTS.slice(0, 10).flatMap((p, i) => {
+  return [1, 2].map((k) => ({
+    id: `req-${p.slug}-${k}`,
+    fecha: daysFromNow(-(i * 7 + k * 3)),
+    plantSlug: p.slug,
+    tipo: ["Inspección", "Recertificación", "Instalación nueva", "Capacitación", "Rescate técnico"][(i + k) % 5],
+    descripcion: `Solicitud generada por el equipo HSE de ${p.name}.`,
+    status: (["recibida", "en-revision", "cotizada", "programada", "cerrada"] as const)[(i + k) % 5],
+    solicitante: p.responsable,
+  }));
+});
+
+
