@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
-import { COURSES, EQUIPMENT, ENGINEERING, SOLUTION_FAMILIES, SERVICE_DETAILS, DIVISIONS } from "@/data/kaee";
+import { SOLUTION_FAMILIES, SERVICE_DETAILS } from "@/data/kaee";
 
 export const Route = createFileRoute("/servicios")({
   component: ServiciosPage,
@@ -18,48 +18,6 @@ export const Route = createFileRoute("/servicios")({
   }),
 });
 
-const FRONTS = [
-  {
-    tag: "W@H",
-    title: "Working at Heights",
-    to: "/capacitacion" as const,
-    desc: "Capacitación DC-3 oficial STPS, OSHA 10 y OSHA 30. Presencial y en línea.",
-    stat: `${COURSES.length} cursos · 3 niveles`,
-    cta: "Ver cursos",
-  },
-  {
-    tag: "MS&S",
-    title: "Mantenimiento, Servicios & Soluciones",
-    to: "/cumplimiento" as const,
-    desc: "Consultoría, asesoría, supervisión, certificación e instalación.",
-    stat: `${SERVICE_DETAILS.length} servicios técnicos`,
-    cta: "Ver servicios",
-  },
-  {
-    tag: "WoLL",
-    title: "Working on Life Lines",
-    to: "/ingenieria" as const,
-    desc: "Líneas de vida, anclajes, barandales, andamios, plataformas, pasos de gato y escalas.",
-    stat: `${ENGINEERING.length} líneas`,
-    cta: "Ver ingeniería",
-  },
-  {
-    tag: "S@H",
-    title: "Safety @ Heights",
-    to: "/equipos" as const,
-    desc: "Catálogo de EPP y equipo certificado con trazabilidad y garantía.",
-    stat: `${EQUIPMENT.length} categorías`,
-    cta: "Ver catálogo",
-  },
-  {
-    tag: "SoNs",
-    title: "SoNs · P.N.P.C. y operación",
-    to: "/contratistas" as const,
-    desc: "Programa Nacional de Profesionalización a Contratistas y operación de inmuebles especializados.",
-    stat: "2,094+ contratistas",
-    cta: "Ver P.N.P.C.",
-  },
-];
 
 function ServiciosPage() {
   return (
@@ -82,32 +40,6 @@ function ServiciosPage() {
             <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer" className="px-8 py-4 font-bold uppercase text-sm tracking-widest border border-white/40 text-white hover:bg-white/10 transition-colors">
               WhatsApp directo
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* 5 FRENTES */}
-      <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
-        <div className="max-w-7xl mx-auto">
-          <SectionLabel>Cinco divisiones · un solo equipo</SectionLabel>
-          <h2 className="font-display text-3xl md:text-5xl uppercase leading-tight mb-12 text-[color:var(--on-surface)]">
-            Cada división se contrata <span className="text-signal">por separado o como sistema.</span>
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[color:var(--border)] border border-[color:var(--border)]">
-            {FRONTS.map((p) => (
-              <Link key={p.tag} to={p.to} className="bg-[color:var(--surface)] p-8 flex flex-col group hover:bg-[color:var(--surface-2)] transition-colors">
-                <div className="font-display text-signal text-xs mb-4 tracking-[0.22em]">{p.tag}</div>
-                <h3 className="font-display text-2xl md:text-3xl uppercase tracking-tight text-[color:var(--on-surface)] leading-tight mb-3">{p.title}</h3>
-                <p className="text-[color:color-mix(in_oklab,var(--on-surface)_70%,transparent)] leading-relaxed mb-6">{p.desc}</p>
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-[color:var(--border)]">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-blue">{p.stat}</span>
-                  <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-signal group-hover:translate-x-1 transition-transform">{p.cta} →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="mt-3 text-[11px] uppercase tracking-[0.22em] text-[color:color-mix(in_oklab,var(--on-surface)_60%,transparent)]">
-            5 divisiones operativas: {DIVISIONS.map((d) => d.tag).join(" · ")}
           </div>
         </div>
       </section>
