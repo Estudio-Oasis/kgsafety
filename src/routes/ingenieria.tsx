@@ -125,12 +125,13 @@ function IngenieriaPage() {
 
       {/* Construcción y mantenimiento — NEW */}
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-          <div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          <div className="min-w-0">
             <SectionLabel>{t("Construcción y mantenimiento")}</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight [overflow-wrap:normal] [word-break:normal] hyphens-none">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mb-6 uppercase leading-tight [overflow-wrap:normal] [word-break:normal] hyphens-none">
               {t("Programas residenciales e industriales")}
             </h2>
+
             <p className="text-white/60 leading-relaxed mb-6">
               {t("Mantenimientos puntuales, programas preventivos y correctivos a corto, mediano y largo plazo. Limpieza, pintura, electricidad, impermeabilización y obra civil.")}
             </p>
