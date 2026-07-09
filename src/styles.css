@@ -440,3 +440,34 @@ html, body { overflow-x: hidden; }
     font-weight: 700;
   }
 }
+
+/* Portal: tablas con scroll horizontal en tablet/móvil */
+.portal-panel-body > table {
+  min-width: 720px;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .portal-panel-body > table {
+    min-width: 100%;
+  }
+}
+/* Indicador visual de scroll (fade en el borde derecho) */
+.portal-panel-body::after {
+  content: "";
+  position: sticky;
+  top: 0;
+  right: 0;
+  float: right;
+  width: 24px;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(to left, color-mix(in oklab, var(--on-surface) 12%, transparent), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+@media (max-width: 1023px) {
+  .portal-panel-body:hover::after,
+  .portal-panel-body::after {
+    opacity: 1;
+  }
+}
