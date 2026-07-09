@@ -65,9 +65,8 @@ function PortalLogin() {
 
   const goBack = () => {
     if (step === "credenciales") {
-      if (otherClient || role !== "cliente") setStep("role");
-      else if (clientPlants.length > 1) setStep("cliente-planta");
-      else setStep("cliente-empresa");
+      // Only admin/equipo reach credentials; go back to role selection.
+      setStep("role");
     } else if (step === "cliente-planta") setStep("cliente-empresa");
     else if (step === "cliente-empresa") setStep("role");
   };
@@ -77,6 +76,40 @@ function PortalLogin() {
     else setStep("credenciales");
   };
 
+  // Cliente flow (prototype): no credentials — enter portal immediately.
+  const enterAsClient = (opts: {
+    clientSlug?: string;
+    plantSlug?: string | null;
+    other?: boolean;
+  }) => {
+    let session:
+      | { role: Role; name: string; clientSlug?: string; plantSlug?: string }
+      | null = null;
+    if (opts.other) {
+      session = { role: "cliente-corp", name: "Cliente — acceso KG Safety" };
+    } else if (opts.clientSlug) {
+      const client = CLIENTS.find((c) => c.slug === opts.clientSlug);
+      if (opts.plantSlug) {
+        const plant = PLANTS.find((p) => p.slug === opts.plantSlug);
+        session = {
+          role: "cliente-planta",
+          name: `HSE — ${plant?.name ?? client?.name}`,
+          plantSlug: opts.plantSlug,
+          clientSlug: opts.clientSlug,
+        };
+      } else {
+        session = {
+          role: "cliente-corp",
+          name: `Equipo HSE — ${client?.name}`,
+          clientSlug: opts.clientSlug,
+        };
+      }
+    }
+    if (!session) return;
+    login(session);
+    navigate({ to: "/portal" });
+  };
+
   const handleSelectClient = (slug: string) => {
     setOtherClient(false);
     setClientSlug(slug);
@@ -84,8 +117,9 @@ function PortalLogin() {
     const plants = PLANTS.filter((p) => p.clientSlug === slug);
     if (plants.length > 1) setStep("cliente-planta");
     else {
-      if (plants[0]) setPlantSlug(plants[0].slug);
-      setStep("credenciales");
+      const singlePlant = plants[0]?.slug ?? null;
+      setPlantSlug(singlePlant);
+      enterAsClient({ clientSlug: slug, plantSlug: singlePlant });
     }
   };
 
@@ -93,8 +127,9 @@ function PortalLogin() {
     setOtherClient(true);
     setClientSlug(null);
     setPlantSlug(null);
-    setStep("credenciales");
+    enterAsClient({ other: true });
   };
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -291,7 +326,7 @@ function PortalLogin() {
               <div className="grid gap-2 mb-4">
                 <button
                   type="button"
-                  onClick={() => { setPlantSlug(null); setStep("credenciales"); }}
+                  onClick={() => enterAsClient({ clientSlug: clientSlug!, plantSlug: null })}
                   className="p-3 border border-[color:var(--border)] hover:border-signal text-left transition-colors"
                 >
                   <div className="text-xs font-bold uppercase tracking-wider">Acceso corporativo</div>
@@ -301,13 +336,14 @@ function PortalLogin() {
                   <button
                     type="button"
                     key={p.slug}
-                    onClick={() => { setPlantSlug(p.slug); setStep("credenciales"); }}
+                    onClick={() => enterAsClient({ clientSlug: clientSlug!, plantSlug: p.slug })}
                     className="p-3 border border-[color:var(--border)] hover:border-signal text-left transition-colors"
                   >
                     <div className="text-xs font-bold uppercase tracking-wider">{p.name}</div>
                     <div className="text-[11px] text-[color:var(--muted-fg)] mt-0.5">{p.location} · {p.industry}</div>
                   </button>
                 ))}
+
               </div>
             </>
           )}
