@@ -326,7 +326,7 @@ function PortalLogin() {
               <div className="grid gap-2 mb-4">
                 <button
                   type="button"
-                  onClick={() => { setPlantSlug(null); setStep("credenciales"); }}
+                  onClick={() => enterAsClient({ clientSlug: clientSlug!, plantSlug: null })}
                   className="p-3 border border-[color:var(--border)] hover:border-signal text-left transition-colors"
                 >
                   <div className="text-xs font-bold uppercase tracking-wider">Acceso corporativo</div>
@@ -336,13 +336,14 @@ function PortalLogin() {
                   <button
                     type="button"
                     key={p.slug}
-                    onClick={() => { setPlantSlug(p.slug); setStep("credenciales"); }}
+                    onClick={() => enterAsClient({ clientSlug: clientSlug!, plantSlug: p.slug })}
                     className="p-3 border border-[color:var(--border)] hover:border-signal text-left transition-colors"
                   >
                     <div className="text-xs font-bold uppercase tracking-wider">{p.name}</div>
                     <div className="text-[11px] text-[color:var(--muted-fg)] mt-0.5">{p.location} · {p.industry}</div>
                   </button>
                 ))}
+
               </div>
             </>
           )}
