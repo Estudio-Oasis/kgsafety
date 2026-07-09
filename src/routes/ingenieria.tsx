@@ -50,7 +50,7 @@ function IngenieriaPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Ingeniería aplicada")}</SectionLabel>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
-            {t("Sistemas de anclaje")}{" "}<br />
+            {t("Sistemas")}{" "}
             <span className="text-signal">{t("diseñados")}</span> {t("desde el riesgo real.")}
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
@@ -112,7 +112,6 @@ function IngenieriaPage() {
       {/* MS&S sub-services links */}
       <section className="px-6 md:px-12 py-16 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
-          <SectionLabel>{t("División MS&S · Servicios")}</SectionLabel>
           <h2 className="font-display text-2xl md:text-4xl uppercase mb-8">{t("Siete servicios especializados")}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
             {ENGINEERING.map((s) => (
