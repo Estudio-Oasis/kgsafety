@@ -41,24 +41,24 @@ function ContratistasPage() {
     <div>
       <section className="relative overflow-hidden border-b border-white/5">
 
-        <div className="grid md:grid-cols-2">
+        <div className="grid lg:grid-cols-2">
           <div className="kg-on-dark px-6 md:px-12 py-20 md:py-28 bg-brand-navy text-white">
             <SectionLabel>{t("P.N.P.C.")}</SectionLabel>
-            <h1 className="font-display text-4xl md:text-6xl mb-6 uppercase leading-tight">
-              {t("Programa Nacional de")}{" "}<br />
-              <span className="text-signal">{t("Profesionalización")}</span>{" "}<br />
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.08]">
+              {t("Programa Nacional de")}{" "}
+              <span className="text-signal">{t("Profesionalización")}</span>{" "}
               {t("a Contratistas.")}
             </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
+            <p className="text-base md:text-lg lg:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
               {t("10 años de implementación ininterrumpida en empresas multinacionales. Reducción a cero de accidentes en trabajos en altura bajo programa completo.")}
             </p>
             <Link to="/contacto" className="inline-block bg-signal text-anchor px-10 py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
               {t("Solicitar auditoría P.N.P.C.")}
             </Link>
           </div>
-          <div className="relative min-h-[320px] md:min-h-full">
+          <div className="relative min-h-[320px] lg:min-h-full">
             <img src={teamImg} alt="Equipo de contratistas con EPP" loading="eager" width={1600} height={1000} className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute top-6 right-6 md:top-10 md:right-10 bg-signal text-anchor px-5 py-3 shadow-[5px_5px_0_0_rgba(0,0,0,0.4)]">
+            <div className="absolute top-6 right-6 md:top-10 md:right-10 bg-signal text-anchor px-5 py-3 shadow-[5px_5px_0_0_rgba(0,0,0,0.4)] z-10">
               <div className="font-display text-xs uppercase tracking-[0.25em]">10 años · 0 accidentes</div>
             </div>
           </div>
