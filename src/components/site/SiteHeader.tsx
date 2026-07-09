@@ -11,12 +11,8 @@ const PRIMARY: NavItem[] = [
   { to: "/capacitacion", labelKey: "Capacitación" },
   { to: "/ingenieria", labelKey: "Ingeniería" },
   { to: "/equipos", labelKey: "Equipos" },
-  { to: "/industrias", labelKey: "Industrias" },
-  { to: "/nosotros", labelKey: "Nosotros" },
-];
-
-const MORE: NavItem[] = [
   { to: "/contratistas", labelKey: "P.N.P.C." },
+  { to: "/nosotros", labelKey: "Nosotros" },
   { to: "/cumplimiento", labelKey: "Cumplimiento" },
   { to: "/facturacion", labelKey: "Facturación" },
   { to: "/faq", labelKey: "FAQ" },
