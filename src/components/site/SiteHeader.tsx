@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react";
 import { useTheme } from "@/theme/context";
 import { useT } from "@/i18n/context";
@@ -11,12 +11,8 @@ const PRIMARY: NavItem[] = [
   { to: "/capacitacion", labelKey: "Capacitación" },
   { to: "/ingenieria", labelKey: "Ingeniería" },
   { to: "/equipos", labelKey: "Equipos" },
-  { to: "/industrias", labelKey: "Industrias" },
-  { to: "/nosotros", labelKey: "Nosotros" },
-];
-
-const MORE: NavItem[] = [
   { to: "/contratistas", labelKey: "P.N.P.C." },
+  { to: "/nosotros", labelKey: "Nosotros" },
   { to: "/cumplimiento", labelKey: "Cumplimiento" },
   { to: "/facturacion", labelKey: "Facturación" },
   { to: "/faq", labelKey: "FAQ" },
@@ -32,7 +28,6 @@ const MOBILE_GROUPS: { label: string; items: NavItem[] }[] = [
       { to: "/ingenieria", labelKey: "Ingeniería" },
       { to: "/equipos", labelKey: "Equipos" },
       { to: "/contratistas", labelKey: "P.N.P.C." },
-      { to: "/industrias", labelKey: "Industrias" },
     ],
   },
   {
@@ -50,19 +45,8 @@ const MOBILE_GROUPS: { label: string; items: NavItem[] }[] = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>("Soluciones");
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
   const { theme, toggle: toggleTheme } = useTheme();
   const { lang, toggle: toggleLang, t } = useT();
-
-  useEffect(() => {
-    if (!moreOpen) return;
-    const onDoc = (e: MouseEvent) => {
-      if (!moreRef.current?.contains(e.target as Node)) setMoreOpen(false);
-    };
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, [moreOpen]);
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md kg-header border-b border-[color:var(--border)]">
@@ -104,7 +88,7 @@ export function SiteHeader() {
         </Link>
 
         {/* Primary nav (desktop) */}
-        <div className="hidden lg:flex flex-1 justify-center items-center gap-6 xl:gap-8 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:color-mix(in_oklab,var(--on-surface)_72%,transparent)]">
+        <div className="hidden lg:flex flex-1 justify-center items-center gap-3 xl:gap-5 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.14em] xl:tracking-[0.18em] text-[color:color-mix(in_oklab,var(--on-surface)_72%,transparent)]">
           {PRIMARY.map((item) => (
             <Link
               key={item.to}
@@ -115,30 +99,6 @@ export function SiteHeader() {
               {t(item.labelKey)}
             </Link>
           ))}
-          <div ref={moreRef} className="relative">
-            <button
-              onClick={() => setMoreOpen((v) => !v)}
-              className="inline-flex items-center gap-1 py-1 hover:text-[color:var(--on-surface)] transition-colors"
-              aria-expanded={moreOpen}
-            >
-              {t("Más")}
-              <ChevronDown size={12} className={`transition-transform ${moreOpen ? "rotate-180" : ""}`} />
-            </button>
-            {moreOpen && (
-              <div className="absolute top-full right-0 mt-3 min-w-[200px] bg-[color:var(--surface)] border border-[color:var(--border)] shadow-[0_12px_30px_-12px_rgba(15,27,61,0.35)] rounded-md py-2 z-50">
-                {MORE.map((item) => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    onClick={() => setMoreOpen(false)}
-                    className="block px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)] hover:text-[color:var(--brand-blue)] hover:bg-[color:var(--surface-2)] transition-colors"
-                  >
-                    {t(item.labelKey)}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
 
         {/* Right cluster */}

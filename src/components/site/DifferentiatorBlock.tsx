@@ -1,7 +1,11 @@
 import { useT } from "@/i18n/context";
+import kKnowledge from "@/assets/site/components__entrenamiento.jpg";
+import kAnalysis from "@/assets/site/banners__asesoria.jpg";
+import kEngineering from "@/assets/site/banners__ingenieria.jpg";
+import kElimination from "@/assets/site/banners__instalacion.jpg";
 
 /**
- * Bloque diferenciador competitivo.
+ * Bloque diferenciador competitivo + Método K.A.E.E.
  */
 export function DifferentiatorBlock() {
   const { t } = useT();
@@ -10,13 +14,11 @@ export function DifferentiatorBlock() {
     { strike: t("Distribuidores de EPP"), tag: t("solo") },
     { strike: t("Instaladores de líneas de vida"), tag: t("solo") },
   ];
-  const pillars = [
-    { n: "01", k: t("Diagnóstico") },
-    { n: "02", k: t("Ingeniería") },
-    { n: "03", k: t("Instalación") },
-    { n: "04", k: t("Certificación") },
-    { n: "05", k: t("Capacitación") },
-    { n: "06", k: t("Documentación") },
+  const kaee = [
+    { letter: "K", title: "Knowledge",   desc: t("Conocimiento bilateral para entendimiento claro entre cliente y equipo técnico."), img: kKnowledge },
+    { letter: "A", title: "Analysis",    desc: t("Análisis en común con el cliente para lograr comunicación y objetivos definidos."), img: kAnalysis },
+    { letter: "E", title: "Engineering", desc: t("Aplicación de cualquier método de ingeniería necesario para lograr los objetivos."), img: kEngineering },
+    { letter: "E", title: "Elimination", desc: t("Eliminación total de la problemática buscando el 100%."), img: kElimination },
   ];
   return (
     <section className="px-4 md:px-8 lg:px-12 py-14 md:py-20 bg-[color:var(--surface)] border-y border-[color:var(--border)]">
@@ -75,25 +77,31 @@ export function DifferentiatorBlock() {
           </div>
         </div>
 
-        {/* Pillars — typography that no longer cuts words mid-letter */}
-        <ol className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)] rounded-lg overflow-hidden">
-          {pillars.map((p) => (
-            <li
-              key={p.n}
-              className="bg-[color:var(--surface-2)] p-4 md:p-6 flex flex-col gap-2 min-w-0"
-            >
-              <span
-                className="font-display text-[11px] tracking-[0.25em]"
-                style={{ color: "var(--signal)" }}
+        {/* Método K.A.E.E. — 4 tiles con imagen de fondo */}
+        <div>
+          <div className="text-brand-blue text-[10px] font-bold uppercase tracking-[0.3em] mb-3">
+            {t("Método registrado")}
+          </div>
+          <h3 className="font-display text-2xl md:text-3xl lg:text-4xl uppercase leading-tight mb-6 text-[color:var(--on-surface)]">
+            {t("Método")} <span className="text-signal">K.A.E.E.</span>
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            {kaee.map((k, i) => (
+              <article
+                key={i}
+                className="kg-on-dark relative overflow-hidden rounded-xl min-h-[200px] md:min-h-[220px] flex flex-col justify-end p-4 md:p-5 group"
               >
-                {p.n}
-              </span>
-              <span className="font-display uppercase leading-tight text-[color:var(--on-surface)] text-[13px] md:text-base lg:text-lg tracking-[-0.01em] break-words">
-                {p.k}
-              </span>
-            </li>
-          ))}
-        </ol>
+                <img src={k.img} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--brand-navy)] via-[color:var(--brand-navy)]/75 to-[color:var(--brand-navy)]/20" />
+                <div className="relative">
+                  <div className="font-display text-signal text-4xl md:text-5xl leading-none mb-2">{k.letter}</div>
+                  <h4 className="font-bold uppercase tracking-wider text-xs md:text-sm mb-1" style={{ color: "#ffffff" }}>{k.title}</h4>
+                  <p className="text-[11px] md:text-xs leading-snug" style={{ color: "rgba(255,255,255,0.85)" }}>{k.desc}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
