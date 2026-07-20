@@ -149,7 +149,7 @@ function CapacitacionPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5">
-            {COURSES.map((c, i) => (
+            {COURSES.filter((c) => c.active !== false).map((c, i) => (
               <Link
                 key={c.slug}
                 to="/capacitacion/$curso"

@@ -6,7 +6,7 @@ import { COURSES, courseDetail, courseDeep, type Course } from "@/data/kaee";
 export const Route = createFileRoute("/capacitacion/$curso")({
   component: CoursePage,
   loader: ({ params }) => {
-    const course = COURSES.find((c) => c.slug === params.curso);
+    const course = COURSES.find((c) => c.slug === params.curso && c.active !== false);
     if (!course) throw notFound();
     return course;
   },
@@ -223,7 +223,7 @@ function CoursePage() {
         <div className="max-w-7xl mx-auto">
           <SectionLabel>Otros cursos</SectionLabel>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mt-6">
-            {COURSES.filter((c) => c.slug !== course.slug).map((c) => (
+            {COURSES.filter((c) => c.slug !== course.slug && c.active !== false).map((c) => (
               <Link
                 key={c.slug}
                 to="/capacitacion/$curso"
