@@ -14,6 +14,19 @@ export type Course = {
   short: string;
   desc: string;
   levels: CourseLevel[];
+  /** Nivel único del curso (cuando aplica un solo nivel) */
+  nivel?: string;
+  /** Duración total (p. ej. "8 horas") */
+  duracion?: string;
+  /** Descripción/alcance ampliado */
+  alcance?: string;
+  /** Número mínimo y máximo de participantes por sesión */
+  minParticipantes?: number;
+  maxParticipantes?: number;
+  /** Costo (formato libre, p. ej. "$18,500 MXN + IVA"). Si no está, se muestra "Cotizar" */
+  costo?: string;
+  /** Permite ocultar un curso sin borrarlo. Default: true */
+  active?: boolean;
 };
 
 const STANDARD_LEVELS = (area: string): CourseLevel[] => [
