@@ -52,7 +52,7 @@ const BENEFICIOS = [
 function ContratistasPage() {
   const { t } = useT();
   return (
-    <div>
+    <div className="kg-on-dark bg-anchor">
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-white/5">
         <div className="grid lg:grid-cols-2">
