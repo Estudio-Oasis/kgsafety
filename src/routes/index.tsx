@@ -24,9 +24,14 @@ import plataformasImg from "@/assets/equipment/plataformas.jpg";
 
 
 const COURSE_IMG: Record<string, string> = {
-  alturas: alturasImg,
-  confinados: confinadosImg,
+  "alturas-autorizado": alturasImg,
+  "alturas-competente": alturasImg,
+  "alturas-monitor": alturasImg,
+  "alturas-horizontales": alturasImg,
   andamios: andamiosImg,
+  izajes: lotoImg,
+  "plataformas-elevacion": electricidadImg,
+  confinados: confinadosImg,
   loto: lotoImg,
   electricidad: electricidadImg,
   calor: calorImg,
@@ -57,7 +62,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t } = useT();
   const clientLogos = realImagesIn("logos-clientes");
-  const topCourses = COURSES.slice(0, 6);
+  const topCourses = COURSES.filter((c) => c.active !== false).slice(0, 6);
   const topEquip = EQUIPMENT.filter((e) => EQUIP_IMG[e.slug]).slice(0, 4);
   const restEquip = EQUIPMENT.filter((e) => !EQUIP_IMG[e.slug]).slice(0, 4);
   void topEquip; void restEquip; void clientLogos;
@@ -320,7 +325,7 @@ function Index() {
               </h2>
             </div>
             <Link to="/capacitacion" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
-              {t("Ver los 10 cursos")} →
+              {t("Ver los 7 cursos")} →
             </Link>
           </div>
 

@@ -25,6 +25,16 @@ export type Course = {
   maxParticipantes?: number;
   /** Costo (formato libre, p. ej. "$18,500 MXN + IVA"). Si no está, se muestra "Cotizar" */
   costo?: string;
+  /** Área temática oficial (inglés) del registro STPS */
+  tema?: string;
+  /** Precio individual local (por persona, + IVA) */
+  precioLocalPersona?: string;
+  /** Precio de paquete grupal (por grupo, + IVA) */
+  precioGrupal?: string;
+  /** Rango del paquete grupal, p. ej. "20 a 25 personas" */
+  grupoRango?: string;
+  /** Costo adicional foráneo por persona */
+  foraneoPersona?: string;
   /** Permite ocultar un curso sin borrarlo. Default: true */
   active?: boolean;
 };
@@ -35,47 +45,175 @@ const STANDARD_LEVELS = (area: string): CourseLevel[] => [
   { code: "C", name: "Jefe de Seguridad / Competente", hours: "24 h", desc: `Persona competente con criterio para identificar riesgos, planear maniobras y emitir permisos de ${area}.` },
 ];
 
+// ============================================================================
+// CATÁLOGO OFICIAL STPS — 7 cursos vigentes con datos verificados (2026).
+// El resto del catálogo previo se mantiene como `active: false` a la espera de
+// validación de precios/vigencia con el cliente.
+// ============================================================================
+
 export const COURSES: Course[] = [
-  { slug: "alturas",       name: "Trabajos en Alturas",   short: "Alturas",
-    desc: "Programa para trabajo en altura > 1.8 m bajo NOM-009-STPS, ANSI Z359 y OSHA 1926.",
-    levels: STANDARD_LEVELS("alturas") },
-  { slug: "confinados",    name: "Espacios Confinados",   short: "E. Confinados",
+  {
+    slug: "alturas-autorizado",
+    name: "Trabajos en Alturas — Nivel Autorizado (Básico)",
+    short: "Alturas · Autorizado",
+    desc: "Working at Heights — Basic level. Persona autorizada para ejecutar tareas en altura con uso correcto del EPP y procedimientos seguros.",
+    tema: "Working at Heights — Basic level",
+    nivel: "Básico (Autorizado)",
+    duracion: "8 horas",
+    minParticipantes: 20,
+    maxParticipantes: 25,
+    precioLocalPersona: "$1,355.00 MXN + IVA",
+    precioGrupal: "$19,800.00 MXN + IVA",
+    grupoRango: "20 a 25 personas",
+    foraneoPersona: "$792.00 MXN por persona (adicional)",
+    levels: [
+      { code: "A", name: "Autorizado (Básico)", hours: "8 h", desc: "Persona autorizada para ejecutar tareas de alturas con uso correcto del EPP y procedimientos seguros." },
+    ],
+  },
+  {
+    slug: "alturas-competente",
+    name: "Trabajos en Alturas — Nivel Competente (Intermedio)",
+    short: "Alturas · Competente",
+    desc: "Working at Heights — Intermediate level. Persona competente con criterio para identificar riesgos, planear maniobras y emitir permisos.",
+    tema: "Working at Heights — Intermediate level",
+    nivel: "Intermedio (Competente)",
+    duracion: "24 horas",
+    minParticipantes: 10,
+    maxParticipantes: 15,
+    precioLocalPersona: "$7,000.00 MXN + IVA",
+    precioGrupal: "$88,000.00 MXN + IVA",
+    grupoRango: "10 a 15 personas",
+    foraneoPersona: "$3,323.00 MXN por persona (adicional)",
+    levels: [
+      { code: "C", name: "Competente (Intermedio)", hours: "24 h", desc: "Persona competente que identifica riesgos, planea maniobras y emite permisos de trabajo en altura." },
+    ],
+  },
+  {
+    slug: "alturas-monitor",
+    name: "Trabajos en Alturas — Nivel Monitor Supervisor (Avanzado)",
+    short: "Alturas · Monitor",
+    desc: "Working at Heights — Advanced level. Monitor supervisor capaz de dirigir cuadrillas, auditar sistemas y formar personal de menor nivel.",
+    tema: "Working at Heights — Advanced level",
+    nivel: "Avanzado (Monitor Supervisor)",
+    duracion: "40 horas",
+    minParticipantes: 20,
+    maxParticipantes: 25,
+    precioLocalPersona: "$9,000.00 MXN + IVA",
+    precioGrupal: "$123,200.00 MXN + IVA",
+    grupoRango: "20 a 25 personas",
+    foraneoPersona: "$5,505.00 MXN por persona (adicional)",
+    levels: [
+      { code: "M", name: "Monitor Supervisor (Avanzado)", hours: "40 h", desc: "Monitor supervisor que dirige cuadrillas, audita sistemas y forma personal de menor nivel." },
+    ],
+  },
+  {
+    slug: "andamios",
+    name: "Armado y Desarmado de Andamios",
+    short: "Andamios",
+    desc: "Scaffolding assembly and disassembly. Armado, inspección y operación segura de andamios multidireccionales y de seguridad.",
+    tema: "Scaffolding assembly and disassembly",
+    nivel: "Operativo",
+    duracion: "6 horas",
+    minParticipantes: 20,
+    maxParticipantes: 25,
+    precioLocalPersona: "$1,452.00 MXN + IVA",
+    precioGrupal: "$19,800.00 MXN + IVA",
+    grupoRango: "20 a 25 personas",
+    foraneoPersona: "$792.00 MXN por persona (adicional)",
+    levels: [
+      { code: "A", name: "Armador de andamios", hours: "6 h", desc: "Armado, inspección y operación segura de andamios multidireccionales y de seguridad." },
+    ],
+  },
+  {
+    slug: "izajes",
+    name: "Formación Técnica en Izajes",
+    short: "Izajes",
+    desc: "Technical training in lifting operations. Planeación, señalización y ejecución segura de maniobras de izaje con grúa y accesorios.",
+    tema: "Technical training in lifting operations",
+    nivel: "Técnico",
+    duracion: "8 horas",
+    minParticipantes: 20,
+    maxParticipantes: 25,
+    precioLocalPersona: "$2,710.00 MXN + IVA",
+    precioGrupal: "$38,500.00 MXN + IVA",
+    grupoRango: "20 a 25 personas",
+    foraneoPersona: "$792.00 MXN por persona (adicional)",
+    levels: [
+      { code: "A", name: "Rigger / señalero", hours: "8 h", desc: "Planeación, señalización y ejecución segura de maniobras de izaje con grúa y accesorios." },
+    ],
+  },
+  {
+    slug: "plataformas-elevacion",
+    name: "Operación de Plataformas de Elevación",
+    short: "Plataformas",
+    desc: "Operation of lifting platforms. Operación segura de plataformas de elevación de personal (manlift, tijera, articuladas).",
+    tema: "Operation of lifting platforms",
+    nivel: "Operador",
+    duracion: "6 horas",
+    minParticipantes: 20,
+    maxParticipantes: 25,
+    precioLocalPersona: "$1,452.00 MXN + IVA",
+    precioGrupal: "$19,800.00 MXN + IVA",
+    grupoRango: "20 a 25 personas",
+    foraneoPersona: "$792.00 MXN por persona (adicional)",
+    levels: [
+      { code: "A", name: "Operador de plataforma", hours: "6 h", desc: "Operación segura de plataformas de elevación de personal (manlift, tijera, articuladas)." },
+    ],
+  },
+  {
+    slug: "alturas-horizontales",
+    name: "Trabajos en Alturas sobre Superficies Horizontales",
+    short: "Alturas · Horizontales",
+    desc: "Working at heights on horizontal surfaces. Trabajo sobre techos, cubiertas y superficies horizontales con riesgo de caída perimetral o a través.",
+    tema: "Working at heights on horizontal surfaces",
+    nivel: "Operativo",
+    duracion: "8 horas",
+    minParticipantes: 20,
+    maxParticipantes: 25,
+    precioLocalPersona: "$1,355.00 MXN + IVA",
+    precioGrupal: "$19,800.00 MXN + IVA",
+    grupoRango: "20 a 25 personas",
+    foraneoPersona: "$792.00 MXN por persona (adicional)",
+    levels: [
+      { code: "A", name: "Techos y superficies horizontales", hours: "8 h", desc: "Trabajo sobre techos, cubiertas y superficies horizontales con riesgo de caída perimetral o a través." },
+    ],
+  },
+
+  // ---------------------------------------------------------------------------
+  // Reserva — pendientes de validar precios/vigencia con Miguel (STPS 2018).
+  // Se mantienen inactivos para no aparecer en el catálogo público hasta
+  // recibir información actualizada.
+  // ---------------------------------------------------------------------------
+  { slug: "confinados", name: "Espacios Confinados", short: "E. Confinados",
     desc: "Ingreso, permisos, monitoreo atmosférico y rescate en espacios confinados bajo NOM-033-STPS.",
-    levels: STANDARD_LEVELS("espacios confinados") },
-  { slug: "andamios",      name: "Andamios",              short: "Andamios",
-    desc: "Armado, inspección y operación segura de andamios multidireccionales y de seguridad.",
-    levels: STANDARD_LEVELS("andamios") },
-  { slug: "loto",          name: "LOTO (Lock-Out/Tag-Out)", short: "LOTO",
+    active: false, levels: STANDARD_LEVELS("espacios confinados") },
+  { slug: "loto", name: "LOTO (Lock-Out/Tag-Out)", short: "LOTO",
     desc: "Bloqueo y etiquetado de energías peligrosas según NOM-004-STPS / OSHA 1910.147.",
-    levels: STANDARD_LEVELS("LOTO") },
-  { slug: "electricidad",  name: "Electricidad",          short: "Electricidad",
+    active: false, levels: STANDARD_LEVELS("LOTO") },
+  { slug: "electricidad", name: "Electricidad", short: "Electricidad",
     desc: "Trabajos eléctricos seguros, NFPA 70E y aterrizajes temporales.",
-    levels: STANDARD_LEVELS("electricidad") },
-  { slug: "calor",         name: "Trabajos con Calor",    short: "Calor",
+    active: false, levels: STANDARD_LEVELS("electricidad") },
+  { slug: "calor", name: "Trabajos con Calor", short: "Calor",
     desc: "Hot work, permisos, vigilantes contra incendio y control de chispa.",
-    levels: STANDARD_LEVELS("trabajos con calor") },
-  { slug: "herramientas",  name: "Manejo de Herramientas", short: "Herramientas",
+    active: false, levels: STANDARD_LEVELS("trabajos con calor") },
+  { slug: "herramientas", name: "Manejo de Herramientas", short: "Herramientas",
     desc: "Uso, inspección y mantenimiento seguro de herramientas manuales y eléctricas.",
-    levels: STANDARD_LEVELS("manejo de herramientas") },
+    active: false, levels: STANDARD_LEVELS("manejo de herramientas") },
   { slug: "primeros-auxilios", name: "Primeros Auxilios", short: "Primeros Auxilios",
     desc: "Atención inicial de emergencias médicas en sitio: RCP, hemorragias, trauma y manejo de víctima.",
-    levels: STANDARD_LEVELS("primeros auxilios") },
-  { slug: "extintores",    name: "Manejo de Extintores",  short: "Extintores",
+    active: false, levels: STANDARD_LEVELS("primeros auxilios") },
+  { slug: "extintores", name: "Manejo de Extintores", short: "Extintores",
     desc: "Prevención, brigadas y combate con extintor portátil bajo NOM-002-STPS.",
-    levels: STANDARD_LEVELS("manejo de extintores") },
-  { slug: "montacargas",   name: "Montacargas",           short: "Montacargas",
+    active: false, levels: STANDARD_LEVELS("manejo de extintores") },
+  { slug: "montacargas", name: "Montacargas", short: "Montacargas",
     desc: "Operación segura, inspección y maniobras certificadas de montacargas.",
-    levels: STANDARD_LEVELS("montacargas") },
-  { slug: "osha-10",       name: "OSHA 10 horas",         short: "OSHA 10 h",
+    active: false, levels: STANDARD_LEVELS("montacargas") },
+  { slug: "osha-10", name: "OSHA 10 horas", short: "OSHA 10 h",
     desc: "Programa oficial OSHA Outreach de 10 horas para personal operativo en construcción e industria general.",
-    levels: [
-      { code: "A", name: "OSHA 10", hours: "10 h", desc: "Programa Outreach OSHA de 10 horas con tarjeta oficial DOL." },
-    ] },
-  { slug: "osha-30",       name: "OSHA 30 horas",         short: "OSHA 30 h",
+    active: false, levels: [{ code: "A", name: "OSHA 10", hours: "10 h", desc: "Programa Outreach OSHA de 10 horas con tarjeta oficial DOL." }] },
+  { slug: "osha-30", name: "OSHA 30 horas", short: "OSHA 30 h",
     desc: "Programa oficial OSHA Outreach de 30 horas para supervisores y mandos medios en construcción e industria general.",
-    levels: [
-      { code: "C", name: "OSHA 30", hours: "30 h", desc: "Programa Outreach OSHA de 30 horas con tarjeta oficial DOL para supervisores." },
-    ] },
+    active: false, levels: [{ code: "C", name: "OSHA 30", hours: "30 h", desc: "Programa Outreach OSHA de 30 horas con tarjeta oficial DOL para supervisores." }] },
 ];
 
 export type EquipmentCategory = {
