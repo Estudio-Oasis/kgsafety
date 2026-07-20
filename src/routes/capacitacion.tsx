@@ -72,6 +72,39 @@ function CapacitacionPage() {
         </div>
       </section>
 
+      {/* Banner PNPC destacado */}
+      <section className="px-6 md:px-12 py-12 md:py-16 border-b border-white/5 bg-brand-navy">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-[minmax(0,1.4fr)_auto] items-center gap-8 lg:gap-12">
+          <div className="kg-on-dark">
+            <div className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.28em] text-signal mb-4">
+              <span className="w-2 h-2 bg-signal rounded-full animate-pulse" />
+              {t("Programa insignia · 11 años")}
+            </div>
+            <h2 className="font-display text-2xl md:text-4xl uppercase leading-tight text-white mb-4">
+              {t("P.N.P.C. — Profesionalización a Contratistas")}
+            </h2>
+            <p className="text-white/75 leading-relaxed max-w-2xl mb-6">
+              {t("Sistema integral desarrollado por KG Safety para gestionar, certificar y verificar las competencias de todos sus contratistas en actividades de alto riesgo, con cumplimiento STPS, OSHA y ANSI/ASSP.")}
+            </p>
+            <Link to="/contratistas" className="inline-block bg-signal text-anchor px-8 py-4 font-bold uppercase text-xs tracking-widest hover:bg-white transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,0.4)]">
+              {t("Conocer el P.N.P.C.")} →
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 gap-3 md:gap-4 lg:min-w-[280px]">
+            {[
+              { v: "11", l: "años" },
+              { v: "0", l: "accidentes" },
+              { v: "100%", l: "auditable" },
+            ].map((s) => (
+              <div key={s.l} className="border border-white/15 p-3 text-center kg-on-dark">
+                <div className="font-display text-2xl md:text-3xl text-signal leading-none">{s.v}</div>
+                <div className="text-[9px] uppercase tracking-widest text-white/60 mt-1.5">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
