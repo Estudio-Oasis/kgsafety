@@ -355,7 +355,7 @@ export const FAQS = [
   { q: "¿Tienen cobertura internacional?", a: "Sede en México (Toluca) con operación directa en México, Colombia, Chile, Estados Unidos y Canadá, y cobertura LATAM bajo la marca KG Safety Latam." },
   { q: "¿Cuánto tarda una cotización?", a: "Le respondemos el mismo día. Para ingeniería en sitio, agendamos visita técnica dentro de 72 horas hábiles." },
   { q: "¿Trabajan con contratistas externos?", a: "Sí, a través del Programa Nacional de Profesionalización a Contratistas (P.N.P.C.) que estandariza la seguridad de sus proveedores." },
-  { q: "¿Cuáles son los niveles de capacitación?", a: "Tres niveles: Básico / Autorizado (8 h), Supervisor / Monitor (16 h) y Jefe de Seguridad / Competente (24 h). Adicionalmente impartimos OSHA 10 y OSHA 30." },
+  { q: "¿Cuáles son los niveles de capacitación?", a: "El curso de Trabajos en Alturas se imparte en tres niveles registrados ante STPS: Autorizado / Básico (8 h), Competente / Intermedio (24 h) y Monitor Supervisor / Avanzado (40 h)." },
   { q: "¿Qué normas cumplen sus sistemas?", a: "NOM-009-STPS, NOM-033-STPS, OSHA 1910/1926, ANSI Z359, EN-795 y CSA Z259." },
   { q: "¿Puedo auto-facturar?", a: "Sí. En la sección Facturación accede al portal externo con su folio de cotización o referencia para generar su factura." },
 ];
