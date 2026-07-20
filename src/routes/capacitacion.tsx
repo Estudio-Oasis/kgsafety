@@ -138,17 +138,22 @@ function CapacitacionPage() {
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div>
-            <SectionLabel>{t("12 áreas")}</SectionLabel>
+            <SectionLabel>{t("Catálogo vigente")}</SectionLabel>
             <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
               {t("Cursos")} {t("disponibles")}
             </h2>
-            <p className="text-white/60 mb-8 leading-relaxed">
+            <p className="text-white/60 mb-6 leading-relaxed">
               {t("Temarios homologados, instructores certificados y emisión documental con certeza jurídica. Registro de CURP y verificación en línea.")}
             </p>
+            <div className="bg-signal text-anchor border-2 border-anchor px-4 py-3 mb-8 shadow-[4px_4px_0_0_rgba(0,0,0,0.35)]">
+              <p className="text-xs md:text-sm font-bold uppercase tracking-wide leading-snug">
+                ★ ¡Precios especiales para grupos! Precios reducidos o diferenciados para grupos de 20 a 25 asistentes.
+              </p>
+            </div>
             <img src={trainingImg} alt="Sesión de capacitación con equipo de protección personal" loading="lazy" width={1920} height={1080} className="w-full rounded-sm shadow-[8px_8px_0_0_var(--signal,#F5C500)]" />
           </div>
 
-          <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5 border border-white/5">
             {COURSES.filter((c) => c.active !== false).map((c, i) => (
               <Link
                 key={c.slug}
@@ -156,8 +161,15 @@ function CapacitacionPage() {
                 params={{ curso: c.slug }}
                 className="bg-anchor p-5 md:p-6 hover:bg-steel transition-colors group block"
               >
-                <div className="font-display text-signal text-[10px] mb-2">{String(i + 1).padStart(2, "0")}</div>
-                <div className="font-bold text-sm uppercase tracking-tight group-hover:text-brand-blue">{t(c.short)}</div>
+                <div className="font-display text-signal text-[10px] mb-2">{String(i + 1).padStart(2, "0")} / {String(COURSES.filter((x) => x.active !== false).length).padStart(2, "0")}</div>
+                <div className="font-bold text-sm uppercase tracking-tight group-hover:text-brand-blue mb-2 leading-tight">{t(c.short)}</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/50 mb-2">{c.duracion} · {c.nivel}</div>
+                {c.precioLocalPersona && (
+                  <div className="text-xs text-white/70 mt-3 border-t border-white/10 pt-3">
+                    <span className="font-bold text-signal">{c.precioLocalPersona}</span>
+                    <span className="text-white/40"> · por persona</span>
+                  </div>
+                )}
               </Link>
             ))}
           </div>
