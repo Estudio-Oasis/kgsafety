@@ -24,9 +24,14 @@ import plataformasImg from "@/assets/equipment/plataformas.jpg";
 
 
 const COURSE_IMG: Record<string, string> = {
-  alturas: alturasImg,
-  confinados: confinadosImg,
+  "alturas-autorizado": alturasImg,
+  "alturas-competente": alturasImg,
+  "alturas-monitor": alturasImg,
+  "alturas-horizontales": alturasImg,
   andamios: andamiosImg,
+  izajes: lotoImg,
+  "plataformas-elevacion": electricidadImg,
+  confinados: confinadosImg,
   loto: lotoImg,
   electricidad: electricidadImg,
   calor: calorImg,
