@@ -195,14 +195,14 @@ function ContratistasPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 px-6 md:px-12 bg-signal text-anchor text-center">
-        <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
+      <section className="py-20 md:py-28 px-6 md:px-12 bg-signal text-center">
+        <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight text-anchor">
           {t("Active el P.N.P.C. en su planta.")}
         </h2>
-        <p className="text-base md:text-lg font-bold mb-10 opacity-80 uppercase tracking-tight max-w-2xl mx-auto">
+        <p className="text-base md:text-lg font-bold mb-10 opacity-80 uppercase tracking-tight max-w-2xl mx-auto text-anchor">
           {t("Diagnóstico inicial sin compromiso · Respuesta el mismo día hábil.")}
         </p>
-        <Link to="/contacto" className="inline-block bg-anchor text-white px-10 md:px-12 py-5 md:py-6 font-display text-xs md:text-sm tracking-widest hover:bg-steel transition-colors uppercase">
+        <Link to="/contacto" className="inline-block bg-anchor px-10 md:px-12 py-5 md:py-6 font-display text-xs md:text-sm tracking-widest hover:bg-steel transition-colors uppercase" style={{ color: "#ffffff" }}>
           {t("Solicitar diagnóstico")}
         </Link>
       </section>
