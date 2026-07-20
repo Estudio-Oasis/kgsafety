@@ -79,8 +79,8 @@ function CapacitacionPage() {
         </div>
         <div className="bg-signal text-anchor p-8 md:p-12 flex flex-col justify-center">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3">{t("Realismo operativo")}</div>
-          <div className="font-display text-3xl md:text-4xl uppercase leading-tight mb-3">12 áreas técnicas</div>
-          <p className="text-sm leading-relaxed">{t("Alturas, confinados, andamios, calor, eléctrico, LOTO, primeros auxilios, extintores, OSHA 10 y 30 y más.")}</p>
+          <div className="font-display text-3xl md:text-4xl uppercase leading-tight mb-3">7 cursos vigentes</div>
+          <p className="text-sm leading-relaxed">{t("Trabajos en alturas (3 niveles), andamios, izajes con grúa, plataformas elevadoras y líneas de vida horizontales.")}</p>
         </div>
       </section>
 
