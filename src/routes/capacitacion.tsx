@@ -21,10 +21,10 @@ export const Route = createFileRoute("/capacitacion")({
   component: CapacitacionPage,
   head: () => ({
     meta: [
-      { title: "Capacitación DC-3 oficial STPS · OSHA 10/30 · KG Safety" },
-      { name: "description", content: "Programas DC-3 oficiales STPS en 3 niveles (8h, 16h, 24h) para alturas, espacios confinados, andamios, LOTO y rescate. OSHA 10/30 y NSC. Cobertura nacional." },
-      { property: "og:title", content: "Capacitación DC-3 · OSHA · KG Safety" },
-      { property: "og:description", content: "Tres niveles de capacitación certificada · 12 áreas técnicas · DC-3 verificable en línea." },
+      { title: "Capacitación DC-3 oficial STPS · KG Safety" },
+      { name: "description", content: "Programas DC-3 registrados ante STPS para trabajos en alturas, andamios, izajes, plataformas y líneas de vida horizontales. Agente Capacitador Externo Working at Heights. Cobertura nacional." },
+      { property: "og:title", content: "Capacitación DC-3 · STPS · KG Safety" },
+      { property: "og:description", content: "DC-3 STPS y Agente Capacitador Externo Working at Heights. 7 cursos vigentes." },
       { property: "og:url", content: "https://kgsafety.lovable.app/capacitacion" },
       { property: "og:type", content: "website" },
     ],
@@ -32,16 +32,17 @@ export const Route = createFileRoute("/capacitacion")({
   }),
 });
 
+// Niveles reales del curso de Trabajos en Alturas — confirmados contra fuente original.
 const LEVELS = [
-  { n: "01", badgeKey: "Básico / Autorizado", hoursKey: "8 horas",
-    descKey: "El participante conocerá los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
-    bullets: ["DC-3 oficial", "Certificado de cumplimiento", "Registro STPS verificable"] },
-  { n: "02", badgeKey: "Supervisor / Monitor", hoursKey: "16 horas",
+  { n: "01", badgeKey: "Autorizado (Básico)", hoursKey: "8 horas",
+    descKey: "El participante conoce los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
+    bullets: ["DC-3 registrado STPS", "Constancia de habilidades", "Registro verificable"] },
+  { n: "02", badgeKey: "Competente (Intermedio)", hoursKey: "24 horas",
     descKey: "Capacita en supervisión de trabajadores, evaluación de condiciones de seguridad y maniobras de rescate.",
-    bullets: ["DC-3 oficial", "Certificado", "Criterio de supervisión"] },
-  { n: "03", badgeKey: "Jefe de Seguridad / Competente", hoursKey: "24 horas",
-    descKey: "Cubre normativas nacionales e internacionales, diseño de anclajes, planes de trabajo y capacidad para impartir cursos internos.",
-    bullets: ["DC-3 oficial", "Certificado Competent Person", "Diseño de anclajes"] },
+    bullets: ["DC-3 registrado STPS", "Criterio de supervisión", "Rescate básico"] },
+  { n: "03", badgeKey: "Monitor Supervisor (Avanzado)", hoursKey: "40 horas",
+    descKey: "Cubre normativa aplicable, criterios de anclaje, planes de trabajo y capacidad para dirigir maniobras y supervisar equipos.",
+    bullets: ["DC-3 registrado STPS", "Perfil de monitor", "Dirección de maniobra"] },
 ];
 
 // areas now come from COURSES dataset
