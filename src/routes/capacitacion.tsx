@@ -154,25 +154,53 @@ function CapacitacionPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5 border border-white/5">
-            {COURSES.filter((c) => c.active !== false).map((c, i) => (
-              <Link
-                key={c.slug}
-                to="/capacitacion/$curso"
-                params={{ curso: c.slug }}
-                className="bg-anchor p-5 md:p-6 hover:bg-steel transition-colors group block"
-              >
-                <div className="font-display text-signal text-[10px] mb-2">{String(i + 1).padStart(2, "0")} / {String(COURSES.filter((x) => x.active !== false).length).padStart(2, "0")}</div>
-                <div className="font-bold text-sm uppercase tracking-tight group-hover:text-brand-blue mb-2 leading-tight">{t(c.short)}</div>
-                <div className="text-[10px] uppercase tracking-widest text-white/50 mb-2">{c.duracion} · {c.nivel}</div>
-                {c.precioLocalPersona && (
-                  <div className="text-xs text-white/70 mt-3 border-t border-white/10 pt-3">
-                    <span className="font-bold text-signal">{c.precioLocalPersona}</span>
-                    <span className="text-white/40"> · por persona</span>
+            {(() => {
+              const list = COURSES.filter((c) => c.active !== false);
+              const total = String(list.length).padStart(2, "0");
+              return list.map((c, i) => (
+                <Link
+                  key={c.slug}
+                  to="/capacitacion/$curso"
+                  params={{ curso: c.slug }}
+                  className="bg-anchor p-5 md:p-6 hover:bg-steel transition-colors group block flex flex-col"
+                  title={c.foraneoPersona ? `Foráneo: ${c.foraneoPersona}` : undefined}
+                >
+                  <div className="font-display text-signal text-[10px] mb-2">
+                    {String(i + 1).padStart(2, "0")} / {total}
                   </div>
-                )}
-              </Link>
-            ))}
+                  <div className="font-bold text-sm uppercase tracking-tight group-hover:text-brand-blue mb-1 leading-tight">
+                    {t(c.short)}
+                  </div>
+                  <div className="text-[10px] uppercase tracking-widest text-white/50 mb-2">
+                    {[c.duracion, c.nivel].filter(Boolean).join(" · ")}
+                  </div>
+                  {c.tema && (
+                    <div className="text-[11px] text-white/60 leading-snug mb-3 line-clamp-2">{c.tema}</div>
+                  )}
+                  {c.precioLocalPersona && (
+                    <div className="mt-auto pt-3 border-t border-white/10 space-y-1">
+                      <div className="text-xs">
+                        <span className="font-bold text-signal">{c.precioLocalPersona}</span>
+                        <span className="text-white/40"> · por persona (local)</span>
+                      </div>
+                      {c.precioGrupal && (
+                        <div className="text-[11px] text-white/60">
+                          Grupal: <span className="text-white/80 font-bold">{c.precioGrupal}</span>
+                          {c.grupoRango && <span className="text-white/40"> · {c.grupoRango}</span>}
+                        </div>
+                      )}
+                      {c.foraneoPersona && (
+                        <div className="text-[10px] text-white/40 uppercase tracking-wider">
+                          + Foráneo {c.foraneoPersona}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </Link>
+              ));
+            })()}
           </div>
+
         </div>
       </section>
 
