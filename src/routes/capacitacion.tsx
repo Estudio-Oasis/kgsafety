@@ -96,7 +96,7 @@ function CapacitacionPage() {
               {t("P.N.P.C. — Profesionalización a Contratistas")}
             </h2>
             <p className="text-white/75 leading-relaxed max-w-2xl mb-6">
-              {t("Sistema integral desarrollado por KG Safety para gestionar, certificar y verificar las competencias de todos sus contratistas en actividades de alto riesgo, con cumplimiento STPS, OSHA y ANSI/ASSP.")}
+              {t("Sistema integral desarrollado por KG Safety para gestionar, certificar y verificar las competencias de contratistas en actividades de alto riesgo, con cumplimiento STPS.")}
             </p>
             <Link to="/contratistas" className="inline-block bg-signal text-anchor px-8 py-4 font-bold uppercase text-xs tracking-widest hover:bg-white transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,0.4)]">
               {t("Conocer el P.N.P.C.")} →
