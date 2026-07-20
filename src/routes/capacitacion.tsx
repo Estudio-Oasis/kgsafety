@@ -287,3 +287,78 @@ function CapacitacionPage() {
     </div>
   );
 }
+
+function CourseCard({
+  c,
+  i,
+  total,
+  t,
+  highlight = false,
+}: {
+  c: Course;
+  i: number;
+  total: number;
+  t: (s: string) => string;
+  highlight?: boolean;
+}) {
+  const Icon = COURSE_ICON[c.slug] ?? HardHat;
+  return (
+    <Link
+      to="/capacitacion/$curso"
+      params={{ curso: c.slug }}
+      className={`group relative flex flex-col p-6 md:p-7 border transition-all rounded-sm ${
+        highlight
+          ? "bg-[color:color-mix(in_oklab,var(--anchor)_92%,white)] border-white/15 hover:border-signal"
+          : "bg-[color:color-mix(in_oklab,var(--anchor)_88%,white)] border-white/10 hover:border-signal/70"
+      } hover:-translate-y-0.5 shadow-[0_1px_0_rgba(255,255,255,0.04)_inset,0_8px_20px_-12px_rgba(0,0,0,0.6)]`}
+      title={c.foraneoPersona ? `Foráneo: ${c.foraneoPersona}` : undefined}
+    >
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div className="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/[0.03] text-signal shrink-0">
+          <Icon size={20} strokeWidth={1.75} />
+        </div>
+        <div className="font-display text-signal text-[10px] tracking-widest">
+          {String(i).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </div>
+      </div>
+
+      <h3 className="font-display text-lg md:text-xl uppercase leading-tight text-white group-hover:text-signal transition-colors mb-2">
+        {t(c.short)}
+      </h3>
+
+      <div className="text-[10px] uppercase tracking-widest text-white/50 mb-3">
+        {[c.duracion, c.nivel].filter(Boolean).join(" · ")}
+      </div>
+
+      {c.tema && (
+        <p className="text-[12px] text-white/55 leading-relaxed mb-5 line-clamp-2">{c.tema}</p>
+      )}
+
+      {c.precioLocalPersona && (
+        <div className="mt-auto pt-4 border-t border-white/10">
+          <div className="font-display text-signal text-xl md:text-2xl leading-none">
+            {c.precioLocalPersona.replace(" MXN + IVA", "")}
+          </div>
+          <div className="text-[10px] uppercase tracking-widest text-white/50 mt-1">
+            + IVA · por persona (local)
+          </div>
+          {(c.precioGrupal || c.foraneoPersona) && (
+            <div className="mt-3 pt-3 border-t border-white/5 space-y-1">
+              {c.precioGrupal && (
+                <div className="text-[11px] text-white/60">
+                  Grupal <span className="text-white/85 font-bold">{c.precioGrupal.replace(" MXN + IVA", "")}</span>
+                  {c.grupoRango && <span className="text-white/40"> · {c.grupoRango}</span>}
+                </div>
+              )}
+              {c.foraneoPersona && (
+                <div className="text-[10px] text-white/40">
+                  + Foráneo {c.foraneoPersona.replace(" MXN por persona (adicional)", " por persona")}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </Link>
+  );
+}
