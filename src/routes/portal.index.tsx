@@ -5,14 +5,12 @@ import { usePortalSession } from "@/hooks/use-portal-session";
 import {
   CERTIFICATIONS,
   DOCUMENTS,
-  INVOICES,
   PLANTS,
   PROJECTS,
   SYSTEMS,
   certState,
   expiryLabel,
   fmtDate,
-  fmtMoney,
   labelDoc,
   plantBySlug,
   systemById,
@@ -33,7 +31,7 @@ function Dashboard() {
   }, [session, navigate]);
 
   const scope = useMemo(() => {
-    if (!session) return { plants: [], projects: [], certs: [], docs: [], invoices: [] };
+    if (!session) return { plants: [], projects: [], certs: [], docs: [] };
     if (session.role === "cliente-corp" && session.clientSlug) {
       const plants = PLANTS.filter((p) => p.clientSlug === session.clientSlug);
       const plantSlugs = plants.map((p) => p.slug);
@@ -42,7 +40,6 @@ function Dashboard() {
         projects: PROJECTS.filter((p) => plantSlugs.includes(p.plantSlug)),
         certs: CERTIFICATIONS.filter((c) => plantSlugs.includes(c.plantSlug)),
         docs: DOCUMENTS.filter((d) => plantSlugs.includes(d.plantSlug)),
-        invoices: INVOICES.filter((i) => i.clientSlug === session.clientSlug),
       };
     }
     if (session.role === "cliente-planta" && session.plantSlug) {
@@ -52,10 +49,9 @@ function Dashboard() {
         projects: PROJECTS.filter((p) => p.plantSlug === session.plantSlug),
         certs: CERTIFICATIONS.filter((c) => c.plantSlug === session.plantSlug),
         docs: DOCUMENTS.filter((d) => d.plantSlug === session.plantSlug),
-        invoices: INVOICES.filter((i) => PROJECTS.find((p) => p.id === i.projectId)?.plantSlug === session.plantSlug),
       };
     }
-    return { plants: PLANTS, projects: PROJECTS, certs: CERTIFICATIONS, docs: DOCUMENTS, invoices: INVOICES };
+    return { plants: PLANTS, projects: PROJECTS, certs: CERTIFICATIONS, docs: DOCUMENTS };
   }, [session]);
 
   const expiringSoon = scope.certs.filter((c) => ["por-vencer-30", "por-vencer-60", "vencido"].includes(certState(c)));
@@ -63,7 +59,6 @@ function Dashboard() {
   const systems = SYSTEMS.filter((s) => scope.plants.some((p) => p.slug === s.plantSlug));
   const recentProjects = [...scope.projects].sort((a, b) => b.fecha.localeCompare(a.fecha)).slice(0, 6);
   const recentDocs = [...scope.docs].sort((a, b) => b.fecha.localeCompare(a.fecha)).slice(0, 6);
-  const pendingInvoices = scope.invoices.filter((i) => i.status !== "pagada").slice(0, 5);
 
   if (!session) return null;
 
@@ -137,21 +132,18 @@ function Dashboard() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-4 mt-4">
-        <Panel title="Facturas pendientes" action={<Link to="/portal/facturacion" className="text-[10px] uppercase tracking-widest text-brand-blue hover:underline flex items-center gap-1">Ver todo <ArrowRight size={10} /></Link>}>
+        <Panel title="Servicios recientes" action={<Link to="/portal/facturacion" className="text-[10px] uppercase tracking-widest text-brand-blue hover:underline flex items-center gap-1">Ver todo <ArrowRight size={10} /></Link>}>
           <ul className="divide-y divide-[color:var(--border)]">
-            {pendingInvoices.map((inv) => (
-              <li key={inv.folio} className="px-4 py-3 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold">{inv.folio}</p>
-                  <p className="text-[11px] text-[color:var(--muted-fg)]">{fmtDate(inv.fecha)}</p>
+            {recentProjects.slice(0, 5).map((p) => (
+              <li key={p.id} className="px-4 py-3 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs font-bold truncate">{p.name}</p>
+                  <p className="text-[11px] text-[color:var(--muted-fg)]">{fmtDate(p.fecha)} · {p.responsable}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-xs font-bold">{fmtMoney(inv.monto)}</p>
-                  <StatusBadge state={inv.status === "vencida" ? "vencido" : "pendiente"} label={inv.status} />
-                </div>
+                <StatusBadge state={p.status} label={p.status} />
               </li>
             ))}
-            {pendingInvoices.length === 0 && <li className="px-4 py-6 text-xs text-[color:var(--muted-fg)] text-center">Sin facturas pendientes.</li>}
+            {recentProjects.length === 0 && <li className="px-4 py-6 text-xs text-[color:var(--muted-fg)] text-center">Sin servicios registrados.</li>}
           </ul>
         </Panel>
 

@@ -6,7 +6,7 @@ import { COURSES, courseDetail, courseDeep, type Course } from "@/data/kaee";
 export const Route = createFileRoute("/capacitacion/$curso")({
   component: CoursePage,
   loader: ({ params }) => {
-    const course = COURSES.find((c) => c.slug === params.curso);
+    const course = COURSES.find((c) => c.slug === params.curso && c.active !== false);
     if (!course) throw notFound();
     return course;
   },
@@ -57,6 +57,37 @@ function CoursePage() {
           <Link to="/contacto" className="inline-block bg-signal text-[color:var(--anchor-fixed)] px-10 py-5 font-bold uppercase text-sm tracking-widest border-2 border-[color:var(--anchor-fixed)] shadow-[4px_4px_0_0_var(--anchor-fixed)] hover:bg-white transition-colors">
             Inscribir grupo
           </Link>
+        </div>
+      </section>
+
+      {/* FICHA COMPLETA — Nivel, Duración, Participantes, Costo */}
+      <section className="px-6 md:px-12 py-10 md:py-14 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
+        <div className="max-w-7xl mx-auto">
+          <SectionLabel>Ficha del curso</SectionLabel>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[color:var(--border)] border border-[color:var(--border)] mt-4">
+            {[
+              { l: "Nivel", v: course.nivel ?? course.levels.map((l) => l.code).join(" · ") },
+              { l: "Duración", v: course.duracion ?? course.levels.map((l) => l.hours).join(" / ") },
+              {
+                l: "Participantes",
+                v:
+                  course.minParticipantes || course.maxParticipantes
+                    ? `${course.minParticipantes ?? "—"} – ${course.maxParticipantes ?? "—"}`
+                    : "Por confirmar",
+              },
+              { l: "Costo", v: course.costo ?? "Cotizar a la medida" },
+            ].map((f) => (
+              <div key={f.l} className="bg-[color:var(--surface)] p-5">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-2">{f.l}</div>
+                <div className="text-sm md:text-base font-bold text-[color:var(--on-surface)] leading-snug">{f.v}</div>
+              </div>
+            ))}
+          </div>
+          {course.alcance && (
+            <p className="mt-6 text-sm md:text-base text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)] leading-relaxed max-w-4xl">
+              {course.alcance}
+            </p>
+          )}
         </div>
       </section>
 
@@ -192,7 +223,7 @@ function CoursePage() {
         <div className="max-w-7xl mx-auto">
           <SectionLabel>Otros cursos</SectionLabel>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mt-6">
-            {COURSES.filter((c) => c.slug !== course.slug).map((c) => (
+            {COURSES.filter((c) => c.slug !== course.slug && c.active !== false).map((c) => (
               <Link
                 key={c.slug}
                 to="/capacitacion/$curso"

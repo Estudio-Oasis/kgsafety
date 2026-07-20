@@ -44,7 +44,7 @@ const NAV: NavItem[] = [
   { to: "/portal/constancias", label: "Constancias y fichas técnicas", icon: FileText, roles: CLIENT_ROLES },
   { to: "/portal/calendario", label: "Calendario de cumplimiento", icon: CalendarClock, roles: CLIENT_ROLES },
   { to: "/portal/solicitudes", label: "Solicitudes de servicio", icon: Inbox, roles: CLIENT_ROLES },
-  { to: "/portal/facturacion", label: "Facturación", icon: Receipt, roles: CLIENT_ROLES },
+  { to: "/portal/facturacion", label: "Servicios realizados", icon: Receipt, roles: CLIENT_ROLES },
   { to: "/portal/clientes", label: "Clientes", icon: Building2, roles: ["admin-kg"] },
   { to: "/portal/biblioteca", label: "Biblioteca KG", icon: Library, roles: ["admin-kg", "equipo-kg"] },
   { to: "/portal/admin", label: "Panel admin", icon: Settings, roles: ["admin-kg"] },

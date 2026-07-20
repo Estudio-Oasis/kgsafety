@@ -32,7 +32,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         ];
 
         const dynamicPaths: SitemapEntry[] = [
-          ...COURSES.map((c) => ({ path: `/capacitacion/${c.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
+          ...COURSES.filter((c) => c.active !== false).map((c) => ({ path: `/capacitacion/${c.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
           ...EQUIPMENT.map((e) => ({ path: `/equipos/${e.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
           ...ENGINEERING.map((e) => ({ path: `/ingenieria/${e.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
           ...SERVICE_DETAILS.map((s) => ({ path: `/servicios/${s.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
