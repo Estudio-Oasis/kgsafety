@@ -121,8 +121,11 @@ function CapacitacionPage() {
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
-            <SectionLabel>{t("Niveles")}</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("Tres niveles de mando")}</h2>
+            <SectionLabel>{t("Niveles del curso de Alturas")}</SectionLabel>
+            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("Tres niveles · Trabajos en Alturas")}</h2>
+            <p className="text-white/60 mt-4 max-w-2xl leading-relaxed">
+              {t("Estructura específica del curso de Trabajos en Alturas registrado ante STPS. Otros cursos del catálogo tienen su propia duración indicada en cada ficha.")}
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-px bg-white/5 border border-white/5">
             {LEVELS.map((l) => (
