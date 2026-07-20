@@ -60,6 +60,37 @@ function CoursePage() {
         </div>
       </section>
 
+      {/* FICHA COMPLETA — Nivel, Duración, Participantes, Costo */}
+      <section className="px-6 md:px-12 py-10 md:py-14 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
+        <div className="max-w-7xl mx-auto">
+          <SectionLabel>Ficha del curso</SectionLabel>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[color:var(--border)] border border-[color:var(--border)] mt-4">
+            {[
+              { l: "Nivel", v: course.nivel ?? course.levels.map((l) => l.code).join(" · ") },
+              { l: "Duración", v: course.duracion ?? course.levels.map((l) => l.hours).join(" / ") },
+              {
+                l: "Participantes",
+                v:
+                  course.minParticipantes || course.maxParticipantes
+                    ? `${course.minParticipantes ?? "—"} – ${course.maxParticipantes ?? "—"}`
+                    : "Por confirmar",
+              },
+              { l: "Costo", v: course.costo ?? "Cotizar a la medida" },
+            ].map((f) => (
+              <div key={f.l} className="bg-[color:var(--surface)] p-5">
+                <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-2">{f.l}</div>
+                <div className="text-sm md:text-base font-bold text-[color:var(--on-surface)] leading-snug">{f.v}</div>
+              </div>
+            ))}
+          </div>
+          {course.alcance && (
+            <p className="mt-6 text-sm md:text-base text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)] leading-relaxed max-w-4xl">
+              {course.alcance}
+            </p>
+          )}
+        </div>
+      </section>
+
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <SectionLabel>Cuatro niveles disponibles</SectionLabel>
