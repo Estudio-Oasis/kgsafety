@@ -147,73 +147,83 @@ function CapacitacionPage() {
       </section>
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          <div>
-            <SectionLabel>{t("Catálogo vigente")}</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
-              {t("Cursos")} {t("disponibles")}
-            </h2>
-            <p className="text-white/60 mb-6 leading-relaxed">
-              {t("Temarios homologados, instructores certificados y emisión documental con certeza jurídica. Registro de CURP y verificación en línea.")}
-            </p>
-            <div className="bg-signal text-anchor border-2 border-anchor px-4 py-3 mb-8 shadow-[4px_4px_0_0_rgba(0,0,0,0.35)]">
-              <p className="text-xs md:text-sm font-bold uppercase tracking-wide leading-snug">
-                ★ ¡Precios especiales para grupos! Precios reducidos o diferenciados para grupos de 20 a 25 asistentes.
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-start mb-12 lg:mb-14">
+            <div>
+              <SectionLabel>{t("Catálogo vigente")}</SectionLabel>
+              <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
+                {t("Cursos")} {t("disponibles")}
+              </h2>
+              <p className="text-white/60 mb-6 leading-relaxed">
+                {t("Temarios homologados, instructores certificados y emisión documental con certeza jurídica. Registro de CURP y verificación en línea.")}
               </p>
+              <div className="bg-signal text-anchor border-2 border-anchor px-4 py-3 shadow-[4px_4px_0_0_rgba(0,0,0,0.35)]">
+                <p className="text-xs md:text-sm font-bold uppercase tracking-wide leading-snug">
+                  ★ ¡Precios especiales para grupos! Precios reducidos o diferenciados para grupos de 20 a 25 asistentes.
+                </p>
+              </div>
             </div>
-            <img src={trainingImg} alt="Sesión de capacitación con equipo de protección personal" loading="lazy" width={1920} height={1080} className="w-full rounded-sm shadow-[8px_8px_0_0_var(--signal,#F5C500)]" />
+            <img
+              src={trainingImg}
+              alt="Sesión de capacitación con equipo de protección personal"
+              loading="lazy"
+              width={1920}
+              height={1080}
+              className="w-full rounded-sm shadow-[8px_8px_0_0_var(--signal,#F5C500)]"
+            />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/5 border border-white/5">
-            {(() => {
-              const list = COURSES.filter((c) => c.active !== false);
-              const total = String(list.length).padStart(2, "0");
-              return list.map((c, i) => (
-                <Link
-                  key={c.slug}
-                  to="/capacitacion/$curso"
-                  params={{ curso: c.slug }}
-                  className="bg-anchor p-5 md:p-6 hover:bg-steel transition-colors group block flex flex-col"
-                  title={c.foraneoPersona ? `Foráneo: ${c.foraneoPersona}` : undefined}
-                >
-                  <div className="font-display text-signal text-[10px] mb-2">
-                    {String(i + 1).padStart(2, "0")} / {total}
-                  </div>
-                  <div className="font-bold text-sm uppercase tracking-tight group-hover:text-brand-blue mb-1 leading-tight">
-                    {t(c.short)}
-                  </div>
-                  <div className="text-[10px] uppercase tracking-widest text-white/50 mb-2">
-                    {[c.duracion, c.nivel].filter(Boolean).join(" · ")}
-                  </div>
-                  {c.tema && (
-                    <div className="text-[11px] text-white/60 leading-snug mb-3 line-clamp-2">{c.tema}</div>
-                  )}
-                  {c.precioLocalPersona && (
-                    <div className="mt-auto pt-3 border-t border-white/10 space-y-1">
-                      <div className="text-xs">
-                        <span className="font-bold text-signal">{c.precioLocalPersona}</span>
-                        <span className="text-white/40"> · por persona (local)</span>
-                      </div>
-                      {c.precioGrupal && (
-                        <div className="text-[11px] text-white/60">
-                          Grupal: <span className="text-white/80 font-bold">{c.precioGrupal}</span>
-                          {c.grupoRango && <span className="text-white/40"> · {c.grupoRango}</span>}
-                        </div>
-                      )}
-                      {c.foraneoPersona && (
-                        <div className="text-[10px] text-white/40 uppercase tracking-wider">
-                          + Foráneo {c.foraneoPersona}
-                        </div>
-                      )}
+          {(() => {
+            const list = COURSES.filter((c) => c.active !== false);
+            const alturas = list.filter((c) => c.slug.startsWith("alturas-") && c.slug !== "alturas-horizontales");
+            const otros = list.filter((c) => !alturas.includes(c));
+            const total = list.length;
+            let idx = 0;
+
+            return (
+              <div className="space-y-10">
+                {/* Familia Alturas */}
+                <div>
+                  <div className="flex items-baseline justify-between mb-4">
+                    <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em]">
+                      Familia · Trabajos en Alturas
                     </div>
-                  )}
-                </Link>
-              ));
-            })()}
-          </div>
+                    <div className="text-[10px] uppercase tracking-widest text-white/40">
+                      3 niveles STPS
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {alturas.map((c) => {
+                      idx += 1;
+                      return <CourseCard key={c.slug} c={c} i={idx} total={total} t={t} highlight />;
+                    })}
+                  </div>
+                </div>
 
+                {/* Otros cursos */}
+                <div>
+                  <div className="flex items-baseline justify-between mb-4">
+                    <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em]">
+                      Cursos independientes
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest text-white/40">
+                      {otros.length} cursos
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {otros.map((c) => {
+                      idx += 1;
+                      return <CourseCard key={c.slug} c={c} i={idx} total={total} t={t} />;
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
+
+
 
       {/* OSHA + Recertificación — NEW content blocks */}
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
