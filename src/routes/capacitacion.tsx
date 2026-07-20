@@ -4,7 +4,18 @@ import trainingImg from "@/assets/training-classroom.jpg";
 import heightsImg from "@/assets/heights-worker.jpg";
 import confinedImg from "@/assets/confined-space.jpg";
 import { useT } from "@/i18n/context";
-import { COURSES } from "@/data/kaee";
+import { COURSES, type Course } from "@/data/kaee";
+import { HardHat, Layers, ArrowUpFromLine, Construction, MoveUp, type LucideIcon } from "lucide-react";
+
+const COURSE_ICON: Record<string, LucideIcon> = {
+  "alturas-autorizado": HardHat,
+  "alturas-competente": HardHat,
+  "alturas-monitor": HardHat,
+  andamios: Construction,
+  izajes: ArrowUpFromLine,
+  "plataformas-elevacion": MoveUp,
+  "alturas-horizontales": Layers,
+};
 
 export const Route = createFileRoute("/capacitacion")({
   component: CapacitacionPage,
