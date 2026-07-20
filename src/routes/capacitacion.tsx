@@ -233,12 +233,12 @@ function CapacitacionPage() {
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-px bg-white/5 border border-white/5">
           <div className="bg-anchor p-8 md:p-10">
-            <SectionLabel>{t("OSHA Subpartes — guion básico")}</SectionLabel>
+            <SectionLabel>{t("OSHA — referencia técnica")}</SectionLabel>
             <h3 className="font-display text-xl md:text-2xl uppercase mb-4 leading-tight">
               OSHA 1926 · OSHA 1910
             </h3>
             <p className="text-sm text-white/60 leading-relaxed">
-              {t("Los temarios siguen como guion las Subpartes OSHA 1926 y 1910, homologados con la NOM-009-STPS-2011 y adaptados al estándar interno de cada cliente.")}
+              {t("Los temarios usan las Subpartes OSHA 1926 y 1910 como referencia técnica de guion, homologados con la NOM-009-STPS-2011. La certificación oficial emitida es la DC-3 registrada ante STPS.")}
             </p>
           </div>
           <div className="bg-anchor p-8 md:p-10">
