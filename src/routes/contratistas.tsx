@@ -121,7 +121,7 @@ function ContratistasPage() {
       </section>
 
       {/* 3 · ¿Para qué sirve? */}
-      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5 bg-anchor">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12 max-w-3xl">
             <SectionLabel>{t("03 · ¿Para qué sirve?")}</SectionLabel>
