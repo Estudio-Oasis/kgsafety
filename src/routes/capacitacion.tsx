@@ -21,10 +21,10 @@ export const Route = createFileRoute("/capacitacion")({
   component: CapacitacionPage,
   head: () => ({
     meta: [
-      { title: "Capacitación DC-3 oficial STPS · OSHA 10/30 · KG Safety" },
-      { name: "description", content: "Programas DC-3 oficiales STPS en 3 niveles (8h, 16h, 24h) para alturas, espacios confinados, andamios, LOTO y rescate. OSHA 10/30 y NSC. Cobertura nacional." },
-      { property: "og:title", content: "Capacitación DC-3 · OSHA · KG Safety" },
-      { property: "og:description", content: "Tres niveles de capacitación certificada · 12 áreas técnicas · DC-3 verificable en línea." },
+      { title: "Capacitación DC-3 oficial STPS · KG Safety" },
+      { name: "description", content: "Programas DC-3 registrados ante STPS para trabajos en alturas, andamios, izajes, plataformas y líneas de vida horizontales. Agente Capacitador Externo Working at Heights. Cobertura nacional." },
+      { property: "og:title", content: "Capacitación DC-3 · STPS · KG Safety" },
+      { property: "og:description", content: "DC-3 STPS y Agente Capacitador Externo Working at Heights. 7 cursos vigentes." },
       { property: "og:url", content: "https://kgsafety.lovable.app/capacitacion" },
       { property: "og:type", content: "website" },
     ],
@@ -32,16 +32,17 @@ export const Route = createFileRoute("/capacitacion")({
   }),
 });
 
+// Niveles reales del curso de Trabajos en Alturas — confirmados contra fuente original.
 const LEVELS = [
-  { n: "01", badgeKey: "Básico / Autorizado", hoursKey: "8 horas",
-    descKey: "El participante conocerá los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
-    bullets: ["DC-3 oficial", "Certificado de cumplimiento", "Registro STPS verificable"] },
-  { n: "02", badgeKey: "Supervisor / Monitor", hoursKey: "16 horas",
+  { n: "01", badgeKey: "Autorizado (Básico)", hoursKey: "8 horas",
+    descKey: "El participante conoce los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
+    bullets: ["DC-3 registrado STPS", "Constancia de habilidades", "Registro verificable"] },
+  { n: "02", badgeKey: "Competente (Intermedio)", hoursKey: "24 horas",
     descKey: "Capacita en supervisión de trabajadores, evaluación de condiciones de seguridad y maniobras de rescate.",
-    bullets: ["DC-3 oficial", "Certificado", "Criterio de supervisión"] },
-  { n: "03", badgeKey: "Jefe de Seguridad / Competente", hoursKey: "24 horas",
-    descKey: "Cubre normativas nacionales e internacionales, diseño de anclajes, planes de trabajo y capacidad para impartir cursos internos.",
-    bullets: ["DC-3 oficial", "Certificado Competent Person", "Diseño de anclajes"] },
+    bullets: ["DC-3 registrado STPS", "Criterio de supervisión", "Rescate básico"] },
+  { n: "03", badgeKey: "Monitor Supervisor (Avanzado)", hoursKey: "40 horas",
+    descKey: "Cubre normativa aplicable, criterios de anclaje, planes de trabajo y capacidad para dirigir maniobras y supervisar equipos.",
+    bullets: ["DC-3 registrado STPS", "Perfil de monitor", "Dirección de maniobra"] },
 ];
 
 // areas now come from COURSES dataset
@@ -59,11 +60,11 @@ function CapacitacionPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Capacitación certificada")}</SectionLabel>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
-            {t("DC-3 y certificado")}{" "}<br />
-            <span className="text-signal">{t("oficial")}</span> {t("STPS · OSHA · NSC.")}
+            {t("DC-3 registrado")}{" "}<br />
+            <span className="text-signal">{t("ante la STPS")}</span>
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
-            {t("Tres niveles · doce áreas · capacitadores certificados por KAEE Group FPCS, STPS, OSHA y NSC. Cobertura nacional con programas de recertificación anualizada.")}
+            {t("Agente Capacitador Externo Working at Heights (Reg. STPS N° WAH131021CQ8-0013). Programas presenciales para trabajos en alturas, andamios, izajes, plataformas y líneas de vida horizontales.")}
           </p>
           <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
             {t("Inscribir grupo")}
@@ -78,8 +79,8 @@ function CapacitacionPage() {
         </div>
         <div className="bg-signal text-anchor p-8 md:p-12 flex flex-col justify-center">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-3">{t("Realismo operativo")}</div>
-          <div className="font-display text-3xl md:text-4xl uppercase leading-tight mb-3">12 áreas técnicas</div>
-          <p className="text-sm leading-relaxed">{t("Alturas, confinados, andamios, calor, eléctrico, LOTO, primeros auxilios, extintores, OSHA 10 y 30 y más.")}</p>
+          <div className="font-display text-3xl md:text-4xl uppercase leading-tight mb-3">7 cursos vigentes</div>
+          <p className="text-sm leading-relaxed">{t("Trabajos en alturas (3 niveles), andamios, izajes con grúa, plataformas elevadoras y líneas de vida horizontales.")}</p>
         </div>
       </section>
 
@@ -95,7 +96,7 @@ function CapacitacionPage() {
               {t("P.N.P.C. — Profesionalización a Contratistas")}
             </h2>
             <p className="text-white/75 leading-relaxed max-w-2xl mb-6">
-              {t("Sistema integral desarrollado por KG Safety para gestionar, certificar y verificar las competencias de todos sus contratistas en actividades de alto riesgo, con cumplimiento STPS, OSHA y ANSI/ASSP.")}
+              {t("Sistema integral desarrollado por KG Safety para gestionar, certificar y verificar las competencias de contratistas en actividades de alto riesgo, con cumplimiento STPS.")}
             </p>
             <Link to="/contratistas" className="inline-block bg-signal text-anchor px-8 py-4 font-bold uppercase text-xs tracking-widest hover:bg-white transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,0.4)]">
               {t("Conocer el P.N.P.C.")} →
@@ -120,8 +121,11 @@ function CapacitacionPage() {
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
-            <SectionLabel>{t("Niveles")}</SectionLabel>
-            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("Tres niveles de mando")}</h2>
+            <SectionLabel>{t("Niveles del curso de Alturas")}</SectionLabel>
+            <h2 className="font-display text-3xl md:text-5xl uppercase">{t("Tres niveles · Trabajos en Alturas")}</h2>
+            <p className="text-white/60 mt-4 max-w-2xl leading-relaxed">
+              {t("Estructura específica del curso de Trabajos en Alturas registrado ante STPS. Otros cursos del catálogo tienen su propia duración indicada en cada ficha.")}
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-px bg-white/5 border border-white/5">
             {LEVELS.map((l) => (
@@ -229,12 +233,12 @@ function CapacitacionPage() {
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-px bg-white/5 border border-white/5">
           <div className="bg-anchor p-8 md:p-10">
-            <SectionLabel>{t("OSHA Subpartes — guion básico")}</SectionLabel>
+            <SectionLabel>{t("OSHA — referencia técnica")}</SectionLabel>
             <h3 className="font-display text-xl md:text-2xl uppercase mb-4 leading-tight">
               OSHA 1926 · OSHA 1910
             </h3>
             <p className="text-sm text-white/60 leading-relaxed">
-              {t("Los temarios siguen como guion las Subpartes OSHA 1926 y 1910, homologados con la NOM-009-STPS-2011 y adaptados al estándar interno de cada cliente.")}
+              {t("Los temarios usan las Subpartes OSHA 1926 y 1910 como referencia técnica de guion, homologados con la NOM-009-STPS-2011. La certificación oficial emitida es la DC-3 registrada ante STPS.")}
             </p>
           </div>
           <div className="bg-anchor p-8 md:p-10">
