@@ -306,11 +306,11 @@ function CourseCard({
     <Link
       to="/capacitacion/$curso"
       params={{ curso: c.slug }}
-      className={`group relative flex flex-col p-6 md:p-7 border transition-all rounded-sm ${
+      className={`group relative flex flex-col p-6 md:p-7 border-2 transition-all rounded-sm ${
         highlight
-          ? "bg-[color:color-mix(in_oklab,var(--anchor)_92%,white)] border-white/15 hover:border-signal"
-          : "bg-[color:color-mix(in_oklab,var(--anchor)_88%,white)] border-white/10 hover:border-signal/70"
-      } hover:-translate-y-0.5 shadow-[0_1px_0_rgba(255,255,255,0.04)_inset,0_8px_20px_-12px_rgba(0,0,0,0.6)]`}
+          ? "bg-[color:color-mix(in_oklab,var(--anchor)_72%,white)] border-signal/40 hover:border-signal"
+          : "bg-[color:color-mix(in_oklab,var(--anchor)_78%,white)] border-white/25 hover:border-signal"
+      } hover:-translate-y-0.5 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_14px_28px_-10px_rgba(0,0,0,0.75)]`}
       title={c.foraneoPersona ? `Foráneo: ${c.foraneoPersona}` : undefined}
     >
       <div className="flex items-start justify-between gap-3 mb-4">
