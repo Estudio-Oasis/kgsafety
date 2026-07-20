@@ -325,7 +325,7 @@ function Index() {
               </h2>
             </div>
             <Link to="/capacitacion" className="text-brand-blue font-bold text-[11px] uppercase tracking-[0.22em] border-b border-brand-blue pb-1">
-              {t("Ver los 10 cursos")} →
+              {t("Ver los 7 cursos")} →
             </Link>
           </div>
 
