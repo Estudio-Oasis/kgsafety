@@ -60,7 +60,17 @@ function CoursePage() {
         </div>
       </section>
 
-      {/* FICHA COMPLETA — Nivel, Duración, Participantes, Costo */}
+      {/* AVISO PRECIOS GRUPALES */}
+      <section className="px-6 md:px-12 pt-8 md:pt-10">
+        <div className="max-w-7xl mx-auto bg-signal text-anchor border-2 border-anchor px-5 py-4 md:px-6 md:py-5 flex items-start gap-3 shadow-[4px_4px_0_0_var(--anchor-fixed)]">
+          <span className="text-lg leading-none mt-0.5">★</span>
+          <p className="text-sm md:text-base font-bold uppercase tracking-wide leading-snug">
+            ¡Precios especiales para grupos! Existen precios reducidos o diferenciados para grupos de 20 a 25 asistentes.
+          </p>
+        </div>
+      </section>
+
+      {/* FICHA COMPLETA — Nivel, Duración, Participantes */}
       <section className="px-6 md:px-12 py-10 md:py-14 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
         <div className="max-w-7xl mx-auto">
           <SectionLabel>Ficha del curso</SectionLabel>
@@ -68,14 +78,14 @@ function CoursePage() {
             {[
               { l: "Nivel", v: course.nivel ?? course.levels.map((l) => l.code).join(" · ") },
               { l: "Duración", v: course.duracion ?? course.levels.map((l) => l.hours).join(" / ") },
+              { l: "Área temática", v: course.tema ?? "—" },
               {
                 l: "Participantes",
                 v:
                   course.minParticipantes || course.maxParticipantes
-                    ? `${course.minParticipantes ?? "—"} – ${course.maxParticipantes ?? "—"}`
+                    ? `${course.minParticipantes ?? "—"} a ${course.maxParticipantes ?? "—"}`
                     : "Por confirmar",
               },
-              { l: "Costo", v: course.costo ?? "Cotizar a la medida" },
             ].map((f) => (
               <div key={f.l} className="bg-[color:var(--surface)] p-5">
                 <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-2">{f.l}</div>
@@ -83,6 +93,24 @@ function CoursePage() {
               </div>
             ))}
           </div>
+
+          {(course.precioLocalPersona || course.precioGrupal || course.foraneoPersona) && (
+            <PricingSelector course={course} />
+          )}
+
+          {/* Certificaciones Reconocidas */}
+          <div className="mt-8 md:mt-10 border border-[color:var(--border)] bg-[color:var(--surface)] p-5 md:p-7">
+            <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">Certificaciones reconocidas</div>
+            <h3 className="font-display text-lg md:text-xl uppercase text-[color:var(--on-surface)] mb-3 leading-tight">
+              Working at Heights · Registro STPS
+            </h3>
+            <ul className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_78%,transparent)] space-y-1.5 leading-relaxed">
+              <li><span className="font-bold">Agente Capacitador Externo N°</span> WAH131021CQ8-0013</li>
+              <li><span className="font-bold">Fecha de registro:</span> 10 de julio de 2014</li>
+              <li><span className="font-bold">Vigencia:</span> Indefinida, sujeta a supervisión STPS.</li>
+            </ul>
+          </div>
+
           {course.alcance && (
             <p className="mt-6 text-sm md:text-base text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)] leading-relaxed max-w-4xl">
               {course.alcance}
