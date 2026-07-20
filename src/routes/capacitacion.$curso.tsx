@@ -267,3 +267,69 @@ function CoursePage() {
     </div>
   );
 }
+
+function PricingSelector({ course }: { course: Course }) {
+  const [mode, setMode] = useState<"local" | "foraneo">("local");
+  const modes: Array<{ id: "local" | "foraneo"; label: string }> = [
+    { id: "local", label: "Local" },
+    { id: "foraneo", label: "Foráneo" },
+  ];
+  return (
+    <div className="mt-8 md:mt-10 border border-[color:var(--border)] bg-[color:var(--surface)]">
+      <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[color:var(--border)]">
+        <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em]">Cotización · precios + IVA</div>
+        <div className="flex gap-1">
+          {modes.map((m) => (
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => setMode(m.id)}
+              className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest border ${
+                mode === m.id
+                  ? "bg-brand-navy text-white border-brand-navy"
+                  : "bg-transparent text-[color:var(--on-surface)] border-[color:var(--border)] hover:border-brand-blue"
+              }`}
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="grid md:grid-cols-2 gap-px bg-[color:var(--border)]">
+        <div className="bg-[color:var(--surface)] p-5 md:p-6">
+          <div className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] mb-2">Por persona</div>
+          <div className="font-display text-2xl md:text-3xl text-[color:var(--on-surface)] leading-none">
+            {course.precioLocalPersona ?? "Cotizar"}
+          </div>
+          {mode === "foraneo" && course.foraneoPersona && (
+            <div className="mt-3 text-xs text-brand-blue font-bold uppercase tracking-widest">
+              + {course.foraneoPersona}
+            </div>
+          )}
+        </div>
+        <div className="bg-[color:var(--surface)] p-5 md:p-6">
+          <div className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] mb-2">Paquete grupal</div>
+          <div className="font-display text-2xl md:text-3xl text-[color:var(--on-surface)] leading-none">
+            {course.precioGrupal ?? "Cotizar"}
+          </div>
+          {course.grupoRango && (
+            <div className="mt-2 text-xs text-[color:var(--muted-fg)]">{course.grupoRango}</div>
+          )}
+        </div>
+      </div>
+      <div className="p-5 md:p-6 border-t border-[color:var(--border)] flex flex-wrap items-center justify-between gap-4">
+        <p className="text-xs text-[color:var(--muted-fg)] max-w-md leading-relaxed">
+          {mode === "foraneo"
+            ? "Modalidad foránea: incluye viáticos y traslado del instructor al sitio del cliente."
+            : "Modalidad local: sesión en la zona de operación habitual (Toluca / CDMX / área metropolitana)."}
+        </p>
+        <Link
+          to="/contacto"
+          className="inline-block bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold uppercase text-xs tracking-widest border-2 border-[color:var(--anchor-fixed)] hover:bg-white transition-colors shadow-[4px_4px_0_0_var(--anchor-fixed)]"
+        >
+          Continuar cotización →
+        </Link>
+      </div>
+    </div>
+  );
+}
