@@ -258,10 +258,65 @@ function Index() {
       {/* ============== CLIENTES ============== */}
       <ClientLogosGrid />
 
+      {/* ============== PROMO BANNER P.N.P.C. ============== */}
+      <section className="px-4 md:px-8 lg:px-12 py-10 md:py-14 bg-[color:var(--brand-navy)] kg-on-dark">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative overflow-hidden rounded-[var(--bento-radius,1.25rem)] border border-white/10 bg-gradient-to-br from-[color:var(--brand-navy)] to-[color:var(--anchor-fixed)] p-6 md:p-10 lg:p-12">
+            {/* Decorative signal accent */}
+            <div className="absolute top-0 right-0 w-32 h-32 md:w-48 md:h-48 bg-[color:var(--signal)] opacity-10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3" aria-hidden />
+            <div className="absolute bottom-0 left-0 w-24 h-24 md:w-40 md:h-40 bg-[color:var(--brand-blue)] opacity-10 blur-3xl rounded-full translate-y-1/2 -translate-x-1/3" aria-hidden />
 
+            <div className="relative grid lg:grid-cols-[1fr_auto] gap-8 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 mb-4">
+                  <span className="inline-grid place-items-center w-6 h-6 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] text-xs font-bold">✓</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: "var(--signal)" }}>
+                    {t("P.N.P.C. · Programa Nacional de Profesionalización a Contratistas")}
+                  </span>
+                </div>
+                <h2 className="font-display text-2xl md:text-4xl lg:text-5xl uppercase leading-[1.08] mb-4 text-white">
+                  {t("Sus contratistas listos para operar")}{" "}
+                  <span style={{ color: "var(--signal)" }}>{t("bajo control total.")}</span>
+                </h2>
+                <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl mb-6">
+                  {t("Gestione competencias, certificaciones y EPP en un solo sistema. 11 años de operación ininterrumpida con cumplimiento STPS, OSHA y ANSI/ASSP.")}
+                </p>
+                <ul className="grid sm:grid-cols-3 gap-3 text-[11px] md:text-xs text-white/70">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--signal)]" aria-hidden />
+                    {t("Competencias certificadas")}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--signal)]" aria-hidden />
+                    {t("Vigencias bajo control")}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--signal)]" aria-hidden />
+                    {t("Evidencia para auditoría")}
+                  </li>
+                </ul>
+              </div>
 
-
-
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:min-w-[220px]">
+                <Link
+                  to="/contratistas"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 font-bold uppercase text-xs tracking-[0.2em] rounded-md shadow-[4px_4px_0_0_rgba(0,0,0,0.35)] hover:-translate-y-0.5 transition-transform text-center"
+                  style={{ background: "var(--signal)", color: "var(--anchor-fixed)" }}
+                >
+                  <span>{t("Conocer el programa")}</span>
+                  <span aria-hidden>→</span>
+                </Link>
+                <Link
+                  to="/contacto"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 font-bold uppercase text-xs tracking-[0.2em] rounded-md border border-white/40 text-white hover:bg-white/10 transition-colors text-center"
+                >
+                  <span>{t("Solicitar diagnóstico")}</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ============== SERVICIOS BENTO ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-y border-[color:var(--border)]">
