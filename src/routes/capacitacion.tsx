@@ -502,7 +502,8 @@ function CourseCard({
             <span>Solicitar cotización</span>
             <span aria-hidden>→</span>
           </Link>
-
+        </div>
+      )}
     </article>
   );
 }
