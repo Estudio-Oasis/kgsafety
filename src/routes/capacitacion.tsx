@@ -227,6 +227,73 @@ function CapacitacionPage() {
               </div>
             );
           })()}
+
+          {/* Certificaciones Reconocidas + ¿Por qué elegir nuestros cursos? */}
+          <div className="mt-12 md:mt-16 grid lg:grid-cols-2 gap-px bg-white/5 border border-white/10">
+            {/* Columna izquierda */}
+            <div className="bg-anchor p-7 md:p-9 flex flex-col">
+              <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">
+                Certificaciones reconocidas
+              </div>
+              <h3 className="font-display text-xl md:text-2xl uppercase text-white leading-tight mb-3">
+                Todos nuestros cursos están avalados por:
+              </h3>
+              <div className="text-white/85 font-bold uppercase tracking-widest text-sm mb-1">
+                Working at Heights
+              </div>
+              <div className="text-white/50 text-xs uppercase tracking-widest mb-6">
+                a KAEE GROUP brand · Registro de Agente Capacitador Externo
+              </div>
+              <ul className="border border-white/10 bg-white/[0.03] p-4 md:p-5 space-y-2 text-sm text-white/75 mb-6">
+                <li>
+                  <span className="text-white/50 uppercase tracking-widest text-[10px] block">Número de registro</span>
+                  <span className="font-bold text-white">WAH131021CQ8-0013</span>
+                </li>
+                <li>
+                  <span className="text-white/50 uppercase tracking-widest text-[10px] block">Fecha de registro</span>
+                  <span className="font-bold text-white">10 de julio de 2014</span>
+                </li>
+                <li>
+                  <span className="text-white/50 uppercase tracking-widest text-[10px] block">Vigencia</span>
+                  <span className="font-bold text-white">Indefinida (sujeta a supervisión STPS)</span>
+                </li>
+              </ul>
+              <Link
+                to="/cumplimiento"
+                className="self-start inline-flex items-center gap-2 border border-signal text-signal px-5 py-3 font-bold uppercase text-[10px] tracking-[0.22em] hover:bg-signal hover:text-anchor transition-colors"
+              >
+                Información <span aria-hidden>→</span>
+              </Link>
+            </div>
+
+            {/* Columna derecha — beneficios 2x2 */}
+            <div className="bg-anchor p-7 md:p-9">
+              <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em] mb-3">
+                Por qué elegirnos
+              </div>
+              <h3 className="font-display text-xl md:text-2xl uppercase text-white leading-tight mb-6">
+                ¿Por qué elegir nuestros cursos?
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {[
+                  { t: "Instructores Certificados", d: "Nuestros instructores cuentan con certificación vigente y amplia experiencia en campo." },
+                  { t: "Certificación Válida", d: "Documentación válida ante autoridades y cumplimiento de normativas oficiales." },
+                  { t: "Contenido Actualizado", d: "Programas alineados a las últimas normativas y mejores prácticas internacionales." },
+                  { t: "Reconocimiento Empresarial", d: "Más de 200 empresas confían en nuestra capacitación para sus equipos de trabajo." },
+                ].map((b) => (
+                  <div key={b.t} className="border border-white/10 bg-white/[0.03] p-4 md:p-5">
+                    <div className="w-8 h-8 border border-signal/40 text-signal flex items-center justify-center mb-3">
+                      <span className="text-sm font-bold">✓</span>
+                    </div>
+                    <div className="font-display text-sm uppercase text-white leading-tight mb-1.5">
+                      {b.t}
+                    </div>
+                    <p className="text-[12px] text-white/60 leading-relaxed">{b.d}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
