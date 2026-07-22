@@ -97,7 +97,7 @@ function ContactoPage() {
             <span className="text-signal">{t("Lo convertimos en un plan técnico.")}</span>
           </h1>
           <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
-            {t("Formulario alineado al ERP KG Safety. Los datos alimentan directamente el registro de la cotización.")}
+            {t("Proporciona los detalles del curso que te interesa y el número de personas para recibir una cotización personalizada.")}
           </p>
         </div>
       </section>
