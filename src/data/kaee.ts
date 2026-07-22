@@ -79,6 +79,25 @@ export const COURSES: Course[] = [
     precioGrupal: "$19,800.00 MXN + IVA",
     grupoRango: "20 a 25 personas",
     foraneoPersona: "$792.00 MXN por persona (adicional)",
+    objetivoGeneral:
+      "El participante tomará conciencia de la importancia de las caídas en trabajos en alturas y podrá seleccionar y utilizar los componentes correctos del sistema personal de protección de caídas, previniendo o eliminando riesgos para salvaguardar la integridad física de los trabajadores.",
+    objetivoEspecifico:
+      "Garantizar que el personal que realice labores de mantenimiento en estructuras superiores a 1.80 metros utilice de forma correcta el equipo de protección contra caídas y siga los procedimientos establecidos, con el fin de prevenir caídas y minimizar riesgos.",
+    temario: [
+      { temas: [
+        "Apertura, alcance y objetivos",
+        "Equipos y dispositivos de protección contra caídas",
+        "Requisitos legales para el trabajo en alturas",
+        "Medios de acceso y descenso",
+        "Plan de respuesta a emergencias",
+        "Inspección de equipo de protección personal (demostrativa)",
+        "Colocación del equipo de protección personal (demostrativa)",
+        "Conexión y desconexión de componentes de anclajes (demostrativa)",
+        "Conexión a anclajes factor 0, 1, 2 (demostrativa)",
+        "Retiro y almacenamiento de equipos (demostrativa)",
+        "Análisis de accidentes e incidentes",
+      ] },
+    ],
     levels: [
       { code: "A", name: "Autorizado (Básico)", hours: "8 h", desc: "Persona autorizada para ejecutar tareas de alturas con uso correcto del EPP y procedimientos seguros." },
     ],
@@ -97,6 +116,41 @@ export const COURSES: Course[] = [
     precioGrupal: "$88,000.00 MXN + IVA",
     grupoRango: "10 a 15 personas",
     foraneoPersona: "$3,323.00 MXN por persona (adicional)",
+    objetivoGeneral:
+      "Prevenir y minimizar los accidentes derivados del riesgo de caída en las diferentes tareas a las que se ven expuestos los trabajadores; capacitar sobre normas y técnicas de seguridad para trabajos en altura (+1.80 m), uso, inspección, cuidado y mantenimiento de equipos.",
+    objetivoEspecifico:
+      "1) Aprender a prevenir los riesgos de trabajo en alturas y estructuras provisionales. 2) Planificar los trabajos en alturas para garantizar seguridad y confianza en el personal. 3) Conocer los diferentes equipos y dispositivos de aseguramiento para trabajo en alturas.",
+    temario: [
+      { dia: "Día 1", temas: [
+        "Apertura, alcance y objetivos",
+        "Equipos y dispositivos de protección contra caídas",
+        "Requisitos legales",
+        "Medios de acceso y descenso",
+        "Plan de respuesta a emergencias",
+        "Inspección de EPP",
+        "Colocación de EPP",
+        "Conexión y desconexión de anclajes",
+        "Conexión a anclajes factor 0, 1, 2",
+        "Retiro y almacenamiento de equipos",
+        "Análisis de accidentes e incidentes",
+      ] },
+      { dia: "Día 2", temas: [
+        "Documentación oficial aplicable",
+        "Requisitos mínimos para trabajos en alturas",
+        "Organización para trabajos en alturas",
+        "Modificaciones administrativas",
+      ] },
+      { dia: "Día 3", temas: [
+        "Plan de respuesta a emergencias (personal administrativo)",
+        "Investigación de accidentes/incidentes",
+        "Verificación de requisitos y controles documentales",
+        "Práctica: llenado de formatos oficiales",
+        "Práctica: análisis causa raíz",
+        "Procedimiento de culminación y archivo de documentos",
+        "Análisis de accidentes e incidentes",
+        "Evaluación",
+      ] },
+    ],
     levels: [
       { code: "C", name: "Competente (Intermedio)", hours: "24 h", desc: "Persona competente que identifica riesgos, planea maniobras y emite permisos de trabajo en altura." },
     ],
@@ -115,6 +169,52 @@ export const COURSES: Course[] = [
     precioGrupal: "$123,200.00 MXN + IVA",
     grupoRango: "20 a 25 personas",
     foraneoPersona: "$5,505.00 MXN por persona (adicional)",
+    objetivoGeneral:
+      "Capacitar al personal en el reconocimiento, análisis y prevención de riesgos asociados con trabajos en alturas, fomentando la responsabilidad individual y colectiva en materia de seguridad.",
+    objetivoEspecifico:
+      "Comprender el procedimiento previo aplicable a todo trabajo en alturas a nivel avanzado, de acuerdo con la normatividad aplicable, y la importancia de analizar y planear cada actividad para prevenir accidentes. Incluye fundamentos de seguridad, normativa vigente, niveles de EPP, factor de caída y fuerza de choque, condiciones riesgosas, plan de emergencia y ejecución segura con las herramientas y procedimientos correspondientes.",
+    temario: [
+      { dia: "Día 1", temas: [
+        "Introducción al trabajo en alturas",
+        "Peligros y riesgos",
+        "Sensibilización",
+        "Medidas preventivas",
+        "Conceptos técnicos",
+        "Anclajes",
+        "Inspección",
+      ] },
+      { dia: "Día 2", temas: [
+        "Marco nacional",
+        "Marco internacional",
+        "Documentación oficial",
+        "Análisis de riesgo",
+        "Inventario",
+        "Planificación",
+        "Cálculos de caída",
+      ] },
+      { dia: "Día 3", temas: [
+        "Ascenso y descenso",
+        "Control de accesos",
+        "Criterios de aprobación",
+        "Regulación nacional",
+        "Regulación internacional",
+      ] },
+      { dia: "Día 4", temas: [
+        "Revisión documental",
+        "Manejo y uso",
+        "Supervisión",
+        "Control documental",
+        "Práctica de revisión",
+      ] },
+      { dia: "Día 5", temas: [
+        "Rescate en alturas avanzado",
+        "Procedimiento de rescate avanzado",
+        "Primera atención",
+        "Formato oficial PRE",
+        "Montaje de equipos de rescate",
+        "Práctica de rescate",
+      ] },
+    ],
     levels: [
       { code: "M", name: "Monitor Supervisor (Avanzado)", hours: "40 h", desc: "Monitor supervisor que dirige cuadrillas, audita sistemas y forma personal de menor nivel." },
     ],
@@ -132,6 +232,23 @@ export const COURSES: Course[] = [
     precioGrupal: "$19,800.00 MXN + IVA",
     grupoRango: "20 a 25 personas",
     foraneoPersona: "$792.00 MXN por persona (adicional)",
+    objetivoGeneral:
+      "Establecer un procedimiento de trabajo para estandarizar la correcta utilización de andamios y garantizar el correcto desarrollo de trabajos en altura, con un mecanismo técnico para su correcta aplicación y seguridad.",
+    objetivoEspecifico:
+      "Comprender el procedimiento previo aplicable a todo trabajo con uso de andamios, de acuerdo con la normatividad aplicable, para prevenir accidentes en el armado seguro de andamios.",
+    temario: [
+      { temas: [
+        "Introducción",
+        "Definición y normatividad",
+        "Documentación oficial",
+        "Inspección",
+        "Medidas preventivas",
+        "Condiciones de armado y uso seguro",
+        "Rescate",
+        "Práctica",
+        "Sensibilización",
+      ] },
+    ],
     levels: [
       { code: "A", name: "Armador de andamios", hours: "6 h", desc: "Armado, inspección y operación segura de andamios multidireccionales y de seguridad." },
     ],
@@ -149,6 +266,25 @@ export const COURSES: Course[] = [
     precioGrupal: "$38,500.00 MXN + IVA",
     grupoRango: "20 a 25 personas",
     foraneoPersona: "$792.00 MXN por persona (adicional)",
+    objetivoGeneral:
+      "Aprender métodos necesarios para llevar a cabo operaciones de izaje de manera segura y eficiente, incluyendo conocimientos teóricos, habilidades prácticas y normativas locales e internacionales.",
+    objetivoEspecifico:
+      "Definir roles y responsabilidades, y establecer las técnicas correctas en operaciones de izamiento de cargas, con el propósito de evitar pérdidas incidentales y económicas, permitiendo un manejo seguro de los aparejos.",
+    temario: [
+      { temas: [
+        "Apertura, alcance y objetivos",
+        "Equipos y requerimientos",
+        "Documentos oficiales aplicables",
+        "Identificación de peligros y riesgos en izaje",
+        "Conceptos de carga, centro de gravedad, trayectorias y ángulos de izaje",
+        "Plan de respuesta a emergencia",
+        "Inspección de eslingas, ganchos, cadenas, grilletes, polipastos y estrobos",
+        "Sujeción y colocación de aparejos",
+        "Simulación de izaje de cargas y señalización",
+        "Análisis de accidentes e incidentes",
+        "Evaluación",
+      ] },
+    ],
     levels: [
       { code: "A", name: "Rigger / señalero", hours: "8 h", desc: "Planeación, señalización y ejecución segura de maniobras de izaje con grúa y accesorios." },
     ],
@@ -166,6 +302,27 @@ export const COURSES: Course[] = [
     precioGrupal: "$19,800.00 MXN + IVA",
     grupoRango: "20 a 25 personas",
     foraneoPersona: "$792.00 MXN por persona (adicional)",
+    objetivoGeneral:
+      "Operar plataformas de elevación de forma segura conforme a la NOM-009-STPS 2011; identificar riesgos según el tipo de plataforma (tijera, articulada, montada en vehículo); verificar condiciones antes del uso; utilizar EPP; aplicar procedimientos seguros de ascenso, descenso y traslado; actuar ante emergencias.",
+    objetivoEspecifico:
+      "Garantizar que el personal utilice correctamente la plataforma de elevación y siga los procedimientos establecidos para prevenir caídas y minimizar riesgos.",
+    temario: [
+      { temas: [
+        "Apertura, alcance y objetivos",
+        "Marco teórico",
+        "Requisitos documentales",
+        "Riesgos en operación de plataformas",
+        "Manejo seguro de plataformas",
+        "Plan de respuesta a emergencias",
+        "Partes y componentes principales",
+        "Controles, indicadores y sistemas de seguridad",
+        "Movimientos horizontales (demostrativa)",
+        "Ascenso y descenso de plataforma",
+        "Simulación de parada de emergencia (demostrativa)",
+        "Sensibilización",
+        "Evaluación",
+      ] },
+    ],
     levels: [
       { code: "A", name: "Operador de plataforma", hours: "6 h", desc: "Operación segura de plataformas de elevación de personal (manlift, tijera, articuladas)." },
     ],
@@ -183,10 +340,30 @@ export const COURSES: Course[] = [
     precioGrupal: "$19,800.00 MXN + IVA",
     grupoRango: "20 a 25 personas",
     foraneoPersona: "$792.00 MXN por persona (adicional)",
+    objetivoGeneral:
+      "Tomar conciencia de la importancia de los trabajos en superficies horizontales, los sistemas temporales y fijos, y los medios de acceso, para prevenir o eliminar riesgos y salvaguardar la integridad física de los trabajadores.",
+    objetivoEspecifico:
+      "Garantizar que el personal que realice labores de mantenimiento sobre superficies horizontales utilice correctamente el equipo de protección contra caídas y siga los procedimientos establecidos.",
+    temario: [
+      { temas: [
+        "Apertura, alcance y objetivos",
+        "Techumbres, losas, pasarelas, estructuras",
+        "Requerimientos para trabajar",
+        "Peligros, riesgos y jerarquía de controles",
+        "Condiciones técnicas para trabajos en techumbres/losas/pasarelas",
+        "Plan de respuesta a emergencia",
+        "Inspección y uso",
+        "Instalación de líneas de vida y control de superficies frágiles",
+        "Protocolo de rescate (consciente e inconsciente)",
+        "Análisis de accidentes e incidentes",
+        "Evaluación",
+      ] },
+    ],
     levels: [
       { code: "A", name: "Techos y superficies horizontales", hours: "8 h", desc: "Trabajo sobre techos, cubiertas y superficies horizontales con riesgo de caída perimetral o a través." },
     ],
   },
+
 
   // ---------------------------------------------------------------------------
   // Reserva — pendientes de validar precios/vigencia con Miguel (STPS 2018).
