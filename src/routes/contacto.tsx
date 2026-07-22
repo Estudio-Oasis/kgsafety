@@ -12,9 +12,9 @@ export const Route = createFileRoute("/contacto")({
   head: () => ({
     meta: [
       { title: "Cotización · KG Safety" },
-      { name: "description", content: "Solicite su cotización. Formulario alineado al ERP KG Safety: curso de interés, participantes, modalidad, ubicación, RFC y contratista." },
+      { name: "description", content: "Solicite su cotización de capacitación en trabajos en altura. Respuesta personalizada según curso y número de participantes." },
       { property: "og:title", content: "Cotización · KG Safety" },
-      { property: "og:description", content: "Cotice capacitación, ingeniería o equipos con los mismos datos que utiliza nuestro ERP." },
+      { property: "og:description", content: "Cotice capacitación, ingeniería o equipos. Respuesta en menos de 1 hora." },
       { property: "og:url", content: "https://kgsafety.lovable.app/contacto" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/contacto" }],
