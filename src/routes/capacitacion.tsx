@@ -503,15 +503,6 @@ function CourseCard({
             <span aria-hidden>→</span>
           </Link>
 
-          <Link
-            to="/capacitacion/$curso"
-            params={{ curso: c.slug }}
-            className="block text-center text-[10px] uppercase tracking-[0.22em] text-white/50 hover:text-signal transition-colors pt-1"
-          >
-            Ver ficha completa →
-          </Link>
-        </div>
-      )}
     </article>
   );
 }
