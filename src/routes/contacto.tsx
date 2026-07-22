@@ -12,9 +12,9 @@ export const Route = createFileRoute("/contacto")({
   head: () => ({
     meta: [
       { title: "Cotización · KG Safety" },
-      { name: "description", content: "Solicite su cotización. Formulario alineado al ERP KG Safety: curso de interés, participantes, modalidad, ubicación, RFC y contratista." },
+      { name: "description", content: "Solicite su cotización de capacitación en trabajos en altura. Respuesta personalizada según curso y número de participantes." },
       { property: "og:title", content: "Cotización · KG Safety" },
-      { property: "og:description", content: "Cotice capacitación, ingeniería o equipos con los mismos datos que utiliza nuestro ERP." },
+      { property: "og:description", content: "Cotice capacitación, ingeniería o equipos. Respuesta en menos de 1 hora." },
       { property: "og:url", content: "https://kgsafety.lovable.app/contacto" },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/contacto" }],
@@ -97,7 +97,7 @@ function ContactoPage() {
             <span className="text-signal">{t("Lo convertimos en un plan técnico.")}</span>
           </h1>
           <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
-            {t("Formulario alineado al ERP KG Safety. Los datos alimentan directamente el registro de la cotización.")}
+            {t("Proporciona los detalles del curso que te interesa y el número de personas para recibir una cotización personalizada.")}
           </p>
         </div>
       </section>
@@ -238,31 +238,50 @@ function ContactoPage() {
               {t("Enviar cotización")}
             </button>
             <p className="text-[10px] text-white/40 uppercase tracking-widest text-center">
-              {t("También puede escribirnos a ventas@kg-safety.com")}
+              {t("También puede escribirnos a capacitacion@kg-safety.com")}
             </p>
           </form>
 
-          <aside className="lg:col-span-2 space-y-10">
+          <aside className="lg:col-span-2 space-y-8">
             <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-4">{t("Teléfono y WhatsApp")}</h4>
-              <a href="tel:+527228795076" className="font-display text-2xl text-signal hover:text-white transition-colors block">+52 722 879 5076</a>
+              <SectionLabel>{t("Contacto directo")}</SectionLabel>
+              <h2 className="font-display text-3xl md:text-4xl uppercase leading-tight mb-4">
+                {t("Solicita una cotización")}
+              </h2>
+              <p className="text-white/60 leading-relaxed">
+                {t("Proporciona los detalles del curso que te interesa y el número de personas para recibir una cotización personalizada.")}
+              </p>
             </div>
-            <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-4">{t("Correo")}</h4>
-              <a href="mailto:ventas@kg-safety.com" className="text-white hover:text-signal transition-colors">ventas@kg-safety.com</a>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-4">{t("Oficina")}</h4>
-              <p className="text-white/70 leading-relaxed">
+
+            <a href="tel:+527228795076" className="flex items-start gap-4 bg-steel border border-white/10 p-5 hover:border-signal transition-colors group">
+              <div className="w-11 h-11 flex items-center justify-center bg-signal/10 border border-signal/30 text-signal shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <p className="font-display text-lg text-white group-hover:text-signal transition-colors">722 879 5076</p>
+                <p className="text-xs text-white/50 mt-1">{t("Lunes a Viernes de 09:00 a 18:00")}</p>
+              </div>
+            </a>
+
+            <a href="mailto:capacitacion@kg-safety.com" className="flex items-start gap-4 bg-steel border border-white/10 p-5 hover:border-signal transition-colors group">
+              <div className="w-11 h-11 flex items-center justify-center bg-signal/10 border border-signal/30 text-signal shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div className="min-w-0">
+                <p className="font-display text-lg text-white group-hover:text-signal transition-colors break-all">capacitacion@kg-safety.com</p>
+                <p className="text-xs text-white/50 mt-1">{t("Respuesta en menos de 1 hora")}</p>
+              </div>
+            </a>
+
+            <div className="border-t border-white/10 pt-6">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-3">{t("Oficina")}</h4>
+              <p className="text-white/70 leading-relaxed text-sm">
                 José María Pino Suárez 304-1<br />Col. 5 de Mayo, Toluca<br />Estado de México, C.P. 50090
               </p>
             </div>
+
             <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-4">{t("Horario")}</h4>
-              <p className="text-white/70">{t("Lunes a Viernes · 9:00 – 18:00 hrs")}</p>
-            </div>
-            <div className="border-t border-white/10 pt-8">
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-4">{t("Atención inmediata")}</h4>
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-3">{t("Atención inmediata")}</h4>
               <a href="https://wa.me/527228795076" target="_blank" rel="noopener noreferrer"
                 className="inline-block bg-[#25D366] text-white px-6 py-3 font-bold uppercase text-xs tracking-widest hover:opacity-90 transition-opacity">
                 {t("Abrir WhatsApp")}
