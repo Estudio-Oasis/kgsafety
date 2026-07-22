@@ -6,6 +6,9 @@ import { COURSES } from "@/data/kaee";
 
 export const Route = createFileRoute("/contacto")({
   component: ContactoPage,
+  validateSearch: (search: Record<string, unknown>): { curso?: string } => ({
+    curso: typeof search.curso === "string" ? search.curso : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Cotización · KG Safety" },
@@ -17,6 +20,7 @@ export const Route = createFileRoute("/contacto")({
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/contacto" }],
   }),
 });
+
 
 type FormState = {
   nombre: string;
