@@ -308,16 +308,15 @@ function CourseCard({
   highlight?: boolean;
 }) {
   const Icon = COURSE_ICON[c.slug] ?? HardHat;
+  const [open, setOpen] = useState(false);
+  const panelId = `course-panel-${c.slug}`;
   return (
-    <Link
-      to="/capacitacion/$curso"
-      params={{ curso: c.slug }}
+    <article
       className={`group relative flex flex-col p-6 md:p-7 border-2 transition-all rounded-sm ${
         highlight
           ? "bg-[color:color-mix(in_oklab,var(--anchor)_72%,white)] border-signal/40 hover:border-signal"
           : "bg-[color:color-mix(in_oklab,var(--anchor)_78%,white)] border-white/25 hover:border-signal"
-      } hover:-translate-y-0.5 shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_14px_28px_-10px_rgba(0,0,0,0.75)]`}
-      title={c.foraneoPersona ? `Foráneo: ${c.foraneoPersona}` : undefined}
+      } ${open ? "border-signal" : ""} shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_14px_28px_-10px_rgba(0,0,0,0.75)]`}
     >
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/[0.03] text-signal shrink-0">
@@ -328,7 +327,7 @@ function CourseCard({
         </div>
       </div>
 
-      <h3 className="font-display text-lg md:text-xl uppercase leading-tight text-white group-hover:text-signal transition-colors mb-2">
+      <h3 className="font-display text-lg md:text-xl uppercase leading-tight text-white mb-2">
         {t(c.short)}
       </h3>
 
@@ -341,7 +340,7 @@ function CourseCard({
       )}
 
       {c.precioLocalPersona && (
-        <div className="mt-auto pt-4 border-t border-white/10">
+        <div className="pt-4 border-t border-white/10">
           <div className="font-display text-signal text-xl md:text-2xl leading-none">
             {c.precioLocalPersona.replace(" MXN + IVA", "")}
           </div>
@@ -365,6 +364,87 @@ function CourseCard({
           )}
         </div>
       )}
-    </Link>
+
+      {/* Toggle detalle */}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="mt-5 w-full flex items-center justify-between gap-3 border border-white/15 hover:border-signal px-4 py-2.5 text-[10px] uppercase tracking-[0.2em] font-bold text-white/80 hover:text-signal transition-colors rounded-sm"
+      >
+        <span>{open ? "Ocultar detalle" : "Ver detalle del curso"}</span>
+        <span aria-hidden className={`transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+      </button>
+
+      {open && (
+        <div
+          id={panelId}
+          className="mt-4 pt-4 border-t border-white/10 space-y-4 text-white/80"
+        >
+          {c.objetivoGeneral && (
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-signal mb-1.5">
+                Objetivo general
+              </div>
+              <p className="text-[13px] leading-relaxed text-white/75">{c.objetivoGeneral}</p>
+            </div>
+          )}
+          {c.objetivoEspecifico && (
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-signal mb-1.5">
+                Objetivo específico
+              </div>
+              <p className="text-[13px] leading-relaxed text-white/75">{c.objetivoEspecifico}</p>
+            </div>
+          )}
+          {c.temario && c.temario.length > 0 && (
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-signal mb-2">
+                Temario
+              </div>
+              <div className="space-y-3">
+                {c.temario.map((d, di) => (
+                  <div key={di}>
+                    {d.dia && (
+                      <div className="text-[11px] font-bold uppercase tracking-widest text-white/90 mb-1.5">
+                        {d.dia}
+                      </div>
+                    )}
+                    <ul className="space-y-1">
+                      {d.temas.map((tema) => (
+                        <li key={tema} className="text-[12px] text-white/70 flex gap-2 leading-snug">
+                          <span className="text-signal shrink-0" aria-hidden>·</span>
+                          <span>{tema}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* CTA cotización */}
+          <Link
+            to="/contacto"
+            search={{ curso: c.slug }}
+            className="mt-2 w-full inline-flex items-center justify-center gap-2 bg-signal text-anchor px-6 py-4 font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,0.35)] rounded-sm"
+          >
+            <span>Solicitar cotización</span>
+            <span aria-hidden>→</span>
+          </Link>
+
+          <Link
+            to="/capacitacion/$curso"
+            params={{ curso: c.slug }}
+            className="block text-center text-[10px] uppercase tracking-[0.22em] text-white/50 hover:text-signal transition-colors pt-1"
+          >
+            Ver ficha completa →
+          </Link>
+        </div>
+      )}
+    </article>
   );
 }
+
