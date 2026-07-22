@@ -136,10 +136,11 @@ function Index() {
             <span className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-[0.22em] bg-[color:var(--anchor-fixed)] text-[color:var(--signal)] px-2 py-1 rounded">
               {t("Sin accidentes")}
             </span>
-            <div className="font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-none mb-3 whitespace-nowrap [overflow-wrap:normal]">30M+</div>
-            <div className="text-[11px] uppercase tracking-[0.22em] font-bold leading-snug max-w-[80%]">
+            <div className="font-display text-[clamp(3.5rem,10vw,7rem)] leading-[0.9] mb-4 whitespace-nowrap [overflow-wrap:normal] tracking-tight">30M+</div>
+            <div className="text-[13px] md:text-sm uppercase tracking-[0.22em] font-bold leading-snug max-w-[85%]">
               {t("Horas-hombre supervisadas")}
             </div>
+
 
             {/* Mini trend bars */}
             <div className="mt-5 flex items-end gap-1.5 h-10">
