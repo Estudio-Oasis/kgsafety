@@ -152,7 +152,7 @@ function CapacitacionPage() {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 pt-20 md:pt-28 pb-12 md:pb-16 border-b border-white/5">
+      <section className="px-6 md:px-12 pt-20 md:pt-28 pb-0 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-start mb-12 lg:mb-14">
             <div>
