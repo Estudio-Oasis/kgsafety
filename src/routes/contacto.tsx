@@ -238,7 +238,7 @@ function ContactoPage() {
               {t("Enviar cotización")}
             </button>
             <p className="text-[10px] text-white/40 uppercase tracking-widest text-center">
-              {t("También puede escribirnos a ventas@kg-safety.com")}
+              {t("También puede escribirnos a capacitacion@kg-safety.com")}
             </p>
           </form>
 
