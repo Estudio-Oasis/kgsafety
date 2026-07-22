@@ -300,7 +300,7 @@ function CapacitacionPage() {
 
 
       {/* OSHA + Recertificación — NEW content blocks */}
-      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
+      <section className="px-6 md:px-12 py-12 md:py-16 border-b border-white/5">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-px bg-white/5 border border-white/5">
           <div className="bg-anchor p-8 md:p-10">
             <SectionLabel>{t("OSHA — referencia técnica")}</SectionLabel>
