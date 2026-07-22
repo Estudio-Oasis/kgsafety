@@ -8,6 +8,12 @@ export type CourseLevel = {
   desc: string;
 };
 
+export type CourseSyllabusDay = {
+  /** Etiqueta del día o sesión (p. ej. "Día 1"). Vacío si el curso es de un solo día. */
+  dia?: string;
+  temas: string[];
+};
+
 export type Course = {
   slug: string;
   name: string;
@@ -37,7 +43,14 @@ export type Course = {
   foraneoPersona?: string;
   /** Permite ocultar un curso sin borrarlo. Default: true */
   active?: boolean;
+  /** Objetivo general del curso (para ficha desplegable) */
+  objetivoGeneral?: string;
+  /** Objetivo específico / particular / de desempeño (para ficha desplegable) */
+  objetivoEspecifico?: string;
+  /** Temario: solo títulos de temas, agrupados por día cuando aplica */
+  temario?: CourseSyllabusDay[];
 };
+
 
 const STANDARD_LEVELS = (area: string): CourseLevel[] => [
   { code: "A", name: "Básico / Autorizado", hours: "8 h",  desc: `Persona autorizada para ejecutar tareas de ${area} con uso correcto del EPP y procedimientos seguros.` },
