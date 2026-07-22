@@ -6,6 +6,9 @@ import { COURSES } from "@/data/kaee";
 
 export const Route = createFileRoute("/contacto")({
   component: ContactoPage,
+  validateSearch: (search: Record<string, unknown>): { curso?: string } => ({
+    curso: typeof search.curso === "string" ? search.curso : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Cotización · KG Safety" },
@@ -17,6 +20,7 @@ export const Route = createFileRoute("/contacto")({
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/contacto" }],
   }),
 });
+
 
 type FormState = {
   nombre: string;
@@ -36,14 +40,19 @@ type FormState = {
 
 function ContactoPage() {
   const { t } = useT();
+  const { curso: cursoSlug } = Route.useSearch();
   const activeCourses = useMemo(() => COURSES.filter((c) => c.active !== false), []);
+  const preselected = useMemo(() => {
+    if (!cursoSlug) return null;
+    return activeCourses.find((c) => c.slug === cursoSlug)?.name ?? null;
+  }, [cursoSlug, activeCourses]);
 
   const [form, setForm] = useState<FormState>({
     nombre: "",
     empresa: "",
     email: "",
     telefono: "",
-    cursoInteres: activeCourses[0]?.name ?? "Otro",
+    cursoInteres: preselected ?? activeCourses[0]?.name ?? "Otro",
     participantes: "",
     modalidad: "Local",
     ubicacion: "",
@@ -53,6 +62,7 @@ function ContactoPage() {
     mensaje: "",
     acepta: false,
   });
+
 
   function set<K extends keyof FormState>(k: K, v: FormState[K]) {
     setForm((f) => ({ ...f, [k]: v }));
