@@ -328,17 +328,17 @@ function CourseCard({
         </div>
       </div>
 
-      <h3 className="font-display text-lg md:text-xl uppercase leading-tight text-white mb-2">
+      <h3 className="font-display text-lg md:text-xl uppercase leading-tight text-white mb-2 min-h-[3.25rem]">
         {t(c.short)}
       </h3>
 
-      <div className="text-[10px] uppercase tracking-widest text-white/50 mb-3">
+      <div className="text-[10px] uppercase tracking-widest text-white/50 mb-3 min-h-[1.25rem]">
         {[c.duracion, c.nivel].filter(Boolean).join(" · ")}
       </div>
 
-      {c.tema && (
-        <p className="text-[12px] text-white/55 leading-relaxed mb-5 line-clamp-2">{c.tema}</p>
-      )}
+      <p className="text-[12px] text-white/55 leading-relaxed mb-5 line-clamp-2 min-h-[2.8rem]">
+        {c.tema ?? ""}
+      </p>
 
       {c.precioLocalPersona && (
         <div className="pt-4 border-t border-white/10">
