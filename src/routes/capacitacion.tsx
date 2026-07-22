@@ -198,7 +198,7 @@ function CapacitacionPage() {
                       3 niveles STPS
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
                     {alturas.map((c) => {
                       idx += 1;
                       return <CourseCard key={c.slug} c={c} i={idx} total={total} t={t} highlight />;
@@ -210,18 +210,19 @@ function CapacitacionPage() {
                 <div>
                   <div className="flex items-baseline justify-between mb-4">
                     <div className="font-display text-signal text-[10px] uppercase tracking-[0.22em]">
-                      Cursos independientes
+                      Otros cursos del catálogo
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-white/40">
-                      {otros.length} cursos
+                      {otros.length} cursos STPS
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
                     {otros.map((c) => {
                       idx += 1;
                       return <CourseCard key={c.slug} c={c} i={idx} total={total} t={t} />;
                     })}
                   </div>
+
                 </div>
               </div>
             );
