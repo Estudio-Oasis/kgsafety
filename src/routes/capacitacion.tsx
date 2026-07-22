@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { SectionLabel } from "@/components/site/SectionLabel";
+
 import trainingImg from "@/assets/training-classroom.jpg";
 import heightsImg from "@/assets/heights-worker.jpg";
 import confinedImg from "@/assets/confined-space.jpg";
