@@ -312,8 +312,35 @@ function Index() {
       </section>
 
 
+      {/* ============== BANNER: EQUIPOS (después de evidencia) ============== */}
+      <section className="px-4 md:px-8 lg:px-12 pt-6 pb-2">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            to="/equipos"
+            className="group flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 justify-between rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-5 md:px-8 py-5 md:py-6 hover:border-[color:var(--signal)] hover:-translate-y-0.5 transition-all"
+          >
+            <div className="flex items-center gap-4 md:gap-5 min-w-0">
+              <span aria-hidden className="hidden md:inline-grid place-items-center w-11 h-11 rounded-full bg-[color:var(--brand-navy)] text-[color:var(--signal)] font-display text-lg shrink-0">EPP</span>
+              <div className="min-w-0">
+                <div className="text-[10px] font-bold uppercase tracking-[0.28em] text-brand-blue mb-1">{t("Equipos certificados en stock")}</div>
+                <div className="font-display text-lg md:text-2xl uppercase leading-tight text-[color:var(--on-surface)]">
+                  {t("Arneses, líneas de vida, anclajes y plataformas — con trazabilidad.")}
+                </div>
+                <p className="text-xs md:text-sm text-[color:color-mix(in_oklab,var(--on-surface)_65%,transparent)] mt-1">
+                  {t("Selección técnica según su operación. Entrega, inspección y capacitación de uso incluidas.")}
+                </p>
+              </div>
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-2 px-5 py-3 font-bold uppercase text-[11px] tracking-[0.2em] rounded-md bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] shadow-[3px_3px_0_0_rgba(0,0,0,0.25)] group-hover:-translate-y-0.5 transition-transform">
+              {t("Ver catálogo")} <span aria-hidden>→</span>
+            </span>
+          </Link>
+        </div>
+      </section>
+
       {/* ============== CLIENTES ============== */}
       <ClientLogosGrid />
+
 
       {/* ============== PROMO BANNER P.N.P.C. ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-10 md:py-14 bg-[color:var(--brand-navy)] kg-on-dark">
