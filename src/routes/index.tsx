@@ -94,8 +94,11 @@ function Index() {
             {/* Copy */}
             <div className="lg:order-1 lg:w-[58%] p-6 md:p-8 lg:p-11 flex flex-col">
               <span className="kg-pill-tech self-start mb-5">
-                <span className="kg-led" aria-hidden />
-                {t("Integrador de seguridad en altura · WE NEVER FALL")}
+                <span className="kg-led shrink-0" aria-hidden />
+                <span className="kg-pill-text">
+                  {t("Integrador de seguridad en altura")}
+                  <span className="hidden sm:inline"> · {t("WE NEVER FALL")}</span>
+                </span>
               </span>
 
               <h1 className="font-display uppercase leading-[0.95] tracking-tight mb-4 md:mb-5">
@@ -108,8 +111,9 @@ function Index() {
               </h1>
 
               <p className="text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mb-7 text-white text-left [text-wrap:pretty] [hyphens:none]">
-                {t("Diagnóstico, sistemas certificados y capacitación DC-3 para industria.")}
+                {t("Levantamientos con personal altamente calificado en los más altos estándares. Sistemas anticaídas certificados y capacitación con alto contenido técnico, para todo tipo de industria y construcción.")}
               </p>
+
 
               <div className="flex flex-wrap gap-3 mt-auto">
                 <Link
@@ -234,7 +238,7 @@ function Index() {
           >
             <div className="absolute top-0 right-0 w-40 h-40 bg-[color:var(--signal)] opacity-10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none" aria-hidden />
             <div className="relative flex items-center gap-4 md:gap-5 min-w-0">
-              <span aria-hidden className="hidden md:inline-grid place-items-center w-11 h-11 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] font-display text-lg shrink-0">DC-3</span>
+              <span aria-hidden className="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] font-display text-[13px] md:text-sm tracking-tight leading-none shrink-0">DC-3</span>
               <div className="min-w-0">
                 <div className="text-[10px] font-bold uppercase tracking-[0.28em] mb-1" style={{ color: "var(--signal)" }}>
                   {t("Capacitación STPS · 7 cursos activos 2026")}
