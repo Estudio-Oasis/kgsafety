@@ -62,11 +62,11 @@ function CapacitacionPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Capacitación certificada")}</SectionLabel>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
-            {t("DC-3 registrado")}{" "}<br />
-            <span className="text-signal">{t("ante la STPS")}</span>
+            {t("Cursos con")}{" "}<br />
+            <span className="text-signal">{t("alto contenido temático")}</span>
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
-            {t("Agente Capacitador Externo Working at Heights (Reg. STPS N° WAH131021CQ8-0013). Programas presenciales para trabajos en alturas, andamios, izajes, plataformas y líneas de vida horizontales.")}
+            {t("Agente Capacitador Externo Working at Heights (Reg. STPS N° WAH131021CQ8-0013). Programas presenciales para trabajos de alto riesgo (trabajos en alturas en sus diferentes niveles, armado y desarmado de andamios, formación técnica de izajes, uso y manejo de plataformas y trabajos horizontales, entre otras).")}
           </p>
           <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
             {t("Inscribir grupo")}
