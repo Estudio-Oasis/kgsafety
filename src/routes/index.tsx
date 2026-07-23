@@ -495,7 +495,37 @@ function Index() {
 
 
 
+      {/* ============== BANNER: INGENIERÍA (antes del CTA final) ============== */}
+      <section className="px-4 md:px-8 lg:px-12 pt-6 pb-2">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            to="/ingenieria"
+            className="group relative overflow-hidden flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 justify-between rounded-xl border border-[color:var(--brand-navy)] bg-[color:var(--brand-navy)] kg-on-dark px-5 md:px-8 py-5 md:py-6 hover:-translate-y-0.5 transition-transform"
+          >
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[color:var(--signal)] opacity-10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none" aria-hidden />
+            <div className="relative flex items-center gap-4 md:gap-5 min-w-0">
+              <span aria-hidden className="hidden md:inline-grid place-items-center w-11 h-11 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] font-display text-lg shrink-0">Ø</span>
+              <div className="min-w-0">
+                <div className="text-[10px] font-bold uppercase tracking-[0.28em] mb-1" style={{ color: "var(--signal)" }}>
+                  {t("Ingeniería aplicada")}
+                </div>
+                <div className="font-display text-lg md:text-2xl uppercase leading-tight" style={{ color: "#fff" }}>
+                  {t("Diseño, instalación y certificación de líneas de vida.")}
+                </div>
+                <p className="text-xs md:text-sm mt-1" style={{ color: "rgba(255,255,255,0.75)" }}>
+                  {t("Memoria de cálculo, pruebas de carga y planos as-built firmados por ingeniero responsable.")}
+                </p>
+              </div>
+            </div>
+            <span className="relative shrink-0 inline-flex items-center gap-2 px-5 py-3 font-bold uppercase text-[11px] tracking-[0.2em] rounded-md bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] shadow-[3px_3px_0_0_rgba(0,0,0,0.35)] group-hover:-translate-y-0.5 transition-transform">
+              {t("Ver ingeniería")} <span aria-hidden>→</span>
+            </span>
+          </Link>
+        </div>
+      </section>
+
       {/* ============== FINAL CTA BENTO ============== */}
+
       <section className="px-4 md:px-8 lg:px-12 py-12 md:py-16 bg-[color:var(--surface-2)] border-t border-[color:var(--border)]">
         <div className="max-w-7xl mx-auto">
           <BentoGrid>
