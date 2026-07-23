@@ -238,7 +238,7 @@ function Index() {
           >
             <div className="absolute top-0 right-0 w-40 h-40 bg-[color:var(--signal)] opacity-10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none" aria-hidden />
             <div className="relative flex items-center gap-4 md:gap-5 min-w-0">
-              <span aria-hidden className="hidden md:inline-grid place-items-center w-11 h-11 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] font-display text-lg shrink-0">DC-3</span>
+              <span aria-hidden className="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] font-display text-[13px] md:text-sm tracking-tight leading-none shrink-0">DC-3</span>
               <div className="min-w-0">
                 <div className="text-[10px] font-bold uppercase tracking-[0.28em] mb-1" style={{ color: "var(--signal)" }}>
                   {t("Capacitación STPS · 7 cursos activos 2026")}
