@@ -288,21 +288,18 @@
   background: color-mix(in oklab, var(--signal) 12%, transparent);
   border: 1px solid color-mix(in oklab, var(--signal) 45%, transparent);
   color: var(--signal);
-  padding: 0.4rem 0.8rem 0.4rem 0.65rem;
+  padding: 0.5rem 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  padding: 0.4rem 0.8rem 0.4rem 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   font-size: 9.5px;
   border-radius: 999px;
   max-width: 100%;
-  line-height: 1.3;
+  line-height: 1.35;
   text-align: left;
   backdrop-filter: blur(4px);
 }
+.kg-pill-tech > .kg-pill-text { display: inline-block; }
 @media (min-width: 768px) {
   .kg-pill-tech { font-size: 10px; letter-spacing: 0.22em; white-space: nowrap; }
 }
