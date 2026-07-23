@@ -196,8 +196,64 @@ function Index() {
       </section>
 
 
+      {/* ============== BANNER: DIAGNÓSTICO (antes de diferenciador) ============== */}
+      <section className="px-4 md:px-8 lg:px-12 pt-4 pb-2">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            to="/contacto"
+            className="group flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 justify-between rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] px-5 md:px-8 py-5 md:py-6 hover:border-[color:var(--signal)] hover:-translate-y-0.5 transition-all"
+          >
+            <div className="flex items-center gap-4 md:gap-5 min-w-0">
+              <span aria-hidden className="hidden md:inline-grid place-items-center w-11 h-11 rounded-full bg-[color:var(--brand-navy)] text-[color:var(--signal)] font-display text-lg shrink-0">72h</span>
+              <div className="min-w-0">
+                <div className="text-[10px] font-bold uppercase tracking-[0.28em] text-brand-blue mb-1">{t("Diagnóstico técnico gratuito")}</div>
+                <div className="font-display text-lg md:text-2xl uppercase leading-tight text-[color:var(--on-surface)]">
+                  {t("Sepa exactamente qué le falta para pasar auditoría STPS.")}
+                </div>
+                <p className="text-xs md:text-sm text-[color:color-mix(in_oklab,var(--on-surface)_65%,transparent)] mt-1">
+                  {t("Un ingeniero revisa su sitio y le entrega un plan priorizado en 72 horas hábiles.")}
+                </p>
+              </div>
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-2 px-5 py-3 font-bold uppercase text-[11px] tracking-[0.2em] rounded-md bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] shadow-[3px_3px_0_0_rgba(0,0,0,0.25)] group-hover:-translate-y-0.5 transition-transform">
+              {t("Solicitar diagnóstico")} <span aria-hidden>→</span>
+            </span>
+          </Link>
+        </div>
+      </section>
+
       {/* ============== DIFERENCIADOR ============== */}
       <DifferentiatorBlock />
+
+      {/* ============== BANNER: CAPACITACIÓN (después de KAEE) ============== */}
+      <section className="px-4 md:px-8 lg:px-12 pt-6 pb-2">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            to="/capacitacion"
+            className="group relative overflow-hidden flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 justify-between rounded-xl border border-[color:var(--brand-navy)] bg-[color:var(--brand-navy)] kg-on-dark px-5 md:px-8 py-5 md:py-6 hover:-translate-y-0.5 transition-transform"
+          >
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[color:var(--signal)] opacity-10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none" aria-hidden />
+            <div className="relative flex items-center gap-4 md:gap-5 min-w-0">
+              <span aria-hidden className="hidden md:inline-grid place-items-center w-11 h-11 rounded-full bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] font-display text-lg shrink-0">DC-3</span>
+              <div className="min-w-0">
+                <div className="text-[10px] font-bold uppercase tracking-[0.28em] mb-1" style={{ color: "var(--signal)" }}>
+                  {t("Capacitación STPS · 7 cursos activos 2026")}
+                </div>
+                <div className="font-display text-lg md:text-2xl uppercase leading-tight" style={{ color: "#fff" }}>
+                  {t("Certifique a su equipo con instructores autorizados STPS.")}
+                </div>
+                <p className="text-xs md:text-sm mt-1" style={{ color: "rgba(255,255,255,0.75)" }}>
+                  {t("Alturas, andamios, izajes, plataformas y horizontales. DC-3 oficial incluida.")}
+                </p>
+              </div>
+            </div>
+            <span className="relative shrink-0 inline-flex items-center gap-2 px-5 py-3 font-bold uppercase text-[11px] tracking-[0.2em] rounded-md bg-[color:var(--signal)] text-[color:var(--anchor-fixed)] shadow-[3px_3px_0_0_rgba(0,0,0,0.35)] group-hover:-translate-y-0.5 transition-transform">
+              {t("Ver cursos")} <span aria-hidden>→</span>
+            </span>
+          </Link>
+        </div>
+      </section>
+
 
       {/* ============== EVIDENCIA DOCUMENTAL ============== */}
       <section className="px-4 md:px-8 lg:px-12 py-10 md:py-14 bg-[color:var(--surface)]">
