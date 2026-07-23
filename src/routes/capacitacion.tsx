@@ -37,14 +37,14 @@ export const Route = createFileRoute("/capacitacion")({
 // Niveles reales del curso de Trabajos en Alturas — confirmados contra fuente original.
 const LEVELS = [
   { n: "01", badgeKey: "Autorizado (Básico)", hoursKey: "8 horas",
-    descKey: "El participante conoce los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
-    bullets: ["DC-3 registrado STPS", "Constancia de habilidades", "Registro verificable"] },
+    descKey: "El participante identifica y aplica los principios básicos de la protección contra caídas para una ejecución más segura.",
+    bullets: ["Constancia de habilidades (DC-3)", "Personal altamente capacitado", "Curso con una alta calidad"] },
   { n: "02", badgeKey: "Competente (Intermedio)", hoursKey: "24 horas",
-    descKey: "Capacita en supervisión de trabajadores, evaluación de condiciones de seguridad y maniobras de rescate.",
-    bullets: ["DC-3 registrado STPS", "Criterio de supervisión", "Rescate básico"] },
+    descKey: "Personal altamente calificado para desarrollar una evaluación del riesgo más estructurada y enfocada en la eliminación.",
+    bullets: ["Constancia de habilidades DC-3", "Persona altamente competente", "Especialista en análisis de riesgo"] },
   { n: "03", badgeKey: "Monitor Supervisor (Avanzado)", hoursKey: "40 horas",
-    descKey: "Cubre normativa aplicable, criterios de anclaje, planes de trabajo y capacidad para dirigir maniobras y supervisar equipos.",
-    bullets: ["DC-3 registrado STPS", "Perfil de monitor", "Dirección de maniobra"] },
+    descKey: "Personal con conocimientos técnicos, normativos y de ingeniería enfocados en la metodología KAEE.",
+    bullets: ["Constancia de habilidades DC-3", "Especialista en ingeniería aplicada en sistemas contra caídas", "Mayor análisis en sistemas contra caídas y metodologías aplicables"] },
 ];
 
 // areas now come from COURSES dataset
