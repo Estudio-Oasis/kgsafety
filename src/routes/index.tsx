@@ -438,7 +438,7 @@ function Index() {
               to="/ingenieria"
               eyebrow="03 / Ingeniería"
               title={t("Líneas de vida")}
-              description={t("Diseño, instalación y certificación NOM-009 / EN-795.")}
+              description={t("Diseño, instalación y certificación de líneas de vida horizontales y verticales. NOM-009 / EN-795.")}
               cta={t("Diagnóstico")}
             />
             <BentoTile
