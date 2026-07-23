@@ -37,14 +37,14 @@ export const Route = createFileRoute("/capacitacion")({
 // Niveles reales del curso de Trabajos en Alturas — confirmados contra fuente original.
 const LEVELS = [
   { n: "01", badgeKey: "Autorizado (Básico)", hoursKey: "8 horas",
-    descKey: "El participante conoce los elementos básicos de seguridad para el uso de los equipos y la ejecución segura de sus labores.",
-    bullets: ["DC-3 registrado STPS", "Constancia de habilidades", "Registro verificable"] },
+    descKey: "El participante identifica y aplica los principios básicos de la protección contra caídas para una ejecución más segura.",
+    bullets: ["Constancia de habilidades (DC-3)", "Personal altamente capacitado", "Curso con una alta calidad"] },
   { n: "02", badgeKey: "Competente (Intermedio)", hoursKey: "24 horas",
-    descKey: "Capacita en supervisión de trabajadores, evaluación de condiciones de seguridad y maniobras de rescate.",
-    bullets: ["DC-3 registrado STPS", "Criterio de supervisión", "Rescate básico"] },
+    descKey: "Personal altamente calificado para desarrollar una evaluación del riesgo más estructurada y enfocada en la eliminación.",
+    bullets: ["Constancia de habilidades DC-3", "Persona altamente competente", "Especialista en análisis de riesgo"] },
   { n: "03", badgeKey: "Monitor Supervisor (Avanzado)", hoursKey: "40 horas",
-    descKey: "Cubre normativa aplicable, criterios de anclaje, planes de trabajo y capacidad para dirigir maniobras y supervisar equipos.",
-    bullets: ["DC-3 registrado STPS", "Perfil de monitor", "Dirección de maniobra"] },
+    descKey: "Personal con conocimientos técnicos, normativos y de ingeniería enfocados en la metodología KAEE.",
+    bullets: ["Constancia de habilidades DC-3", "Especialista en ingeniería aplicada en sistemas contra caídas", "Mayor análisis en sistemas contra caídas y metodologías aplicables"] },
 ];
 
 // areas now come from COURSES dataset
@@ -62,11 +62,11 @@ function CapacitacionPage() {
         <div className="kg-on-dark max-w-5xl relative z-10">
           <SectionLabel>{t("Capacitación certificada")}</SectionLabel>
           <h1 className="font-display text-3xl md:text-5xl lg:text-6xl mb-6 uppercase leading-[1.05] text-white">
-            {t("DC-3 registrado")}{" "}<br />
-            <span className="text-signal">{t("ante la STPS")}</span>
+            {t("Cursos con")}{" "}<br />
+            <span className="text-signal">{t("alto contenido temático")}</span>
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
-            {t("Agente Capacitador Externo Working at Heights (Reg. STPS N° WAH131021CQ8-0013). Programas presenciales para trabajos en alturas, andamios, izajes, plataformas y líneas de vida horizontales.")}
+            {t("Agente Capacitador Externo Working at Heights (Reg. STPS N° WAH131021CQ8-0013). Programas presenciales para trabajos de alto riesgo (trabajos en alturas en sus diferentes niveles, armado y desarmado de andamios, formación técnica de izajes, uso y manejo de plataformas y trabajos horizontales, entre otras).")}
           </p>
           <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
             {t("Inscribir grupo")}
@@ -413,23 +413,8 @@ function CourseCard({
             {c.precioLocalPersona.replace(" MXN + IVA", "")}
           </div>
           <div className="text-[10px] uppercase tracking-widest text-white/50 mt-1">
-            + IVA · por persona (local)
+            + IVA · por persona
           </div>
-          {(c.precioGrupal || c.foraneoPersona) && (
-            <div className="mt-3 pt-3 border-t border-white/5 space-y-1">
-              {c.precioGrupal && (
-                <div className="text-[11px] text-white/60">
-                  Grupal <span className="text-white/85 font-bold">{c.precioGrupal.replace(" MXN + IVA", "")}</span>
-                  {c.grupoRango && <span className="text-white/40"> · {c.grupoRango}</span>}
-                </div>
-              )}
-              {c.foraneoPersona && (
-                <div className="text-[10px] text-white/40">
-                  + Foráneo {c.foraneoPersona.replace(" MXN por persona (adicional)", " por persona")}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       )}
 
