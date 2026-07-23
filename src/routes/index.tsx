@@ -418,7 +418,7 @@ function Index() {
               to="/capacitacion"
               eyebrow="01 / Capacitación"
               title={t("Cursos DC-3 certificados")}
-              description={t("4 niveles · 10 áreas técnicas · STPS, OSHA y ANSI Z359.")}
+              description={t("3 niveles · 10 áreas técnicas · Curso con constancia DC-3 · STPS.")}
               cta={t("Ver cursos")}
             />
             <BentoTile
