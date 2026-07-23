@@ -232,8 +232,8 @@ export const en: Record<string, string> = {
   "Sistemas de anclaje": "Anchor systems",
   "diseñados": "designed",
   "a medida.": "to measure.",
-  "Líneas de vida, anclajes, plataformas y estructuras de obra civil. Ingeniería certificada para cada estructura, cada persona, cada detalle.":
-    "Lifelines, anchors, platforms and civil-works structures. Certified engineering for every structure, every person, every detail.",
+  "LVH y LVV (Líneas de Vida Horizontales y Verticales), fijas o temporales, anclajes para todo tipo de estructuras, plataformas fijas para la caminata segura del trabajador, con la mejor ingeniería aplicada y certificada.":
+    "HLL and VLL (Horizontal and Vertical Lifelines), fixed or temporary, anchors for all types of structures, fixed platforms for the worker's safe walkway, with the best applied and certified engineering.",
   "Agendar diagnóstico": "Schedule diagnosis",
   "Catálogo de soluciones": "Solution catalog",
   "Seis frentes técnicos": "Six technical fronts",

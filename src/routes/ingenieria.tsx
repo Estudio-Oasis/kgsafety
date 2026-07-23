@@ -54,7 +54,7 @@ function IngenieriaPage() {
             <span className="text-signal">{t("diseñados")}</span> {t("desde el riesgo real.")}
           </h1>
           <p className="text-base md:text-lg lg:text-xl text-white/85 max-w-2xl mb-10 leading-relaxed">
-            {t("Líneas de vida, anclajes, plataformas y estructuras de obra civil. Ingeniería certificada para cada estructura, cada persona, cada detalle.")}
+            {t("LVH y LVV (Líneas de Vida Horizontales y Verticales), fijas o temporales, anclajes para todo tipo de estructuras, plataformas fijas para la caminata segura del trabajador, con la mejor ingeniería aplicada y certificada.")}
           </p>
           <Link to="/contacto" className="inline-block bg-signal text-anchor px-8 py-4 md:px-10 md:py-5 font-bold uppercase text-sm tracking-widest hover:bg-white transition-colors shadow-[6px_6px_0_0_rgba(0,0,0,0.4)]">
             {t("Agendar diagnóstico")}
