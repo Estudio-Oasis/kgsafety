@@ -94,8 +94,11 @@ function Index() {
             {/* Copy */}
             <div className="lg:order-1 lg:w-[58%] p-6 md:p-8 lg:p-11 flex flex-col">
               <span className="kg-pill-tech self-start mb-5">
-                <span className="kg-led" aria-hidden />
-                {t("Integrador de seguridad en altura · WE NEVER FALL")}
+                <span className="kg-led shrink-0" aria-hidden />
+                <span className="kg-pill-text">
+                  {t("Integrador de seguridad en altura")}
+                  <span className="hidden sm:inline"> · {t("WE NEVER FALL")}</span>
+                </span>
               </span>
 
               <h1 className="font-display uppercase leading-[0.95] tracking-tight mb-4 md:mb-5">
@@ -108,8 +111,9 @@ function Index() {
               </h1>
 
               <p className="text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mb-7 text-white text-left [text-wrap:pretty] [hyphens:none]">
-                {t("Diagnóstico, sistemas certificados y capacitación DC-3 para industria.")}
+                {t("Levantamientos con personal altamente calificado en los más altos estándares. Sistemas anticaídas certificados y capacitación con alto contenido técnico, para todo tipo de industria y construcción.")}
               </p>
+
 
               <div className="flex flex-wrap gap-3 mt-auto">
                 <Link
