@@ -417,23 +417,6 @@ function CourseCard({
           </div>
         </div>
       )}
-      {false && (
-        <div />
-      )}
-      {false && (
-        <div />
-      )}
-      {false && (
-        <div />
-      )}
-      {false && (
-        <div />
-      )}
-      {false && (
-        <div />
-      )}
-        </div>
-      )}
 
       {/* Toggle detalle */}
       <button
