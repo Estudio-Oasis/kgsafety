@@ -413,23 +413,25 @@ function CourseCard({
             {c.precioLocalPersona.replace(" MXN + IVA", "")}
           </div>
           <div className="text-[10px] uppercase tracking-widest text-white/50 mt-1">
-            + IVA · por persona (local)
+            + IVA · por persona
           </div>
-          {(c.precioGrupal || c.foraneoPersona) && (
-            <div className="mt-3 pt-3 border-t border-white/5 space-y-1">
-              {c.precioGrupal && (
-                <div className="text-[11px] text-white/60">
-                  Grupal <span className="text-white/85 font-bold">{c.precioGrupal.replace(" MXN + IVA", "")}</span>
-                  {c.grupoRango && <span className="text-white/40"> · {c.grupoRango}</span>}
-                </div>
-              )}
-              {c.foraneoPersona && (
-                <div className="text-[10px] text-white/40">
-                  + Foráneo {c.foraneoPersona.replace(" MXN por persona (adicional)", " por persona")}
-                </div>
-              )}
-            </div>
-          )}
+        </div>
+      )}
+      {false && (
+        <div />
+      )}
+      {false && (
+        <div />
+      )}
+      {false && (
+        <div />
+      )}
+      {false && (
+        <div />
+      )}
+      {false && (
+        <div />
+      )}
         </div>
       )}
 
