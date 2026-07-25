@@ -491,9 +491,9 @@ function Index() {
                   image={img}
                   to="/capacitacion/$curso"
                   params={{ curso: c.slug }}
-                  eyebrow={`${String(i + 1).padStart(2, "0")} · ${c.levels.length} niveles`}
+                  eyebrow={`${String(i + 1).padStart(2, "0")} · ${COURSE_EYEBROW[c.slug] ?? "Curso STPS"}`}
                   title={c.short}
-                  description={featured ? c.desc : undefined}
+                  description={featured ? c.desc : c.desc}
                   cta={t("Ver curso")}
                 />
               );
