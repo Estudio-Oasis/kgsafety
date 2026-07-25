@@ -11,12 +11,13 @@ import { InstagramFeed } from "@/components/site/InstagramFeed";
 
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
-import alturasImg from "@/assets/courses/alturas.jpg";
-import confinadosImg from "@/assets/courses/confinados.jpg";
-import andamiosImg from "@/assets/courses/andamios.jpg";
-import lotoImg from "@/assets/courses/loto.jpg";
-import electricidadImg from "@/assets/courses/electricidad.jpg";
-import calorImg from "@/assets/courses/calor.jpg";
+import alturasAutorizadoImg from "@/assets/courses/alturas-autorizado.png";
+import alturasCompetenteImg from "@/assets/courses/alturas-competente.png";
+import alturasMonitorImg from "@/assets/courses/alturas-monitor.png";
+import alturasHorizontalesImg from "@/assets/courses/alturas-horizontales.png";
+import andamiosImg from "@/assets/courses/andamios-new.jpeg";
+import izajesImg from "@/assets/courses/izajes.png";
+import plataformasCourseImg from "@/assets/courses/plataformas.png";
 import eppImg from "@/assets/equipment/epp.jpg";
 import lvImg from "@/assets/equipment/lineas-de-vida.jpg";
 import anclajesImg from "@/assets/equipment/anclajes.jpg";
@@ -24,17 +25,23 @@ import plataformasImg from "@/assets/equipment/plataformas.jpg";
 
 
 const COURSE_IMG: Record<string, string> = {
-  "alturas-autorizado": alturasImg,
-  "alturas-competente": alturasImg,
-  "alturas-monitor": alturasImg,
-  "alturas-horizontales": alturasImg,
+  "alturas-autorizado": alturasAutorizadoImg,
+  "alturas-competente": alturasCompetenteImg,
+  "alturas-monitor": alturasMonitorImg,
+  "alturas-horizontales": alturasHorizontalesImg,
   andamios: andamiosImg,
-  izajes: lotoImg,
-  "plataformas-elevacion": electricidadImg,
-  confinados: confinadosImg,
-  loto: lotoImg,
-  electricidad: electricidadImg,
-  calor: calorImg,
+  izajes: izajesImg,
+  "plataformas-elevacion": plataformasCourseImg,
+};
+
+const COURSE_EYEBROW: Record<string, string> = {
+  "alturas-autorizado": "Nivel Básico",
+  "alturas-competente": "Nivel Intermedio",
+  "alturas-monitor": "Nivel Avanzado",
+  andamios: "Curso STPS",
+  izajes: "Curso STPS",
+  "plataformas-elevacion": "Curso STPS",
+  "alturas-horizontales": "Curso STPS",
 };
 
 const EQUIP_IMG: Record<string, string> = {
