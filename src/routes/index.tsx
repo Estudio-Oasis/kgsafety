@@ -421,7 +421,7 @@ function Index() {
             <BentoTile
               span="col-span-2 md:col-span-3"
               variant="image"
-              image={alturasImg}
+              image={alturasAutorizadoImg}
               to="/capacitacion"
               eyebrow="01 / Capacitación"
               title={t("Cursos DC-3 certificados")}
