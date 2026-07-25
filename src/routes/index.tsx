@@ -69,7 +69,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t } = useT();
   const clientLogos = realImagesIn("logos-clientes");
-  const topCourses = COURSES.filter((c) => c.active !== false).slice(0, 6);
+  const topCourses = COURSES.filter((c) => c.active !== false).slice(0, 7);
   const topEquip = EQUIPMENT.filter((e) => EQUIP_IMG[e.slug]).slice(0, 4);
   const restEquip = EQUIPMENT.filter((e) => !EQUIP_IMG[e.slug]).slice(0, 4);
   void topEquip; void restEquip; void clientLogos;
