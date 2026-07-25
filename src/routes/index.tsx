@@ -11,12 +11,13 @@ import { InstagramFeed } from "@/components/site/InstagramFeed";
 
 import heroImg from "@/assets/hero-clean.jpg";
 import ctaImg from "@/assets/cta-office.jpg";
-import alturasImg from "@/assets/courses/alturas.jpg";
-import confinadosImg from "@/assets/courses/confinados.jpg";
-import andamiosImg from "@/assets/courses/andamios.jpg";
-import lotoImg from "@/assets/courses/loto.jpg";
-import electricidadImg from "@/assets/courses/electricidad.jpg";
-import calorImg from "@/assets/courses/calor.jpg";
+import alturasAutorizadoImg from "@/assets/courses/alturas-autorizado.png";
+import alturasCompetenteImg from "@/assets/courses/alturas-competente.png";
+import alturasMonitorImg from "@/assets/courses/alturas-monitor.png";
+import alturasHorizontalesImg from "@/assets/courses/alturas-horizontales.png";
+import andamiosImg from "@/assets/courses/andamios-new.jpeg";
+import izajesImg from "@/assets/courses/izajes.png";
+import plataformasCourseImg from "@/assets/courses/plataformas.png";
 import eppImg from "@/assets/equipment/epp.jpg";
 import lvImg from "@/assets/equipment/lineas-de-vida.jpg";
 import anclajesImg from "@/assets/equipment/anclajes.jpg";
@@ -24,17 +25,23 @@ import plataformasImg from "@/assets/equipment/plataformas.jpg";
 
 
 const COURSE_IMG: Record<string, string> = {
-  "alturas-autorizado": alturasImg,
-  "alturas-competente": alturasImg,
-  "alturas-monitor": alturasImg,
-  "alturas-horizontales": alturasImg,
+  "alturas-autorizado": alturasAutorizadoImg,
+  "alturas-competente": alturasCompetenteImg,
+  "alturas-monitor": alturasMonitorImg,
+  "alturas-horizontales": alturasHorizontalesImg,
   andamios: andamiosImg,
-  izajes: lotoImg,
-  "plataformas-elevacion": electricidadImg,
-  confinados: confinadosImg,
-  loto: lotoImg,
-  electricidad: electricidadImg,
-  calor: calorImg,
+  izajes: izajesImg,
+  "plataformas-elevacion": plataformasCourseImg,
+};
+
+const COURSE_EYEBROW: Record<string, string> = {
+  "alturas-autorizado": "Nivel Básico",
+  "alturas-competente": "Nivel Intermedio",
+  "alturas-monitor": "Nivel Avanzado",
+  andamios: "Curso STPS",
+  izajes: "Curso STPS",
+  "plataformas-elevacion": "Curso STPS",
+  "alturas-horizontales": "Curso STPS",
 };
 
 const EQUIP_IMG: Record<string, string> = {
@@ -62,7 +69,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t } = useT();
   const clientLogos = realImagesIn("logos-clientes");
-  const topCourses = COURSES.filter((c) => c.active !== false).slice(0, 6);
+  const topCourses = COURSES.filter((c) => c.active !== false).slice(0, 7);
   const topEquip = EQUIPMENT.filter((e) => EQUIP_IMG[e.slug]).slice(0, 4);
   const restEquip = EQUIPMENT.filter((e) => !EQUIP_IMG[e.slug]).slice(0, 4);
   void topEquip; void restEquip; void clientLogos;
@@ -414,7 +421,7 @@ function Index() {
             <BentoTile
               span="col-span-2 md:col-span-3"
               variant="image"
-              image={alturasImg}
+              image={alturasAutorizadoImg}
               to="/capacitacion"
               eyebrow="01 / Capacitación"
               title={t("Cursos DC-3 certificados")}
@@ -484,9 +491,9 @@ function Index() {
                   image={img}
                   to="/capacitacion/$curso"
                   params={{ curso: c.slug }}
-                  eyebrow={`${String(i + 1).padStart(2, "0")} · ${c.levels.length} niveles`}
+                  eyebrow={`${String(i + 1).padStart(2, "0")} · ${COURSE_EYEBROW[c.slug] ?? "Curso STPS"}`}
                   title={c.short}
-                  description={featured ? c.desc : undefined}
+                  description={featured ? c.desc : c.desc}
                   cta={t("Ver curso")}
                 />
               );
