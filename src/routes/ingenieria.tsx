@@ -4,6 +4,7 @@ import installImg from "@/assets/engineering-install.jpg";
 import officeImg from "@/assets/engineering-office.jpg";
 import { useT } from "@/i18n/context";
 import { ENGINEERING } from "@/data/kaee";
+import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 export const Route = createFileRoute("/ingenieria")({
   component: IngenieriaPage,
@@ -147,6 +148,8 @@ function IngenieriaPage() {
           </div>
         </div>
       </section>
+
+      <QuoteBillingBanner tone="navy" quoteTitle="Cotizar proyecto de ingeniería" quoteDesc="Líneas de vida, anclajes y plataformas: envíe su requerimiento y reciba folio de solicitud." />
 
       <section className="py-20 md:py-28 px-6 md:px-12 text-center">
         <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">

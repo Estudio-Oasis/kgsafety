@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
 import { SOLUTION_FAMILIES, SERVICE_DETAILS } from "@/data/kaee";
+import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 export const Route = createFileRoute("/servicios")({
   component: ServiciosPage,
@@ -107,6 +108,8 @@ function ServiciosPage() {
 
       {/* ENTREGABLES */}
       <AuditableDeliverables variant="light" />
+
+      <QuoteBillingBanner tone="light" />
 
       {/* CTA */}
       <section className="px-6 md:px-12 py-16 md:py-20 text-center border-t border-[color:var(--border)] bg-[color:var(--brand-navy)] kg-on-dark">
