@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
 import { COURSES } from "@/data/kaee";
+import { erpListCourses, erpListCalendar, erpLookupClient, erpCreateQuote } from "@/lib/erp.functions";
 
 export const Route = createFileRoute("/contacto")({
   component: ContactoPage,
@@ -21,67 +22,182 @@ export const Route = createFileRoute("/contacto")({
   }),
 });
 
+type ErpCourse = { IdCurso: number; IdServicio: number; nombre: string; duracion: number; precio: number };
+type ErpDate = { IdCalendario: number; fecha: string; fechaTexto: string; IdCurso: number; tipo: string };
 
 type FormState = {
   nombre: string;
   empresa: string;
   email: string;
   telefono: string;
-  cursoInteres: string;
+  idCurso: string;
   participantes: string;
-  modalidad: "Local" | "Foráneo";
+  modalidad: "Local" | "Foraneo";
+  tipoCurso: "Cerrado" | "Abierto";
   ubicacion: string;
-  rfcStatus: "existente" | "nuevo";
   rfc: string;
-  contratista: string;
+  fechaDeseada: string;
   mensaje: string;
   acepta: boolean;
 };
 
+function norm(s: string) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 function ContactoPage() {
   const { t } = useT();
   const { curso: cursoSlug } = Route.useSearch();
-  const activeCourses = useMemo(() => COURSES.filter((c) => c.active !== false), []);
-  const preselected = useMemo(() => {
-    if (!cursoSlug) return null;
-    return activeCourses.find((c) => c.slug === cursoSlug)?.name ?? null;
-  }, [cursoSlug, activeCourses]);
+
+  const [courses, setCourses] = useState<ErpCourse[]>([]);
+  const [erpDown, setErpDown] = useState(false);
+  const [dates, setDates] = useState<ErpDate[]>([]);
+  const [rfcState, setRfcState] = useState<{ status: "idle" | "checking" | "existente" | "nuevo"; nombre?: string }>({ status: "idle" });
+  const [sending, setSending] = useState(false);
+  const [result, setResult] = useState<{ ok: boolean; folio?: string | null; msg: string } | null>(null);
 
   const [form, setForm] = useState<FormState>({
     nombre: "",
     empresa: "",
     email: "",
     telefono: "",
-    cursoInteres: preselected ?? activeCourses[0]?.name ?? "Otro",
+    idCurso: "",
     participantes: "",
     modalidad: "Local",
+    tipoCurso: "Cerrado",
     ubicacion: "",
-    rfcStatus: "nuevo",
     rfc: "",
-    contratista: "",
+    fechaDeseada: "",
     mensaje: "",
     acepta: false,
   });
 
+  const preselectedName = useMemo(() => {
+    if (!cursoSlug) return null;
+    return COURSES.find((c) => c.slug === cursoSlug)?.name ?? null;
+  }, [cursoSlug]);
+
+  // Catálogo de cursos en vivo desde el ERP
+  useEffect(() => {
+    let alive = true;
+    erpListCourses()
+      .then((res) => {
+        if (!alive) return;
+        if (!res.ok || res.courses.length === 0) {
+          setErpDown(true);
+          return;
+        }
+        setCourses(res.courses);
+        const match = preselectedName
+          ? res.courses.find((c) => norm(c.nombre).includes(norm(preselectedName).split(" ")[0]))
+          : undefined;
+        setForm((f) => ({ ...f, idCurso: String((match ?? res.courses[0]).IdCurso) }));
+      })
+      .catch(() => alive && setErpDown(true));
+    return () => {
+      alive = false;
+    };
+  }, [preselectedName]);
+
+  // Fechas disponibles del curso seleccionado
+  useEffect(() => {
+    const id = Number(form.idCurso);
+    if (!id) {
+      setDates([]);
+      return;
+    }
+    let alive = true;
+    erpListCalendar({ data: { idCurso: id } })
+      .then((res) => alive && setDates(res.ok ? res.dates : []))
+      .catch(() => alive && setDates([]));
+    return () => {
+      alive = false;
+    };
+  }, [form.idCurso]);
+
+  const selectedCourse = courses.find((c) => String(c.IdCurso) === form.idCurso);
 
   function set<K extends keyof FormState>(k: K, v: FormState[K]) {
     setForm((f) => ({ ...f, [k]: v }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!form.acepta) return;
+  async function checkRfc(rfc: string) {
+    const clean = rfc.trim().toUpperCase();
+    if (clean.length < 12) {
+      setRfcState({ status: "idle" });
+      return;
+    }
+    setRfcState({ status: "checking" });
+    try {
+      const res = await erpLookupClient({ data: { rfc: clean } });
+      if (res.ok && res.client) {
+        setRfcState({ status: "existente", nombre: res.client.Nombre });
+        setForm((f) => ({ ...f, empresa: f.empresa || res.client!.Nombre }));
+      } else {
+        setRfcState({ status: "nuevo" });
+      }
+    } catch {
+      setRfcState({ status: "idle" });
+    }
+  }
+
+  function whatsappFallback() {
     const text =
       `Hola KG Safety, soy ${form.nombre} de ${form.empresa}.%0A%0A` +
-      `Curso de interés: ${form.cursoInteres}%0A` +
+      `Curso: ${selectedCourse?.nombre ?? preselectedName ?? "Por definir"}%0A` +
       `Participantes: ${form.participantes}%0A` +
-      `Modalidad: ${form.modalidad}%0A` +
+      `Modalidad: ${form.modalidad} · ${form.tipoCurso}%0A` +
       `Ubicación: ${form.ubicacion}%0A` +
-      `RFC (${form.rfcStatus}): ${form.rfc}%0A` +
-      `Contratista: ${form.contratista || "N/A"}%0A` +
+      `RFC: ${form.rfc}%0A` +
       `Email: ${form.email} · Tel: ${form.telefono}%0A%0A` +
       `Mensaje: ${form.mensaje}`;
     window.open(`https://wa.me/527228795076?text=${text}`, "_blank");
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.acepta || sending) return;
+
+    if (erpDown || !selectedCourse) {
+      whatsappFallback();
+      return;
+    }
+
+    setSending(true);
+    setResult(null);
+    try {
+      const res = await erpCreateQuote({
+        data: {
+          rfc: form.rfc.trim().toUpperCase(),
+          empresa: form.empresa,
+          nombre: form.nombre,
+          correo: form.email,
+          telefono: form.telefono,
+          idCurso: selectedCourse.IdCurso,
+          idServicio: selectedCourse.IdServicio ?? 0,
+          participantes: Number(form.participantes) || 1,
+          lugarCurso: form.modalidad,
+          tipoCursoCliente: form.tipoCurso,
+          lugarServicio: form.ubicacion,
+          comentarios: form.mensaje,
+          fechaDeseada: form.fechaDeseada || undefined,
+        },
+      });
+
+      if (res.ok) {
+        setResult({
+          ok: true,
+          folio: res.folio,
+          msg: "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal.",
+        });
+      } else {
+        setResult({ ok: false, msg: "No pudimos registrar la solicitud. Envíela por WhatsApp y la atendemos de inmediato." });
+      }
+    } catch {
+      setResult({ ok: false, msg: "No pudimos registrar la solicitud. Envíela por WhatsApp y la atendemos de inmediato." });
+    } finally {
+      setSending(false);
+    }
   }
 
   const inputCls = "w-full bg-anchor border border-white/10 px-4 py-3 text-sm focus:border-signal outline-none";
@@ -123,7 +239,7 @@ function ContactoPage() {
               </div>
               <div>
                 <label className={labelCls}>{t("Teléfono")}</label>
-                <input type="tel" value={form.telefono} onChange={(e) => set("telefono", e.target.value)} className={inputCls} placeholder="+52 ..." />
+                <input required type="tel" value={form.telefono} onChange={(e) => set("telefono", e.target.value)} className={inputCls} placeholder="+52 ..." />
               </div>
             </div>
 
@@ -131,19 +247,25 @@ function ContactoPage() {
             <div className="pt-4 border-t border-white/10 grid sm:grid-cols-2 gap-5">
               <div>
                 <label className={labelCls}>{t("Curso de interés")}</label>
-                <select value={form.cursoInteres} onChange={(e) => set("cursoInteres", e.target.value)} className={inputCls}>
-                  {activeCourses.map((c) => (
-                    <option key={c.slug} value={c.name}>{c.name}</option>
-                  ))}
-                  <option value="Ingeniería / Líneas de vida">Ingeniería / Líneas de vida</option>
-                  <option value="Equipos / EPP">Equipos / EPP</option>
-                  <option value="P.N.P.C. Contratistas">P.N.P.C. Contratistas</option>
-                  <option value="Otro">Otro</option>
-                </select>
+                {erpDown ? (
+                  <input type="text" value={form.mensaje ? "" : preselectedName ?? ""} onChange={(e) => set("mensaje", e.target.value)} className={inputCls} placeholder="Escriba el curso o servicio" />
+                ) : (
+                  <select value={form.idCurso} onChange={(e) => set("idCurso", e.target.value)} className={inputCls}>
+                    {courses.length === 0 && <option value="">Cargando catálogo…</option>}
+                    {courses.map((c) => (
+                      <option key={c.IdCurso} value={c.IdCurso}>{c.nombre}</option>
+                    ))}
+                  </select>
+                )}
+                {selectedCourse && (
+                  <p className="text-[10px] text-white/40 uppercase tracking-widest mt-2">
+                    {selectedCourse.duracion} h · Precio de referencia ${selectedCourse.precio.toLocaleString("es-MX")} + IVA
+                  </p>
+                )}
               </div>
               <div>
                 <label className={labelCls}>{t("Número de participantes")}</label>
-                <input type="number" min={1} value={form.participantes} onChange={(e) => set("participantes", e.target.value)} className={inputCls} placeholder="10" />
+                <input required type="number" min={1} value={form.participantes} onChange={(e) => set("participantes", e.target.value)} className={inputCls} placeholder="10" />
               </div>
             </div>
 
@@ -151,15 +273,37 @@ function ContactoPage() {
               <div>
                 <label className={labelCls}>{t("Modalidad")}</label>
                 <div className="flex gap-2">
-                  {(["Local", "Foráneo"] as const).map((m) => (
+                  {([
+                    { v: "Local", l: "Local" },
+                    { v: "Foraneo", l: "Foráneo" },
+                  ] as const).map((m) => (
+                    <button
+                      key={m.v}
+                      type="button"
+                      onClick={() => set("modalidad", m.v)}
+                      className={`flex-1 px-4 py-3 text-xs uppercase tracking-widest font-bold border ${
+                        form.modalidad === m.v
+                          ? "bg-signal text-anchor border-signal"
+                          : "border-white/15 text-white/70 hover:border-signal"
+                      }`}
+                    >
+                      {m.l}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className={labelCls}>Tipo de curso</label>
+                <div className="flex gap-2">
+                  {(["Cerrado", "Abierto"] as const).map((m) => (
                     <button
                       key={m}
                       type="button"
-                      onClick={() => set("modalidad", m)}
+                      onClick={() => set("tipoCurso", m)}
                       className={`flex-1 px-4 py-3 text-xs uppercase tracking-widest font-bold border ${
-                        form.modalidad === m
-                          ? "bg-signal text-anchor border-signal"
-                          : "border-white/15 text-white/70 hover:border-signal"
+                        form.tipoCurso === m
+                          ? "bg-brand-blue text-white border-brand-blue"
+                          : "border-white/15 text-white/70 hover:border-brand-blue"
                       }`}
                     >
                       {m}
@@ -167,49 +311,46 @@ function ContactoPage() {
                   ))}
                 </div>
               </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label className={labelCls}>{t("Ubicación (planta / ciudad / estado)")}</label>
                 <input type="text" value={form.ubicacion} onChange={(e) => set("ubicacion", e.target.value)} className={inputCls} placeholder="Toluca, Edo. Méx." />
+              </div>
+              <div>
+                <label className={labelCls}>Fecha deseada (opcional)</label>
+                <select value={form.fechaDeseada} onChange={(e) => set("fechaDeseada", e.target.value)} className={inputCls} disabled={dates.length === 0}>
+                  <option value="">{dates.length === 0 ? "Sin fechas publicadas · a convenir" : "A convenir"}</option>
+                  {dates.map((d) => (
+                    <option key={d.IdCalendario} value={d.fecha}>{d.fechaTexto} · {d.tipo}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
             {/* RFC */}
             <div className="pt-4 border-t border-white/10">
               <label className={labelCls}>{t("Validación de RFC")}</label>
-              <div className="flex gap-2 mb-3">
-                {(
-                  [
-                    { v: "existente", l: "Cliente existente" },
-                    { v: "nuevo", l: "Registro nuevo" },
-                  ] as const
-                ).map((opt) => (
-                  <button
-                    key={opt.v}
-                    type="button"
-                    onClick={() => set("rfcStatus", opt.v)}
-                    className={`flex-1 px-4 py-3 text-xs uppercase tracking-widest font-bold border ${
-                      form.rfcStatus === opt.v
-                        ? "bg-brand-blue text-white border-brand-blue"
-                        : "border-white/15 text-white/70 hover:border-brand-blue"
-                    }`}
-                  >
-                    {opt.l}
-                  </button>
-                ))}
-              </div>
               <input
+                required
                 type="text"
                 value={form.rfc}
-                onChange={(e) => set("rfc", e.target.value.toUpperCase())}
+                onChange={(e) => {
+                  set("rfc", e.target.value.toUpperCase());
+                  setRfcState({ status: "idle" });
+                }}
+                onBlur={(e) => checkRfc(e.target.value)}
                 className={inputCls}
+                minLength={12}
                 maxLength={13}
                 placeholder="RFC (12 o 13 caracteres)"
               />
-            </div>
-
-            <div>
-              <label className={labelCls}>{t("Contratista (si aplica)")}</label>
-              <input type="text" value={form.contratista} onChange={(e) => set("contratista", e.target.value)} className={inputCls} placeholder={t("Razón social del contratista")} />
+              <p className="text-[10px] uppercase tracking-widest mt-2 min-h-[14px]">
+                {rfcState.status === "checking" && <span className="text-white/40">Validando RFC…</span>}
+                {rfcState.status === "existente" && <span className="text-signal">Cliente existente{rfcState.nombre ? ` · ${rfcState.nombre}` : ""}</span>}
+                {rfcState.status === "nuevo" && <span className="text-white/50">Registro nuevo · se dará de alta al enviar</span>}
+              </p>
             </div>
 
             <div>
@@ -230,12 +371,29 @@ function ContactoPage() {
               </span>
             </label>
 
+            {result && (
+              <div className={`border p-4 text-sm ${result.ok ? "border-signal/40 bg-signal/10 text-white" : "border-red-500/40 bg-red-500/10 text-white"}`}>
+                <p className="font-bold uppercase text-[10px] tracking-widest mb-1">
+                  {result.ok ? "Solicitud registrada" : "No se pudo registrar"}
+                </p>
+                <p className="text-white/80 leading-relaxed">{result.msg}</p>
+                {result.ok && result.folio && (
+                  <p className="mt-2 font-mono text-xs">Folio: {result.folio}</p>
+                )}
+                {!result.ok && (
+                  <button type="button" onClick={whatsappFallback} className="mt-3 bg-[#25D366] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">
+                    Enviar por WhatsApp
+                  </button>
+                )}
+              </div>
+            )}
+
             <button
               type="submit"
-              disabled={!form.acepta}
+              disabled={!form.acepta || sending}
               className="w-full bg-signal text-anchor font-bold py-4 text-sm tracking-widest uppercase hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t("Enviar cotización")}
+              {sending ? "Enviando…" : t("Enviar cotización")}
             </button>
             <p className="text-[10px] text-white/40 uppercase tracking-widest text-center">
               {t("También puede escribirnos a capacitacion@kg-safety.com")}
