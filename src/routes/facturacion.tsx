@@ -14,9 +14,7 @@ const USOS_CFDI = [
 ];
 
 const LINKS = {
-  obtenerFactura: "https://kg-safety.com/facturar/proceso",
   administracion: "https://admin-factura-cliente.noilmx.com/",
-  facturar: "https://kg-safety.com/facturar?scroll=cotizacionForm",
   whatsapp: "https://api.whatsapp.com/send?phone=527222532753",
   email: "mailto:vianey-contadora@kg-safety.com",
   tel: "tel:+5217227990719",
@@ -111,14 +109,12 @@ function FacturacionPage() {
               {t("Si no tiene folio o necesita generar una nueva cotización antes de facturar, comience aquí:")}
             </p>
             <div className="flex flex-wrap gap-3">
-              <a
-                href={LINKS.facturar}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/contacto"
                 className="inline-block bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold text-[11px] uppercase tracking-widest border-2 border-[color:var(--anchor-fixed)] hover:bg-white transition-colors"
               >
-                {t("Iniciar facturación")} →
-              </a>
+                {t("Solicitar cotización")} →
+              </Link>
               <Link
                 to="/contacto"
                 className="inline-block border border-[color:var(--border)] px-6 py-3 font-bold text-[11px] uppercase tracking-widest hover:border-brand-blue hover:text-brand-blue transition-colors"

@@ -4,6 +4,7 @@ import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
 import { COURSES } from "@/data/kaee";
 import { erpListCourses, erpListCalendar, erpLookupClient, erpCreateQuote } from "@/lib/erp.functions";
+import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 export const Route = createFileRoute("/contacto")({
   component: ContactoPage,
@@ -448,6 +449,8 @@ function ContactoPage() {
           </aside>
         </div>
       </section>
+
+      <QuoteBillingBanner tone="light" quoteTitle="¿Ya tiene su cotización?" quoteDesc="Consulte el estatus de su solicitud o genere una nueva con el formulario de arriba." />
     </div>
   );
 }
