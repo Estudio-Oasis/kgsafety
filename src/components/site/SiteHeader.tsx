@@ -60,6 +60,12 @@ export function SiteHeader() {
           <span className="text-white/55 normal-case tracking-normal">
             {t("Operación 24/7 · México · LATAM · USA · CA")}
           </span>
+          <Link to="/contacto" className="text-[color:var(--signal)] hover:text-white transition-colors">
+            {t("Cotizar en línea")}
+          </Link>
+          <Link to="/facturacion" hash="autofactura" className="hover:text-[color:var(--signal)] transition-colors">
+            {t("Facturar")}
+          </Link>
           <Link to="/portal/login" className="hover:text-[color:var(--signal)] transition-colors">
             {t("Portal clientes")}
           </Link>
@@ -107,13 +113,13 @@ export function SiteHeader() {
             <Link
               key={item.to}
               to={item.to}
-              className="relative py-1 hidden xl:inline-block hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-[2px] after:bg-[color:var(--signal)] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
+              className="relative py-1 hidden 2xl:inline-block hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-[2px] after:bg-[color:var(--signal)] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
               activeProps={{ className: "text-[color:var(--on-surface)] after:scale-x-100" }}
             >
               {t(item.labelKey)}
             </Link>
           ))}
-          <div className="relative xl:hidden group">
+          <div className="relative 2xl:hidden group">
             <button
               type="button"
               className="py-1 inline-flex items-center gap-1 hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap"
@@ -187,6 +193,21 @@ export function SiteHeader() {
               onClick={() => setOpen(false)}
             >
               {t("Inicio")}
+            </Link>
+            <Link
+              to="/contacto"
+              className="py-2 text-brand-blue hover:text-signal transition-colors"
+              onClick={() => setOpen(false)}
+            >
+              {t("Cotizar en línea")}
+            </Link>
+            <Link
+              to="/facturacion"
+              hash="autofactura"
+              className="py-2 text-brand-blue hover:text-signal transition-colors"
+              onClick={() => setOpen(false)}
+            >
+              {t("Facturación electrónica")}
             </Link>
             {MOBILE_GROUPS.map((group) => {
               const expanded = openGroup === group.label;

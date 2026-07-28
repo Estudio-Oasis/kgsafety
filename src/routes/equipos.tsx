@@ -4,6 +4,7 @@ import ppeImg from "@/assets/equipment-ppe.jpg";
 import { EQUIPMENT_IMAGES } from "@/lib/equipment-images";
 import { useT } from "@/i18n/context";
 import { EQUIPMENT } from "@/data/kaee";
+import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 export const Route = createFileRoute("/equipos")({
   component: EquiposPage,
@@ -95,6 +96,8 @@ function EquiposPage() {
           </div>
         </div>
       </section>
+
+      <QuoteBillingBanner tone="navy" quoteTitle="Cotizar equipos certificados" quoteDesc="Indique marca, cantidad y uso. Un ingeniero valida la selección antes de emitir la propuesta." />
 
       <section className="py-20 md:py-28 px-6 md:px-12 text-center">
         <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">
