@@ -61,11 +61,11 @@ function FacturacionPage() {
             <ActionCard
               n="01"
               title={t("Obtener factura")}
-              desc={t("Genere su factura con folio de cotización, número de pedido o referencia de venta.")}
-              cta={t("Ir al proceso")}
-              href={LINKS.obtenerFactura}
-              external
+              desc={t("Genere y timbre su factura aquí mismo con su código de cliente y folio de cotización.")}
+              cta={t("Facturar ahora")}
+              href="#autofactura"
             />
+
             <ActionCard
               n="02"
               title={t("Administración facturación")}
