@@ -1,5 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { useT } from "@/i18n/context";
+import { factLookupClient, factIssueInvoice } from "@/lib/facturacion.functions";
+
+const USOS_CFDI = [
+  { c: "G01", l: "G01 · Adquisición de mercancías" },
+  { c: "G03", l: "G03 · Gastos en general" },
+  { c: "I08", l: "I08 · Otra maquinaria y equipo" },
+  { c: "P01", l: "P01 · Por definir" },
+  { c: "D10", l: "D10 · Pagos por servicios educativos" },
+  { c: "S01", l: "S01 · Sin efectos fiscales" },
+];
 
 const LINKS = {
   obtenerFactura: "https://kg-safety.com/facturar/proceso",
