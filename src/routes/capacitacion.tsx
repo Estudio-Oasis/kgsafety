@@ -8,6 +8,7 @@ import confinedImg from "@/assets/confined-space.jpg";
 import { useT } from "@/i18n/context";
 import { COURSES, type Course } from "@/data/kaee";
 import { HardHat, Layers, ArrowUpFromLine, Construction, MoveUp, type LucideIcon } from "lucide-react";
+import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 const COURSE_ICON: Record<string, LucideIcon> = {
   "alturas-autorizado": HardHat,
@@ -346,6 +347,8 @@ function CapacitacionPage() {
           </ul>
         </div>
       </section>
+
+      <QuoteBillingBanner tone="navy" quoteTitle="Cotizar curso STPS" quoteDesc="Seleccione curso, número de participantes y fecha disponible del calendario en vivo." />
 
       <section className="pt-10 md:pt-14 pb-20 md:pb-28 px-6 md:px-12 text-center">
         <h2 className="font-display text-3xl md:text-5xl mb-6 uppercase leading-tight">

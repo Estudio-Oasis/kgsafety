@@ -22,6 +22,7 @@ import eppImg from "@/assets/equipment/epp.jpg";
 import lvImg from "@/assets/equipment/lineas-de-vida.jpg";
 import anclajesImg from "@/assets/equipment/anclajes.jpg";
 import plataformasImg from "@/assets/equipment/plataformas.jpg";
+import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 
 const COURSE_IMG: Record<string, string> = {
@@ -582,6 +583,8 @@ function Index() {
           </BentoGrid>
         </div>
       </section>
+
+      <QuoteBillingBanner tone="light" />
 
       <InstagramFeed />
     </div>
