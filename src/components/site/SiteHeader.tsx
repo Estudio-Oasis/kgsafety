@@ -113,13 +113,13 @@ export function SiteHeader() {
             <Link
               key={item.to}
               to={item.to}
-              className="relative py-1 hidden xl:inline-block hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-[2px] after:bg-[color:var(--signal)] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
+              className="relative py-1 hidden 2xl:inline-block hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-[2px] after:bg-[color:var(--signal)] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
               activeProps={{ className: "text-[color:var(--on-surface)] after:scale-x-100" }}
             >
               {t(item.labelKey)}
             </Link>
           ))}
-          <div className="relative xl:hidden group">
+          <div className="relative 2xl:hidden group">
             <button
               type="button"
               className="py-1 inline-flex items-center gap-1 hover:text-[color:var(--on-surface)] transition-colors whitespace-nowrap"
