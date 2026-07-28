@@ -98,8 +98,10 @@ function FacturacionPage() {
             />
           </div>
 
+          <AutoFactura />
+
           {/* Tip */}
-          <div className="bg-[color:var(--surface-2)] border border-[color:var(--border)] p-5 md:p-6">
+
             <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-blue mb-2">
               {t("¿Aún no factura?")}
             </div>
