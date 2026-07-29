@@ -24,6 +24,7 @@ import { Route as ContratistasRouteImport } from './routes/contratistas'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as CapacitacionRouteImport } from './routes/capacitacion'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AvisoDePrivacidadRouteImport } from './routes/aviso-de-privacidad'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as ServiciosServicioRouteImport } from './routes/servicios.$servicio'
@@ -120,6 +121,11 @@ const CapacitacionRoute = CapacitacionRouteImport.update({
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvisoDePrivacidadRoute = AvisoDePrivacidadRouteImport.update({
+  id: '/aviso-de-privacidad',
+  path: '/aviso-de-privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -235,6 +241,7 @@ const PortalClientesSlugRoute = PortalClientesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/blog': typeof BlogRoute
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/blog': typeof BlogRoute
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
@@ -313,6 +321,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
   '/blog': typeof BlogRoute
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
@@ -354,6 +363,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/aviso-de-privacidad'
     | '/blog'
     | '/capacitacion'
     | '/contacto'
@@ -393,6 +403,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aviso-de-privacidad'
     | '/blog'
     | '/capacitacion'
     | '/contacto'
@@ -431,6 +442,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/aviso-de-privacidad'
     | '/blog'
     | '/capacitacion'
     | '/contacto'
@@ -471,6 +483,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AvisoDePrivacidadRoute: typeof AvisoDePrivacidadRoute
   BlogRoute: typeof BlogRoute
   CapacitacionRoute: typeof CapacitacionRouteWithChildren
   ContactoRoute: typeof ContactoRoute
@@ -593,6 +606,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aviso-de-privacidad': {
+      id: '/aviso-de-privacidad'
+      path: '/aviso-de-privacidad'
+      fullPath: '/aviso-de-privacidad'
+      preLoaderRoute: typeof AvisoDePrivacidadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -844,6 +864,7 @@ const ServiciosRouteWithChildren = ServiciosRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AvisoDePrivacidadRoute: AvisoDePrivacidadRoute,
   BlogRoute: BlogRoute,
   CapacitacionRoute: CapacitacionRouteWithChildren,
   ContactoRoute: ContactoRoute,
