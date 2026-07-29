@@ -184,12 +184,23 @@ function ContactoPage() {
       return;
     }
 
+    const rfcCheck = validateRfc(form.rfc);
+    if (!rfcCheck.valid) {
+      setRfcState({ status: "invalido", nombre: rfcCheck.reason });
+      setResult({
+        ok: false,
+        titulo: "RFC inválido",
+        msg: rfcCheck.reason ?? "Verifique el RFC antes de enviar la solicitud.",
+      });
+      return;
+    }
+
     setSending(true);
     setResult(null);
     try {
       const res = await erpCreateQuote({
         data: {
-          rfc: form.rfc.trim().toUpperCase(),
+          rfc: normalizeRfc(form.rfc),
           empresa: form.empresa,
           nombre: form.nombre,
           correo: form.email,
@@ -206,20 +217,41 @@ function ContactoPage() {
       });
 
       if (res.ok) {
+        const pendiente = res.code === "recibida_pendiente_verificacion";
         setResult({
           ok: true,
-          folio: res.folio,
-          msg: "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal.",
+          folio: res.folio ?? (res.idCotizacionSolicitud ? String(res.idCotizacionSolicitud) : null),
+          traceId: res.traceId,
+          titulo: pendiente ? "Solicitud recibida" : "Solicitud registrada",
+          msg: pendiente
+            ? "Su solicitud fue recibida y está pendiente de verificación. No la envíe de nuevo: un asesor la confirmará."
+            : "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal.",
         });
       } else {
-        setResult({ ok: false, msg: "No pudimos registrar la solicitud. Envíela por WhatsApp y la atendemos de inmediato." });
+        setResult({
+          ok: false,
+          titulo:
+            res.stage === "validacion"
+              ? "RFC inválido"
+              : res.stage === "crear_cliente"
+                ? "No pudimos dar de alta el cliente"
+                : "No se pudo registrar",
+          msg: `${res.message} ${res.retryable ? "Puede intentarlo de nuevo en unos minutos." : "Envíela por WhatsApp y la atendemos de inmediato."}`,
+          traceId: res.traceId,
+          retryable: res.retryable,
+        });
       }
     } catch {
-      setResult({ ok: false, msg: "No pudimos registrar la solicitud. Envíela por WhatsApp y la atendemos de inmediato." });
+      setResult({
+        ok: false,
+        titulo: "No se pudo confirmar el envío",
+        msg: "No recibimos confirmación del sistema. No reenvíe la solicitud: contáctenos por WhatsApp para verificarla.",
+      });
     } finally {
       setSending(false);
     }
   }
+
 
   const inputCls = "w-full bg-anchor border border-white/10 px-4 py-3 text-sm focus:border-signal outline-none";
   const labelCls = "text-[10px] text-white/50 uppercase mb-2 block tracking-widest";
