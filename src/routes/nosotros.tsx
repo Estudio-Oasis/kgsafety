@@ -24,6 +24,10 @@ export const Route = createFileRoute("/nosotros")({
       { property: "og:title", content: "Nosotros · KG Safety" },
       { property: "og:description", content: "Conozca el método K.A.E.E., nuestros valores y nuestro equipo." },
       { property: "og:url", content: "https://kgsafety.lovable.app/nosotros" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Nosotros · KG Safety" },
+      { name: "twitter:description", content: "Conozca el método K.A.E.E., nuestros valores y nuestro equipo." },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/nosotros" }],
   }),
@@ -144,6 +148,52 @@ function NosotrosPage() {
             {["OSHA 1926 / 1910", "ANSI / ASSP", "CSA Z259", "EN-795", "NOM-009-STPS-2011", "Reglamentos internos por cliente"].map((n) => (
               <div key={n} className="kg-bento p-6 text-center">
                 <span className="font-display text-sm uppercase text-[color:var(--on-surface)] tracking-tight">{t(n)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trayectoria */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
+        <div className="max-w-5xl mx-auto">
+          <SectionLabel>{t("Trayectoria")}</SectionLabel>
+          <h2 className="font-display text-3xl md:text-5xl mb-12 uppercase leading-tight text-[color:var(--on-surface)]">
+            {t("Años de experiencia en campo.")}
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { year: "2012", label: "Inicio de operaciones en Toluca, Edo. Méx." },
+              { year: "2016", label: "Expansión a sector energía e infraestructura." },
+              { year: "2020", label: "Método K.A.E.E. formalizado y certificación DC-3." },
+              { year: "2026", label: "Presencia en 5 países y 30M+ horas-hombre sin caídas." },
+            ].map((m) => (
+              <div key={m.year} className="kg-bento p-6">
+                <p className="font-display text-3xl text-signal mb-2">{m.year}</p>
+                <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_70%,transparent)] leading-relaxed">{t(m.label)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Oficinas */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-[color:var(--border)]">
+        <div className="max-w-5xl mx-auto">
+          <SectionLabel>{t("Oficinas")}</SectionLabel>
+          <h2 className="font-display text-3xl md:text-5xl mb-12 uppercase leading-tight text-[color:var(--on-surface)]">
+            {t("Presencia operativa.")}
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { city: "Toluca", country: "México", role: "Oficina matriz" },
+              { city: "Ciudad de México", country: "México", role: "Centro de capacitación" },
+              { city: "Bogotá", country: "Colombia", role: "Operaciones Andina" },
+            ].map((o) => (
+              <div key={o.city} className="kg-bento p-6">
+                <p className="font-display text-lg uppercase text-[color:var(--on-surface)] mb-1">{o.city}</p>
+                <p className="text-sm text-signal mb-3">{o.country}</p>
+                <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_70%,transparent)]">{t(o.role)}</p>
               </div>
             ))}
           </div>

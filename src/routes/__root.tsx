@@ -14,6 +14,8 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { WorldClockBar } from "@/components/site/WorldClockBar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
+import { MobileActionBar } from "@/components/site/MobileActionBar";
+import { CookieBanner } from "@/components/site/CookieBanner";
 import { ScrollRappellers } from "@/components/site/ScrollRappellers";
 import { ThemeProvider } from "@/theme/context";
 import { LanguageProvider, useT } from "@/i18n/context";
@@ -168,11 +170,13 @@ function RootComponent() {
           <div className="min-h-screen flex flex-col bg-anchor">
             <WorldClockBar />
             <SiteHeader />
-            <main className="flex-1">
+            <main className="flex-1 pb-16 md:pb-0">
               <Outlet />
             </main>
             <SiteFooter />
             <WhatsAppFloat />
+            <MobileActionBar pathname={pathname} />
+            <CookieBanner />
             <ScrollRappellers />
           </div>
         </LanguageProvider>

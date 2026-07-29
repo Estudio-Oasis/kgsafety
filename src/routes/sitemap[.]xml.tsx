@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { COURSES, EQUIPMENT, ENGINEERING, SERVICE_DETAILS } from "@/data/kaee";
+import { BLOG_POSTS } from "@/data/blog";
 
 const BASE_URL = "https://kgsafety.lovable.app";
 
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/contacto", changefreq: "yearly", priority: "0.7" },
           { path: "/facturacion", changefreq: "yearly", priority: "0.4" },
           { path: "/blog", changefreq: "weekly", priority: "0.5" },
+          { path: "/aviso-de-privacidad", changefreq: "yearly", priority: "0.3" },
         ];
 
         const dynamicPaths: SitemapEntry[] = [
@@ -36,6 +38,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...EQUIPMENT.map((e) => ({ path: `/equipos/${e.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
           ...ENGINEERING.map((e) => ({ path: `/ingenieria/${e.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
           ...SERVICE_DETAILS.map((s) => ({ path: `/servicios/${s.slug}`, changefreq: "monthly" as const, priority: "0.7" })),
+          ...BLOG_POSTS.map((p) => ({ path: `/blog/${p.slug}`, changefreq: "yearly" as const, priority: "0.5" })),
         ];
 
         const entries = [...staticPaths, ...dynamicPaths];

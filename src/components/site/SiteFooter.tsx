@@ -61,6 +61,11 @@ export function SiteFooter() {
                 Instagram · @kg_safety
               </a>
             </li>
+            <li>
+              <Link to="/aviso-de-privacidad" className="hover:text-signal">
+                {t("Aviso de privacidad")}
+              </Link>
+            </li>
             <li className="text-white/50">
               José María Pino Suárez 304-1<br />
               Col. 5 de Mayo, Toluca<br />

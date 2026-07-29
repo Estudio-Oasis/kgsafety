@@ -65,6 +65,10 @@ export const Route = createFileRoute("/faq")({
       { property: "og:title", content: "Preguntas Frecuentes · KG Safety" },
       { property: "og:description", content: "Documentos auditables, capacitación, inspección, normas y cotización — respondidos por el equipo técnico." },
       { property: "og:url", content: "https://kgsafety.lovable.app/faq" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Preguntas Frecuentes · KG Safety" },
+      { name: "twitter:description", content: "Documentos auditables, capacitación, inspección, normas y cotización — respondidos por el equipo técnico." },
     ],
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/faq" }],
     scripts: [
