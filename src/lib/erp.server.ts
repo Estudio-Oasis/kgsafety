@@ -3,6 +3,8 @@
  * Solo servidor: usa credenciales de servicio guardadas como secretos.
  */
 
+import { maskRfc, normalizeRfc, validateRfc } from "./rfc";
+
 const BASE = "https://api-erpnoil.dsaix.com.mx";
 
 let cachedToken: { value: string; expiresAt: number } | null = null;
