@@ -4,6 +4,7 @@ import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
 import { COURSES } from "@/data/kaee";
 import { erpListCourses, erpListCalendar, erpLookupClient, erpCreateQuote } from "@/lib/erp.functions";
+import { normalizeRfc, validateRfc } from "@/lib/rfc";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 export const Route = createFileRoute("/contacto")({
@@ -57,7 +58,7 @@ function ContactoPage() {
   const [courses, setCourses] = useState<ErpCourse[]>([]);
   const [erpDown, setErpDown] = useState(false);
   const [dates, setDates] = useState<ErpDate[]>([]);
-  const [rfcState, setRfcState] = useState<{ status: "idle" | "checking" | "existente" | "nuevo"; nombre?: string }>({ status: "idle" });
+  const [rfcState, setRfcState] = useState<{ status: "idle" | "checking" | "existente" | "nuevo" | "invalido"; nombre?: string }>({ status: "idle" });
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; folio?: string | null; msg: string } | null>(null);
 
