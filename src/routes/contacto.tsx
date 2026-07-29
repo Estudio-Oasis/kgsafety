@@ -4,6 +4,7 @@ import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
 import { COURSES } from "@/data/kaee";
 import { erpListCourses, erpListCalendar, erpLookupClient, erpCreateQuote } from "@/lib/erp.functions";
+import { normalizeRfc, validateRfc } from "@/lib/rfc";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 export const Route = createFileRoute("/contacto")({
@@ -57,9 +58,16 @@ function ContactoPage() {
   const [courses, setCourses] = useState<ErpCourse[]>([]);
   const [erpDown, setErpDown] = useState(false);
   const [dates, setDates] = useState<ErpDate[]>([]);
-  const [rfcState, setRfcState] = useState<{ status: "idle" | "checking" | "existente" | "nuevo"; nombre?: string }>({ status: "idle" });
+  const [rfcState, setRfcState] = useState<{ status: "idle" | "checking" | "existente" | "nuevo" | "invalido"; nombre?: string }>({ status: "idle" });
   const [sending, setSending] = useState(false);
-  const [result, setResult] = useState<{ ok: boolean; folio?: string | null; msg: string } | null>(null);
+  const [result, setResult] = useState<{
+    ok: boolean;
+    folio?: string | null;
+    msg: string;
+    titulo?: string;
+    traceId?: string | null;
+    retryable?: boolean;
+  } | null>(null);
 
   const [form, setForm] = useState<FormState>({
     nombre: "",
@@ -127,15 +135,22 @@ function ContactoPage() {
   }
 
   async function checkRfc(rfc: string) {
-    const clean = rfc.trim().toUpperCase();
+    const clean = normalizeRfc(rfc);
     if (clean.length < 12) {
       setRfcState({ status: "idle" });
+      return;
+    }
+    const local = validateRfc(clean);
+    if (!local.valid) {
+      setRfcState({ status: "invalido", nombre: local.reason });
       return;
     }
     setRfcState({ status: "checking" });
     try {
       const res = await erpLookupClient({ data: { rfc: clean } });
-      if (res.ok && res.client) {
+      if (res.estado === "rfc_invalido") {
+        setRfcState({ status: "invalido", nombre: res.motivo });
+      } else if (res.client) {
         setRfcState({ status: "existente", nombre: res.client.Nombre });
         setForm((f) => ({ ...f, empresa: f.empresa || res.client!.Nombre }));
       } else {
@@ -145,6 +160,7 @@ function ContactoPage() {
       setRfcState({ status: "idle" });
     }
   }
+
 
   function whatsappFallback() {
     const text =
@@ -168,12 +184,23 @@ function ContactoPage() {
       return;
     }
 
+    const rfcCheck = validateRfc(form.rfc);
+    if (!rfcCheck.valid) {
+      setRfcState({ status: "invalido", nombre: rfcCheck.reason });
+      setResult({
+        ok: false,
+        titulo: "RFC inválido",
+        msg: rfcCheck.reason ?? "Verifique el RFC antes de enviar la solicitud.",
+      });
+      return;
+    }
+
     setSending(true);
     setResult(null);
     try {
       const res = await erpCreateQuote({
         data: {
-          rfc: form.rfc.trim().toUpperCase(),
+          rfc: normalizeRfc(form.rfc),
           empresa: form.empresa,
           nombre: form.nombre,
           correo: form.email,
@@ -190,20 +217,41 @@ function ContactoPage() {
       });
 
       if (res.ok) {
+        const pendiente = res.code === "recibida_pendiente_verificacion";
         setResult({
           ok: true,
-          folio: res.folio,
-          msg: "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal.",
+          folio: res.folio ?? (res.idCotizacionSolicitud ? String(res.idCotizacionSolicitud) : null),
+          traceId: res.traceId,
+          titulo: pendiente ? "Solicitud recibida" : "Solicitud registrada",
+          msg: pendiente
+            ? "Su solicitud fue recibida y está pendiente de verificación. No la envíe de nuevo: un asesor la confirmará."
+            : "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal.",
         });
       } else {
-        setResult({ ok: false, msg: "No pudimos registrar la solicitud. Envíela por WhatsApp y la atendemos de inmediato." });
+        setResult({
+          ok: false,
+          titulo:
+            res.stage === "validacion"
+              ? "RFC inválido"
+              : res.stage === "crear_cliente"
+                ? "No pudimos dar de alta el cliente"
+                : "No se pudo registrar",
+          msg: `${res.message} ${res.retryable ? "Puede intentarlo de nuevo en unos minutos." : "Envíela por WhatsApp y la atendemos de inmediato."}`,
+          traceId: res.traceId,
+          retryable: res.retryable,
+        });
       }
     } catch {
-      setResult({ ok: false, msg: "No pudimos registrar la solicitud. Envíela por WhatsApp y la atendemos de inmediato." });
+      setResult({
+        ok: false,
+        titulo: "No se pudo confirmar el envío",
+        msg: "No recibimos confirmación del sistema. No reenvíe la solicitud: contáctenos por WhatsApp para verificarla.",
+      });
     } finally {
       setSending(false);
     }
   }
+
 
   const inputCls = "w-full bg-anchor border border-white/10 px-4 py-3 text-sm focus:border-signal outline-none";
   const labelCls = "text-[10px] text-white/50 uppercase mb-2 block tracking-widest";
@@ -353,9 +401,11 @@ function ContactoPage() {
               />
               <p className="text-[10px] uppercase tracking-widest mt-2 min-h-[14px]">
                 {rfcState.status === "checking" && <span className="text-white/40">Validando RFC…</span>}
+                {rfcState.status === "invalido" && <span className="text-red-400 normal-case tracking-normal">{rfcState.nombre ?? "RFC inválido"}</span>}
                 {rfcState.status === "existente" && <span className="text-signal">Cliente existente{rfcState.nombre ? ` · ${rfcState.nombre}` : ""}</span>}
-                {rfcState.status === "nuevo" && <span className="text-white/50">Registro nuevo · se dará de alta al enviar</span>}
+                {rfcState.status === "nuevo" && <span className="text-white/50">RFC válido · cliente nuevo, se dará de alta al enviar</span>}
               </p>
+
             </div>
 
             <div>
@@ -379,13 +429,17 @@ function ContactoPage() {
             {result && (
               <div className={`border p-4 text-sm ${result.ok ? "border-signal/40 bg-signal/10 text-white" : "border-red-500/40 bg-red-500/10 text-white"}`}>
                 <p className="font-bold uppercase text-[10px] tracking-widest mb-1">
-                  {result.ok ? "Solicitud registrada" : "No se pudo registrar"}
+                  {result.titulo ?? (result.ok ? "Solicitud registrada" : "No se pudo registrar")}
                 </p>
                 <p className="text-white/80 leading-relaxed">{result.msg}</p>
                 {result.ok && result.folio && (
                   <p className="mt-2 font-mono text-xs">Folio: {result.folio}</p>
                 )}
+                {result.traceId && (
+                  <p className="mt-1 font-mono text-[10px] text-white/40">Ref. técnica: {result.traceId}</p>
+                )}
                 {!result.ok && (
+
                   <button type="button" onClick={whatsappFallback} className="mt-3 bg-[#25D366] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">
                     Enviar por WhatsApp
                   </button>
