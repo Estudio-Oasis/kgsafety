@@ -429,13 +429,17 @@ function ContactoPage() {
             {result && (
               <div className={`border p-4 text-sm ${result.ok ? "border-signal/40 bg-signal/10 text-white" : "border-red-500/40 bg-red-500/10 text-white"}`}>
                 <p className="font-bold uppercase text-[10px] tracking-widest mb-1">
-                  {result.ok ? "Solicitud registrada" : "No se pudo registrar"}
+                  {result.titulo ?? (result.ok ? "Solicitud registrada" : "No se pudo registrar")}
                 </p>
                 <p className="text-white/80 leading-relaxed">{result.msg}</p>
                 {result.ok && result.folio && (
                   <p className="mt-2 font-mono text-xs">Folio: {result.folio}</p>
                 )}
+                {result.traceId && (
+                  <p className="mt-1 font-mono text-[10px] text-white/40">Ref. técnica: {result.traceId}</p>
+                )}
                 {!result.ok && (
+
                   <button type="button" onClick={whatsappFallback} className="mt-3 bg-[#25D366] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">
                     Enviar por WhatsApp
                   </button>
