@@ -33,7 +33,35 @@ async function token(): Promise<string> {
   return login();
 }
 
-async function call<T>(path: string, init?: RequestInit, retry = true): Promise<T> {
+export type ErpStage =
+  | "auth"
+  | "validacion"
+  | "buscar_cliente"
+  | "crear_cliente"
+  | "crear_cotizacion"
+  | "verificar_cotizacion"
+  | "agendar_fecha";
+
+export class ErpError extends Error {
+  stage: ErpStage;
+  code: string;
+  status?: number;
+  retryable: boolean;
+  constructor(stage: ErpStage, code: string, message: string, opts?: { status?: number; retryable?: boolean }) {
+    super(message);
+    this.stage = stage;
+    this.code = code;
+    this.status = opts?.status;
+    this.retryable = opts?.retryable ?? false;
+  }
+}
+
+/** Respuesta cruda del ERP: cualquier 2xx es transporte exitoso, con o sin cuerpo JSON. */
+async function raw(
+  path: string,
+  init?: RequestInit,
+  retry = true,
+): Promise<{ status: number; ok: boolean; json: unknown | null; text: string }> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
     headers: {
@@ -46,20 +74,30 @@ async function call<T>(path: string, init?: RequestInit, retry = true): Promise<
 
   if (res.status === 401 && retry) {
     cachedToken = null;
-    return call<T>(path, init, false);
+    return raw(path, init, false);
   }
 
-  const text = await res.text();
+  const text = (await res.text()).trim();
+  let json: unknown | null = null;
+  if (text) {
+    try {
+      json = JSON.parse(text);
+    } catch {
+      json = null;
+    }
+  }
+  return { status: res.status, ok: res.ok, json, text };
+}
+
+async function call<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await raw(path, init);
   if (!res.ok) {
-    console.error(`ERP ${path} [${res.status}]: ${text}`);
+    console.error(`ERP ${path} [${res.status}]`);
     throw new Error(`ERP respondió ${res.status}`);
   }
-  try {
-    return JSON.parse(text) as T;
-  } catch {
-    throw new Error(`ERP ${path}: respuesta no es JSON`);
-  }
+  return (res.json ?? null) as T;
 }
+
 
 /** Varios GET del ERP devuelven [datos, statusCode]. */
 function unwrap<T>(payload: unknown): T[] {
