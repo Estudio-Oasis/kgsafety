@@ -59,12 +59,50 @@ export const erpLookupClient = createServerFn({ method: "POST" })
 export const erpCreateQuote = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => quoteSchema.parse(data))
   .handler(async ({ data }) => {
-    const { createQuote } = await import("./erp.server");
+    const { createQuote, ErpError } = await import("./erp.server");
     try {
       const result = await createQuote(data);
-      return { ok: true as const, ...result };
+      return {
+        ok: true as const,
+        stage: "completado" as const,
+        code: result.status,
+        message:
+          result.status === "creada"
+            ? "Su solicitud quedó registrada en nuestro sistema."
+            : "Su solicitud fue recibida y está pendiente de verificación. No la envíe de nuevo.",
+        traceId: result.traceId,
+        retryable: false,
+        idCotizacionSolicitud: result.idSolicitud,
+        folio: result.folio,
+        fechaAgendada: result.fechaAgendada,
+      };
     } catch (e) {
+      if (e instanceof ErpError) {
+        console.error(`[erp][${e.stage}][${e.code}] ${e.message}`);
+        return {
+          ok: false as const,
+          stage: e.stage,
+          code: e.code,
+          message: e.message,
+          traceId: null,
+          retryable: e.retryable,
+          idCotizacionSolicitud: null,
+          folio: null,
+          fechaAgendada: false,
+        };
+      }
       console.error(e);
-      return { ok: false as const, error: "No pudimos registrar la solicitud en el sistema." };
+      return {
+        ok: false as const,
+        stage: "desconocido" as const,
+        code: "error_inesperado",
+        message: "Ocurrió un error inesperado al procesar la solicitud.",
+        traceId: null,
+        retryable: true,
+        idCotizacionSolicitud: null,
+        folio: null,
+        fechaAgendada: false,
+      };
     }
   });
+
