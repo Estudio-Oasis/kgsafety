@@ -401,9 +401,11 @@ function ContactoPage() {
               />
               <p className="text-[10px] uppercase tracking-widest mt-2 min-h-[14px]">
                 {rfcState.status === "checking" && <span className="text-white/40">Validando RFC…</span>}
+                {rfcState.status === "invalido" && <span className="text-red-400 normal-case tracking-normal">{rfcState.nombre ?? "RFC inválido"}</span>}
                 {rfcState.status === "existente" && <span className="text-signal">Cliente existente{rfcState.nombre ? ` · ${rfcState.nombre}` : ""}</span>}
-                {rfcState.status === "nuevo" && <span className="text-white/50">Registro nuevo · se dará de alta al enviar</span>}
+                {rfcState.status === "nuevo" && <span className="text-white/50">RFC válido · cliente nuevo, se dará de alta al enviar</span>}
               </p>
+
             </div>
 
             <div>
