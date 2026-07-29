@@ -27,6 +27,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AvisoDePrivacidadRouteImport } from './routes/aviso-de-privacidad'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ServiciosServicioRouteImport } from './routes/servicios.$servicio'
 import { Route as PortalSolicitudesRouteImport } from './routes/portal.solicitudes'
 import { Route as PortalSistemasRouteImport } from './routes/portal.sistemas'
@@ -138,6 +139,11 @@ const PortalIndexRoute = PortalIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PortalRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
 } as any)
 const ServiciosServicioRoute = ServiciosServicioRouteImport.update({
   id: '/$servicio',
@@ -279,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/portal/sistemas': typeof PortalSistemasRoute
   '/portal/solicitudes': typeof PortalSolicitudesRoute
   '/servicios/$servicio': typeof ServiciosServicioRoute
+  '/blog/': typeof BlogIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/portal/clientes/$slug': typeof PortalClientesSlugRoute
   '/portal/plantas/$slug': typeof PortalPlantasSlugRoute
@@ -289,7 +296,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
-  '/blog': typeof BlogRouteWithChildren
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
@@ -319,6 +325,7 @@ export interface FileRoutesByTo {
   '/portal/sistemas': typeof PortalSistemasRoute
   '/portal/solicitudes': typeof PortalSolicitudesRoute
   '/servicios/$servicio': typeof ServiciosServicioRoute
+  '/blog': typeof BlogIndexRoute
   '/portal': typeof PortalIndexRoute
   '/portal/clientes/$slug': typeof PortalClientesSlugRoute
   '/portal/plantas/$slug': typeof PortalPlantasSlugRoute
@@ -361,6 +368,7 @@ export interface FileRoutesById {
   '/portal/sistemas': typeof PortalSistemasRoute
   '/portal/solicitudes': typeof PortalSolicitudesRoute
   '/servicios/$servicio': typeof ServiciosServicioRoute
+  '/blog/': typeof BlogIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/portal/clientes/$slug': typeof PortalClientesSlugRoute
   '/portal/plantas/$slug': typeof PortalPlantasSlugRoute
@@ -404,6 +412,7 @@ export interface FileRouteTypes {
     | '/portal/sistemas'
     | '/portal/solicitudes'
     | '/servicios/$servicio'
+    | '/blog/'
     | '/portal/'
     | '/portal/clientes/$slug'
     | '/portal/plantas/$slug'
@@ -414,7 +423,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/aviso-de-privacidad'
-    | '/blog'
     | '/capacitacion'
     | '/contacto'
     | '/contratistas'
@@ -444,6 +452,7 @@ export interface FileRouteTypes {
     | '/portal/sistemas'
     | '/portal/solicitudes'
     | '/servicios/$servicio'
+    | '/blog'
     | '/portal'
     | '/portal/clientes/$slug'
     | '/portal/plantas/$slug'
@@ -485,6 +494,7 @@ export interface FileRouteTypes {
     | '/portal/sistemas'
     | '/portal/solicitudes'
     | '/servicios/$servicio'
+    | '/blog/'
     | '/portal/'
     | '/portal/clientes/$slug'
     | '/portal/plantas/$slug'
@@ -641,6 +651,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalIndexRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/servicios/$servicio': {
       id: '/servicios/$servicio'
       path: '/$servicio'
@@ -793,10 +810,12 @@ declare module '@tanstack/react-router' {
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
@@ -913,3 +932,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
