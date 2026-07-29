@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Instagram } from "lucide-react";
 import { useT } from "@/i18n/context";
 import { SectionLabel } from "@/components/site/SectionLabel";
