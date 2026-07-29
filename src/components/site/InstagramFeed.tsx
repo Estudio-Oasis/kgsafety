@@ -42,18 +42,35 @@ function loadInstagramScript(): Promise<void> {
 export function InstagramFeed() {
   const { t } = useT();
   const rootRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (typeof window === "undefined" || !rootRef.current) return;
+    const node = rootRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
     let cancelled = false;
     loadInstagramScript().then(() => {
       if (cancelled) return;
-      // Small delay ensures embeds are in DOM before processing
       requestAnimationFrame(() => window.instgrm?.Embeds.process());
     });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [visible]);
 
   return (
     <section className="px-4 md:px-8 lg:px-12 py-16 md:py-24 bg-[color:var(--surface-2)] border-y border-[color:var(--border)]">
