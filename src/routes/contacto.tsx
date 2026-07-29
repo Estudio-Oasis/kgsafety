@@ -127,15 +127,22 @@ function ContactoPage() {
   }
 
   async function checkRfc(rfc: string) {
-    const clean = rfc.trim().toUpperCase();
+    const clean = normalizeRfc(rfc);
     if (clean.length < 12) {
       setRfcState({ status: "idle" });
+      return;
+    }
+    const local = validateRfc(clean);
+    if (!local.valid) {
+      setRfcState({ status: "invalido", nombre: local.reason });
       return;
     }
     setRfcState({ status: "checking" });
     try {
       const res = await erpLookupClient({ data: { rfc: clean } });
-      if (res.ok && res.client) {
+      if (res.estado === "rfc_invalido") {
+        setRfcState({ status: "invalido", nombre: res.motivo });
+      } else if (res.client) {
         setRfcState({ status: "existente", nombre: res.client.Nombre });
         setForm((f) => ({ ...f, empresa: f.empresa || res.client!.Nombre }));
       } else {
@@ -145,6 +152,7 @@ function ContactoPage() {
       setRfcState({ status: "idle" });
     }
   }
+
 
   function whatsappFallback() {
     const text =
