@@ -154,6 +154,52 @@ function NosotrosPage() {
         </div>
       </section>
 
+      {/* Trayectoria */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]">
+        <div className="max-w-5xl mx-auto">
+          <SectionLabel>{t("Trayectoria")}</SectionLabel>
+          <h2 className="font-display text-3xl md:text-5xl mb-12 uppercase leading-tight text-[color:var(--on-surface)]">
+            {t("Años de experiencia en campo.")}
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { year: "2012", label: "Inicio de operaciones en Toluca, Edo. Méx." },
+              { year: "2016", label: "Expansión a sector energía e infraestructura." },
+              { year: "2020", label: "Método K.A.E.E. formalizado y certificación DC-3." },
+              { year: "2026", label: "Presencia en 5 países y 30M+ horas-hombre sin caídas." },
+            ].map((m) => (
+              <div key={m.year} className="kg-bento p-6">
+                <p className="font-display text-3xl text-signal mb-2">{m.year}</p>
+                <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_70%,transparent)] leading-relaxed">{t(m.label)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Oficinas */}
+      <section className="px-6 md:px-12 py-20 md:py-28 border-b border-[color:var(--border)]">
+        <div className="max-w-5xl mx-auto">
+          <SectionLabel>{t("Oficinas")}</SectionLabel>
+          <h2 className="font-display text-3xl md:text-5xl mb-12 uppercase leading-tight text-[color:var(--on-surface)]">
+            {t("Presencia operativa.")}
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { city: "Toluca", country: "México", role: "Oficina matriz" },
+              { city: "Ciudad de México", country: "México", role: "Centro de capacitación" },
+              { city: "Bogotá", country: "Colombia", role: "Operaciones Andina" },
+            ].map((o) => (
+              <div key={o.city} className="kg-bento p-6">
+                <p className="font-display text-lg uppercase text-[color:var(--on-surface)] mb-1">{o.city}</p>
+                <p className="text-sm text-signal mb-3">{o.country}</p>
+                <p className="text-sm text-[color:color-mix(in_oklab,var(--on-surface)_70%,transparent)]">{t(o.role)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 md:py-28 px-6 md:px-12 text-center bg-[color:var(--brand-navy)] kg-on-dark">
         <p className="font-display text-5xl md:text-7xl text-signal mb-10 leading-none">
           {t("We never fall.")}
