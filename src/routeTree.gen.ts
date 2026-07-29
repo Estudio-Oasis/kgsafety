@@ -42,6 +42,7 @@ import { Route as PortalAdminRouteImport } from './routes/portal.admin'
 import { Route as IngenieriaServicioRouteImport } from './routes/ingenieria.$servicio'
 import { Route as EquiposCategoriaRouteImport } from './routes/equipos.$categoria'
 import { Route as CapacitacionCursoRouteImport } from './routes/capacitacion.$curso'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as PortalProyectosIndexRouteImport } from './routes/portal.proyectos.index'
 import { Route as PortalClientesIndexRouteImport } from './routes/portal.clientes.index'
 import { Route as PortalProyectosIdRouteImport } from './routes/portal.proyectos.$id'
@@ -213,6 +214,11 @@ const CapacitacionCursoRoute = CapacitacionCursoRouteImport.update({
   path: '/$curso',
   getParentRoute: () => CapacitacionRoute,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 const PortalProyectosIndexRoute = PortalProyectosIndexRouteImport.update({
   id: '/proyectos/',
   path: '/proyectos/',
@@ -242,7 +248,7 @@ const PortalClientesSlugRoute = PortalClientesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
@@ -257,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/servicios': typeof ServiciosRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/soluciones': typeof SolucionesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
@@ -282,7 +289,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
@@ -296,6 +303,7 @@ export interface FileRoutesByTo {
   '/servicios': typeof ServiciosRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/soluciones': typeof SolucionesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
@@ -322,7 +330,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aviso-de-privacidad': typeof AvisoDePrivacidadRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/capacitacion': typeof CapacitacionRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/contratistas': typeof ContratistasRoute
@@ -337,6 +345,7 @@ export interface FileRoutesById {
   '/servicios': typeof ServiciosRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/soluciones': typeof SolucionesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/capacitacion/$curso': typeof CapacitacionCursoRoute
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
@@ -379,6 +388,7 @@ export interface FileRouteTypes {
     | '/servicios'
     | '/sitemap.xml'
     | '/soluciones'
+    | '/blog/$slug'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
@@ -418,6 +428,7 @@ export interface FileRouteTypes {
     | '/servicios'
     | '/sitemap.xml'
     | '/soluciones'
+    | '/blog/$slug'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
@@ -458,6 +469,7 @@ export interface FileRouteTypes {
     | '/servicios'
     | '/sitemap.xml'
     | '/soluciones'
+    | '/blog/$slug'
     | '/capacitacion/$curso'
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
@@ -484,7 +496,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AvisoDePrivacidadRoute: typeof AvisoDePrivacidadRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   CapacitacionRoute: typeof CapacitacionRouteWithChildren
   ContactoRoute: typeof ContactoRoute
   ContratistasRoute: typeof ContratistasRoute
@@ -734,6 +746,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CapacitacionCursoRouteImport
       parentRoute: typeof CapacitacionRoute
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/portal/proyectos/': {
       id: '/portal/proyectos/'
       path: '/proyectos'
@@ -771,6 +790,16 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface CapacitacionRouteChildren {
   CapacitacionCursoRoute: typeof CapacitacionCursoRoute
@@ -865,7 +894,7 @@ const ServiciosRouteWithChildren = ServiciosRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvisoDePrivacidadRoute: AvisoDePrivacidadRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   CapacitacionRoute: CapacitacionRouteWithChildren,
   ContactoRoute: ContactoRoute,
   ContratistasRoute: ContratistasRoute,

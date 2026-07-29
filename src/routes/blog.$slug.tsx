@@ -10,34 +10,41 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!post) throw notFound();
     return { post };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData.post.title} · KG Safety` },
-      { name: "description", content: loaderData.post.excerpt },
-      { property: "og:title", content: loaderData.post.title },
-      { property: "og:description", content: loaderData.post.excerpt },
-      { property: "og:url", content: `https://kgsafety.lovable.app/blog/${loaderData.post.slug}` },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: loaderData.post.title },
-      { name: "twitter:description", content: loaderData.post.excerpt },
-    ],
-    links: [{ rel: "canonical", href: `https://kgsafety.lovable.app/blog/${loaderData.post.slug}` }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline: loaderData.post.title,
-          description: loaderData.post.excerpt,
-          datePublished: loaderData.post.date,
-          author: { "@type": "Organization", name: "KG Safety" },
-          publisher: { "@type": "Organization", name: "KG Safety" },
-        }),
-      },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const post = loaderData?.post;
+    const title = post?.title ?? "Artículo · KG Safety";
+    const description = post?.excerpt ?? "Recursos técnicos de KG Safety.";
+    const slug = post?.slug ?? "";
+    const date = post?.date ?? "";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: `https://kgsafety.lovable.app/blog/${slug}` },
+        { property: "og:type", content: "article" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: `https://kgsafety.lovable.app/blog/${slug}` }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: title,
+            description,
+            datePublished: date,
+            author: { "@type": "Organization", name: "KG Safety" },
+            publisher: { "@type": "Organization", name: "KG Safety" },
+          }),
+        },
+      ],
+    };
+  },
 });
 
 function BlogPostPage() {
@@ -59,7 +66,7 @@ function BlogPostPage() {
 
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-white/5">
         <div className="max-w-3xl space-y-12">
-          {post.content.map((section, i) => (
+          {post.content.map((section: { heading: string; body: string }, i: number) => (
             <article key={i}>
               <h2 className="font-display text-xl uppercase mb-4 text-signal">{section.heading}</h2>
               <p className="text-base text-white/70 leading-relaxed">{section.body}</p>
