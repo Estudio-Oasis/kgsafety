@@ -46,15 +46,26 @@ export const erpLookupClient = createServerFn({ method: "POST" })
     z.object({ rfc: z.string().trim().toUpperCase().min(12).max(13) }).parse(data),
   )
   .handler(async ({ data }) => {
+    const { validateRfc } = await import("./rfc");
+    const check = validateRfc(data.rfc);
+    if (!check.valid) {
+      return { ok: true as const, estado: "rfc_invalido" as const, motivo: check.reason ?? "", client: null };
+    }
     const { findClientByRfc } = await import("./erp.server");
     try {
       const client = await findClientByRfc(data.rfc);
-      return { ok: true as const, client };
+      return {
+        ok: true as const,
+        estado: client ? ("cliente_existente" as const) : ("cliente_nuevo" as const),
+        motivo: "",
+        client,
+      };
     } catch (e) {
       console.error(e);
-      return { ok: false as const, client: null };
+      return { ok: false as const, estado: "erp_no_disponible" as const, motivo: "", client: null };
     }
   });
+
 
 export const erpCreateQuote = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => quoteSchema.parse(data))
