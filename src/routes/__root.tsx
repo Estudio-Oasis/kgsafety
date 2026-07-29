@@ -14,6 +14,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { WorldClockBar } from "@/components/site/WorldClockBar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
+import { MobileActionBar } from "@/components/site/MobileActionBar";
 import { ScrollRappellers } from "@/components/site/ScrollRappellers";
 import { ThemeProvider } from "@/theme/context";
 import { LanguageProvider, useT } from "@/i18n/context";
