@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
 import { Instagram } from "lucide-react";
+import { BLOG_POSTS } from "@/data/blog";
 
-// Antes /blog, ahora redirige a /redes con contenido de redes sociales + artículos.
 export const Route = createFileRoute("/blog")({
   component: RedesPage,
   head: () => ({
@@ -25,30 +25,6 @@ export const Route = createFileRoute("/blog")({
     links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/blog" }],
   }),
 });
-
-const POSTS = [
-  {
-    tag: "NOM-009-STPS",
-    title: "NOM-009-STPS-2011: claves para auditar trabajos en altura",
-    excerpt:
-      "Qué piden los auditores STPS, qué documentos debe tener su contratista y cómo demostrar competencias antes de iniciar trabajos.",
-    date: "2025-04-12",
-  },
-  {
-    tag: "Ingeniería",
-    title: "LVV vs LVH: cuándo conviene cable y cuándo rigid rail",
-    excerpt:
-      "Comparativa de líneas de vida verticales y horizontales por tipo de aplicación, frecuencia de uso y factor de carga.",
-    date: "2025-03-20",
-  },
-  {
-    tag: "Capacitación",
-    title: "Recertificación anual: por qué no es opcional",
-    excerpt:
-      "Riesgo legal y operativo de operar con DC-3 vencidos. Cómo organizar un programa de recertificación rotativo sin paralizar planta.",
-    date: "2025-02-08",
-  },
-];
 
 function RedesPage() {
   const { t } = useT();
