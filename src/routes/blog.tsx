@@ -82,8 +82,8 @@ function RedesPage() {
             <h2 className="font-display text-3xl md:text-5xl uppercase mt-3">{t("Recursos técnicos")}</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-px bg-white/5 border border-white/5">
-            {POSTS.map((p, i) => (
-              <article key={i} className="bg-anchor p-8 flex flex-col">
+            {BLOG_POSTS.map((p) => (
+              <article key={p.slug} className="bg-anchor p-8 flex flex-col">
                 <div className="flex justify-between items-center mb-6">
                   <span className="font-display text-signal text-xs uppercase tracking-widest">{p.tag}</span>
                   <span className="text-[10px] text-white/40 tracking-widest">{p.date}</span>
@@ -91,7 +91,8 @@ function RedesPage() {
                 <h3 className="font-display text-lg uppercase mb-4 leading-tight">{p.title}</h3>
                 <p className="text-sm text-white/55 mb-8 flex-1 leading-relaxed">{p.excerpt}</p>
                 <Link
-                  to="/contacto"
+                  to="/blog/$slug"
+                  params={{ slug: p.slug }}
                   className="text-signal font-bold text-[10px] uppercase tracking-widest border-b border-signal pb-1 self-start"
                 >
                   {t("Leer artículo →")}
