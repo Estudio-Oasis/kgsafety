@@ -60,7 +60,14 @@ function ContactoPage() {
   const [dates, setDates] = useState<ErpDate[]>([]);
   const [rfcState, setRfcState] = useState<{ status: "idle" | "checking" | "existente" | "nuevo" | "invalido"; nombre?: string }>({ status: "idle" });
   const [sending, setSending] = useState(false);
-  const [result, setResult] = useState<{ ok: boolean; folio?: string | null; msg: string } | null>(null);
+  const [result, setResult] = useState<{
+    ok: boolean;
+    folio?: string | null;
+    msg: string;
+    titulo?: string;
+    traceId?: string | null;
+    retryable?: boolean;
+  } | null>(null);
 
   const [form, setForm] = useState<FormState>({
     nombre: "",
