@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { COURSES, EQUIPMENT, ENGINEERING, SERVICE_DETAILS } from "@/data/kaee";
+import { BLOG_POSTS } from "@/data/blog";
 
 const BASE_URL = "https://kgsafety.lovable.app";
 
