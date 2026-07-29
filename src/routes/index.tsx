@@ -66,7 +66,10 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: "KG Safety · Eliminación total de riesgos de caída" },
       { name: "twitter:description", content: "Integrador de seguridad en altura: diagnóstico, ingeniería, instalación, certificación, capacitación y documentación auditable." },
     ],
-    links: [{ rel: "canonical", href: "https://kgsafety.lovable.app/" }],
+    links: [
+      { rel: "canonical", href: "https://kgsafety.lovable.app/" },
+      { rel: "preload", as: "image", href: heroImg, fetchpriority: "high" },
+    ],
   }),
 });
 
