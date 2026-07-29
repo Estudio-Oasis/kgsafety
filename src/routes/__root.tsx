@@ -176,6 +176,7 @@ function RootComponent() {
             <SiteFooter />
             <WhatsAppFloat />
             <MobileActionBar pathname={pathname} />
+            <CookieBanner />
             <ScrollRappellers />
           </div>
         </LanguageProvider>
