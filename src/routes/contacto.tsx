@@ -3,14 +3,20 @@ import { useEffect, useMemo, useState } from "react";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { useT } from "@/i18n/context";
 import { COURSES } from "@/data/kaee";
-import { erpListCourses, erpListCalendar, erpLookupClient, erpCreateQuote } from "@/lib/erp.functions";
+import { erpListCourses, erpListCalendar, erpLookupClient, erpCreateQuote, erpListContractors } from "@/lib/erp.functions";
 import { normalizeRfc, validateRfc } from "@/lib/rfc";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
 export const Route = createFileRoute("/contacto")({
   component: ContactoPage,
-  validateSearch: (search: Record<string, unknown>): { curso?: string } => ({
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { curso?: string; insumo?: string; idCurso?: string; folio?: string; tipo?: string } => ({
     curso: typeof search.curso === "string" ? search.curso : undefined,
+    insumo: typeof search.insumo === "string" ? search.insumo : undefined,
+    idCurso: typeof search.idCurso === "string" ? search.idCurso : undefined,
+    folio: typeof search.folio === "string" ? search.folio : undefined,
+    tipo: typeof search.tipo === "string" ? search.tipo : undefined,
   }),
   head: () => ({
     meta: [
@@ -45,6 +51,8 @@ type FormState = {
   fechaDeseada: string;
   mensaje: string;
   acepta: boolean;
+  idContratista: string;
+  otroContratista: string;
 };
 
 function norm(s: string) {
@@ -53,7 +61,8 @@ function norm(s: string) {
 
 function ContactoPage() {
   const { t } = useT();
-  const { curso: cursoSlug } = Route.useSearch();
+  const { curso: cursoSlug, insumo, idCurso: idCursoParam, folio: folioParam, tipo: tipoParam } = Route.useSearch();
+  const [contractors, setContractors] = useState<{ IdContratista: number; nombre: string }[]>([]);
 
   const [courses, setCourses] = useState<ErpCourse[]>([]);
   const [erpDown, setErpDown] = useState(false);
@@ -81,9 +90,33 @@ function ContactoPage() {
     ubicacion: "",
     rfc: "",
     fechaDeseada: "",
-    mensaje: "",
+    mensaje: insumo ? `Solicito cotización de: ${insumo}` : "",
     acepta: false,
+    idContratista: "",
+    otroContratista: "",
   });
+
+  useEffect(() => {
+    let alive = true;
+    erpListContractors()
+      .then((r) => alive && setContractors(r.contractors))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (idCursoParam) setForm((f) => ({ ...f, idCurso: idCursoParam }));
+    if (tipoParam === "Abierto") setForm((f) => ({ ...f, tipoCurso: "Abierto" }));
+  }, [idCursoParam, tipoParam]);
+
+  // FA7: modalidad Local fija la sede de KG Safety.
+  useEffect(() => {
+    setForm((f) =>
+      f.modalidad === "Local" ? { ...f, ubicacion: "Toluca de Lerdo, Estado de México" } : f,
+    );
+  }, [form.modalidad]);
 
   const preselectedName = useMemo(() => {
     if (!cursoSlug) return null;
@@ -104,13 +137,16 @@ function ContactoPage() {
         const match = preselectedName
           ? res.courses.find((c) => norm(c.nombre).includes(norm(preselectedName).split(" ")[0]))
           : undefined;
-        setForm((f) => ({ ...f, idCurso: String((match ?? res.courses[0]).IdCurso) }));
+        setForm((f) => ({
+          ...f,
+          idCurso: idCursoParam || f.idCurso || String((match ?? res.courses[0]).IdCurso),
+        }));
       })
       .catch(() => alive && setErpDown(true));
     return () => {
       alive = false;
     };
-  }, [preselectedName]);
+  }, [preselectedName, idCursoParam]);
 
   // Fechas disponibles del curso seleccionado
   useEffect(() => {
@@ -213,6 +249,9 @@ function ContactoPage() {
           lugarServicio: form.ubicacion,
           comentarios: form.mensaje,
           fechaDeseada: form.fechaDeseada || undefined,
+          idContratista: Number(form.idContratista) || 0,
+          nombreContratista: form.otroContratista.trim(),
+          folioCurso: folioParam ?? "",
         },
       });
 
@@ -369,7 +408,20 @@ function ContactoPage() {
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label className={labelCls}>{t("Ubicación (planta / ciudad / estado)")}</label>
-                <input type="text" value={form.ubicacion} onChange={(e) => set("ubicacion", e.target.value)} className={inputCls} placeholder="Toluca, Edo. Méx." />
+                <input
+                  type="text"
+                  required
+                  readOnly={form.modalidad === "Local"}
+                  value={form.ubicacion}
+                  onChange={(e) => set("ubicacion", e.target.value)}
+                  className={`${inputCls} ${form.modalidad === "Local" ? "opacity-70" : ""}`}
+                  placeholder="Toluca, Edo. Méx."
+                />
+                {form.modalidad === "Foraneo" && (
+                  <p className="text-[10px] text-signal uppercase tracking-widest mt-2 leading-relaxed">
+                    {t("Los cursos foráneos generan un costo extra por viáticos y traslado del instructor.")}
+                  </p>
+                )}
               </div>
               <div>
                 <label className={labelCls}>Fecha deseada (opcional)</label>
@@ -380,6 +432,39 @@ function ContactoPage() {
                   ))}
                 </select>
               </div>
+            </div>
+
+            {/* Contratista SSPA */}
+            <div className="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label className={labelCls}>{t("Contratista / empresa cliente")}</label>
+                <select
+                  value={form.idContratista}
+                  onChange={(e) => set("idContratista", e.target.value)}
+                  className={inputCls}
+                >
+                  <option value="">{contractors.length === 0 ? t("No aplica") : t("Seleccione contratista")}</option>
+                  {contractors.map((c) => (
+                    <option key={c.IdContratista} value={c.IdContratista}>
+                      {c.nombre}
+                    </option>
+                  ))}
+                  <option value="0">{t("Otro")}</option>
+                </select>
+              </div>
+              {form.idContratista === "0" && (
+                <div>
+                  <label className={labelCls}>{t("Nombre del contratista")}</label>
+                  <input
+                    type="text"
+                    required
+                    value={form.otroContratista}
+                    onChange={(e) => set("otroContratista", e.target.value)}
+                    className={inputCls}
+                    placeholder={t("Razón social del contratista")}
+                  />
+                </div>
+              )}
             </div>
 
             {/* RFC */}

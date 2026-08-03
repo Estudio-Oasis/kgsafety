@@ -3,6 +3,7 @@ import { SectionLabel } from "@/components/site/SectionLabel";
 import { AuditableDeliverables } from "@/components/site/AuditableDeliverables";
 import { SOLUTION_FAMILIES, SERVICE_DETAILS } from "@/data/kaee";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
+import { InsumoCatalog } from "@/components/site/InsumoCatalog";
 
 export const Route = createFileRoute("/servicios")({
   component: ServiciosPage,
@@ -115,6 +116,20 @@ function ServiciosPage() {
       <QuoteBillingBanner tone="light" />
 
       {/* CTA */}
+      <section
+        id="catalogo-servicios"
+        className="scroll-mt-24 px-6 md:px-12 py-16 md:py-24 border-b border-[color:var(--border)] bg-[color:var(--surface-2)]"
+      >
+        <div className="max-w-7xl mx-auto">
+          <SectionLabel>Catálogo en línea</SectionLabel>
+          <h2 className="font-display text-2xl md:text-4xl uppercase mb-4 leading-tight">Servicios disponibles</h2>
+          <p className="text-sm md:text-base text-[color:color-mix(in_oklab,var(--on-surface)_72%,transparent)] max-w-2xl mb-10 leading-relaxed">
+            Listado vigente por familia de servicio, con ficha técnica y cotización directa.
+          </p>
+          <InsumoCatalog tipo="SERVICIO" />
+        </div>
+      </section>
+
       <section className="px-6 md:px-12 py-16 md:py-20 text-center border-t border-[color:var(--border)] bg-[color:var(--brand-navy)] kg-on-dark">
         <h2 className="font-display text-3xl md:text-5xl uppercase mb-6" style={{ color: "#fff" }}>
           ¿No sabe por dónde empezar?

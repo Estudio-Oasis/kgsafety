@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/site/SectionLabel";
+import { OpenCoursesSlider } from "@/components/site/OpenCoursesSlider";
 import teamImg from "@/assets/contractors-team.jpg";
 import { useT } from "@/i18n/context";
 
@@ -87,6 +88,8 @@ function ContratistasPage() {
       </section>
 
       {/* 1 · ¿Qué es? */}
+      <OpenCoursesSlider />
+
       <section className="px-6 md:px-12 py-16 md:py-24 border-b border-white/5 bg-anchor">
         <div className="max-w-5xl mx-auto kg-on-dark">
           <SectionLabel>{t("01 · ¿Qué es?")}</SectionLabel>

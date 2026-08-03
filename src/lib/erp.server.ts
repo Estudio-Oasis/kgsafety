@@ -160,7 +160,7 @@ type RawCalendar = {
   ETipoCursoCliente: string;
 };
 
-type RawClient = { IdCliente: number; RFC?: string; Nombre?: string; sRazonSocial?: string };
+type RawClient = { IdCliente: number; RFC?: string; Nombre?: string; RazonSocial?: string; sRazonSocial?: string };
 
 // ---------- Operaciones ----------
 
@@ -207,13 +207,13 @@ export async function listCalendar(idCurso?: number): Promise<ErpCalendarDate[]>
 export async function findClientByRfc(rfc: string): Promise<ErpClient | null> {
   const clean = normalizeRfc(rfc);
   if (clean.length < 12) return null;
-  const rows = unwrap<RawClient>(await call(`/api/clientes/-1/${encodeURIComponent(clean)}`));
-  const hit = rows[0];
+  const rows = unwrap<RawClient>(await call(`/api/clientesSspa/-1/${encodeURIComponent(clean)}`));
+  const hit = rows.find((r) => normalizeRfc(r.RFC ?? "") === clean) ?? rows[0];
   if (!hit) return null;
   return {
     IdCliente: hit.IdCliente,
     RFC: hit.RFC ?? clean,
-    Nombre: hit.Nombre ?? hit.sRazonSocial ?? "",
+    Nombre: hit.Nombre ?? hit.RazonSocial ?? hit.sRazonSocial ?? "",
   };
 }
 
@@ -223,7 +223,7 @@ export async function createClient(input: {
   correo: string;
   telefono: string;
 }): Promise<number> {
-  const res = await call<{ IdCliente?: number; Mensaje?: string }>("/api/clientes", {
+  const res = await call<{ IdCliente?: number; Mensaje?: string }>("/api/clientesSspa", {
     method: "POST",
     body: JSON.stringify({
       RFC: normalizeRfc(input.rfc),
@@ -235,6 +235,130 @@ export async function createClient(input: {
   if (!res?.IdCliente) throw new Error("ERP: no se pudo registrar el cliente");
   return res.IdCliente;
 }
+
+// ---------- CU001 / CU002: catálogo de insumos (equipos y servicios) ----------
+
+export type ErpInsumo = {
+  IdInsumo: number;
+  codigo: string;
+  nombre: string;
+  descripcion: string;
+  familia: string;
+  subfamilia: string;
+  imagen: string | null;
+  ficha: string | null;
+  medida: string;
+};
+
+type RawInsumo = {
+  IdInsumo: number;
+  IdFamilia: number | null;
+  IdSubFamilia: number | null;
+  NombreFamilia: string | null;
+  NombreSubFamilia: string | null;
+  eVisibleWebSubFamilia?: string | null;
+  Codigo: string;
+  Material: string;
+  Description: string | null;
+  Medida?: string | null;
+  URL_AWS_documento: string | null;
+  URL_AWS_imagen: string | null;
+};
+
+export async function listInsumos(tipo: "EQUIPO" | "SERVICIO"): Promise<ErpInsumo[]> {
+  const rows = unwrap<RawInsumo>(await call(`/api/AlmacenInsumos/-1/-1/-1/-1/${tipo}`));
+  return rows
+    .filter((r) => (r.Material ?? "").trim().length > 0)
+    .map((r) => ({
+      IdInsumo: r.IdInsumo,
+      codigo: r.Codigo ?? "",
+      nombre: (r.Material ?? "").trim(),
+      descripcion: (r.Description ?? "").trim(),
+      familia: (r.NombreFamilia ?? "").trim() || "Otros",
+      subfamilia: (r.NombreSubFamilia ?? "").trim(),
+      imagen: r.URL_AWS_imagen || null,
+      ficha: r.URL_AWS_documento || null,
+      medida: (r.Medida ?? "").trim(),
+    }))
+    .sort((a, b) => a.familia.localeCompare(b.familia, "es") || a.nombre.localeCompare(b.nombre, "es"));
+}
+
+// ---------- CU003: cursos abiertos del calendario vigente ----------
+
+export type ErpOpenCourse = {
+  IdCalendario: number;
+  IdCurso: number;
+  folioCurso: string;
+  curso: string;
+  ubicacion: string;
+  direccion: string;
+  cupoMaximo: number;
+  cupoReservado: number;
+  disponibles: number;
+  tipo: string;
+  tipoCliente: string;
+  imagen: string | null;
+  fechas: string[];
+};
+
+type RawOpenCourse = {
+  IdCalendario: number;
+  IdCurso: number;
+  sFolioCurso: string;
+  Curso: string;
+  SUbicacion: string;
+  SDireccion: string;
+  URL_Imagen: string;
+  dCupoMaximo: number;
+  dCupoReservado: number;
+  ETipoCurso: string;
+  ETipoCursoCliente: string;
+};
+
+export async function listOpenCourses(): Promise<ErpOpenCourse[]> {
+  const hoy = new Date().toISOString().slice(0, 10);
+  const rows = unwrap<RawOpenCourse>(await call(`/api/calendarioCursosInformacion/-1/${hoy}`));
+  const out: ErpOpenCourse[] = [];
+  for (const r of rows) {
+    let fechas: string[] = [];
+    try {
+      fechas = (await listCalendar(r.IdCurso)).map((d) => d.fecha);
+    } catch {
+      fechas = [];
+    }
+    out.push({
+      IdCalendario: r.IdCalendario,
+      IdCurso: r.IdCurso,
+      folioCurso: r.sFolioCurso ?? "",
+      curso: (r.Curso ?? "").trim(),
+      ubicacion: (r.SUbicacion ?? "").trim(),
+      direccion: (r.SDireccion ?? "").trim(),
+      cupoMaximo: Number(r.dCupoMaximo) || 0,
+      cupoReservado: Number(r.dCupoReservado) || 0,
+      disponibles: Math.max(0, (Number(r.dCupoMaximo) || 0) - (Number(r.dCupoReservado) || 0)),
+      tipo: r.ETipoCurso ?? "Local",
+      tipoCliente: r.ETipoCursoCliente ?? "Abierto",
+      imagen: r.URL_Imagen || null,
+      fechas,
+    });
+  }
+  return out;
+}
+
+// ---------- CU005: contratistas SSPA ----------
+
+export type ErpContractor = { IdContratista: number; nombre: string };
+
+export async function listContractors(): Promise<ErpContractor[]> {
+  const rows = unwrap<{ IdContratista: number; Nombre: string; Activo?: string }>(
+    await call("/api/contratistasSspa/-1/Si"),
+  );
+  return rows
+    .filter((r) => (r.Nombre ?? "").trim().length > 0)
+    .map((r) => ({ IdContratista: r.IdContratista, nombre: r.Nombre.trim() }))
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+}
+
 
 export type QuoteInput = {
   rfc: string;
@@ -250,6 +374,9 @@ export type QuoteInput = {
   lugarServicio: string;
   comentarios: string;
   fechaDeseada?: string;
+  idContratista?: number;
+  nombreContratista?: string;
+  folioCurso?: string;
 };
 
 export type QuoteResult = {
@@ -348,11 +475,14 @@ export async function createQuote(input: QuoteInput): Promise<QuoteResult> {
       .join(" · ")
       .slice(0, 900) || "Solicitud web";
 
-  const post = await raw("/api/cotizacionSolicitudes", {
+  const post = await raw("/api/cotizacionSolicitudesSspa", {
     method: "POST",
     body: JSON.stringify({
       DFechaCotizacion: fecha,
       IdCliente: idCliente,
+      IdContratista: input.idContratista ?? 0,
+      SNombreContratista: (input.nombreContratista ?? "").trim(),
+      SFolioCurso: (input.folioCurso ?? "").trim(),
       IdServicio: idServicio,
       IdCurso: input.idCurso,
       ICantidad: input.participantes,

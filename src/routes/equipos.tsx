@@ -5,6 +5,7 @@ import { EQUIPMENT_IMAGES } from "@/lib/equipment-images";
 import { useT } from "@/i18n/context";
 import { EQUIPMENT } from "@/data/kaee";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
+import { InsumoCatalog } from "@/components/site/InsumoCatalog";
 
 export const Route = createFileRoute("/equipos")({
   component: EquiposPage,
@@ -56,6 +57,19 @@ function EquiposPage() {
         </div>
       </section>
 
+
+      <section id="catalogo-en-linea" className="kg-on-dark scroll-mt-24 px-6 md:px-12 py-20 md:py-28 border-b border-white/5 bg-brand-navy">
+        <div className="max-w-7xl mx-auto">
+          <SectionLabel>{t("Catálogo en línea")}</SectionLabel>
+          <h2 className="font-display text-2xl md:text-4xl uppercase mb-4 leading-tight text-white">
+            {t("Equipos disponibles")}
+          </h2>
+          <p className="text-sm md:text-base text-white/70 max-w-2xl mb-10 leading-relaxed">
+            {t("Inventario en vivo por familia de producto, con ficha técnica y cotización directa.")}
+          </p>
+          <InsumoCatalog tipo="EQUIPO" />
+        </div>
+      </section>
 
       <section className="px-6 md:px-12 py-20 md:py-28 border-b border-white/5">
         <div className="max-w-7xl mx-auto">
