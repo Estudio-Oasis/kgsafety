@@ -15,6 +15,9 @@ const quoteSchema = z.object({
   lugarServicio: z.string().trim().max(200).default(""),
   comentarios: z.string().trim().max(800).default(""),
   fechaDeseada: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  idContratista: z.number().int().min(0).default(0),
+  nombreContratista: z.string().trim().max(160).default(""),
+  folioCurso: z.string().trim().max(40).default(""),
 });
 
 export const erpListCourses = createServerFn({ method: "GET" }).handler(async () => {
@@ -117,3 +120,37 @@ export const erpCreateQuote = createServerFn({ method: "POST" })
     }
   });
 
+
+export const erpListInsumos = createServerFn({ method: "GET" })
+  .inputValidator((data: { tipo: "EQUIPO" | "SERVICIO" }) =>
+    z.object({ tipo: z.enum(["EQUIPO", "SERVICIO"]) }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    const { listInsumos } = await import("./erp.server");
+    try {
+      return { ok: true as const, items: await listInsumos(data.tipo) };
+    } catch (e) {
+      console.error(e);
+      return { ok: false as const, items: [] };
+    }
+  });
+
+export const erpListOpenCourses = createServerFn({ method: "GET" }).handler(async () => {
+  const { listOpenCourses } = await import("./erp.server");
+  try {
+    return { ok: true as const, courses: await listOpenCourses() };
+  } catch (e) {
+    console.error(e);
+    return { ok: false as const, courses: [] };
+  }
+});
+
+export const erpListContractors = createServerFn({ method: "GET" }).handler(async () => {
+  const { listContractors } = await import("./erp.server");
+  try {
+    return { ok: true as const, contractors: await listContractors() };
+  } catch (e) {
+    console.error(e);
+    return { ok: false as const, contractors: [] };
+  }
+});
