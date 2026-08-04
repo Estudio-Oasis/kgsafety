@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react";
 import { useTheme } from "@/theme/context";
 import { useT } from "@/i18n/context";
@@ -50,7 +50,17 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>("Soluciones");
   const { theme, toggle: toggleTheme } = useTheme();
-  const { lang, toggle: toggleLang, t } = useT();
+  const { t } = useT();
+
+  // Esc cierra el menú móvil.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md kg-header border-b border-[color:var(--border)]">
@@ -66,16 +76,6 @@ export function SiteHeader() {
           <Link to="/facturacion" hash="autofactura" className="hover:text-[color:var(--signal)] transition-colors">
             {t("Facturar")}
           </Link>
-          <Link to="/portal/login" className="hover:text-[color:var(--signal)] transition-colors">
-            {t("Portal clientes")}
-          </Link>
-          <button
-            onClick={toggleLang}
-            aria-label={t("Cambiar idioma")}
-            className="hover:text-[color:var(--signal)] transition-colors"
-          >
-            {lang === "es" ? "EN" : "ES"}
-          </button>
           <button
             onClick={toggleTheme}
             aria-label={t("Cambiar tema")}
@@ -86,16 +86,18 @@ export function SiteHeader() {
         </div>
       </div>
 
+
       {/* Main bar */}
-      <nav className="px-4 md:px-8 lg:px-12 py-4 flex justify-between items-center gap-4">
-        <Link to="/" className="flex items-center gap-3 shrink-0" onClick={() => setOpen(false)}>
-          <div className="w-9 h-9 md:w-10 md:h-10 bg-brand-navy grid place-items-center">
+      <nav className="px-3 sm:px-4 md:px-8 lg:px-12 py-4 flex justify-between items-center gap-2 sm:gap-4">
+        <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3" onClick={() => setOpen(false)}>
+          <div className="w-9 h-9 md:w-10 md:h-10 shrink-0 bg-brand-navy grid place-items-center">
             <div className="w-4 h-4 md:w-5 md:h-5 border-[3px] border-signal" />
           </div>
-          <span className="font-display text-sm md:text-lg tracking-tighter uppercase text-[color:var(--on-surface)]">
+          <span className="truncate font-display text-sm md:text-lg tracking-tighter uppercase text-[color:var(--on-surface)]">
             KG <span className="text-brand-blue">Safety</span>
           </span>
         </Link>
+
 
         {/* Primary nav (desktop) */}
         <div className="hidden lg:flex flex-1 justify-center items-center gap-2 xl:gap-4 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.12em] xl:tracking-[0.18em] text-[color:color-mix(in_oklab,var(--on-surface)_72%,transparent)]">
@@ -145,24 +147,18 @@ export function SiteHeader() {
 
 
         {/* Right cluster */}
-        <div className="flex items-center gap-2 md:gap-3 shrink-0">
-          {/* Mobile-only theme + lang */}
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-3 shrink-0">
+          {/* Mobile-only theme */}
           <button
             type="button"
             onClick={toggleTheme}
             aria-label={t("Cambiar tema")}
-            className="lg:hidden inline-flex items-center justify-center min-w-11 min-h-11 bg-brand-navy text-white border border-brand-navy rounded-md"
+            className="lg:hidden inline-flex items-center justify-center min-w-10 min-h-10 sm:min-w-11 sm:min-h-11 bg-brand-navy text-white border border-brand-navy rounded-md"
           >
             {theme === "dark" ? <Sun size={18} strokeWidth={2.5} color="#F5C500" /> : <Moon size={18} strokeWidth={2.5} color="#ffffff" />}
           </button>
-          <button
-            type="button"
-            onClick={toggleLang}
-            aria-label={t("Cambiar idioma")}
-            className="lg:hidden inline-flex items-center justify-center min-w-11 min-h-11 text-[11px] font-bold uppercase tracking-widest text-white bg-brand-blue border border-brand-blue rounded-md"
-          >
-            {lang === "es" ? "EN" : "ES"}
-          </button>
+
+
 
           <Link
             to="/contacto"
@@ -185,8 +181,12 @@ export function SiteHeader() {
 
       {/* Mobile menu */}
       {open && (
-        <div id="kg-mobile-nav" className="absolute top-full left-0 right-0 kg-header border-b border-[color:var(--border)] lg:hidden animate-mobile-in">
-          <div className="flex flex-col p-6 gap-2 text-sm font-bold uppercase tracking-widest text-[color:color-mix(in_oklab,var(--on-surface)_85%,transparent)]">
+        <div
+          id="kg-mobile-nav"
+          className="absolute top-full left-0 right-0 kg-header border-b border-[color:var(--border)] lg:hidden animate-mobile-in max-h-[calc(100dvh-8rem)] overflow-y-auto overscroll-contain"
+        >
+          <div className="flex flex-col p-5 sm:p-6 gap-2 text-sm font-bold uppercase tracking-widest text-[color:color-mix(in_oklab,var(--on-surface)_85%,transparent)]">
+
             <Link
               to="/"
               className="hover:text-brand-blue transition-colors py-2"
@@ -242,13 +242,7 @@ export function SiteHeader() {
               );
             })}
             <Link
-              to="/portal/login"
-              className="border-t border-[color:var(--border)] pt-3 mt-1 py-2 hover:text-brand-blue transition-colors"
-              onClick={() => setOpen(false)}
-            >
-              {t("Portal clientes")}
-            </Link>
-            <Link
+
               to="/contacto"
               className="bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold text-xs uppercase tracking-tighter text-center mt-3"
               onClick={() => setOpen(false)}

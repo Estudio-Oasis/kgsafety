@@ -58,12 +58,46 @@ const ROLE_LABEL: Record<Role, string> = {
   "equipo-kg": "Equipo KG Safety",
 };
 
+const PORTAL_ENABLED = import.meta.env['VITE_PORTAL_ENABLED'] === "true";
+
+function PortalUnavailable() {
+  return (
+    <div className="min-h-screen grid place-items-center bg-[color:var(--surface)] text-[color:var(--on-surface)] px-6">
+      <div className="max-w-md text-center">
+        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-blue mb-4">
+          Portal de clientes
+        </p>
+        <h1 className="font-display text-2xl md:text-3xl uppercase mb-4">En construcción</h1>
+        <p className="text-sm text-[color:var(--muted-fg)] mb-8">
+          El portal de clientes está en desarrollo y no se encuentra disponible públicamente.
+          Para consultar documentación, certificaciones o servicios, contacte a su ejecutivo KG Safety.
+        </p>
+        <div className="flex flex-wrap justify-center gap-3">
+          <Link
+            to="/contacto"
+            className="bg-signal text-[color:var(--anchor-fixed)] px-6 py-3 font-bold text-[11px] uppercase tracking-widest"
+          >
+            Contactar
+          </Link>
+          <Link
+            to="/"
+            className="border border-[color:var(--border)] px-6 py-3 font-bold text-[11px] uppercase tracking-widest hover:border-brand-blue hover:text-brand-blue transition-colors"
+          >
+            Volver al sitio
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PortalLayout() {
   const { session, ready, logout } = usePortalSession();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isLogin = pathname === "/portal/login";
   const [mobileOpen, setMobileOpen] = useState(false);
+
 
   useEffect(() => {
     if (ready && !session && !isLogin) {
@@ -72,6 +106,10 @@ function PortalLayout() {
   }, [ready, session, isLogin, navigate]);
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  if (!PORTAL_ENABLED) return <PortalUnavailable />;
+
+
 
   if (isLogin) {
     return (

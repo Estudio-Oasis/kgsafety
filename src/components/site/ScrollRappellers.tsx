@@ -142,7 +142,7 @@ export function ScrollRappellers() {
         onClick={toggle}
         aria-pressed={enabled}
         title={enabled ? "Desactivar animación" : "Activar animación"}
-        className="fixed bottom-4 left-4 z-[40] flex h-7 items-center justify-center rounded-sm border border-white/15 bg-black/50 px-2 text-[9px] font-bold uppercase tracking-widest text-white/80 shadow backdrop-blur transition hover:bg-black/70"
+        className="hidden md:flex fixed bottom-4 left-4 z-[40] h-7 items-center justify-center rounded-sm border border-white/15 bg-black/50 px-2 text-[9px] font-bold uppercase tracking-widest text-white/80 shadow backdrop-blur transition hover:bg-black/70"
       >
         FX {enabled ? "ON" : "OFF"}
       </button>
