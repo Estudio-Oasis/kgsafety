@@ -78,7 +78,11 @@ export function FacturacionFlow() {
 
   async function validarPago(e: React.FormEvent) {
     e.preventDefault();
-    if (!cotizacion.trim()) return;
+    if (!cotizacion.trim()) {
+      setCliente(null);
+      setError(t("Ingrese el folio de cotización para continuar."));
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
