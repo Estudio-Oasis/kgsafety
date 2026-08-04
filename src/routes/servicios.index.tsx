@@ -5,7 +5,7 @@ import { SOLUTION_FAMILIES, SERVICE_DETAILS } from "@/data/kaee";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 import { InsumoCatalog } from "@/components/site/InsumoCatalog";
 
-export const Route = createFileRoute("/servicios")({
+export const Route = createFileRoute("/servicios/")({
   component: ServiciosPage,
   head: () => ({
     meta: [

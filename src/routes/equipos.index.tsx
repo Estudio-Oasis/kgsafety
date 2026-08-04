@@ -7,7 +7,7 @@ import { EQUIPMENT } from "@/data/kaee";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 import { InsumoCatalog } from "@/components/site/InsumoCatalog";
 
-export const Route = createFileRoute("/equipos")({
+export const Route = createFileRoute("/equipos/")({
   component: EquiposPage,
   head: () => ({
     meta: [

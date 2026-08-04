@@ -131,9 +131,9 @@ const CapacitacionIndexRoute = CapacitacionIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const CapacitacionCursoRoute = CapacitacionCursoRouteImport.update({
-  id: '/capacitacion/$curso',
-  path: '/capacitacion/$curso',
-  getParentRoute: () => rootRouteImport,
+  id: '/$curso',
+  path: '/$curso',
+  getParentRoute: () => CapacitacionRoute,
 } as any)
 const EquiposIndexRoute = EquiposIndexRouteImport.update({
   id: '/equipos/',
@@ -141,9 +141,9 @@ const EquiposIndexRoute = EquiposIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const EquiposCategoriaRoute = EquiposCategoriaRouteImport.update({
-  id: '/equipos/$categoria',
-  path: '/equipos/$categoria',
-  getParentRoute: () => rootRouteImport,
+  id: '/$categoria',
+  path: '/$categoria',
+  getParentRoute: () => EquiposRoute,
 } as any)
 const IngenieriaIndexRoute = IngenieriaIndexRouteImport.update({
   id: '/ingenieria/',
@@ -151,9 +151,9 @@ const IngenieriaIndexRoute = IngenieriaIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const IngenieriaServicioRoute = IngenieriaServicioRouteImport.update({
-  id: '/ingenieria/$servicio',
-  path: '/ingenieria/$servicio',
-  getParentRoute: () => rootRouteImport,
+  id: '/$servicio',
+  path: '/$servicio',
+  getParentRoute: () => IngenieriaRoute,
 } as any)
 const PortalIndexRoute = PortalIndexRouteImport.update({
   id: '/',
@@ -221,9 +221,9 @@ const ServiciosIndexRoute = ServiciosIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServiciosServicioRoute = ServiciosServicioRouteImport.update({
-  id: '/servicios/$servicio',
-  path: '/servicios/$servicio',
-  getParentRoute: () => rootRouteImport,
+  id: '/$servicio',
+  path: '/$servicio',
+  getParentRoute: () => ServiciosRoute,
 } as any)
 const PortalClientesIndexRoute = PortalClientesIndexRouteImport.update({
   id: '/clientes/',
@@ -517,10 +517,6 @@ export interface RootRouteChildren {
   PortalRoute: typeof PortalRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SolucionesRoute: typeof SolucionesRoute
-  CapacitacionCursoRoute: typeof CapacitacionCursoRoute
-  EquiposCategoriaRoute: typeof EquiposCategoriaRoute
-  IngenieriaServicioRoute: typeof IngenieriaServicioRoute
-  ServiciosServicioRoute: typeof ServiciosServicioRoute
   CapacitacionIndexRoute: typeof CapacitacionIndexRoute
   EquiposIndexRoute: typeof EquiposIndexRoute
   IngenieriaIndexRoute: typeof IngenieriaIndexRoute
@@ -643,10 +639,10 @@ declare module '@tanstack/react-router' {
     }
     '/capacitacion/$curso': {
       id: '/capacitacion/$curso'
-      path: '/capacitacion/$curso'
+      path: '/$curso'
       fullPath: '/capacitacion/$curso'
       preLoaderRoute: typeof CapacitacionCursoRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof CapacitacionRoute
     }
     '/equipos/': {
       id: '/equipos/'
@@ -657,10 +653,10 @@ declare module '@tanstack/react-router' {
     }
     '/equipos/$categoria': {
       id: '/equipos/$categoria'
-      path: '/equipos/$categoria'
+      path: '/$categoria'
       fullPath: '/equipos/$categoria'
       preLoaderRoute: typeof EquiposCategoriaRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof EquiposRoute
     }
     '/ingenieria/': {
       id: '/ingenieria/'
@@ -671,10 +667,10 @@ declare module '@tanstack/react-router' {
     }
     '/ingenieria/$servicio': {
       id: '/ingenieria/$servicio'
-      path: '/ingenieria/$servicio'
+      path: '/$servicio'
       fullPath: '/ingenieria/$servicio'
       preLoaderRoute: typeof IngenieriaServicioRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof IngenieriaRoute
     }
     '/portal/': {
       id: '/portal/'
@@ -769,10 +765,10 @@ declare module '@tanstack/react-router' {
     }
     '/servicios/$servicio': {
       id: '/servicios/$servicio'
-      path: '/servicios/$servicio'
+      path: '/$servicio'
       fullPath: '/servicios/$servicio'
       preLoaderRoute: typeof ServiciosServicioRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ServiciosRoute
     }
     '/portal/clientes/': {
       id: '/portal/clientes/'
@@ -881,10 +877,6 @@ const rootRouteChildren: RootRouteChildren = {
   PortalRoute: PortalRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SolucionesRoute: SolucionesRoute,
-  CapacitacionCursoRoute: CapacitacionCursoRoute,
-  EquiposCategoriaRoute: EquiposCategoriaRoute,
-  IngenieriaServicioRoute: IngenieriaServicioRoute,
-  ServiciosServicioRoute: ServiciosServicioRoute,
   CapacitacionIndexRoute: CapacitacionIndexRoute,
   EquiposIndexRoute: EquiposIndexRoute,
   IngenieriaIndexRoute: IngenieriaIndexRoute,
@@ -893,3 +885,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
