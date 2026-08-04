@@ -543,11 +543,17 @@ function ContactoPage() {
 
             <button
               type="submit"
-              disabled={!form.acepta || sending}
-              className="w-full bg-signal text-anchor font-bold py-4 text-sm tracking-widest uppercase hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!form.acepta || sending || rfcState.status === "invalido" || rfcState.status === "checking"}
+              className="w-full min-h-12 bg-signal text-anchor font-bold py-4 text-sm tracking-widest uppercase hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {sending ? "Enviando…" : t("Enviar cotización")}
             </button>
+            {rfcState.status === "invalido" && (
+              <p className="text-[10px] text-red-400 uppercase tracking-widest text-center">
+                Corrija el RFC para poder enviar la solicitud.
+              </p>
+            )}
+
             <p className="text-[10px] text-white/40 uppercase tracking-widest text-center">
               {t("También puede escribirnos a capacitacion@kg-safety.com")}
             </p>
