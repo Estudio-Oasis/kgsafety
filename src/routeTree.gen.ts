@@ -9,120 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SolucionesRouteImport } from './routes/soluciones'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ServiciosRouteImport } from './routes/servicios'
-import { Route as PortalRouteImport } from './routes/portal'
-import { Route as NosotrosRouteImport } from './routes/nosotros'
-import { Route as IngenieriaRouteImport } from './routes/ingenieria'
-import { Route as IndustriasRouteImport } from './routes/industrias'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as FacturacionRouteImport } from './routes/facturacion'
-import { Route as EquiposRouteImport } from './routes/equipos'
-import { Route as CumplimientoRouteImport } from './routes/cumplimiento'
-import { Route as ContratistasRouteImport } from './routes/contratistas'
-import { Route as ContactoRouteImport } from './routes/contacto'
-import { Route as CapacitacionRouteImport } from './routes/capacitacion'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AvisoDePrivacidadRouteImport } from './routes/aviso-de-privacidad'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as AvisoDePrivacidadRouteImport } from './routes/aviso-de-privacidad'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as CapacitacionRouteImport } from './routes/capacitacion'
+import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as ContratistasRouteImport } from './routes/contratistas'
+import { Route as CumplimientoRouteImport } from './routes/cumplimiento'
+import { Route as EquiposRouteImport } from './routes/equipos'
+import { Route as FacturacionRouteImport } from './routes/facturacion'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as IndustriasRouteImport } from './routes/industrias'
+import { Route as IngenieriaRouteImport } from './routes/ingenieria'
+import { Route as NosotrosRouteImport } from './routes/nosotros'
+import { Route as PortalRouteImport } from './routes/portal'
+import { Route as ServiciosRouteImport } from './routes/servicios'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SolucionesRouteImport } from './routes/soluciones'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as ServiciosServicioRouteImport } from './routes/servicios.$servicio'
-import { Route as PortalSolicitudesRouteImport } from './routes/portal.solicitudes'
-import { Route as PortalSistemasRouteImport } from './routes/portal.sistemas'
-import { Route as PortalPersonalRouteImport } from './routes/portal.personal'
-import { Route as PortalLoginRouteImport } from './routes/portal.login'
-import { Route as PortalFacturacionRouteImport } from './routes/portal.facturacion'
-import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
-import { Route as PortalConstanciasRouteImport } from './routes/portal.constancias'
-import { Route as PortalCertificacionesRouteImport } from './routes/portal.certificaciones'
-import { Route as PortalCalendarioRouteImport } from './routes/portal.calendario'
-import { Route as PortalBibliotecaRouteImport } from './routes/portal.biblioteca'
-import { Route as PortalAdminRouteImport } from './routes/portal.admin'
-import { Route as IngenieriaServicioRouteImport } from './routes/ingenieria.$servicio'
-import { Route as EquiposCategoriaRouteImport } from './routes/equipos.$categoria'
-import { Route as CapacitacionCursoRouteImport } from './routes/capacitacion.$curso'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as PortalProyectosIndexRouteImport } from './routes/portal.proyectos.index'
+import { Route as CapacitacionCursoRouteImport } from './routes/capacitacion.$curso'
+import { Route as EquiposCategoriaRouteImport } from './routes/equipos.$categoria'
+import { Route as IngenieriaServicioRouteImport } from './routes/ingenieria.$servicio'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as PortalAdminRouteImport } from './routes/portal.admin'
+import { Route as PortalBibliotecaRouteImport } from './routes/portal.biblioteca'
+import { Route as PortalCalendarioRouteImport } from './routes/portal.calendario'
+import { Route as PortalCertificacionesRouteImport } from './routes/portal.certificaciones'
+import { Route as PortalConstanciasRouteImport } from './routes/portal.constancias'
+import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
+import { Route as PortalFacturacionRouteImport } from './routes/portal.facturacion'
+import { Route as PortalLoginRouteImport } from './routes/portal.login'
+import { Route as PortalPersonalRouteImport } from './routes/portal.personal'
+import { Route as PortalSistemasRouteImport } from './routes/portal.sistemas'
+import { Route as PortalSolicitudesRouteImport } from './routes/portal.solicitudes'
+import { Route as ServiciosServicioRouteImport } from './routes/servicios.$servicio'
 import { Route as PortalClientesIndexRouteImport } from './routes/portal.clientes.index'
-import { Route as PortalProyectosIdRouteImport } from './routes/portal.proyectos.$id'
-import { Route as PortalPlantasSlugRouteImport } from './routes/portal.plantas.$slug'
 import { Route as PortalClientesSlugRouteImport } from './routes/portal.clientes.$slug'
+import { Route as PortalPlantasSlugRouteImport } from './routes/portal.plantas.$slug'
+import { Route as PortalProyectosIndexRouteImport } from './routes/portal.proyectos.index'
+import { Route as PortalProyectosIdRouteImport } from './routes/portal.proyectos.$id'
 
-const SolucionesRoute = SolucionesRouteImport.update({
-  id: '/soluciones',
-  path: '/soluciones',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServiciosRoute = ServiciosRouteImport.update({
-  id: '/servicios',
-  path: '/servicios',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortalRoute = PortalRouteImport.update({
-  id: '/portal',
-  path: '/portal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NosotrosRoute = NosotrosRouteImport.update({
-  id: '/nosotros',
-  path: '/nosotros',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IngenieriaRoute = IngenieriaRouteImport.update({
-  id: '/ingenieria',
-  path: '/ingenieria',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndustriasRoute = IndustriasRouteImport.update({
-  id: '/industrias',
-  path: '/industrias',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FacturacionRoute = FacturacionRouteImport.update({
-  id: '/facturacion',
-  path: '/facturacion',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EquiposRoute = EquiposRouteImport.update({
-  id: '/equipos',
-  path: '/equipos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CumplimientoRoute = CumplimientoRouteImport.update({
-  id: '/cumplimiento',
-  path: '/cumplimiento',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContratistasRoute = ContratistasRouteImport.update({
-  id: '/contratistas',
-  path: '/contratistas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactoRoute = ContactoRouteImport.update({
-  id: '/contacto',
-  path: '/contacto',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CapacitacionRoute = CapacitacionRouteImport.update({
-  id: '/capacitacion',
-  path: '/capacitacion',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AvisoDePrivacidadRoute = AvisoDePrivacidadRouteImport.update({
@@ -130,74 +60,109 @@ const AvisoDePrivacidadRoute = AvisoDePrivacidadRouteImport.update({
   path: '/aviso-de-privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortalIndexRoute = PortalIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PortalRoute,
+const CapacitacionRoute = CapacitacionRouteImport.update({
+  id: '/capacitacion',
+  path: '/capacitacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContratistasRoute = ContratistasRouteImport.update({
+  id: '/contratistas',
+  path: '/contratistas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CumplimientoRoute = CumplimientoRouteImport.update({
+  id: '/cumplimiento',
+  path: '/cumplimiento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EquiposRoute = EquiposRouteImport.update({
+  id: '/equipos',
+  path: '/equipos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FacturacionRoute = FacturacionRouteImport.update({
+  id: '/facturacion',
+  path: '/facturacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriasRoute = IndustriasRouteImport.update({
+  id: '/industrias',
+  path: '/industrias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IngenieriaRoute = IngenieriaRouteImport.update({
+  id: '/ingenieria',
+  path: '/ingenieria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NosotrosRoute = NosotrosRouteImport.update({
+  id: '/nosotros',
+  path: '/nosotros',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosRoute = ServiciosRouteImport.update({
+  id: '/servicios',
+  path: '/servicios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolucionesRoute = SolucionesRouteImport.update({
+  id: '/soluciones',
+  path: '/soluciones',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => BlogRoute,
 } as any)
-const ServiciosServicioRoute = ServiciosServicioRouteImport.update({
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
+const CapacitacionCursoRoute = CapacitacionCursoRouteImport.update({
+  id: '/$curso',
+  path: '/$curso',
+  getParentRoute: () => CapacitacionRoute,
+} as any)
+const EquiposCategoriaRoute = EquiposCategoriaRouteImport.update({
+  id: '/$categoria',
+  path: '/$categoria',
+  getParentRoute: () => EquiposRoute,
+} as any)
+const IngenieriaServicioRoute = IngenieriaServicioRouteImport.update({
   id: '/$servicio',
   path: '/$servicio',
-  getParentRoute: () => ServiciosRoute,
+  getParentRoute: () => IngenieriaRoute,
 } as any)
-const PortalSolicitudesRoute = PortalSolicitudesRouteImport.update({
-  id: '/solicitudes',
-  path: '/solicitudes',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalSistemasRoute = PortalSistemasRouteImport.update({
-  id: '/sistemas',
-  path: '/sistemas',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalPersonalRoute = PortalPersonalRouteImport.update({
-  id: '/personal',
-  path: '/personal',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalLoginRoute = PortalLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalFacturacionRoute = PortalFacturacionRouteImport.update({
-  id: '/facturacion',
-  path: '/facturacion',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalDocumentosRoute = PortalDocumentosRouteImport.update({
-  id: '/documentos',
-  path: '/documentos',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalConstanciasRoute = PortalConstanciasRouteImport.update({
-  id: '/constancias',
-  path: '/constancias',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalCertificacionesRoute = PortalCertificacionesRouteImport.update({
-  id: '/certificaciones',
-  path: '/certificaciones',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalCalendarioRoute = PortalCalendarioRouteImport.update({
-  id: '/calendario',
-  path: '/calendario',
-  getParentRoute: () => PortalRoute,
-} as any)
-const PortalBibliotecaRoute = PortalBibliotecaRouteImport.update({
-  id: '/biblioteca',
-  path: '/biblioteca',
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => PortalRoute,
 } as any)
 const PortalAdminRoute = PortalAdminRouteImport.update({
@@ -205,39 +170,69 @@ const PortalAdminRoute = PortalAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => PortalRoute,
 } as any)
-const IngenieriaServicioRoute = IngenieriaServicioRouteImport.update({
+const PortalBibliotecaRoute = PortalBibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalCalendarioRoute = PortalCalendarioRouteImport.update({
+  id: '/calendario',
+  path: '/calendario',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalCertificacionesRoute = PortalCertificacionesRouteImport.update({
+  id: '/certificaciones',
+  path: '/certificaciones',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalConstanciasRoute = PortalConstanciasRouteImport.update({
+  id: '/constancias',
+  path: '/constancias',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalDocumentosRoute = PortalDocumentosRouteImport.update({
+  id: '/documentos',
+  path: '/documentos',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalFacturacionRoute = PortalFacturacionRouteImport.update({
+  id: '/facturacion',
+  path: '/facturacion',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalLoginRoute = PortalLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalPersonalRoute = PortalPersonalRouteImport.update({
+  id: '/personal',
+  path: '/personal',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalSistemasRoute = PortalSistemasRouteImport.update({
+  id: '/sistemas',
+  path: '/sistemas',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalSolicitudesRoute = PortalSolicitudesRouteImport.update({
+  id: '/solicitudes',
+  path: '/solicitudes',
+  getParentRoute: () => PortalRoute,
+} as any)
+const ServiciosServicioRoute = ServiciosServicioRouteImport.update({
   id: '/$servicio',
   path: '/$servicio',
-  getParentRoute: () => IngenieriaRoute,
-} as any)
-const EquiposCategoriaRoute = EquiposCategoriaRouteImport.update({
-  id: '/$categoria',
-  path: '/$categoria',
-  getParentRoute: () => EquiposRoute,
-} as any)
-const CapacitacionCursoRoute = CapacitacionCursoRouteImport.update({
-  id: '/$curso',
-  path: '/$curso',
-  getParentRoute: () => CapacitacionRoute,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
-} as any)
-const PortalProyectosIndexRoute = PortalProyectosIndexRouteImport.update({
-  id: '/proyectos/',
-  path: '/proyectos/',
-  getParentRoute: () => PortalRoute,
+  getParentRoute: () => ServiciosRoute,
 } as any)
 const PortalClientesIndexRoute = PortalClientesIndexRouteImport.update({
   id: '/clientes/',
   path: '/clientes/',
   getParentRoute: () => PortalRoute,
 } as any)
-const PortalProyectosIdRoute = PortalProyectosIdRouteImport.update({
-  id: '/proyectos/$id',
-  path: '/proyectos/$id',
+const PortalClientesSlugRoute = PortalClientesSlugRouteImport.update({
+  id: '/clientes/$slug',
+  path: '/clientes/$slug',
   getParentRoute: () => PortalRoute,
 } as any)
 const PortalPlantasSlugRoute = PortalPlantasSlugRouteImport.update({
@@ -245,9 +240,14 @@ const PortalPlantasSlugRoute = PortalPlantasSlugRouteImport.update({
   path: '/plantas/$slug',
   getParentRoute: () => PortalRoute,
 } as any)
-const PortalClientesSlugRoute = PortalClientesSlugRouteImport.update({
-  id: '/clientes/$slug',
-  path: '/clientes/$slug',
+const PortalProyectosIndexRoute = PortalProyectosIndexRouteImport.update({
+  id: '/proyectos/',
+  path: '/proyectos/',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalProyectosIdRoute = PortalProyectosIdRouteImport.update({
+  id: '/proyectos/$id',
+  path: '/proyectos/$id',
   getParentRoute: () => PortalRoute,
 } as any)
 
@@ -525,109 +525,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/soluciones': {
-      id: '/soluciones'
-      path: '/soluciones'
-      fullPath: '/soluciones'
-      preLoaderRoute: typeof SolucionesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/servicios': {
-      id: '/servicios'
-      path: '/servicios'
-      fullPath: '/servicios'
-      preLoaderRoute: typeof ServiciosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portal': {
-      id: '/portal'
-      path: '/portal'
-      fullPath: '/portal'
-      preLoaderRoute: typeof PortalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/nosotros': {
-      id: '/nosotros'
-      path: '/nosotros'
-      fullPath: '/nosotros'
-      preLoaderRoute: typeof NosotrosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ingenieria': {
-      id: '/ingenieria'
-      path: '/ingenieria'
-      fullPath: '/ingenieria'
-      preLoaderRoute: typeof IngenieriaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/industrias': {
-      id: '/industrias'
-      path: '/industrias'
-      fullPath: '/industrias'
-      preLoaderRoute: typeof IndustriasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/facturacion': {
-      id: '/facturacion'
-      path: '/facturacion'
-      fullPath: '/facturacion'
-      preLoaderRoute: typeof FacturacionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/equipos': {
-      id: '/equipos'
-      path: '/equipos'
-      fullPath: '/equipos'
-      preLoaderRoute: typeof EquiposRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cumplimiento': {
-      id: '/cumplimiento'
-      path: '/cumplimiento'
-      fullPath: '/cumplimiento'
-      preLoaderRoute: typeof CumplimientoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contratistas': {
-      id: '/contratistas'
-      path: '/contratistas'
-      fullPath: '/contratistas'
-      preLoaderRoute: typeof ContratistasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contacto': {
-      id: '/contacto'
-      path: '/contacto'
-      fullPath: '/contacto'
-      preLoaderRoute: typeof ContactoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/capacitacion': {
-      id: '/capacitacion'
-      path: '/capacitacion'
-      fullPath: '/capacitacion'
-      preLoaderRoute: typeof CapacitacionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aviso-de-privacidad': {
@@ -637,19 +539,110 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AvisoDePrivacidadRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portal/': {
-      id: '/portal/'
-      path: '/'
-      fullPath: '/portal/'
-      preLoaderRoute: typeof PortalIndexRouteImport
-      parentRoute: typeof PortalRoute
+    '/capacitacion': {
+      id: '/capacitacion'
+      path: '/capacitacion'
+      fullPath: '/capacitacion'
+      preLoaderRoute: typeof CapacitacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contratistas': {
+      id: '/contratistas'
+      path: '/contratistas'
+      fullPath: '/contratistas'
+      preLoaderRoute: typeof ContratistasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento': {
+      id: '/cumplimiento'
+      path: '/cumplimiento'
+      fullPath: '/cumplimiento'
+      preLoaderRoute: typeof CumplimientoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/equipos': {
+      id: '/equipos'
+      path: '/equipos'
+      fullPath: '/equipos'
+      preLoaderRoute: typeof EquiposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/facturacion': {
+      id: '/facturacion'
+      path: '/facturacion'
+      fullPath: '/facturacion'
+      preLoaderRoute: typeof FacturacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industrias': {
+      id: '/industrias'
+      path: '/industrias'
+      fullPath: '/industrias'
+      preLoaderRoute: typeof IndustriasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ingenieria': {
+      id: '/ingenieria'
+      path: '/ingenieria'
+      fullPath: '/ingenieria'
+      preLoaderRoute: typeof IngenieriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nosotros': {
+      id: '/nosotros'
+      path: '/nosotros'
+      fullPath: '/nosotros'
+      preLoaderRoute: typeof NosotrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios': {
+      id: '/servicios'
+      path: '/servicios'
+      fullPath: '/servicios'
+      preLoaderRoute: typeof ServiciosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/soluciones': {
+      id: '/soluciones'
+      path: '/soluciones'
+      fullPath: '/soluciones'
+      preLoaderRoute: typeof SolucionesRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/': {
       id: '/blog/'
@@ -658,81 +651,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof BlogRoute
     }
-    '/servicios/$servicio': {
-      id: '/servicios/$servicio'
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/capacitacion/$curso': {
+      id: '/capacitacion/$curso'
+      path: '/$curso'
+      fullPath: '/capacitacion/$curso'
+      preLoaderRoute: typeof CapacitacionCursoRouteImport
+      parentRoute: typeof CapacitacionRoute
+    }
+    '/equipos/$categoria': {
+      id: '/equipos/$categoria'
+      path: '/$categoria'
+      fullPath: '/equipos/$categoria'
+      preLoaderRoute: typeof EquiposCategoriaRouteImport
+      parentRoute: typeof EquiposRoute
+    }
+    '/ingenieria/$servicio': {
+      id: '/ingenieria/$servicio'
       path: '/$servicio'
-      fullPath: '/servicios/$servicio'
-      preLoaderRoute: typeof ServiciosServicioRouteImport
-      parentRoute: typeof ServiciosRoute
+      fullPath: '/ingenieria/$servicio'
+      preLoaderRoute: typeof IngenieriaServicioRouteImport
+      parentRoute: typeof IngenieriaRoute
     }
-    '/portal/solicitudes': {
-      id: '/portal/solicitudes'
-      path: '/solicitudes'
-      fullPath: '/portal/solicitudes'
-      preLoaderRoute: typeof PortalSolicitudesRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/sistemas': {
-      id: '/portal/sistemas'
-      path: '/sistemas'
-      fullPath: '/portal/sistemas'
-      preLoaderRoute: typeof PortalSistemasRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/personal': {
-      id: '/portal/personal'
-      path: '/personal'
-      fullPath: '/portal/personal'
-      preLoaderRoute: typeof PortalPersonalRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/login': {
-      id: '/portal/login'
-      path: '/login'
-      fullPath: '/portal/login'
-      preLoaderRoute: typeof PortalLoginRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/facturacion': {
-      id: '/portal/facturacion'
-      path: '/facturacion'
-      fullPath: '/portal/facturacion'
-      preLoaderRoute: typeof PortalFacturacionRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/documentos': {
-      id: '/portal/documentos'
-      path: '/documentos'
-      fullPath: '/portal/documentos'
-      preLoaderRoute: typeof PortalDocumentosRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/constancias': {
-      id: '/portal/constancias'
-      path: '/constancias'
-      fullPath: '/portal/constancias'
-      preLoaderRoute: typeof PortalConstanciasRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/certificaciones': {
-      id: '/portal/certificaciones'
-      path: '/certificaciones'
-      fullPath: '/portal/certificaciones'
-      preLoaderRoute: typeof PortalCertificacionesRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/calendario': {
-      id: '/portal/calendario'
-      path: '/calendario'
-      fullPath: '/portal/calendario'
-      preLoaderRoute: typeof PortalCalendarioRouteImport
-      parentRoute: typeof PortalRoute
-    }
-    '/portal/biblioteca': {
-      id: '/portal/biblioteca'
-      path: '/biblioteca'
-      fullPath: '/portal/biblioteca'
-      preLoaderRoute: typeof PortalBibliotecaRouteImport
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
       parentRoute: typeof PortalRoute
     }
     '/portal/admin': {
@@ -742,40 +693,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalAdminRouteImport
       parentRoute: typeof PortalRoute
     }
-    '/ingenieria/$servicio': {
-      id: '/ingenieria/$servicio'
-      path: '/$servicio'
-      fullPath: '/ingenieria/$servicio'
-      preLoaderRoute: typeof IngenieriaServicioRouteImport
-      parentRoute: typeof IngenieriaRoute
-    }
-    '/equipos/$categoria': {
-      id: '/equipos/$categoria'
-      path: '/$categoria'
-      fullPath: '/equipos/$categoria'
-      preLoaderRoute: typeof EquiposCategoriaRouteImport
-      parentRoute: typeof EquiposRoute
-    }
-    '/capacitacion/$curso': {
-      id: '/capacitacion/$curso'
-      path: '/$curso'
-      fullPath: '/capacitacion/$curso'
-      preLoaderRoute: typeof CapacitacionCursoRouteImport
-      parentRoute: typeof CapacitacionRoute
-    }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
-    }
-    '/portal/proyectos/': {
-      id: '/portal/proyectos/'
-      path: '/proyectos'
-      fullPath: '/portal/proyectos/'
-      preLoaderRoute: typeof PortalProyectosIndexRouteImport
+    '/portal/biblioteca': {
+      id: '/portal/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/portal/biblioteca'
+      preLoaderRoute: typeof PortalBibliotecaRouteImport
       parentRoute: typeof PortalRoute
+    }
+    '/portal/calendario': {
+      id: '/portal/calendario'
+      path: '/calendario'
+      fullPath: '/portal/calendario'
+      preLoaderRoute: typeof PortalCalendarioRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/certificaciones': {
+      id: '/portal/certificaciones'
+      path: '/certificaciones'
+      fullPath: '/portal/certificaciones'
+      preLoaderRoute: typeof PortalCertificacionesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/constancias': {
+      id: '/portal/constancias'
+      path: '/constancias'
+      fullPath: '/portal/constancias'
+      preLoaderRoute: typeof PortalConstanciasRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/documentos': {
+      id: '/portal/documentos'
+      path: '/documentos'
+      fullPath: '/portal/documentos'
+      preLoaderRoute: typeof PortalDocumentosRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/facturacion': {
+      id: '/portal/facturacion'
+      path: '/facturacion'
+      fullPath: '/portal/facturacion'
+      preLoaderRoute: typeof PortalFacturacionRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/login': {
+      id: '/portal/login'
+      path: '/login'
+      fullPath: '/portal/login'
+      preLoaderRoute: typeof PortalLoginRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/personal': {
+      id: '/portal/personal'
+      path: '/personal'
+      fullPath: '/portal/personal'
+      preLoaderRoute: typeof PortalPersonalRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/sistemas': {
+      id: '/portal/sistemas'
+      path: '/sistemas'
+      fullPath: '/portal/sistemas'
+      preLoaderRoute: typeof PortalSistemasRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/solicitudes': {
+      id: '/portal/solicitudes'
+      path: '/solicitudes'
+      fullPath: '/portal/solicitudes'
+      preLoaderRoute: typeof PortalSolicitudesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/servicios/$servicio': {
+      id: '/servicios/$servicio'
+      path: '/$servicio'
+      fullPath: '/servicios/$servicio'
+      preLoaderRoute: typeof ServiciosServicioRouteImport
+      parentRoute: typeof ServiciosRoute
     }
     '/portal/clientes/': {
       id: '/portal/clientes/'
@@ -784,11 +777,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalClientesIndexRouteImport
       parentRoute: typeof PortalRoute
     }
-    '/portal/proyectos/$id': {
-      id: '/portal/proyectos/$id'
-      path: '/proyectos/$id'
-      fullPath: '/portal/proyectos/$id'
-      preLoaderRoute: typeof PortalProyectosIdRouteImport
+    '/portal/clientes/$slug': {
+      id: '/portal/clientes/$slug'
+      path: '/clientes/$slug'
+      fullPath: '/portal/clientes/$slug'
+      preLoaderRoute: typeof PortalClientesSlugRouteImport
       parentRoute: typeof PortalRoute
     }
     '/portal/plantas/$slug': {
@@ -798,11 +791,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalPlantasSlugRouteImport
       parentRoute: typeof PortalRoute
     }
-    '/portal/clientes/$slug': {
-      id: '/portal/clientes/$slug'
-      path: '/clientes/$slug'
-      fullPath: '/portal/clientes/$slug'
-      preLoaderRoute: typeof PortalClientesSlugRouteImport
+    '/portal/proyectos/': {
+      id: '/portal/proyectos/'
+      path: '/proyectos'
+      fullPath: '/portal/proyectos/'
+      preLoaderRoute: typeof PortalProyectosIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/proyectos/$id': {
+      id: '/portal/proyectos/$id'
+      path: '/proyectos/$id'
+      fullPath: '/portal/proyectos/$id'
+      preLoaderRoute: typeof PortalProyectosIdRouteImport
       parentRoute: typeof PortalRoute
     }
   }
