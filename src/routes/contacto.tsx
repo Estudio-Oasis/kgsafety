@@ -99,12 +99,25 @@ function ContactoPage() {
   useEffect(() => {
     let alive = true;
     erpListContractors()
-      .then((r) => alive && setContractors(r.contractors))
+      .then((r) => {
+        if (!alive) return;
+        // El ERP devuelve razones sociales repetidas (agentes/sucursales): se
+        // deduplica por nombre normalizado para no mostrar opciones idénticas.
+        const seen = new Set<string>();
+        const unique = r.contractors.filter((c) => {
+          const key = c.nombre.trim().toLowerCase();
+          if (!key || key === "otro" || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        setContractors(unique.sort((a, b) => a.nombre.localeCompare(b.nombre, "es")));
+      })
       .catch(() => {});
     return () => {
       alive = false;
     };
   }, []);
+
 
   useEffect(() => {
     if (idCursoParam) setForm((f) => ({ ...f, idCurso: idCursoParam }));
