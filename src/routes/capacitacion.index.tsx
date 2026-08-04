@@ -20,7 +20,7 @@ const COURSE_ICON: Record<string, LucideIcon> = {
   "alturas-horizontales": Layers,
 };
 
-export const Route = createFileRoute("/capacitacion")({
+export const Route = createFileRoute("/capacitacion/")({
   component: CapacitacionPage,
   head: () => ({
     meta: [

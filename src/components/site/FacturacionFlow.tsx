@@ -78,7 +78,11 @@ export function FacturacionFlow() {
 
   async function validarPago(e: React.FormEvent) {
     e.preventDefault();
-    if (!cotizacion.trim()) return;
+    if (!cotizacion.trim()) {
+      setCliente(null);
+      setError(t("Ingrese el folio de cotización para continuar."));
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -141,7 +145,11 @@ export function FacturacionFlow() {
 
   async function buscarFactura(e?: React.FormEvent) {
     e?.preventDefault();
-    if (!criterio.trim()) return;
+    if (!criterio.trim()) {
+      setInvoice(null);
+      setSearchError(t("Ingrese un folio, UUID o RFC para buscar."));
+      return;
+    }
     setSearching(true);
     setSearchError(null);
     setInvoice(null);

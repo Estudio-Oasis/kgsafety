@@ -6,7 +6,7 @@ import { useT } from "@/i18n/context";
 import { ENGINEERING } from "@/data/kaee";
 import { QuoteBillingBanner } from "@/components/site/QuoteBillingBanner";
 
-export const Route = createFileRoute("/ingenieria")({
+export const Route = createFileRoute("/ingenieria/")({
   component: IngenieriaPage,
   head: () => ({
     meta: [

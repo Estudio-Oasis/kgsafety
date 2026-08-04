@@ -99,12 +99,25 @@ function ContactoPage() {
   useEffect(() => {
     let alive = true;
     erpListContractors()
-      .then((r) => alive && setContractors(r.contractors))
+      .then((r) => {
+        if (!alive) return;
+        // El ERP devuelve razones sociales repetidas (agentes/sucursales): se
+        // deduplica por nombre normalizado para no mostrar opciones idénticas.
+        const seen = new Set<string>();
+        const unique = r.contractors.filter((c) => {
+          const key = c.nombre.trim().toLowerCase();
+          if (!key || key === "otro" || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        setContractors(unique.sort((a, b) => a.nombre.localeCompare(b.nombre, "es")));
+      })
       .catch(() => {});
     return () => {
       alive = false;
     };
   }, []);
+
 
   useEffect(() => {
     if (idCursoParam) setForm((f) => ({ ...f, idCurso: idCursoParam }));
@@ -316,33 +329,33 @@ function ContactoPage() {
             {/* Datos de contacto */}
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className={labelCls}>{t("Nombre")}</label>
-                <input required type="text" value={form.nombre} onChange={(e) => set("nombre", e.target.value)} className={inputCls} placeholder="Juan Pérez" />
+                <label htmlFor="f-nombre" className={labelCls}>{t("Nombre")}</label>
+                <input id="f-nombre" name="nombre" autoComplete="name" required type="text" value={form.nombre} onChange={(e) => set("nombre", e.target.value)} className={inputCls} placeholder="Juan Pérez" />
               </div>
               <div>
-                <label className={labelCls}>{t("Empresa")}</label>
-                <input required type="text" value={form.empresa} onChange={(e) => set("empresa", e.target.value)} className={inputCls} placeholder={t("Razón social")} />
+                <label htmlFor="f-empresa" className={labelCls}>{t("Empresa")}</label>
+                <input id="f-empresa" name="organization" autoComplete="organization" required type="text" value={form.empresa} onChange={(e) => set("empresa", e.target.value)} className={inputCls} placeholder={t("Razón social")} />
               </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className={labelCls}>{t("Email corporativo")}</label>
-                <input required type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className={inputCls} placeholder="juan@empresa.com" />
+                <label htmlFor="f-email" className={labelCls}>{t("Email corporativo")}</label>
+                <input id="f-email" name="email" autoComplete="email" required type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className={inputCls} placeholder="juan@empresa.com" />
               </div>
               <div>
-                <label className={labelCls}>{t("Teléfono")}</label>
-                <input required type="tel" value={form.telefono} onChange={(e) => set("telefono", e.target.value)} className={inputCls} placeholder="+52 ..." />
+                <label htmlFor="f-telefono" className={labelCls}>{t("Teléfono")}</label>
+                <input id="f-telefono" name="tel" autoComplete="tel" required type="tel" value={form.telefono} onChange={(e) => set("telefono", e.target.value)} className={inputCls} placeholder="+52 ..." />
               </div>
             </div>
 
             {/* Detalle del servicio */}
             <div className="pt-4 border-t border-white/10 grid sm:grid-cols-2 gap-5">
               <div>
-                <label className={labelCls}>{t("Curso de interés")}</label>
+                <label htmlFor="f-curso" className={labelCls}>{t("Curso de interés")}</label>
                 {erpDown ? (
-                  <input type="text" value={form.mensaje ? "" : preselectedName ?? ""} onChange={(e) => set("mensaje", e.target.value)} className={inputCls} placeholder="Escriba el curso o servicio" />
+                  <input id="f-curso" type="text" value={form.mensaje ? "" : preselectedName ?? ""} onChange={(e) => set("mensaje", e.target.value)} className={inputCls} placeholder="Escriba el curso o servicio" />
                 ) : (
-                  <select value={form.idCurso} onChange={(e) => set("idCurso", e.target.value)} className={inputCls}>
+                  <select id="f-curso" value={form.idCurso} onChange={(e) => set("idCurso", e.target.value)} className={inputCls}>
                     {courses.length === 0 && <option value="">Cargando catálogo…</option>}
                     {courses.map((c) => (
                       <option key={c.IdCurso} value={c.IdCurso}>{c.nombre}</option>
@@ -356,15 +369,15 @@ function ContactoPage() {
                 )}
               </div>
               <div>
-                <label className={labelCls}>{t("Número de participantes")}</label>
-                <input required type="number" min={1} value={form.participantes} onChange={(e) => set("participantes", e.target.value)} className={inputCls} placeholder="10" />
+                <label htmlFor="f-participantes" className={labelCls}>{t("Número de participantes")}</label>
+                <input id="f-participantes" required type="number" min={1} value={form.participantes} onChange={(e) => set("participantes", e.target.value)} className={inputCls} placeholder="10" />
               </div>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className={labelCls}>{t("Modalidad")}</label>
-                <div className="flex gap-2">
+                <span className={labelCls} id="f-modalidad-label">{t("Modalidad")}</span>
+                <div className="flex gap-2" role="group" aria-labelledby="f-modalidad-label">
                   {([
                     { v: "Local", l: "Local" },
                     { v: "Foraneo", l: "Foráneo" },
@@ -372,8 +385,9 @@ function ContactoPage() {
                     <button
                       key={m.v}
                       type="button"
+                      aria-pressed={form.modalidad === m.v}
                       onClick={() => set("modalidad", m.v)}
-                      className={`flex-1 px-4 py-3 text-xs uppercase tracking-widest font-bold border ${
+                      className={`flex-1 min-h-11 px-4 py-3 text-xs uppercase tracking-widest font-bold border ${
                         form.modalidad === m.v
                           ? "bg-signal text-anchor border-signal"
                           : "border-white/15 text-white/70 hover:border-signal"
@@ -385,14 +399,15 @@ function ContactoPage() {
                 </div>
               </div>
               <div>
-                <label className={labelCls}>Tipo de curso</label>
-                <div className="flex gap-2">
+                <span className={labelCls} id="f-tipo-label">Tipo de curso</span>
+                <div className="flex gap-2" role="group" aria-labelledby="f-tipo-label">
                   {(["Cerrado", "Abierto"] as const).map((m) => (
                     <button
                       key={m}
                       type="button"
+                      aria-pressed={form.tipoCurso === m}
                       onClick={() => set("tipoCurso", m)}
-                      className={`flex-1 px-4 py-3 text-xs uppercase tracking-widest font-bold border ${
+                      className={`flex-1 min-h-11 px-4 py-3 text-xs uppercase tracking-widest font-bold border ${
                         form.tipoCurso === m
                           ? "bg-brand-blue text-white border-brand-blue"
                           : "border-white/15 text-white/70 hover:border-brand-blue"
@@ -407,8 +422,9 @@ function ContactoPage() {
 
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className={labelCls}>{t("Ubicación (planta / ciudad / estado)")}</label>
+                <label htmlFor="f-ubicacion" className={labelCls}>{t("Ubicación (planta / ciudad / estado)")}</label>
                 <input
+                  id="f-ubicacion"
                   type="text"
                   required
                   readOnly={form.modalidad === "Local"}
@@ -424,8 +440,8 @@ function ContactoPage() {
                 )}
               </div>
               <div>
-                <label className={labelCls}>Fecha deseada (opcional)</label>
-                <select value={form.fechaDeseada} onChange={(e) => set("fechaDeseada", e.target.value)} className={inputCls} disabled={dates.length === 0}>
+                <label htmlFor="f-fecha" className={labelCls}>Fecha deseada (opcional)</label>
+                <select id="f-fecha" value={form.fechaDeseada} onChange={(e) => set("fechaDeseada", e.target.value)} className={inputCls} disabled={dates.length === 0}>
                   <option value="">{dates.length === 0 ? "Sin fechas publicadas · a convenir" : "A convenir"}</option>
                   {dates.map((d) => (
                     <option key={d.IdCalendario} value={d.fecha}>{d.fechaTexto} · {d.tipo}</option>
@@ -437,8 +453,9 @@ function ContactoPage() {
             {/* Contratista SSPA */}
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className={labelCls}>{t("Contratista / empresa cliente")}</label>
+                <label htmlFor="f-contratista" className={labelCls}>{t("Contratista / empresa cliente")}</label>
                 <select
+                  id="f-contratista"
                   value={form.idContratista}
                   onChange={(e) => set("idContratista", e.target.value)}
                   className={inputCls}
@@ -454,8 +471,9 @@ function ContactoPage() {
               </div>
               {form.idContratista === "0" && (
                 <div>
-                  <label className={labelCls}>{t("Nombre del contratista")}</label>
+                  <label htmlFor="f-otro-contratista" className={labelCls}>{t("Nombre del contratista")}</label>
                   <input
+                    id="f-otro-contratista"
                     type="text"
                     required
                     value={form.otroContratista}
@@ -469,11 +487,14 @@ function ContactoPage() {
 
             {/* RFC */}
             <div className="pt-4 border-t border-white/10">
-              <label className={labelCls}>{t("Validación de RFC")}</label>
+              <label htmlFor="f-rfc" className={labelCls}>{t("Validación de RFC")}</label>
               <input
+                id="f-rfc"
                 required
                 type="text"
                 value={form.rfc}
+                aria-invalid={rfcState.status === "invalido"}
+                aria-describedby="f-rfc-help"
                 onChange={(e) => {
                   set("rfc", e.target.value.toUpperCase());
                   setRfcState({ status: "idle" });
@@ -484,7 +505,7 @@ function ContactoPage() {
                 maxLength={13}
                 placeholder="RFC (12 o 13 caracteres)"
               />
-              <p className="text-[10px] uppercase tracking-widest mt-2 min-h-[14px]">
+              <p id="f-rfc-help" aria-live="polite" className="text-[10px] uppercase tracking-widest mt-2 min-h-[14px]">
                 {rfcState.status === "checking" && <span className="text-white/40">Validando RFC…</span>}
                 {rfcState.status === "invalido" && <span className="text-red-400 normal-case tracking-normal">{rfcState.nombre ?? "RFC inválido"}</span>}
                 {rfcState.status === "existente" && <span className="text-signal">Cliente existente{rfcState.nombre ? ` · ${rfcState.nombre}` : ""}</span>}
@@ -494,9 +515,10 @@ function ContactoPage() {
             </div>
 
             <div>
-              <label className={labelCls}>{t("Mensaje adicional")}</label>
-              <textarea value={form.mensaje} onChange={(e) => set("mensaje", e.target.value)} className={`${inputCls} h-28`} placeholder={t("Contexto operativo, fechas tentativas, alcance, etc.")} />
+              <label htmlFor="f-mensaje" className={labelCls}>{t("Mensaje adicional")}</label>
+              <textarea id="f-mensaje" value={form.mensaje} onChange={(e) => set("mensaje", e.target.value)} className={`${inputCls} h-28`} placeholder={t("Contexto operativo, fechas tentativas, alcance, etc.")} />
             </div>
+
 
             <label className="flex items-start gap-3 text-xs text-white/70 leading-relaxed cursor-pointer">
               <input
@@ -534,11 +556,17 @@ function ContactoPage() {
 
             <button
               type="submit"
-              disabled={!form.acepta || sending}
-              className="w-full bg-signal text-anchor font-bold py-4 text-sm tracking-widest uppercase hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!form.acepta || sending || rfcState.status === "invalido" || rfcState.status === "checking"}
+              className="w-full min-h-12 bg-signal text-anchor font-bold py-4 text-sm tracking-widest uppercase hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {sending ? "Enviando…" : t("Enviar cotización")}
             </button>
+            {rfcState.status === "invalido" && (
+              <p className="text-[10px] text-red-400 uppercase tracking-widest text-center">
+                Corrija el RFC para poder enviar la solicitud.
+              </p>
+            )}
+
             <p className="text-[10px] text-white/40 uppercase tracking-widest text-center">
               {t("También puede escribirnos a capacitacion@kg-safety.com")}
             </p>

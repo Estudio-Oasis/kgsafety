@@ -44,7 +44,7 @@ export function SiteFooter() {
             <li><Link to="/contacto" className="hover:text-signal">{t("Solicitar cotización")}</Link></li>
             <li><Link to="/facturacion" hash="autofactura" className="hover:text-signal">{t("Facturar (CFDI 4.0)")}</Link></li>
             <li><Link to="/facturacion" className="hover:text-signal">{t("Soporte de facturación")}</Link></li>
-            <li><Link to="/portal/login" className="hover:text-signal">{t("Portal clientes")}</Link></li>
+            
           </ul>
         </div>
 
@@ -77,7 +77,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-white/10 px-6 md:px-12 py-6 pb-24 md:pb-6 flex flex-col md:flex-row justify-between gap-4 text-[10px] tracking-widest uppercase text-white/40">
-        <div>{t("© 2025 KG Fall Protection Engineering · Toluca · CDMX · Bogotá · Houston · Toronto")}</div>
+        <div>© {new Date().getFullYear()} {t("KG Fall Protection Engineering · Toluca · CDMX · Bogotá · Houston · Toronto")}</div>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
           <span>STPS</span>
           <span>OSHA</span>
