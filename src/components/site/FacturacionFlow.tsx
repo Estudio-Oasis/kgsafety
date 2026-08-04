@@ -145,7 +145,11 @@ export function FacturacionFlow() {
 
   async function buscarFactura(e?: React.FormEvent) {
     e?.preventDefault();
-    if (!criterio.trim()) return;
+    if (!criterio.trim()) {
+      setInvoice(null);
+      setSearchError(t("Ingrese un folio, UUID o RFC para buscar."));
+      return;
+    }
     setSearching(true);
     setSearchError(null);
     setInvoice(null);
