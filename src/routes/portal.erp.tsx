@@ -17,7 +17,7 @@ import {
   erpRunReconcile,
 } from "@/lib/erp-admin.functions";
 import { usePortalSession } from "@/hooks/use-portal-session";
-import { PortalCard, PortalTitle } from "@/components/portal/PortalUI";
+import { NoAccess, Panel } from "@/components/portal/PortalUI";
 
 export const Route = createFileRoute("/portal/erp")({
   component: ErpMonitorPage,
@@ -50,7 +50,8 @@ function Metric({ label, value, hint }: { label: string; value: string; hint?: s
 }
 
 function ErpMonitorPage() {
-  const { role } = usePortalSession();
+  const { session } = usePortalSession();
+  const role = session?.role;
   const staff = role === "admin-kg" || role === "equipo-kg";
 
   const [snap, setSnap] = useState<Snapshot | null>(null);
@@ -81,9 +82,7 @@ function ErpMonitorPage() {
 
   if (!staff) {
     return (
-      <PortalCard>
-        <p className="text-sm text-white/70">Esta sección está reservada para el equipo KG Safety.</p>
-      </PortalCard>
+      <NoAccess message="Esta sección está reservada para el equipo KG Safety." />
     );
   }
 
@@ -105,7 +104,7 @@ function ErpMonitorPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <PortalTitle>Monitoreo ERP</PortalTitle>
+          <h1 className="font-display text-2xl uppercase text-white">Monitoreo ERP</h1>
           <p className="text-sm text-white/60 mt-2 max-w-2xl">
             Cada interacción con Noil queda registrada con su referencia técnica. Si el ERP falla, la
             solicitud se guarda en nuestra base y se sincroniza automáticamente al volver.
@@ -170,7 +169,7 @@ function ErpMonitorPage() {
       </div>
 
       {e2e && (
-        <PortalCard>
+        <Panel>
           <div className="flex items-center justify-between gap-3 mb-4">
             <h2 className="font-display text-base uppercase text-white">
               Prueba end-to-end · {e2e.ok ? "OK" : "con hallazgos"}
@@ -195,11 +194,11 @@ function ErpMonitorPage() {
           <p className="mt-4 text-[11px] uppercase tracking-widest text-white/40">
             Modo staging: las escrituras se simulan y no generan registros en Noil.
           </p>
-        </PortalCard>
+        </Panel>
       )}
 
       {(snap?.alertas.filter((a) => !a.resuelta).length ?? 0) > 0 && (
-        <PortalCard>
+        <Panel>
           <h2 className="font-display text-base uppercase text-white mb-4">Alertas abiertas</h2>
           <div className="space-y-2">
             {snap!.alertas
@@ -234,10 +233,10 @@ function ErpMonitorPage() {
                 </div>
               ))}
           </div>
-        </PortalCard>
+        </Panel>
       )}
 
-      <PortalCard>
+      <Panel>
         <h2 className="font-display text-base uppercase text-white mb-4">Cola de sincronización</h2>
         {snap?.cola.length ? (
           <div className="overflow-x-auto">
@@ -289,9 +288,9 @@ function ErpMonitorPage() {
         ) : (
           <p className="text-sm text-white/50">Sin solicitudes pendientes de sincronizar.</p>
         )}
-      </PortalCard>
+      </Panel>
 
-      <PortalCard>
+      <Panel>
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 className="font-display text-base uppercase text-white flex items-center gap-2">
             <Activity size={16} className="text-signal" /> Bitácora de interacciones
@@ -367,7 +366,7 @@ function ErpMonitorPage() {
         <p className="mt-4 text-[10px] uppercase tracking-widest text-white/35">
           Actualización automática cada 10 segundos.
         </p>
-      </PortalCard>
+      </Panel>
     </div>
   );
 }
