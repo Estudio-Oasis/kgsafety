@@ -92,24 +92,28 @@ function PortalUnavailable() {
 }
 
 function PortalLayout() {
-  const { session, ready, logout } = usePortalSession();
+  if (!PORTAL_ENABLED) return <PortalUnavailable />;
+  return (
+    <PortalAuthProvider>
+      <PortalShell />
+    </PortalAuthProvider>
+  );
+}
+
+function PortalShell() {
+  const { session, ready, status, logout } = usePortalSession();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isLogin = pathname === "/portal/login";
   const [mobileOpen, setMobileOpen] = useState(false);
 
-
   useEffect(() => {
     if (ready && !session && !isLogin) {
-      navigate({ to: "/portal/login" });
+      navigate({ to: "/portal/login", replace: true });
     }
   }, [ready, session, isLogin, navigate]);
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
-
-  if (!PORTAL_ENABLED) return <PortalUnavailable />;
-
-
 
   if (isLogin) {
     return (
@@ -121,15 +125,20 @@ function PortalLayout() {
   }
 
   if (!ready || !session) {
-    return <div className="min-h-screen bg-[color:var(--surface)]" />;
+    return (
+      <div className="min-h-screen grid place-items-center bg-[color:var(--surface)] text-[color:var(--muted-fg)] text-xs uppercase tracking-widest">
+        {ready && status !== "signed-out" ? "Redirigiendo…" : "Verificando acceso…"}
+      </div>
+    );
   }
 
   const items = NAV.filter((n) => n.roles.includes(session.role));
 
-  const handleLogout = () => {
-    logout();
-    navigate({ to: "/portal/login" });
+  const handleLogout = async () => {
+    await logout();
+    navigate({ to: "/portal/login", replace: true });
   };
+
 
 
   const sidebar = (
