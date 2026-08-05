@@ -162,14 +162,14 @@ export function AdminUsers() {
                       <div className="inline-flex gap-1.5">
                         <ActionBtn
                           variant="primary"
-                          disabled={busy}
-                          onClick={() =>
-                            void update(u, "approved", current.role, isClient ? current.company || null : null)
-                          }
+                          onClick={() => {
+                            if (busy) return;
+                            void update(u, "approved", current.role, isClient ? current.company || null : null);
+                          }}
                         >
                           {busy ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />} Autorizar
                         </ActionBtn>
-                        <ActionBtn disabled={busy} onClick={() => void update(u, "rejected", null, null)}>
+                        <ActionBtn onClick={() => void update(u, "rejected", null, null)}>
                           <X size={11} /> Rechazar
                         </ActionBtn>
                       </div>

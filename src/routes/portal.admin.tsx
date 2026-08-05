@@ -3,6 +3,7 @@ import { Plus, Edit, Upload, UserPlus } from "lucide-react";
 import { CLIENTS, PLANTS, PROJECTS, DOCUMENTS, CERTIFICATIONS, certState, fmtDate, plantBySlug, systemById } from "@/data/portal";
 import { PageHeader, Panel, StatCard, StatusBadge, ActionBtn, simAction } from "@/components/portal/PortalUI";
 import { usePortalSession } from "@/hooks/use-portal-session";
+import { AdminUsers } from "@/components/portal/AdminUsers";
 import { useState } from "react";
 
 export const Route = createFileRoute("/portal/admin")({
