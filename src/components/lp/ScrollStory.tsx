@@ -91,7 +91,7 @@ export function ScrollStory() {
       <div className="max-w-6xl mx-auto px-4 md:px-8 pb-16 md:pb-28 lg:grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] lg:gap-14">
         {/* Columna visual fija (desktop) */}
         <div className="hidden lg:block">
-          <div className="sticky top-24 h-[70vh]">
+          <div className="sticky top-24 h-[calc(100svh-8rem)] max-h-[42rem]">
             <div className="relative h-full w-full overflow-hidden border border-white/12">
               {CHAPTERS.map((c, i) => (
                 <img
@@ -151,7 +151,7 @@ export function ScrollStory() {
               ref={(el) => {
                 refs.current[i] = el;
               }}
-              className="relative py-10 md:py-16 lg:min-h-[62vh] lg:flex lg:flex-col lg:justify-center"
+              className="relative py-10 md:py-16 lg:min-h-[56vh] lg:flex lg:flex-col lg:justify-center"
             >
               <span
                 aria-hidden
