@@ -17,7 +17,7 @@ import {
   LogOut,
   AlertTriangle,
 } from "lucide-react";
-import { usePortalSession } from "@/hooks/use-portal-session";
+import { PortalAuthProvider, usePortalSession } from "@/hooks/use-portal-session";
 import type { Role } from "@/data/portal";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -192,7 +192,7 @@ function PortalShell() {
           <p className="text-[10px] text-[color:var(--muted-fg)]">{ROLE_LABEL[session.role]}</p>
         </div>
         <button
-          onClick={handleLogout}
+          onClick={() => void handleLogout()}
           className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-[10px] font-bold uppercase tracking-wider border border-[color:var(--border)] hover:border-signal hover:text-signal transition-colors"
         >
           <LogOut size={12} />
