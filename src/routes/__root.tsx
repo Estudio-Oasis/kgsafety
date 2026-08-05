@@ -151,9 +151,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isPortal = pathname.startsWith("/portal");
+  const isBare = pathname.startsWith("/portal") || pathname.startsWith("/lp");
 
-  if (isPortal) {
+  if (isBare) {
     return (
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
