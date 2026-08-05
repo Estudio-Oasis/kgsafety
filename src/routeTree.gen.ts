@@ -51,6 +51,7 @@ import { Route as PortalClientesSlugRouteImport } from './routes/portal.clientes
 import { Route as PortalPlantasSlugRouteImport } from './routes/portal.plantas.$slug'
 import { Route as PortalProyectosIndexRouteImport } from './routes/portal.proyectos.index'
 import { Route as PortalProyectosIdRouteImport } from './routes/portal.proyectos.$id'
+import { Route as ApiPublicHooksErpReconcileRouteImport } from './routes/api/public/hooks/erp-reconcile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -262,6 +263,12 @@ const PortalProyectosIdRoute = PortalProyectosIdRouteImport.update({
   path: '/proyectos/$id',
   getParentRoute: () => PortalRoute,
 } as any)
+const ApiPublicHooksErpReconcileRoute =
+  ApiPublicHooksErpReconcileRouteImport.update({
+    id: '/api/public/hooks/erp-reconcile',
+    path: '/api/public/hooks/erp-reconcile',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -306,6 +313,7 @@ export interface FileRoutesByFullPath {
   '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes/': typeof PortalClientesIndexRoute
   '/portal/proyectos/': typeof PortalProyectosIndexRoute
+  '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -348,6 +356,7 @@ export interface FileRoutesByTo {
   '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes': typeof PortalClientesIndexRoute
   '/portal/proyectos': typeof PortalProyectosIndexRoute
+  '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -393,6 +402,7 @@ export interface FileRoutesById {
   '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes/': typeof PortalClientesIndexRoute
   '/portal/proyectos/': typeof PortalProyectosIndexRoute
+  '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -439,6 +449,7 @@ export interface FileRouteTypes {
     | '/portal/proyectos/$id'
     | '/portal/clientes/'
     | '/portal/proyectos/'
+    | '/api/public/hooks/erp-reconcile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -481,6 +492,7 @@ export interface FileRouteTypes {
     | '/portal/proyectos/$id'
     | '/portal/clientes'
     | '/portal/proyectos'
+    | '/api/public/hooks/erp-reconcile'
   id:
     | '__root__'
     | '/'
@@ -525,6 +537,7 @@ export interface FileRouteTypes {
     | '/portal/proyectos/$id'
     | '/portal/clientes/'
     | '/portal/proyectos/'
+    | '/api/public/hooks/erp-reconcile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -550,6 +563,7 @@ export interface RootRouteChildren {
   EquiposIndexRoute: typeof EquiposIndexRoute
   IngenieriaIndexRoute: typeof IngenieriaIndexRoute
   ServiciosIndexRoute: typeof ServiciosIndexRoute
+  ApiPublicHooksErpReconcileRoute: typeof ApiPublicHooksErpReconcileRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -848,6 +862,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalProyectosIdRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/api/public/hooks/erp-reconcile': {
+      id: '/api/public/hooks/erp-reconcile'
+      path: '/api/public/hooks/erp-reconcile'
+      fullPath: '/api/public/hooks/erp-reconcile'
+      preLoaderRoute: typeof ApiPublicHooksErpReconcileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -931,6 +952,7 @@ const rootRouteChildren: RootRouteChildren = {
   EquiposIndexRoute: EquiposIndexRoute,
   IngenieriaIndexRoute: IngenieriaIndexRoute,
   ServiciosIndexRoute: ServiciosIndexRoute,
+  ApiPublicHooksErpReconcileRoute: ApiPublicHooksErpReconcileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
