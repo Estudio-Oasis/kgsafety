@@ -101,7 +101,7 @@ export const erpCreateQuote = createServerFn({ method: "POST" })
       const result = await createQuote(data);
       await attachErpOutcome(leadId, {
         erp_status: result.status === "creada" ? "creada" : "pendiente_verificacion",
-        erp_folio: result.folio ?? "",
+        erp_folio: result.folio ?? (result.idSolicitud ? String(result.idSolicitud) : ""),
         erp_solicitud_id: result.idSolicitud ? String(result.idSolicitud) : "",
         erp_trace_id: result.traceId ?? "",
       });
