@@ -153,3 +153,25 @@ export const addLeadNote = createServerFn({ method: "POST" })
     }
     return { ok: true as const, message: "Nota guardada" };
   });
+
+/** Resumen con IA del embudo comercial: prioridades, riesgos y siguientes pasos. */
+export const leadsAiSummary = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: staff } = await context.supabase.rpc("is_kg_staff", { _user_id: context.userId });
+    if (staff !== true) throw new Error("Forbidden");
+    const { data: leads } = await context.supabase
+      .from("leads")
+      .select(
+        "created_at,empresa,curso_nombre,participantes,modalidad,etapa,valor_estimado,responsable,erp_status,erp_folio,es_prueba,fecha_deseada",
+      )
+      .order("created_at", { ascending: false })
+      .limit(80);
+    const reales = (leads ?? []).filter((l) => !l.es_prueba);
+    const { summarizeForOwner } = await import("./ai-summary.server");
+    return summarizeForOwner({
+      titulo:
+        "Resume el embudo comercial de KG Safety: volumen, etapas, oportunidades más valiosas, solicitudes atoradas en el ERP y siguientes pasos concretos para el equipo.",
+      contexto: { totalReales: reales.length, leads: reales },
+    });
+  });
