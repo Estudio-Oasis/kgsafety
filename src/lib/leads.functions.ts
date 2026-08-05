@@ -108,10 +108,10 @@ export const updateLead = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {};
-    if (data.etapa) patch['etapa'] = data.etapa;
-    if (data.responsable !== undefined) patch['responsable'] = data.responsable;
-    if (data.valorEstimado !== undefined) patch['valor_estimado'] = data.valorEstimado;
+    const patch: { etapa?: string; responsable?: string; valor_estimado?: number | null } = {};
+    if (data.etapa) patch.etapa = data.etapa;
+    if (data.responsable !== undefined) patch.responsable = data.responsable;
+    if (data.valorEstimado !== undefined) patch.valor_estimado = data.valorEstimado;
     if (Object.keys(patch).length === 0) return { ok: false as const, message: "Sin cambios" };
 
     const { error } = await context.supabase.from("leads").update(patch).eq("id", data.leadId);
