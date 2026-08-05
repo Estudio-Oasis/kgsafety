@@ -100,9 +100,15 @@ function ErpMonitorPage() {
   useEffect(() => {
     if (!staff) return;
     void load();
+    void checkHealth();
     const id = setInterval(() => void load(), 10_000);
-    return () => clearInterval(id);
-  }, [staff, load]);
+    const hid = setInterval(() => void checkHealth(), 60_000);
+    return () => {
+      clearInterval(id);
+      clearInterval(hid);
+    };
+  }, [staff, load, checkHealth]);
+
 
   if (!staff) {
     return (
