@@ -110,23 +110,8 @@ function CTA({
   );
 }
 
-const STAKES = [
-  {
-    icon: AlertTriangle,
-    title: "Una caída detiene la planta",
-    body: "Investigación, paro de línea, inspección STPS y un expediente que nadie quiere firmar.",
-  },
-  {
-    icon: FileCheck2,
-    title: "DC-3 que no resiste auditoría",
-    body: "Constancias emitidas por proveedores sin registro válido: capacitación pagada que no acredita nada.",
-  },
-  {
-    icon: Wrench,
-    title: "Anclajes sin memoria de cálculo",
-    body: "Líneas de vida instaladas “a criterio del soldador”. Sin cálculo, no hay respaldo legal ni técnico.",
-  },
-];
+
+
 
 const METHOD = [
   {
