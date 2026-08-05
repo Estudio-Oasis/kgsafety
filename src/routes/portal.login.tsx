@@ -139,7 +139,7 @@ function PortalLogin() {
                 aria-pressed={mode === m}
                 className={`flex-1 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors ${
                   mode === m
-                    ? "bg-brand-navy text-white"
+                    ? "bg-signal text-[color:var(--anchor-fixed)]"
                     : "text-[color:var(--muted-fg)] hover:text-brand-blue"
                 }`}
               >
