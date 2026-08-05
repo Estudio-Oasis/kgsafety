@@ -38,6 +38,7 @@ import { Route as PortalCalendarioRouteImport } from './routes/portal.calendario
 import { Route as PortalCertificacionesRouteImport } from './routes/portal.certificaciones'
 import { Route as PortalConstanciasRouteImport } from './routes/portal.constancias'
 import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
+import { Route as PortalErpRouteImport } from './routes/portal.erp'
 import { Route as PortalFacturacionRouteImport } from './routes/portal.facturacion'
 import { Route as PortalLeadsRouteImport } from './routes/portal.leads'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
@@ -198,6 +199,11 @@ const PortalDocumentosRoute = PortalDocumentosRouteImport.update({
   path: '/documentos',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalErpRoute = PortalErpRouteImport.update({
+  id: '/erp',
+  path: '/erp',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalFacturacionRoute = PortalFacturacionRouteImport.update({
   id: '/facturacion',
   path: '/facturacion',
@@ -295,6 +301,7 @@ export interface FileRoutesByFullPath {
   '/portal/certificaciones': typeof PortalCertificacionesRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/erp': typeof PortalErpRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -338,6 +345,7 @@ export interface FileRoutesByTo {
   '/portal/certificaciones': typeof PortalCertificacionesRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/erp': typeof PortalErpRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -384,6 +392,7 @@ export interface FileRoutesById {
   '/portal/certificaciones': typeof PortalCertificacionesRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/erp': typeof PortalErpRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -431,6 +440,7 @@ export interface FileRouteTypes {
     | '/portal/certificaciones'
     | '/portal/constancias'
     | '/portal/documentos'
+    | '/portal/erp'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -474,6 +484,7 @@ export interface FileRouteTypes {
     | '/portal/certificaciones'
     | '/portal/constancias'
     | '/portal/documentos'
+    | '/portal/erp'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -519,6 +530,7 @@ export interface FileRouteTypes {
     | '/portal/certificaciones'
     | '/portal/constancias'
     | '/portal/documentos'
+    | '/portal/erp'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -771,6 +783,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalDocumentosRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/erp': {
+      id: '/portal/erp'
+      path: '/erp'
+      fullPath: '/portal/erp'
+      preLoaderRoute: typeof PortalErpRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/facturacion': {
       id: '/portal/facturacion'
       path: '/facturacion'
@@ -891,6 +910,7 @@ interface PortalRouteChildren {
   PortalCertificacionesRoute: typeof PortalCertificacionesRoute
   PortalConstanciasRoute: typeof PortalConstanciasRoute
   PortalDocumentosRoute: typeof PortalDocumentosRoute
+  PortalErpRoute: typeof PortalErpRoute
   PortalFacturacionRoute: typeof PortalFacturacionRoute
   PortalLeadsRoute: typeof PortalLeadsRoute
   PortalLoginRoute: typeof PortalLoginRoute
@@ -912,6 +932,7 @@ const PortalRouteChildren: PortalRouteChildren = {
   PortalCertificacionesRoute: PortalCertificacionesRoute,
   PortalConstanciasRoute: PortalConstanciasRoute,
   PortalDocumentosRoute: PortalDocumentosRoute,
+  PortalErpRoute: PortalErpRoute,
   PortalFacturacionRoute: PortalFacturacionRoute,
   PortalLeadsRoute: PortalLeadsRoute,
   PortalLoginRoute: PortalLoginRoute,
