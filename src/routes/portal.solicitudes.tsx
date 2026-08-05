@@ -5,6 +5,7 @@ import { usePortalSession } from "@/hooks/use-portal-session";
 import { PLANTS, SERVICE_REQUESTS, plantBySlug, fmtDate } from "@/data/portal";
 import { PageHeader, Panel, StatCard, StatusBadge, ActionBtn } from "@/components/portal/PortalUI";
 import { Plus, X } from "lucide-react";
+import { createServiceRequest } from "@/lib/portal.functions";
 
 export const Route = createFileRoute("/portal/solicitudes")({
   component: SolicitudesPage,
@@ -27,7 +28,7 @@ const STATE_LABEL: Record<string, string> = {
 };
 
 function SolicitudesPage() {
-  const { session } = usePortalSession();
+  const { session, refresh } = usePortalSession();
   const [open, setOpen] = useState(false);
   const [tipo, setTipo] = useState(TIPOS[0]);
   const [descripcion, setDescripcion] = useState("");
@@ -50,14 +51,26 @@ function SolicitudesPage() {
   const enProceso = requests.filter((r) => ["cotizada", "programada"].includes(r.status)).length;
   const cerradas = requests.filter((r) => r.status === "cerrada").length;
 
-  const submit = (e: React.FormEvent) => {
+  const [saving, setSaving] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast("Solicitud enviada (simulada)", {
-      description: `Prototipo: en producción se enviaría a KG Safety junto con la planta y descripción.`,
-    });
-    setDescripcion("");
-    setOpen(false);
+    setSaving(true);
+    try {
+      await createServiceRequest({ data: { plantSlug: plantaLocal, tipo, descripcion } });
+      toast.success("Solicitud enviada", {
+        description: "El equipo de KG Safety la revisará y le dará seguimiento.",
+      });
+      setDescripcion("");
+      setOpen(false);
+      await refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No se pudo enviar la solicitud.");
+    } finally {
+      setSaving(false);
+    }
   };
+
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -129,7 +142,7 @@ function SolicitudesPage() {
           >
             <div className="flex items-start justify-between mb-4">
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)]">Prototipo</p>
+                <p className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)]">Portal KG Safety</p>
                 <h3 className="font-display text-xl uppercase">Nueva solicitud</h3>
               </div>
               <button type="button" onClick={() => setOpen(false)}><X size={18} /></button>
@@ -164,9 +177,10 @@ function SolicitudesPage() {
 
             <button
               type="submit"
+              disabled={saving}
               className="w-full bg-signal text-[color:var(--anchor-fixed)] py-3 font-bold text-xs uppercase tracking-widest border-2 border-[color:var(--anchor-fixed)] hover:bg-white transition-colors"
             >
-              Enviar solicitud
+              {saving ? "Enviando…" : "Enviar solicitud"}
             </button>
           </form>
         </div>

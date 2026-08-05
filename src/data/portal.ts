@@ -1,5 +1,7 @@
-// Datos ficticios para el Portal KG Safety (prototipo).
-// Toda la información es simulada — no usar en producción.
+// Datos del Portal KG Safety.
+// Las colecciones se hidratan en tiempo de ejecución desde la base de datos
+// (con acceso restringido por empresa y rol vía RLS). Aquí sólo viven los
+// tipos y los helpers de presentación.
 
 export type Role = "cliente-corp" | "cliente-planta" | "admin-kg" | "equipo-kg";
 
@@ -101,172 +103,106 @@ export type LibraryDoc = {
   size: string;
 };
 
-// ============= CLIENTES =============
-export const CLIENTS: Client[] = [
-  { slug: "femsa", name: "Coca-Cola FEMSA", industry: "Bebidas", plants: 2 },
-  { slug: "holcim", name: "Holcim", industry: "Cemento", plants: 1 },
-  { slug: "unilever", name: "Unilever", industry: "Consumo", plants: 1 },
-  { slug: "merck", name: "Merck", industry: "Farmacéutica", plants: 1 },
-  { slug: "petstar", name: "PetStar", industry: "Reciclaje PET", plants: 1 },
-  { slug: "santa-clara", name: "Santa Clara", industry: "Lácteos", plants: 1 },
-  { slug: "bimbo", name: "Grupo Bimbo", industry: "Alimentos", plants: 1 },
-  { slug: "nestle", name: "Nestlé", industry: "Alimentos", plants: 1 },
-  { slug: "cemex", name: "Cemex", industry: "Cemento", plants: 1 },
-  { slug: "heineken", name: "Heineken", industry: "Bebidas", plants: 1 },
-  { slug: "grupo-modelo", name: "Grupo Modelo", industry: "Bebidas", plants: 1 },
-  { slug: "pemex", name: "Pemex", industry: "Energía / Infraestructura", plants: 1 },
-  { slug: "volkswagen", name: "Volkswagen", industry: "Automotriz", plants: 1 },
-  { slug: "ford", name: "Ford", industry: "Automotriz", plants: 1 },
-  { slug: "nissan", name: "Nissan", industry: "Automotriz", plants: 1 },
-  { slug: "bayer", name: "Bayer", industry: "Farmacéutica", plants: 1 },
-  { slug: "danone", name: "Danone", industry: "Lácteos", plants: 1 },
-  { slug: "pyg", name: "Procter & Gamble", industry: "Consumo", plants: 1 },
-  { slug: "loreal", name: "L'Oréal", industry: "Cuidado personal", plants: 1 },
-  { slug: "kimberly", name: "Kimberly-Clark", industry: "Consumo", plants: 1 },
-  { slug: "arca", name: "Arca Continental", industry: "Bebidas", plants: 1 },
-  { slug: "pirelli", name: "Pirelli", industry: "Llantas", plants: 1 },
-  { slug: "gm", name: "General Motors", industry: "Automotriz", plants: 1 },
-  { slug: "pfizer", name: "Pfizer", industry: "Farmacéutica", plants: 1 },
-  { slug: "cargill", name: "Cargill", industry: "Agroindustria", plants: 1 },
-  { slug: "jnj", name: "Johnson & Johnson", industry: "Cuidado personal", plants: 1 },
-  { slug: "conoco", name: "Conoco Phillips", industry: "Energía / Infraestructura", plants: 1 },
-  { slug: "vestas", name: "Vestas", industry: "Energía eólica", plants: 1 },
-  { slug: "pepsico", name: "PepsiCo", industry: "Alimentos y bebidas", plants: 1 },
-];
+export type Worker = {
+  id: string;
+  nombre: string;
+  puesto: string;
+  plantSlug: string;
+  curso: string;
+  dc3: string;
+  emision: string;
+  vencimiento: string;
+  instructor: string;
+};
 
-// ============= PLANTAS =============
-export const PLANTS: Plant[] = [
-  { slug: "holcim-queretaro", name: "Holcim Querétaro", clientSlug: "holcim", location: "Querétaro, Qro.", industry: "Cemento", responsable: "Ing. Marco Salazar", email: "msalazar@holcim.com" },
-  { slug: "merck-toluca", name: "Merck Toluca", clientSlug: "merck", location: "Toluca, Edo. Méx.", industry: "Farmacéutica", responsable: "Ing. Lucía Hernández", email: "lhernandez@merck.com" },
-  { slug: "femsa-toluca", name: "Coca-Cola FEMSA Toluca", clientSlug: "femsa", location: "Toluca, Edo. Méx.", industry: "Bebidas", responsable: "Ing. Roberto Cárdenas", email: "rcardenas@kof.com" },
-  { slug: "femsa-apizaco", name: "Coca-Cola FEMSA Apizaco", clientSlug: "femsa", location: "Apizaco, Tlax.", industry: "Bebidas", responsable: "Ing. Sandra Morales", email: "smorales@kof.com" },
-  { slug: "petstar-toluca", name: "PetStar Toluca", clientSlug: "petstar", location: "Toluca, Edo. Méx.", industry: "Reciclaje", responsable: "Ing. Eduardo Ramos", email: "eramos@petstar.mx" },
-  { slug: "pirelli-silao", name: "Pirelli Silao", clientSlug: "pirelli", location: "Silao, Gto.", industry: "Llantas", responsable: "Ing. Carla Vázquez", email: "cvazquez@pirelli.com" },
-  { slug: "pfizer-toluca", name: "Pfizer Toluca", clientSlug: "pfizer", location: "Toluca, Edo. Méx.", industry: "Farmacéutica", responsable: "Ing. Jorge Domínguez", email: "jdominguez@pfizer.com" },
-  { slug: "cargill-atitalaquia", name: "Cargill Atitalaquia", clientSlug: "cargill", location: "Atitalaquia, Hgo.", industry: "Agroindustria", responsable: "Ing. Patricia Núñez", email: "pnunez@cargill.com" },
-  { slug: "unilever-tultitlan", name: "Unilever Tultitlán", clientSlug: "unilever", location: "Tultitlán, Edo. Méx.", industry: "Consumo", responsable: "Ing. Mario Reyes", email: "mreyes@unilever.com" },
-  { slug: "vestas-norte", name: "Vestas Parque Norte", clientSlug: "vestas", location: "Reynosa, Tamps.", industry: "Eólica", responsable: "Ing. Hugo Pérez", email: "hperez@vestas.com" },
-  { slug: "gm-silao", name: "General Motors Silao", clientSlug: "gm", location: "Silao, Gto.", industry: "Automotriz", responsable: "Ing. Verónica Luna", email: "vluna@gm.com" },
-  { slug: "jnj-juarez", name: "Johnson & Johnson Juárez", clientSlug: "jnj", location: "Cd. Juárez, Chih.", industry: "Cuidado personal", responsable: "Ing. Alfredo Mejía", email: "amejia@jnj.com" },
-  { slug: "pepsico-mexicali", name: "PepsiCo Mexicali", clientSlug: "pepsico", location: "Mexicali, B.C.", industry: "Alimentos", responsable: "Ing. Andrés Téllez", email: "atellez@pepsico.com" },
-  { slug: "conoco-altamira", name: "Conoco Phillips Altamira", clientSlug: "conoco", location: "Altamira, Tamps.", industry: "Energía / Infraestructura", responsable: "Ing. Fernanda Ruiz", email: "fruiz@conocophillips.com" },
-];
+export type ServiceRequest = {
+  id: string;
+  fecha: string;
+  plantSlug: string;
+  tipo: string;
+  descripcion: string;
+  status: "recibida" | "en-revision" | "cotizada" | "programada" | "cerrada";
+  solicitante: string;
+};
 
+// ============= COLECCIONES (hidratadas desde la base de datos) =============
+export let CLIENTS: Client[] = [];
+export let PLANTS: Plant[] = [];
+export let SYSTEMS: SystemInstalled[] = [];
+export let PROJECTS: Project[] = [];
+export let CERTIFICATIONS: Certification[] = [];
+export let DOCUMENTS: Document[] = [];
+export let WORKERS: Worker[] = [];
+export let LIBRARY: LibraryDoc[] = [];
+export let SERVICE_REQUESTS: ServiceRequest[] = [];
+export let LIB_CATEGORIES_LIST: string[] = [];
+// Sin información financiera en el portal.
+export const INVOICES: Invoice[] = [];
 
-// ============= SISTEMAS INSTALADOS =============
-const SYSTEM_TYPES = [
-  "Línea de vida horizontal flexible",
-  "Línea de vida vertical rígida",
-  "Puntos de anclaje certificados",
-  "Barandales autoportantes",
-  "Escala marina con riel",
-  "Plataforma de mantenimiento",
-];
+export type PortalDataset = {
+  clients: Client[];
+  plants: Plant[];
+  systems: SystemInstalled[];
+  projects: Project[];
+  certifications: Certification[];
+  documents: Document[];
+  workers: Worker[];
+  library: LibraryDoc[];
+  serviceRequests: ServiceRequest[];
+};
 
-export const SYSTEMS: SystemInstalled[] = PLANTS.flatMap((p, i) => {
-  const count = 1 + (i % 3); // 1-3 sistemas por planta
-  return Array.from({ length: count }, (_, k) => ({
-    id: `sys-${p.slug}-${k + 1}`,
-    plantSlug: p.slug,
-    type: SYSTEM_TYPES[(i + k) % SYSTEM_TYPES.length],
-    ubicacion: ["Nave A", "Nave B", "Techumbre", "Silos", "Patio de tanques"][(i + k) % 5],
-    metros: 30 + ((i + k) * 12) % 180,
-    norma: ["NOM-009-STPS", "ANSI Z359.1", "OSHA 1910.140", "EN-795"][(i + k) % 4],
-  }));
-});
-
-// ============= PROYECTOS =============
-const PROJECT_TYPES: ProjectType[] = [
-  "Línea de vida",
-  "Certificación",
-  "Capacitación",
-  "Supervisión",
-  "Instalación",
-  "Inspección",
-  "Consultoría",
-  "Análisis de riesgo",
-  "Plan de rescate",
-  "Asesoría",
-];
-
-const RESPONSABLES = [
-  "Ing. Karim Gómez",
-  "Ing. Alejandro Rivera",
-  "Ing. Mónica Trejo",
-  "Ing. Pablo Estrada",
-  "Ing. Diana Vega",
-];
-
-const STATUSES: ProjectStatus[] = ["completado", "completado", "completado", "en-curso", "pendiente", "revision"];
-
-export const PROJECTS: Project[] = PLANTS.flatMap((p, i) => {
-  const count = 2 + (i % 3);
-  return Array.from({ length: count }, (_, k) => {
-    const type = PROJECT_TYPES[(i + k) % PROJECT_TYPES.length];
-    const year = 2024 + ((i + k) % 2);
-    const month = String(1 + ((i * 3 + k * 5) % 12)).padStart(2, "0");
-    const day = String(5 + ((i + k * 7) % 22)).padStart(2, "0");
-    return {
-      id: `prj-${p.slug}-${k + 1}`,
-      name: `${type} — ${p.name}`,
-      type,
-      clientSlug: p.clientSlug,
-      plantSlug: p.slug,
-      fecha: `${year}-${month}-${day}`,
-      responsable: RESPONSABLES[(i + k) % RESPONSABLES.length],
-      status: STATUSES[(i + k) % STATUSES.length],
-      descripcion: `Intervención técnica KG Safety: ${type.toLowerCase()} aplicada al sistema de seguridad en altura de ${p.name}. Incluye diagnóstico, ejecución y entrega documental.`,
-    };
-  });
-});
-
-// ============= CERTIFICACIONES =============
-const today = new Date("2026-05-27");
-function daysFromNow(d: number) {
-  const x = new Date(today);
-  x.setDate(x.getDate() + d);
-  return x.toISOString().slice(0, 10);
+export function hydratePortalData(d: PortalDataset) {
+  CLIENTS = d.clients;
+  PLANTS = d.plants;
+  SYSTEMS = d.systems;
+  PROJECTS = d.projects;
+  CERTIFICATIONS = d.certifications;
+  DOCUMENTS = d.documents;
+  WORKERS = d.workers;
+  LIBRARY = d.library;
+  SERVICE_REQUESTS = d.serviceRequests;
+  LIB_CATEGORIES_LIST = Array.from(new Set(d.library.map((l) => l.category)));
 }
 
-export const CERTIFICATIONS: Certification[] = SYSTEMS.map((s, i) => {
-  // Distribución: 25% vencido, 25% <30d, 25% <60d, 25% vigente
-  const bucket = i % 4;
-  const venc = [-40, 15, 45, 180][bucket];
-  return {
-    id: `cert-${s.id}`,
-    systemId: s.id,
-    plantSlug: s.plantSlug,
-    ultima: daysFromNow(venc - 365),
-    vencimiento: daysFromNow(venc),
-  };
-});
+export function clearPortalData() {
+  hydratePortalData({
+    clients: [],
+    plants: [],
+    systems: [],
+    projects: [],
+    certifications: [],
+    documents: [],
+    workers: [],
+    library: [],
+    serviceRequests: [],
+  });
+}
+
+// ============= VIGENCIAS =============
+function todayMs() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+}
 
 export function certState(c: Certification): CertState {
-  const dias = Math.floor((new Date(c.vencimiento).getTime() - today.getTime()) / 86400000);
+  const dias = Math.floor((new Date(c.vencimiento).getTime() - todayMs()) / 86400000);
   if (dias < 0) return "vencido";
   if (dias <= 30) return "por-vencer-30";
   if (dias <= 60) return "por-vencer-60";
   return "vigente";
 }
 export function daysLeft(c: Certification) {
-  return Math.floor((new Date(c.vencimiento).getTime() - today.getTime()) / 86400000);
+  return Math.floor((new Date(c.vencimiento).getTime() - todayMs()) / 86400000);
 }
 
-// ============= DOCUMENTOS =============
-const DOC_TYPES: DocType[] = ["factura", "cotizacion", "orden-compra", "certificado", "ficha-tecnica", "reporte", "evidencia", "acta", "bitacora"];
-
-export const DOCUMENTS: Document[] = PROJECTS.flatMap((p, i) => {
-  const types = DOC_TYPES.slice(0, 4 + (i % 5));
-  return types.map((t, k) => ({
-    id: `doc-${p.id}-${t}`,
-    type: t,
-    name: `${labelDoc(t)} — ${p.name}`,
-    projectId: p.id,
-    plantSlug: p.plantSlug,
-    fecha: p.fecha,
-    size: `${100 + ((i + k) * 37) % 1800} KB`,
-  }));
-});
+export function dc3State(w: Worker): CertState {
+  const dias = Math.floor((new Date(w.vencimiento).getTime() - todayMs()) / 86400000);
+  if (dias < 0) return "vencido";
+  if (dias <= 30) return "por-vencer-30";
+  if (dias <= 60) return "por-vencer-60";
+  return "vigente";
+}
 
 export function labelDoc(t: DocType): string {
   const m: Record<DocType, string> = {
@@ -282,42 +218,6 @@ export function labelDoc(t: DocType): string {
   };
   return m[t];
 }
-
-// ============= FACTURAS =============
-export const INVOICES: Invoice[] = PROJECTS.filter((_, i) => i % 2 === 0).map((p, i) => ({
-  folio: `KGS-${2025 + (i % 2)}-${String(1000 + i).padStart(5, "0")}`,
-  fecha: p.fecha,
-  projectId: p.id,
-  clientSlug: p.clientSlug,
-  monto: 28000 + ((i * 13700) % 420000),
-  status: (["pagada", "pagada", "pendiente", "vencida"] as const)[i % 4],
-}));
-
-// ============= BIBLIOTECA INTERNA =============
-const LIB_CATEGORIES = [
-  "Presentaciones comerciales",
-  "Fichas técnicas",
-  "Formatos de inspección",
-  "Formatos de capacitación",
-  "Reportes modelo",
-  "Manuales de marca",
-  "Certificaciones de marcas",
-  "Normas",
-  "Procedimientos",
-  "Material de entrenamiento",
-];
-
-export const LIBRARY: LibraryDoc[] = LIB_CATEGORIES.flatMap((cat, i) =>
-  Array.from({ length: 3 + (i % 3) }, (_, k) => ({
-    id: `lib-${i}-${k}`,
-    category: cat,
-    name: `${cat} · documento ${k + 1}`,
-    fecha: `2025-${String(1 + ((i + k) % 12)).padStart(2, "0")}-15`,
-    size: `${200 + ((i + k) * 91) % 4000} KB`,
-  })),
-);
-
-export const LIB_CATEGORIES_LIST = LIB_CATEGORIES;
 
 // ============= HELPERS =============
 export function clientBySlug(slug?: string) {
@@ -350,6 +250,13 @@ export function projectById(id: string) {
 export function systemById(id: string) {
   return SYSTEMS.find((s) => s.id === id);
 }
+export function workersByPlant(plantSlug: string) {
+  return WORKERS.filter((w) => w.plantSlug === plantSlug);
+}
+export function workersByClient(clientSlug: string) {
+  const slugs = plantsByClient(clientSlug).map((p) => p.slug);
+  return WORKERS.filter((w) => slugs.includes(w.plantSlug));
+}
 
 export function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("es-MX", { year: "numeric", month: "short", day: "2-digit" });
@@ -358,7 +265,6 @@ export function fmtMoney(n: number) {
   return n.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
 }
 
-// ============= LABELS DE VENCIMIENTO =============
 export function expiryLabel(c: Certification): string {
   const dl = daysLeft(c);
   if (dl < 0) {
@@ -387,11 +293,10 @@ export function ultimaActualizacionPlant(plantSlug: string): string {
   const ps = projectsByPlant(plantSlug)
     .slice()
     .sort((a, b) => b.fecha.localeCompare(a.fecha));
-  return ps[0]?.fecha ?? "2025-01-01";
+  return ps[0]?.fecha ?? new Date().toISOString().slice(0, 10);
 }
 
 export function ultimaActualizacionProject(p: Project): string {
-  // En prototipo: última actualización = fecha + 5 días (cierre documental).
   const d = new Date(p.fecha);
   d.setDate(d.getDate() + 5);
   return d.toISOString().slice(0, 10);
@@ -404,7 +309,6 @@ export function nextExpiryForPlant(plantSlug: string): NextExpiry {
     .slice()
     .sort((a, b) => a.vencimiento.localeCompare(b.vencimiento));
   if (!certs.length) return null;
-  // Prioriza vencidas, luego más cercana.
   const vencida = certs.find((c) => certState(c) === "vencido");
   const c = vencida ?? certs[0];
   const sys = systemById(c.systemId);
@@ -450,70 +354,6 @@ export function buildProjectTimeline(p: Project): ProjectEvent[] {
   ];
 }
 
-// ============= PERSONAL CAPACITADO / DC-3 =============
-export type Worker = {
-  id: string;
-  nombre: string;
-  puesto: string;
-  plantSlug: string;
-  curso: string;
-  dc3: string;
-  emision: string;
-  vencimiento: string;
-  instructor: string;
-};
-
-const NOMBRES = [
-  "Juan Pérez Ramírez", "María López Sandoval", "Carlos Hernández Ruiz", "Ana Martínez Vega",
-  "Luis Torres Mendoza", "Sofía Ramírez Ortega", "Miguel Ángel Cruz", "Laura Domínguez",
-  "Roberto Salinas Vera", "Patricia Rojas Núñez", "Fernando Aguilar", "Gabriela Islas",
-  "Héctor Villanueva", "Andrea Chávez", "Ricardo Molina", "Verónica Guzmán",
-  "Jorge Palacios", "Diana Fuentes", "Alejandro Ríos", "Karen Meza",
-];
-const PUESTOS = ["Técnico mantenimiento", "Supervisor HSE", "Trabajador de altura", "Jefe de planta", "Coordinador seguridad", "Operador"];
-const CURSOS = [
-  "Trabajo seguro en alturas — Autorizado",
-  "Trabajo seguro en alturas — Supervisor",
-  "Rescate técnico en altura",
-  "Inspector de EPP",
-  "Espacios confinados",
-];
-
-export const WORKERS: Worker[] = PLANTS.flatMap((p, pi) => {
-  const count = 3 + (pi % 4);
-  return Array.from({ length: count }, (_, k) => {
-    const idx = (pi * 5 + k) % NOMBRES.length;
-    const bucket = (pi + k) % 4;
-    const offset = [-30, 40, 120, 400][bucket];
-    return {
-      id: `wrk-${p.slug}-${k + 1}`,
-      nombre: NOMBRES[idx],
-      puesto: PUESTOS[(pi + k) % PUESTOS.length],
-      plantSlug: p.slug,
-      curso: CURSOS[(pi + k) % CURSOS.length],
-      dc3: `DC3-${2024 + ((pi + k) % 2)}-${String(1000 + pi * 10 + k).padStart(5, "0")}`,
-      emision: daysFromNow(offset - 730),
-      vencimiento: daysFromNow(offset),
-      instructor: RESPONSABLES[(pi + k) % RESPONSABLES.length],
-    };
-  });
-});
-
-export function workersByPlant(plantSlug: string) {
-  return WORKERS.filter((w) => w.plantSlug === plantSlug);
-}
-export function workersByClient(clientSlug: string) {
-  const slugs = plantsByClient(clientSlug).map((p) => p.slug);
-  return WORKERS.filter((w) => slugs.includes(w.plantSlug));
-}
-export function dc3State(w: Worker): CertState {
-  const dias = Math.floor((new Date(w.vencimiento).getTime() - today.getTime()) / 86400000);
-  if (dias < 0) return "vencido";
-  if (dias <= 30) return "por-vencer-30";
-  if (dias <= 60) return "por-vencer-60";
-  return "vigente";
-}
-
 // ============= CALENDARIO DE CUMPLIMIENTO =============
 export type ComplianceEvent = {
   id: string;
@@ -547,12 +387,13 @@ export function complianceEventsForPlants(plantSlugs: string[]): ComplianceEvent
       responsable: w.instructor,
     });
   });
+  const year = new Date().getFullYear();
   plantSlugs.forEach((slug, i) => {
     for (let q = 0; q < 4; q++) {
       const month = String(1 + q * 3 + (i % 2)).padStart(2, "0");
       events.push({
         id: `ev-insp-${slug}-${q}`,
-        fecha: `2026-${month}-15`,
+        fecha: `${year + 1}-${month}-15`,
         tipo: "inspeccion",
         titulo: "Inspección visual programada",
         plantSlug: slug,
@@ -562,28 +403,3 @@ export function complianceEventsForPlants(plantSlugs: string[]): ComplianceEvent
   });
   return events.sort((a, b) => a.fecha.localeCompare(b.fecha));
 }
-
-// ============= SOLICITUDES DE SERVICIO =============
-export type ServiceRequest = {
-  id: string;
-  fecha: string;
-  plantSlug: string;
-  tipo: string;
-  descripcion: string;
-  status: "recibida" | "en-revision" | "cotizada" | "programada" | "cerrada";
-  solicitante: string;
-};
-
-export const SERVICE_REQUESTS: ServiceRequest[] = PLANTS.slice(0, 10).flatMap((p, i) => {
-  return [1, 2].map((k) => ({
-    id: `req-${p.slug}-${k}`,
-    fecha: daysFromNow(-(i * 7 + k * 3)),
-    plantSlug: p.slug,
-    tipo: ["Inspección", "Recertificación", "Instalación nueva", "Capacitación", "Rescate técnico"][(i + k) % 5],
-    descripcion: `Solicitud generada por el equipo HSE de ${p.name}.`,
-    status: (["recibida", "en-revision", "cotizada", "programada", "cerrada"] as const)[(i + k) % 5],
-    solicitante: p.responsable,
-  }));
-});
-
-

@@ -3,6 +3,7 @@ import { Plus, Edit, Upload, UserPlus } from "lucide-react";
 import { CLIENTS, PLANTS, PROJECTS, DOCUMENTS, CERTIFICATIONS, certState, fmtDate, plantBySlug, systemById } from "@/data/portal";
 import { PageHeader, Panel, StatCard, StatusBadge, ActionBtn, simAction } from "@/components/portal/PortalUI";
 import { usePortalSession } from "@/hooks/use-portal-session";
+import { AdminUsers } from "@/components/portal/AdminUsers";
 import { useState } from "react";
 
 export const Route = createFileRoute("/portal/admin")({
@@ -118,28 +119,8 @@ function AdminPanel() {
         </Panel>
       )}
 
-      {tab === "Usuarios" && (
-        <Panel title="Usuarios autorizados" action={<ActionBtn onClick={() => simAction("Invitar usuario (simulado)")}><UserPlus size={11} /> Invitar</ActionBtn>}>
-          <table className="w-full text-sm">
-            <thead className="bg-[color:var(--muted)]/30 text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)]"><tr>
-              <th className="text-left px-4 py-2 font-bold">Nombre</th>
-              <th className="text-left px-4 py-2 font-bold">Email</th>
-              <th className="text-left px-4 py-2 font-bold">Empresa / Planta</th>
-              <th className="text-left px-4 py-2 font-bold">Rol</th>
-            </tr></thead>
-            <tbody className="divide-y divide-[color:var(--border)]">
-              {PLANTS.slice(0, 12).map((p) => (
-                <tr key={p.slug}>
-                  <td className="px-4 py-2.5 font-bold">{p.responsable}</td>
-                  <td className="px-4 py-2.5 text-[color:var(--muted-fg)]">{p.email}</td>
-                  <td className="px-4 py-2.5 text-[color:var(--muted-fg)]">{p.name}</td>
-                  <td className="px-4 py-2.5"><StatusBadge state="default" label="Cliente planta" /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Panel>
-      )}
+      {tab === "Usuarios" && <AdminUsers />}
+
 
       {tab === "Proyectos" && (
         <Panel title="Todos los proyectos">

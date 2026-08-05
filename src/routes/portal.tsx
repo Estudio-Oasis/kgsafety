@@ -17,7 +17,7 @@ import {
   LogOut,
   AlertTriangle,
 } from "lucide-react";
-import { usePortalSession } from "@/hooks/use-portal-session";
+import { PortalAuthProvider, usePortalSession } from "@/hooks/use-portal-session";
 import type { Role } from "@/data/portal";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -58,7 +58,9 @@ const ROLE_LABEL: Record<Role, string> = {
   "equipo-kg": "Equipo KG Safety",
 };
 
-const PORTAL_ENABLED = import.meta.env['VITE_PORTAL_ENABLED'] === "true";
+// El portal ya cuenta con autenticación y autorización reales; sólo se apaga
+// si explícitamente se define VITE_PORTAL_ENABLED="false".
+const PORTAL_ENABLED = import.meta.env['VITE_PORTAL_ENABLED'] !== "false";
 
 function PortalUnavailable() {
   return (
@@ -92,24 +94,28 @@ function PortalUnavailable() {
 }
 
 function PortalLayout() {
-  const { session, ready, logout } = usePortalSession();
+  if (!PORTAL_ENABLED) return <PortalUnavailable />;
+  return (
+    <PortalAuthProvider>
+      <PortalShell />
+    </PortalAuthProvider>
+  );
+}
+
+function PortalShell() {
+  const { session, ready, status, logout } = usePortalSession();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isLogin = pathname === "/portal/login";
   const [mobileOpen, setMobileOpen] = useState(false);
 
-
   useEffect(() => {
     if (ready && !session && !isLogin) {
-      navigate({ to: "/portal/login" });
+      navigate({ to: "/portal/login", replace: true });
     }
   }, [ready, session, isLogin, navigate]);
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
-
-  if (!PORTAL_ENABLED) return <PortalUnavailable />;
-
-
 
   if (isLogin) {
     return (
@@ -121,15 +127,20 @@ function PortalLayout() {
   }
 
   if (!ready || !session) {
-    return <div className="min-h-screen bg-[color:var(--surface)]" />;
+    return (
+      <div className="min-h-screen grid place-items-center bg-[color:var(--surface)] text-[color:var(--muted-fg)] text-xs uppercase tracking-widest">
+        {ready && status !== "signed-out" ? "Redirigiendo…" : "Verificando acceso…"}
+      </div>
+    );
   }
 
   const items = NAV.filter((n) => n.roles.includes(session.role));
 
-  const handleLogout = () => {
-    logout();
-    navigate({ to: "/portal/login" });
+  const handleLogout = async () => {
+    await logout();
+    navigate({ to: "/portal/login", replace: true });
   };
+
 
 
   const sidebar = (
@@ -183,7 +194,7 @@ function PortalLayout() {
           <p className="text-[10px] text-[color:var(--muted-fg)]">{ROLE_LABEL[session.role]}</p>
         </div>
         <button
-          onClick={handleLogout}
+          onClick={() => void handleLogout()}
           className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-[10px] font-bold uppercase tracking-wider border border-[color:var(--border)] hover:border-signal hover:text-signal transition-colors"
         >
           <LogOut size={12} />
@@ -224,7 +235,7 @@ function PortalLayout() {
             </button>
             <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-600 min-w-0">
               <AlertTriangle size={12} className="shrink-0" />
-              <span className="truncate">Prototipo · datos ficticios · no usar en producción</span>
+              <span className="truncate">Datos de demostración · acceso restringido por empresa y rol</span>
             </div>
           </div>
           <Link to="/" className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] hover:text-brand-blue whitespace-nowrap hidden sm:inline">

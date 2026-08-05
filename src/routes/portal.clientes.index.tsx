@@ -1,12 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CLIENTS, PLANTS, CERTIFICATIONS, certState } from "@/data/portal";
 import { PageHeader, StatusBadge } from "@/components/portal/PortalUI";
+import { usePortalSession } from "@/hooks/use-portal-session";
 
 export const Route = createFileRoute("/portal/clientes/")({
   component: ClientesIndex,
 });
 
 function ClientesIndex() {
+  const { session } = usePortalSession();
+
+  if (session && session.role !== "admin-kg") {
+    return (
+      <div className="max-w-2xl mx-auto py-20 text-center">
+        <p className="text-xs uppercase tracking-widest text-red-500 mb-2">Acceso restringido</p>
+        <h1 className="font-display text-2xl uppercase">Cartera de clientes</h1>
+        <p className="mt-3 text-sm text-[color:var(--muted-fg)]">Sólo los administradores de KG Safety pueden consultar la cartera completa.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto">
       <PageHeader eyebrow="Cartera" title="Clientes" subtitle="Empresas con proyectos activos o histórico con KG Safety." />
