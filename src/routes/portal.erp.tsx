@@ -5,17 +5,25 @@ import {
   AlertTriangle,
   CheckCircle2,
   FlaskConical,
+  PlugZap,
   RefreshCw,
   RotateCw,
   Search,
+  Trash2,
+  XCircle,
 } from "lucide-react";
 import {
+  erpAiSummary,
+  erpHealthcheck,
   erpMonitorSnapshot,
+  erpPurgeTestData,
   erpResolveAlert,
   erpRetryOutbox,
   erpRunE2E,
   erpRunReconcile,
 } from "@/lib/erp-admin.functions";
+import { AiSummaryPanel } from "@/components/portal/AiSummaryPanel";
+
 import { usePortalSession } from "@/hooks/use-portal-session";
 import { NoAccess } from "@/components/portal/PortalUI";
 
