@@ -202,7 +202,7 @@ function LandingPage() {
   return (
     <div className="bg-[color:var(--brand-navy)] kg-on-dark pb-24 md:pb-0">
       {/* Barra superior mínima */}
-      <div className="sticky top-0 z-40 bg-[color:var(--anchor-fixed)]/95 backdrop-blur border-b border-white/10">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-[color:var(--anchor-fixed)]/80 backdrop-blur border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 md:px-8 h-14 flex items-center justify-between gap-3">
           <Link to="/" className="font-display text-white text-sm md:text-base uppercase tracking-tight">
             KG <span className="text-signal">Safety</span>
@@ -222,81 +222,27 @@ function LandingPage() {
             </Link>
           </div>
         </div>
+        <ScrollProgress />
       </div>
 
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroImg} alt="Técnico trabajando en altura con arnés certificado" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[color:var(--brand-navy)]/92 via-[color:var(--brand-navy)]/85 to-[color:var(--brand-navy)]" />
-        </div>
-        <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 pt-14 pb-16 md:pt-24 md:pb-24">
-          <div className="kg-pill-tech mb-6">
-            <span className="kg-led" aria-hidden />
-            <span>Integrador de seguridad en altura · WE NEVER FALL</span>
-          </div>
-          <h1 className="font-display uppercase text-white leading-[1.02] break-words text-[clamp(2rem,9vw,4.5rem)] max-w-3xl">
-            Su gente sube todos los días.
-            <br />
-            <span className="text-signal">Nosotros nos aseguramos de que baje.</span>
-          </h1>
-          <p className="mt-6 text-white/85 text-base md:text-xl leading-relaxed max-w-2xl">
-            Capacitación con DC-3 avalada STPS, líneas de vida con memoria de cálculo y equipo certificado.
-            Todo con expediente auditable. <strong className="text-white">30M+ horas-hombre sin accidentes.</strong>
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
-            <CTA>
-              Quiero mi diagnóstico gratis <ArrowRight size={16} />
-            </CTA>
-            <CTA variant="wa" href={WA}>
-              Hablar por WhatsApp
-            </CTA>
-          </div>
-          <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-bold uppercase tracking-widest text-white/70">
-            {["Sin costo", "Respuesta el mismo día hábil", "Sin compromiso de compra"].map((i) => (
-              <li key={i} className="flex items-center gap-2">
-                <BadgeCheck size={14} className="text-signal" /> {i}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* HERO CINEMATOGRÁFICO */}
+      <CinematicHero waHref={WA} />
 
       {/* PRUEBA RÁPIDA */}
-      <section className="bg-[color:var(--anchor-fixed)] border-y border-white/10 px-4 md:px-8 py-8">
+      <section className="bg-[color:var(--anchor-fixed)] border-y border-white/10 px-4 md:px-8 py-10 md:py-12">
         <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {PROOF.map((p) => (
-            <div key={p.l}>
-              <div className="font-display text-signal text-[clamp(1.6rem,6vw,2.5rem)] leading-none">{p.n}</div>
+          {PROOF.map((p, i) => (
+            <Reveal key={p.l} delay={i * 90}>
+              <div className="font-display text-signal text-[clamp(1.6rem,6vw,2.75rem)] leading-none">{p.n}</div>
               <div className="mt-2 text-[11px] uppercase tracking-widest text-white/60 leading-snug">{p.l}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* EL PROBLEMA */}
-      <section className="px-4 md:px-8 py-14 md:py-24">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-signal mb-4">El costo de no hacerlo</div>
-          <h2 className="font-display uppercase text-white leading-tight text-[clamp(1.6rem,6.5vw,3rem)] max-w-3xl">
-            El riesgo no avisa. La auditoría tampoco.
-          </h2>
-          <div className="mt-10 grid md:grid-cols-3 gap-3">
-            {STAKES.map((s) => (
-              <article key={s.title} className="bg-white/[0.04] border border-white/12 p-6">
-                <s.icon size={22} className="text-signal mb-4" strokeWidth={2.2} />
-                <h3 className="font-display text-lg uppercase text-white leading-tight mb-2">{s.title}</h3>
-                <p className="text-sm text-white/70 leading-relaxed">{s.body}</p>
-              </article>
-            ))}
-          </div>
-          <div className="mt-8">
-            <CTA>
-              Revisar mi operación ahora <ArrowRight size={16} />
-            </CTA>
-          </div>
-        </div>
-      </section>
+      {/* RELATO CON SCROLL */}
+      <ScrollStory />
+
 
       {/* MÉTODO */}
       <section className="bg-[color:var(--anchor-fixed)] border-y border-white/10 px-4 md:px-8 py-14 md:py-24">
