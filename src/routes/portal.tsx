@@ -16,6 +16,7 @@ import {
   Settings,
   LogOut,
   AlertTriangle,
+  TrendingUp,
 } from "lucide-react";
 import { PortalAuthProvider, usePortalSession } from "@/hooks/use-portal-session";
 import type { Role } from "@/data/portal";
