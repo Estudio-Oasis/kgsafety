@@ -119,6 +119,186 @@ export type Database = {
           },
         ]
       }
+      erp_alerts: {
+        Row: {
+          created_at: string
+          es_prueba: boolean
+          id: string
+          lead_id: string | null
+          mensaje: string
+          resuelta: boolean
+          resuelta_at: string | null
+          severidad: string
+          tipo: string
+          titulo: string
+          trace_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          es_prueba?: boolean
+          id?: string
+          lead_id?: string | null
+          mensaje?: string
+          resuelta?: boolean
+          resuelta_at?: string | null
+          severidad?: string
+          tipo?: string
+          titulo?: string
+          trace_id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          es_prueba?: boolean
+          id?: string
+          lead_id?: string | null
+          mensaje?: string
+          resuelta?: boolean
+          resuelta_at?: string | null
+          severidad?: string
+          tipo?: string
+          titulo?: string
+          trace_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "erp_alerts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      erp_logs: {
+        Row: {
+          created_at: string
+          detalle: Json
+          duracion_ms: number
+          error_code: string
+          error_message: string
+          es_prueba: boolean
+          id: string
+          intento: number
+          lead_id: string | null
+          metodo: string
+          modo: string
+          ok: boolean
+          operacion: string
+          path: string
+          stage: string
+          status_code: number | null
+          trace_id: string
+        }
+        Insert: {
+          created_at?: string
+          detalle?: Json
+          duracion_ms?: number
+          error_code?: string
+          error_message?: string
+          es_prueba?: boolean
+          id?: string
+          intento?: number
+          lead_id?: string | null
+          metodo?: string
+          modo?: string
+          ok?: boolean
+          operacion?: string
+          path?: string
+          stage?: string
+          status_code?: number | null
+          trace_id?: string
+        }
+        Update: {
+          created_at?: string
+          detalle?: Json
+          duracion_ms?: number
+          error_code?: string
+          error_message?: string
+          es_prueba?: boolean
+          id?: string
+          intento?: number
+          lead_id?: string | null
+          metodo?: string
+          modo?: string
+          ok?: boolean
+          operacion?: string
+          path?: string
+          stage?: string
+          status_code?: number | null
+          trace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "erp_logs_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      erp_outbox: {
+        Row: {
+          created_at: string
+          es_prueba: boolean
+          estado: string
+          id: string
+          intentos: number
+          last_error: string
+          lead_id: string | null
+          max_intentos: number
+          modo: string
+          next_attempt_at: string
+          payload: Json
+          tipo: string
+          trace_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          es_prueba?: boolean
+          estado?: string
+          id?: string
+          intentos?: number
+          last_error?: string
+          lead_id?: string | null
+          max_intentos?: number
+          modo?: string
+          next_attempt_at?: string
+          payload?: Json
+          tipo?: string
+          trace_id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          es_prueba?: boolean
+          estado?: string
+          id?: string
+          intentos?: number
+          last_error?: string
+          lead_id?: string | null
+          max_intentos?: number
+          modo?: string
+          next_attempt_at?: string
+          payload?: Json
+          tipo?: string
+          trace_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "erp_outbox_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_events: {
         Row: {
           autor_id: string | null
@@ -171,6 +351,8 @@ export type Database = {
           empresa: string
           erp_error: string
           erp_folio: string
+          erp_intentos: number
+          erp_last_attempt_at: string | null
           erp_solicitud_id: string
           erp_status: string
           erp_trace_id: string
@@ -180,6 +362,7 @@ export type Database = {
           id: string
           lugar_servicio: string
           modalidad: string
+          modo: string
           origen: string
           participantes: number | null
           responsable: string
@@ -202,6 +385,8 @@ export type Database = {
           empresa?: string
           erp_error?: string
           erp_folio?: string
+          erp_intentos?: number
+          erp_last_attempt_at?: string | null
           erp_solicitud_id?: string
           erp_status?: string
           erp_trace_id?: string
@@ -211,6 +396,7 @@ export type Database = {
           id?: string
           lugar_servicio?: string
           modalidad?: string
+          modo?: string
           origen?: string
           participantes?: number | null
           responsable?: string
@@ -233,6 +419,8 @@ export type Database = {
           empresa?: string
           erp_error?: string
           erp_folio?: string
+          erp_intentos?: number
+          erp_last_attempt_at?: string | null
           erp_solicitud_id?: string
           erp_status?: string
           erp_trace_id?: string
@@ -242,6 +430,7 @@ export type Database = {
           id?: string
           lugar_servicio?: string
           modalidad?: string
+          modo?: string
           origen?: string
           participantes?: number | null
           responsable?: string
