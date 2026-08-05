@@ -40,6 +40,8 @@ export const Route = createFileRoute("/portal/erp")({
 
 type Snapshot = Awaited<ReturnType<typeof erpMonitorSnapshot>>;
 type E2EReport = Awaited<ReturnType<typeof erpRunE2E>>;
+type Health = Awaited<ReturnType<typeof erpHealthcheck>>;
+
 
 const estadoStyles: Record<string, string> = {
   operativo: "bg-emerald-500/15 text-emerald-300 border-emerald-500/40",
