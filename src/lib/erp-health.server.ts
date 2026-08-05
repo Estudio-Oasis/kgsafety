@@ -115,10 +115,18 @@ export async function checkErpHealth(): Promise<ErpHealth> {
     pruebas[0] = { ...auth.probe, detalle: "token emitido" };
     const authHeader = { Authorization: `Bearer ${token}` };
     const reads = await Promise.all([
-      timed("Catálogo de cursos", "/api/cursos", { method: "GET", headers: authHeader }),
-      timed("Calendario de cursos", "/api/calendarioCursos", { method: "GET", headers: authHeader }),
-      timed("Insumos (equipos)", "/api/insumos?tipo=EQUIPO", { method: "GET", headers: authHeader }),
+      timed("Catálogo de cursos", "/api/cursos/-1/-1/-1/-1/-1", { method: "GET", headers: authHeader }),
+      timed(
+        "Calendario de cursos",
+        `/api/calendarioCursosInformacion/-1/${new Date().toISOString().slice(0, 10)}`,
+        { method: "GET", headers: authHeader },
+      ),
+      timed("Insumos (equipos)", "/api/AlmacenInsumos/-1/-1/-1/-1/Equipo", {
+        method: "GET",
+        headers: authHeader,
+      }),
     ]);
+
     for (const r of reads) pruebas.push(r.probe);
   }
 
