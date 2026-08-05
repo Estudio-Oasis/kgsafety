@@ -47,7 +47,6 @@ const NAV: NavItem[] = [
   { to: "/portal/solicitudes", label: "Solicitudes de servicio", icon: Inbox, roles: CLIENT_ROLES },
   { to: "/portal/facturacion", label: "Servicios realizados", icon: Receipt, roles: CLIENT_ROLES },
   { to: "/portal/clientes", label: "Clientes", icon: Building2, roles: ["admin-kg"] },
-  { to: "/portal/clientes", label: "Clientes", icon: Building2, roles: ["admin-kg"] },
   { to: "/portal/leads", label: "Embudo comercial", icon: TrendingUp, roles: ["admin-kg", "equipo-kg"] },
   { to: "/portal/biblioteca", label: "Biblioteca KG", icon: Library, roles: ["admin-kg", "equipo-kg"] },
   { to: "/portal/admin", label: "Panel admin", icon: Settings, roles: ["admin-kg"] },
