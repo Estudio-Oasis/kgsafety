@@ -4,6 +4,7 @@
  */
 
 import { maskRfc, normalizeRfc, validateRfc } from "./rfc";
+import { currentMode, logErpCall, newTraceId, withRetry } from "./erp-monitor.server";
 
 const BASE = "https://api-erpnoil.dsaix.com.mx";
 
@@ -472,13 +473,16 @@ type RawQuote = {
   IdCurso?: number;
 };
 
-function newTraceId() {
-  return `kgq_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-}
-
 function log(traceId: string, stage: ErpStage, detail: Record<string, unknown>) {
   // Bitácora técnica: nunca contraseña, JWT ni RFC completo.
   console.log(`[erp][${traceId}][${stage}] ${JSON.stringify(detail)}`);
+  void logErpCall({
+    stage,
+    operacion: "cotizacion",
+    ok: !("error" in detail),
+    error_message: typeof detail.error === "string" ? detail.error : "",
+    detalle: detail,
+  });
 }
 
 /** Consulta cotizaciones ya almacenadas. -1 desactiva cada filtro. */
@@ -499,8 +503,11 @@ async function findQuotes(filters: {
   }
 }
 
-export async function createQuote(input: QuoteInput): Promise<QuoteResult> {
-  const traceId = newTraceId();
+export async function createQuote(
+  input: QuoteInput,
+  opts?: { traceId?: string },
+): Promise<QuoteResult> {
+  const traceId = opts?.traceId ?? newTraceId();
   const rfc = normalizeRfc(input.rfc);
 
   // 1. Validación real de RFC (formato + fecha).
