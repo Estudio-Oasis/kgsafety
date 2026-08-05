@@ -119,6 +119,140 @@ export type Database = {
           },
         ]
       }
+      lead_events: {
+        Row: {
+          autor_id: string | null
+          autor_nombre: string
+          created_at: string
+          detalle: string
+          id: string
+          lead_id: string
+          tipo: string
+        }
+        Insert: {
+          autor_id?: string | null
+          autor_nombre?: string
+          created_at?: string
+          detalle?: string
+          id?: string
+          lead_id: string
+          tipo?: string
+        }
+        Update: {
+          autor_id?: string | null
+          autor_nombre?: string
+          created_at?: string
+          detalle?: string
+          id?: string
+          lead_id?: string
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          comentarios: string
+          contacto_correo: string
+          contacto_nombre: string
+          contacto_telefono: string
+          contratista_id: number | null
+          contratista_nombre: string
+          created_at: string
+          curso_id: number | null
+          curso_nombre: string
+          empresa: string
+          erp_error: string
+          erp_folio: string
+          erp_solicitud_id: string
+          erp_status: string
+          erp_trace_id: string
+          es_prueba: boolean
+          etapa: string
+          fecha_deseada: string | null
+          id: string
+          lugar_servicio: string
+          modalidad: string
+          origen: string
+          participantes: number | null
+          responsable: string
+          rfc: string
+          servicio_id: number | null
+          tipo_curso: string
+          updated_at: string
+          valor_estimado: number | null
+        }
+        Insert: {
+          comentarios?: string
+          contacto_correo?: string
+          contacto_nombre?: string
+          contacto_telefono?: string
+          contratista_id?: number | null
+          contratista_nombre?: string
+          created_at?: string
+          curso_id?: number | null
+          curso_nombre?: string
+          empresa?: string
+          erp_error?: string
+          erp_folio?: string
+          erp_solicitud_id?: string
+          erp_status?: string
+          erp_trace_id?: string
+          es_prueba?: boolean
+          etapa?: string
+          fecha_deseada?: string | null
+          id?: string
+          lugar_servicio?: string
+          modalidad?: string
+          origen?: string
+          participantes?: number | null
+          responsable?: string
+          rfc?: string
+          servicio_id?: number | null
+          tipo_curso?: string
+          updated_at?: string
+          valor_estimado?: number | null
+        }
+        Update: {
+          comentarios?: string
+          contacto_correo?: string
+          contacto_nombre?: string
+          contacto_telefono?: string
+          contratista_id?: number | null
+          contratista_nombre?: string
+          created_at?: string
+          curso_id?: number | null
+          curso_nombre?: string
+          empresa?: string
+          erp_error?: string
+          erp_folio?: string
+          erp_solicitud_id?: string
+          erp_status?: string
+          erp_trace_id?: string
+          es_prueba?: boolean
+          etapa?: string
+          fecha_deseada?: string | null
+          id?: string
+          lugar_servicio?: string
+          modalidad?: string
+          origen?: string
+          participantes?: number | null
+          responsable?: string
+          rfc?: string
+          servicio_id?: number | null
+          tipo_curso?: string
+          updated_at?: string
+          valor_estimado?: number | null
+        }
+        Relationships: []
+      }
       library_docs: {
         Row: {
           category: string
