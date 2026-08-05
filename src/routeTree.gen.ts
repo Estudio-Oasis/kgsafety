@@ -38,6 +38,7 @@ import { Route as PortalCalendarioRouteImport } from './routes/portal.calendario
 import { Route as PortalCertificacionesRouteImport } from './routes/portal.certificaciones'
 import { Route as PortalConstanciasRouteImport } from './routes/portal.constancias'
 import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
+import { Route as PortalErpRouteImport } from './routes/portal.erp'
 import { Route as PortalFacturacionRouteImport } from './routes/portal.facturacion'
 import { Route as PortalLeadsRouteImport } from './routes/portal.leads'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
@@ -51,6 +52,7 @@ import { Route as PortalClientesSlugRouteImport } from './routes/portal.clientes
 import { Route as PortalPlantasSlugRouteImport } from './routes/portal.plantas.$slug'
 import { Route as PortalProyectosIndexRouteImport } from './routes/portal.proyectos.index'
 import { Route as PortalProyectosIdRouteImport } from './routes/portal.proyectos.$id'
+import { Route as ApiPublicHooksErpReconcileRouteImport } from './routes/api/public/hooks/erp-reconcile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -197,6 +199,11 @@ const PortalDocumentosRoute = PortalDocumentosRouteImport.update({
   path: '/documentos',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalErpRoute = PortalErpRouteImport.update({
+  id: '/erp',
+  path: '/erp',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalFacturacionRoute = PortalFacturacionRouteImport.update({
   id: '/facturacion',
   path: '/facturacion',
@@ -262,6 +269,12 @@ const PortalProyectosIdRoute = PortalProyectosIdRouteImport.update({
   path: '/proyectos/$id',
   getParentRoute: () => PortalRoute,
 } as any)
+const ApiPublicHooksErpReconcileRoute =
+  ApiPublicHooksErpReconcileRouteImport.update({
+    id: '/api/public/hooks/erp-reconcile',
+    path: '/api/public/hooks/erp-reconcile',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -288,6 +301,7 @@ export interface FileRoutesByFullPath {
   '/portal/certificaciones': typeof PortalCertificacionesRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/erp': typeof PortalErpRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -306,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes/': typeof PortalClientesIndexRoute
   '/portal/proyectos/': typeof PortalProyectosIndexRoute
+  '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -330,6 +345,7 @@ export interface FileRoutesByTo {
   '/portal/certificaciones': typeof PortalCertificacionesRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/erp': typeof PortalErpRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -348,6 +364,7 @@ export interface FileRoutesByTo {
   '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes': typeof PortalClientesIndexRoute
   '/portal/proyectos': typeof PortalProyectosIndexRoute
+  '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -375,6 +392,7 @@ export interface FileRoutesById {
   '/portal/certificaciones': typeof PortalCertificacionesRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
+  '/portal/erp': typeof PortalErpRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -393,6 +411,7 @@ export interface FileRoutesById {
   '/portal/proyectos/$id': typeof PortalProyectosIdRoute
   '/portal/clientes/': typeof PortalClientesIndexRoute
   '/portal/proyectos/': typeof PortalProyectosIndexRoute
+  '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -421,6 +440,7 @@ export interface FileRouteTypes {
     | '/portal/certificaciones'
     | '/portal/constancias'
     | '/portal/documentos'
+    | '/portal/erp'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -439,6 +459,7 @@ export interface FileRouteTypes {
     | '/portal/proyectos/$id'
     | '/portal/clientes/'
     | '/portal/proyectos/'
+    | '/api/public/hooks/erp-reconcile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -463,6 +484,7 @@ export interface FileRouteTypes {
     | '/portal/certificaciones'
     | '/portal/constancias'
     | '/portal/documentos'
+    | '/portal/erp'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -481,6 +503,7 @@ export interface FileRouteTypes {
     | '/portal/proyectos/$id'
     | '/portal/clientes'
     | '/portal/proyectos'
+    | '/api/public/hooks/erp-reconcile'
   id:
     | '__root__'
     | '/'
@@ -507,6 +530,7 @@ export interface FileRouteTypes {
     | '/portal/certificaciones'
     | '/portal/constancias'
     | '/portal/documentos'
+    | '/portal/erp'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -525,6 +549,7 @@ export interface FileRouteTypes {
     | '/portal/proyectos/$id'
     | '/portal/clientes/'
     | '/portal/proyectos/'
+    | '/api/public/hooks/erp-reconcile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -550,6 +575,7 @@ export interface RootRouteChildren {
   EquiposIndexRoute: typeof EquiposIndexRoute
   IngenieriaIndexRoute: typeof IngenieriaIndexRoute
   ServiciosIndexRoute: typeof ServiciosIndexRoute
+  ApiPublicHooksErpReconcileRoute: typeof ApiPublicHooksErpReconcileRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -757,6 +783,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalDocumentosRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/erp': {
+      id: '/portal/erp'
+      path: '/erp'
+      fullPath: '/portal/erp'
+      preLoaderRoute: typeof PortalErpRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/facturacion': {
       id: '/portal/facturacion'
       path: '/facturacion'
@@ -848,6 +881,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalProyectosIdRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/api/public/hooks/erp-reconcile': {
+      id: '/api/public/hooks/erp-reconcile'
+      path: '/api/public/hooks/erp-reconcile'
+      fullPath: '/api/public/hooks/erp-reconcile'
+      preLoaderRoute: typeof ApiPublicHooksErpReconcileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -870,6 +910,7 @@ interface PortalRouteChildren {
   PortalCertificacionesRoute: typeof PortalCertificacionesRoute
   PortalConstanciasRoute: typeof PortalConstanciasRoute
   PortalDocumentosRoute: typeof PortalDocumentosRoute
+  PortalErpRoute: typeof PortalErpRoute
   PortalFacturacionRoute: typeof PortalFacturacionRoute
   PortalLeadsRoute: typeof PortalLeadsRoute
   PortalLoginRoute: typeof PortalLoginRoute
@@ -891,6 +932,7 @@ const PortalRouteChildren: PortalRouteChildren = {
   PortalCertificacionesRoute: PortalCertificacionesRoute,
   PortalConstanciasRoute: PortalConstanciasRoute,
   PortalDocumentosRoute: PortalDocumentosRoute,
+  PortalErpRoute: PortalErpRoute,
   PortalFacturacionRoute: PortalFacturacionRoute,
   PortalLeadsRoute: PortalLeadsRoute,
   PortalLoginRoute: PortalLoginRoute,
@@ -931,6 +973,7 @@ const rootRouteChildren: RootRouteChildren = {
   EquiposIndexRoute: EquiposIndexRoute,
   IngenieriaIndexRoute: IngenieriaIndexRoute,
   ServiciosIndexRoute: ServiciosIndexRoute,
+  ApiPublicHooksErpReconcileRoute: ApiPublicHooksErpReconcileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -24,6 +24,7 @@ export type LeadInput = {
   contratista_nombre?: string;
   comentarios?: string;
   es_prueba?: boolean;
+  modo?: string;
 };
 
 export type LeadErpOutcome = {
@@ -64,6 +65,7 @@ export async function recordLead(input: LeadInput): Promise<string | null> {
         contratista_nombre: input.contratista_nombre ?? "",
         comentarios: input.comentarios ?? "",
         es_prueba: input.es_prueba ?? false,
+        modo: input.modo ?? "live",
         etapa: "nuevo",
         erp_status: "pendiente",
       })
@@ -91,7 +93,8 @@ export async function attachErpOutcome(leadId: string | null, outcome: LeadErpOu
         erp_solicitud_id: outcome.erp_solicitud_id ?? "",
         erp_trace_id: outcome.erp_trace_id ?? "",
         erp_error: outcome.erp_error ?? "",
-        etapa: outcome.erp_status === "error" ? "nuevo" : "cotizacion",
+        erp_last_attempt_at: new Date().toISOString(),
+        etapa: outcome.erp_status === "error" || outcome.erp_status === "pendiente" ? "nuevo" : "cotizacion",
       })
       .eq("id", leadId);
     await logLeadEvent(

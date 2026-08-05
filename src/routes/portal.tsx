@@ -17,6 +17,7 @@ import {
   LogOut,
   AlertTriangle,
   TrendingUp,
+  Activity,
 } from "lucide-react";
 import { PortalAuthProvider, usePortalSession } from "@/hooks/use-portal-session";
 import type { Role } from "@/data/portal";
@@ -48,6 +49,7 @@ const NAV: NavItem[] = [
   { to: "/portal/facturacion", label: "Servicios realizados", icon: Receipt, roles: CLIENT_ROLES },
   { to: "/portal/clientes", label: "Clientes", icon: Building2, roles: ["admin-kg"] },
   { to: "/portal/leads", label: "Embudo comercial", icon: TrendingUp, roles: ["admin-kg", "equipo-kg"] },
+  { to: "/portal/erp", label: "Monitoreo ERP", icon: Activity, roles: ["admin-kg", "equipo-kg"] },
   { to: "/portal/biblioteca", label: "Biblioteca KG", icon: Library, roles: ["admin-kg", "equipo-kg"] },
   { to: "/portal/admin", label: "Panel admin", icon: Settings, roles: ["admin-kg"] },
 ];
