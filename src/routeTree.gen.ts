@@ -39,6 +39,7 @@ import { Route as PortalCertificacionesRouteImport } from './routes/portal.certi
 import { Route as PortalConstanciasRouteImport } from './routes/portal.constancias'
 import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
 import { Route as PortalFacturacionRouteImport } from './routes/portal.facturacion'
+import { Route as PortalLeadsRouteImport } from './routes/portal.leads'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
 import { Route as PortalPersonalRouteImport } from './routes/portal.personal'
 import { Route as PortalSistemasRouteImport } from './routes/portal.sistemas'
@@ -201,6 +202,11 @@ const PortalFacturacionRoute = PortalFacturacionRouteImport.update({
   path: '/facturacion',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalLeadsRoute = PortalLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalLoginRoute = PortalLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -283,6 +289,7 @@ export interface FileRoutesByFullPath {
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
+  '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/personal': typeof PortalPersonalRoute
   '/portal/sistemas': typeof PortalSistemasRoute
@@ -324,6 +331,7 @@ export interface FileRoutesByTo {
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
+  '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/personal': typeof PortalPersonalRoute
   '/portal/sistemas': typeof PortalSistemasRoute
@@ -368,6 +376,7 @@ export interface FileRoutesById {
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
+  '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/personal': typeof PortalPersonalRoute
   '/portal/sistemas': typeof PortalSistemasRoute
@@ -413,6 +422,7 @@ export interface FileRouteTypes {
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/facturacion'
+    | '/portal/leads'
     | '/portal/login'
     | '/portal/personal'
     | '/portal/sistemas'
@@ -454,6 +464,7 @@ export interface FileRouteTypes {
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/facturacion'
+    | '/portal/leads'
     | '/portal/login'
     | '/portal/personal'
     | '/portal/sistemas'
@@ -497,6 +508,7 @@ export interface FileRouteTypes {
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/facturacion'
+    | '/portal/leads'
     | '/portal/login'
     | '/portal/personal'
     | '/portal/sistemas'
@@ -752,6 +764,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalFacturacionRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/leads': {
+      id: '/portal/leads'
+      path: '/leads'
+      fullPath: '/portal/leads'
+      preLoaderRoute: typeof PortalLeadsRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/login': {
       id: '/portal/login'
       path: '/login'
@@ -852,6 +871,7 @@ interface PortalRouteChildren {
   PortalConstanciasRoute: typeof PortalConstanciasRoute
   PortalDocumentosRoute: typeof PortalDocumentosRoute
   PortalFacturacionRoute: typeof PortalFacturacionRoute
+  PortalLeadsRoute: typeof PortalLeadsRoute
   PortalLoginRoute: typeof PortalLoginRoute
   PortalPersonalRoute: typeof PortalPersonalRoute
   PortalSistemasRoute: typeof PortalSistemasRoute
@@ -872,6 +892,7 @@ const PortalRouteChildren: PortalRouteChildren = {
   PortalConstanciasRoute: PortalConstanciasRoute,
   PortalDocumentosRoute: PortalDocumentosRoute,
   PortalFacturacionRoute: PortalFacturacionRoute,
+  PortalLeadsRoute: PortalLeadsRoute,
   PortalLoginRoute: PortalLoginRoute,
   PortalPersonalRoute: PortalPersonalRoute,
   PortalSistemasRoute: PortalSistemasRoute,
@@ -914,13 +935,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
