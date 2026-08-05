@@ -414,8 +414,23 @@ function ErpMonitorPage() {
               />
               Incluir pruebas
             </label>
+            <button
+              type="button"
+              disabled={busy !== null}
+              onClick={() => {
+                if (!window.confirm("¿Borrar de forma definitiva todos los registros marcados como prueba?")) return;
+                void act("purge", async () => {
+                  await erpPurgeTestData({ data: undefined });
+                  setIncluirPruebas(false);
+                });
+              }}
+              className="flex items-center gap-1.5 border border-white/20 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-white/60 hover:text-red-300 hover:border-red-400/50 disabled:opacity-50"
+            >
+              <Trash2 size={11} /> Borrar datos de prueba
+            </button>
           </div>
         </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[860px]">
             <thead>
