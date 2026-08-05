@@ -6,7 +6,7 @@
 import { maskRfc, normalizeRfc, validateRfc } from "./rfc";
 import { currentMode, logErpCall, newTraceId, withRetry } from "./erp-monitor.server";
 
-const BASE = "https://api-erpnoil.dsaix.com.mx";
+const BASE = process.env["ERP_BASE_URL"] ?? "https://api-erpnoil.dsaix.com.mx";
 
 let cachedToken: { value: string; expiresAt: number } | null = null;
 
