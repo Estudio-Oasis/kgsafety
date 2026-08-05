@@ -58,21 +58,73 @@ export class ErpError extends Error {
   }
 }
 
+/** Respuesta simulada en modo staging: no toca el ERP real. */
+function stagingResponse(path: string, method: string) {
+  const seq = 900000 + Math.floor(Math.random() * 99999);
+  if (path.startsWith("/api/clientesSspa") && method === "POST") {
+    return { status: 201, ok: true, json: { IdCliente: seq } as unknown, text: "" };
+  }
+  if (path.startsWith("/api/cotizacionSolicitudesSspa") && method === "POST") {
+    return {
+      status: 201,
+      ok: true,
+      json: { IdCotizacionSolicitud: seq, SCodigoSolicitud: `STG-${seq}` } as unknown,
+      text: "",
+    };
+  }
+  if (path.startsWith("/api/calendarioCursosSolicitud") && method === "POST") {
+    return { status: 200, ok: true, json: { Mensaje: "OK staging" } as unknown, text: "" };
+  }
+  return { status: 200, ok: true, json: null as unknown, text: "" };
+}
+
 /** Respuesta cruda del ERP: cualquier 2xx es transporte exitoso, con o sin cuerpo JSON. */
 async function raw(
   path: string,
   init?: RequestInit,
   retry = true,
 ): Promise<{ status: number; ok: boolean; json: unknown | null; text: string }> {
-  const res = await fetch(`${BASE}${path}`, {
-    ...init,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${await token()}`,
-      ...(init?.headers ?? {}),
-    },
-  });
+  const method = (init?.method ?? "GET").toUpperCase();
+  const t0 = Date.now();
+
+  // Modo staging: las escrituras nunca llegan a Noil (no se generan registros reales).
+  if (currentMode() === "staging" && method !== "GET") {
+    const sim = stagingResponse(path, method);
+    await logErpCall({
+      stage: "staging",
+      metodo: method,
+      path,
+      status_code: sim.status,
+      ok: true,
+      duracion_ms: Date.now() - t0,
+      detalle: { simulado: true },
+    });
+    return sim;
+  }
+
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      ...init,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await token()}`,
+        ...(init?.headers ?? {}),
+      },
+    });
+  } catch (e) {
+    await logErpCall({
+      stage: "transporte",
+      metodo: method,
+      path,
+      ok: false,
+      duracion_ms: Date.now() - t0,
+      error_code: "red_no_disponible",
+      error_message: String(e),
+    });
+    throw e;
+  }
 
   if (res.status === 401 && retry) {
     cachedToken = null;
@@ -88,17 +140,40 @@ async function raw(
       json = null;
     }
   }
+
+  await logErpCall({
+    stage: "http",
+    metodo: method,
+    path,
+    status_code: res.status,
+    ok: res.ok,
+    duracion_ms: Date.now() - t0,
+    error_message: res.ok ? "" : text.slice(0, 300),
+  });
+
   return { status: res.status, ok: res.ok, json, text };
 }
 
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await raw(path, init);
-  if (!res.ok) {
-    console.error(`ERP ${path} [${res.status}]`);
-    throw new Error(`ERP respondió ${res.status}`);
+  const method = (init?.method ?? "GET").toUpperCase();
+  const exec = async () => {
+    const res = await raw(path, init);
+    if (!res.ok) {
+      const err = new Error(`ERP respondió ${res.status}`);
+      // Solo los 5xx y errores de red se consideran reintentables.
+      if (res.status >= 500) throw err;
+      throw Object.assign(err, { noRetry: true });
+    }
+    return (res.json ?? null) as T;
+  };
+
+  // Las lecturas son idempotentes: se reintentan. Las escrituras nunca se duplican.
+  if (method === "GET") {
+    return withRetry(exec, { intentos: 3, stage: "lectura", operacion: path });
   }
-  return (res.json ?? null) as T;
+  return exec();
 }
+
 
 
 /** Varios GET del ERP devuelven [datos, statusCode]. */
