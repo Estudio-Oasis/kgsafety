@@ -73,83 +73,10 @@ export const erpLookupClient = createServerFn({ method: "POST" })
 export const erpCreateQuote = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => quoteSchema.parse(data))
   .handler(async ({ data }) => {
-    const { createQuote, ErpError } = await import("./erp.server");
-    const { recordLead, attachErpOutcome } = await import("./leads.server");
-
-    // 1) Registro propio: la data queda en nuestra base aunque el ERP falle.
-    const leadId = await recordLead({
-      origen: "cotizacion-web",
-      empresa: data.empresa,
-      rfc: data.rfc,
-      contacto_nombre: data.nombre,
-      contacto_correo: data.correo,
-      contacto_telefono: data.telefono,
-      curso_id: data.idCurso,
-      servicio_id: data.idServicio || null,
-      participantes: data.participantes,
-      modalidad: data.lugarCurso,
-      tipo_curso: data.tipoCursoCliente,
-      lugar_servicio: data.lugarServicio,
-      fecha_deseada: data.fechaDeseada ?? null,
-      contratista_id: data.idContratista || null,
-      contratista_nombre: data.nombreContratista,
-      comentarios: data.comentarios,
-      es_prueba: /(^|\s)prueba(\s|$)/i.test(data.empresa) || /kg-safety\.com$/i.test(data.correo),
-    });
-
-    try {
-      const result = await createQuote(data);
-      await attachErpOutcome(leadId, {
-        erp_status: result.status === "creada" ? "creada" : "pendiente_verificacion",
-        erp_folio: result.folio ?? (result.idSolicitud ? String(result.idSolicitud) : ""),
-        erp_solicitud_id: result.idSolicitud ? String(result.idSolicitud) : "",
-        erp_trace_id: result.traceId ?? "",
-      });
-      return {
-        ok: true as const,
-        stage: "completado" as const,
-        code: result.status,
-        message:
-          result.status === "creada"
-            ? "Su solicitud quedó registrada en nuestro sistema."
-            : "Su solicitud fue recibida y está pendiente de verificación. No la envíe de nuevo.",
-        traceId: result.traceId,
-        retryable: false,
-        idCotizacionSolicitud: result.idSolicitud,
-        folio: result.folio,
-        fechaAgendada: result.fechaAgendada,
-      };
-    } catch (e) {
-      if (e instanceof ErpError) {
-        console.error(`[erp][${e.stage}][${e.code}] ${e.message}`);
-        await attachErpOutcome(leadId, { erp_status: "error", erp_error: `${e.stage}/${e.code}` });
-        return {
-          ok: false as const,
-          stage: e.stage,
-          code: e.code,
-          message: e.message,
-          traceId: null,
-          retryable: e.retryable,
-          idCotizacionSolicitud: null,
-          folio: null,
-          fechaAgendada: false,
-        };
-      }
-      console.error(e);
-      await attachErpOutcome(leadId, { erp_status: "error", erp_error: "error_inesperado" });
-      return {
-        ok: false as const,
-        stage: "desconocido" as const,
-        code: "error_inesperado",
-        message: "Ocurrió un error inesperado al procesar la solicitud.",
-        traceId: null,
-        retryable: true,
-        idCotizacionSolicitud: null,
-        folio: null,
-        fechaAgendada: false,
-      };
-    }
+    const { submitQuote } = await import("./erp-submit.server");
+    return submitQuote(data);
   });
+
 
 
 export const erpListInsumos = createServerFn({ method: "GET" })
