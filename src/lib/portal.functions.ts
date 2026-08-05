@@ -188,16 +188,6 @@ export const createServiceRequest = createServerFn({ method: "POST" })
   });
 
 // ============= ADMINISTRACIÓN DE ACCESOS =============
-type AuthContext = { supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }> }; userId: string };
-
-async function assertAdmin(context: AuthContext) {
-  const { data, error } = await context.supabase.rpc("has_role", {
-    _user_id: context.userId,
-    _role: "admin_kg",
-  });
-  if (error || !data) throw new Error("Forbidden");
-}
-
 export type PortalUser = {
   id: string;
   email: string;
@@ -212,8 +202,9 @@ export type PortalUser = {
 export const listPortalUsers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<PortalUser[]> => {
-    await assertAdmin(context);
     const { supabase } = context;
+    const { data: isAdmin } = await supabase.rpc("has_role", { _user_id: context.userId, _role: "admin_kg" });
+    if (!isAdmin) throw new Error("Forbidden");
     const [{ data: profiles }, { data: roles }] = await Promise.all([
       supabase
         .from("profiles")
@@ -254,7 +245,8 @@ export const setPortalUserAccess = createServerFn({ method: "POST" })
     },
   )
   .handler(async ({ data, context }) => {
-    await assertAdmin(context);
+    const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin_kg" });
+    if (!isAdmin) throw new Error("Forbidden");
     if (data.userId === context.userId && data.role !== "admin_kg") {
       throw new Error("No puedes quitarte tu propio acceso de administrador.");
     }
@@ -289,7 +281,8 @@ export const setPortalUserAccess = createServerFn({ method: "POST" })
 export const listCompanyOptions = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin(context);
+    const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin_kg" });
+    if (!isAdmin) throw new Error("Forbidden");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data } = await supabaseAdmin.from("companies").select("slug, name").order("name");
     return data ?? [];
