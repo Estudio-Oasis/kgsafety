@@ -4,15 +4,18 @@ import { toast } from "sonner";
 import { Download, RefreshCw, Search } from "lucide-react";
 import { usePortalSession } from "@/hooks/use-portal-session";
 import { StatCard } from "@/components/portal/PortalUI";
+import { AiSummaryPanel } from "@/components/portal/AiSummaryPanel";
 import {
   LEAD_STAGES,
   addLeadNote,
   getLeadEvents,
+  leadsAiSummary,
   listLeads,
   updateLead,
   type LeadEventRow,
   type LeadRow,
 } from "@/lib/leads.functions";
+
 
 export const Route = createFileRoute("/portal/leads")({
   component: LeadsPage,
