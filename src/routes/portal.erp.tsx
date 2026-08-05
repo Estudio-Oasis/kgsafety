@@ -17,7 +17,7 @@ import {
   erpRunReconcile,
 } from "@/lib/erp-admin.functions";
 import { usePortalSession } from "@/hooks/use-portal-session";
-import { NoAccess, Panel } from "@/components/portal/PortalUI";
+import { NoAccess } from "@/components/portal/PortalUI";
 
 export const Route = createFileRoute("/portal/erp")({
   component: ErpMonitorPage,
@@ -169,7 +169,7 @@ function ErpMonitorPage() {
       </div>
 
       {e2e && (
-        <Panel>
+        <section className="border border-white/10 bg-white/[0.02] p-5 sm:p-6">
           <div className="flex items-center justify-between gap-3 mb-4">
             <h2 className="font-display text-base uppercase text-white">
               Prueba end-to-end · {e2e.ok ? "OK" : "con hallazgos"}
@@ -194,11 +194,11 @@ function ErpMonitorPage() {
           <p className="mt-4 text-[11px] uppercase tracking-widest text-white/40">
             Modo staging: las escrituras se simulan y no generan registros en Noil.
           </p>
-        </Panel>
+        </section>
       )}
 
       {(snap?.alertas.filter((a) => !a.resuelta).length ?? 0) > 0 && (
-        <Panel>
+        <section className="border border-white/10 bg-white/[0.02] p-5 sm:p-6">
           <h2 className="font-display text-base uppercase text-white mb-4">Alertas abiertas</h2>
           <div className="space-y-2">
             {snap!.alertas
@@ -233,10 +233,10 @@ function ErpMonitorPage() {
                 </div>
               ))}
           </div>
-        </Panel>
+        </section>
       )}
 
-      <Panel>
+      <section className="border border-white/10 bg-white/[0.02] p-5 sm:p-6">
         <h2 className="font-display text-base uppercase text-white mb-4">Cola de sincronización</h2>
         {snap?.cola.length ? (
           <div className="overflow-x-auto">
@@ -288,9 +288,9 @@ function ErpMonitorPage() {
         ) : (
           <p className="text-sm text-white/50">Sin solicitudes pendientes de sincronizar.</p>
         )}
-      </Panel>
+      </section>
 
-      <Panel>
+      <section className="border border-white/10 bg-white/[0.02] p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 className="font-display text-base uppercase text-white flex items-center gap-2">
             <Activity size={16} className="text-signal" /> Bitácora de interacciones
@@ -366,7 +366,7 @@ function ErpMonitorPage() {
         <p className="mt-4 text-[10px] uppercase tracking-widest text-white/35">
           Actualización automática cada 10 segundos.
         </p>
-      </Panel>
+      </section>
     </div>
   );
 }
