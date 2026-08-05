@@ -58,7 +58,9 @@ const ROLE_LABEL: Record<Role, string> = {
   "equipo-kg": "Equipo KG Safety",
 };
 
-const PORTAL_ENABLED = import.meta.env['VITE_PORTAL_ENABLED'] === "true";
+// El portal ya cuenta con autenticación y autorización reales; sólo se apaga
+// si explícitamente se define VITE_PORTAL_ENABLED="false".
+const PORTAL_ENABLED = import.meta.env['VITE_PORTAL_ENABLED'] !== "false";
 
 function PortalUnavailable() {
   return (
@@ -233,7 +235,7 @@ function PortalShell() {
             </button>
             <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-600 min-w-0">
               <AlertTriangle size={12} className="shrink-0" />
-              <span className="truncate">Prototipo · datos ficticios · no usar en producción</span>
+              <span className="truncate">Datos de demostración · acceso restringido por empresa y rol</span>
             </div>
           </div>
           <Link to="/" className="text-[10px] uppercase tracking-widest text-[color:var(--muted-fg)] hover:text-brand-blue whitespace-nowrap hidden sm:inline">
