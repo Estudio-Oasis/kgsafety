@@ -121,7 +121,7 @@ export async function checkErpHealth(): Promise<ErpHealth> {
         `/api/calendarioCursosInformacion/-1/${new Date().toISOString().slice(0, 10)}`,
         { method: "GET", headers: authHeader },
       ),
-      timed("Insumos (equipos)", "/api/AlmacenInsumos/-1/-1/-1/-1/Equipo", {
+      timed("Insumos (equipos)", "/api/AlmacenInsumos/-1/-1/-1/-1/EQUIPO", {
         method: "GET",
         headers: authHeader,
       }),
