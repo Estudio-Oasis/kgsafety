@@ -63,11 +63,25 @@ function ErpMonitorPage() {
   const staff = role === "admin-kg" || role === "equipo-kg";
 
   const [snap, setSnap] = useState<Snapshot | null>(null);
-  const [incluirPruebas, setIncluirPruebas] = useState(true);
+  const [incluirPruebas, setIncluirPruebas] = useState(false);
   const [trace, setTrace] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
   const [e2e, setE2e] = useState<E2EReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [health, setHealth] = useState<Health | null>(null);
+  const [healthBusy, setHealthBusy] = useState(false);
+
+  const checkHealth = useCallback(async () => {
+    setHealthBusy(true);
+    try {
+      setHealth(await erpHealthcheck({ data: undefined }));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudo verificar la conexión");
+    } finally {
+      setHealthBusy(false);
+    }
+  }, []);
+
 
   const load = useCallback(async () => {
     try {
