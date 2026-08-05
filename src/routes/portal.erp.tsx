@@ -5,17 +5,25 @@ import {
   AlertTriangle,
   CheckCircle2,
   FlaskConical,
+  PlugZap,
   RefreshCw,
   RotateCw,
   Search,
+  Trash2,
+  XCircle,
 } from "lucide-react";
 import {
+  erpAiSummary,
+  erpHealthcheck,
   erpMonitorSnapshot,
+  erpPurgeTestData,
   erpResolveAlert,
   erpRetryOutbox,
   erpRunE2E,
   erpRunReconcile,
 } from "@/lib/erp-admin.functions";
+import { AiSummaryPanel } from "@/components/portal/AiSummaryPanel";
+
 import { usePortalSession } from "@/hooks/use-portal-session";
 import { NoAccess } from "@/components/portal/PortalUI";
 
@@ -32,6 +40,8 @@ export const Route = createFileRoute("/portal/erp")({
 
 type Snapshot = Awaited<ReturnType<typeof erpMonitorSnapshot>>;
 type E2EReport = Awaited<ReturnType<typeof erpRunE2E>>;
+type Health = Awaited<ReturnType<typeof erpHealthcheck>>;
+
 
 const estadoStyles: Record<string, string> = {
   operativo: "bg-emerald-500/15 text-emerald-300 border-emerald-500/40",
@@ -55,11 +65,25 @@ function ErpMonitorPage() {
   const staff = role === "admin-kg" || role === "equipo-kg";
 
   const [snap, setSnap] = useState<Snapshot | null>(null);
-  const [incluirPruebas, setIncluirPruebas] = useState(true);
+  const [incluirPruebas, setIncluirPruebas] = useState(false);
   const [trace, setTrace] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
   const [e2e, setE2e] = useState<E2EReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [health, setHealth] = useState<Health | null>(null);
+  const [healthBusy, setHealthBusy] = useState(false);
+
+  const checkHealth = useCallback(async () => {
+    setHealthBusy(true);
+    try {
+      setHealth(await erpHealthcheck({ data: undefined }));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudo verificar la conexión");
+    } finally {
+      setHealthBusy(false);
+    }
+  }, []);
+
 
   const load = useCallback(async () => {
     try {
@@ -76,9 +100,15 @@ function ErpMonitorPage() {
   useEffect(() => {
     if (!staff) return;
     void load();
+    void checkHealth();
     const id = setInterval(() => void load(), 10_000);
-    return () => clearInterval(id);
-  }, [staff, load]);
+    const hid = setInterval(() => void checkHealth(), 60_000);
+    return () => {
+      clearInterval(id);
+      clearInterval(hid);
+    };
+  }, [staff, load, checkHealth]);
+
 
   if (!staff) {
     return (
@@ -135,6 +165,76 @@ function ErpMonitorPage() {
       {error && (
         <div className="border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-200">{error}</div>
       )}
+
+      <section className="border border-white/10 bg-white/[0.02] p-5 sm:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="font-display text-base uppercase text-white flex items-center gap-2">
+              <PlugZap size={15} className="text-signal shrink-0" /> Conexión en vivo con Noil
+            </h2>
+            <p className="text-xs text-white/60 mt-1.5 max-w-xl">
+              Prueba real contra el ERP: autenticación y lectura de catálogos. No usa datos simulados.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span
+              className={`border px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest ${
+                health === null
+                  ? "border-white/15 text-white/50"
+                  : health.conectado
+                    ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/40"
+                    : "bg-red-500/15 text-red-300 border-red-500/40"
+              }`}
+            >
+              {health === null ? "verificando…" : health.conectado ? "Conectado" : "Sin conexión"}
+            </span>
+            <button
+              type="button"
+              onClick={() => void checkHealth()}
+              disabled={healthBusy}
+              className="border border-white/20 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-white/70 hover:text-signal disabled:opacity-50"
+            >
+              Probar ahora
+            </button>
+          </div>
+        </div>
+
+        {health && (
+          <>
+            <div className="mt-4 grid sm:grid-cols-2 gap-2">
+              {health.pruebas.map((p) => (
+                <div
+                  key={p.nombre}
+                  className="flex items-start gap-2.5 border border-white/10 bg-white/[0.03] px-3 py-2.5"
+                >
+                  {p.ok ? (
+                    <CheckCircle2 size={15} className="text-emerald-400 mt-0.5 shrink-0" />
+                  ) : (
+                    <XCircle size={15} className="text-red-400 mt-0.5 shrink-0" />
+                  )}
+                  <div className="min-w-0">
+                    <div className="text-sm text-white font-bold">{p.nombre}</div>
+                    <div className="text-[11px] text-white/55 break-words">
+                      {p.detalle} · {p.ms} ms{p.status ? ` · HTTP ${p.status}` : ""}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-[10px] uppercase tracking-widest text-white/40">
+              {health.host} · latencia media {health.latenciaMs} ms · verificado{" "}
+              {new Date(health.verificadoAt).toLocaleTimeString("es-MX")}
+            </p>
+          </>
+        )}
+      </section>
+
+      <AiSummaryPanel
+        titulo="Resumen con IA del estado del ERP"
+        descripcion="La IA lee la conexión en vivo, las métricas, la cola y los últimos errores, y te dice en lenguaje claro qué está pasando y qué hacer."
+        run={() => erpAiSummary({ data: { incluirPruebas } })}
+      />
+
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Metric label="Llamadas 24 h" value={String(m?.llamadas24h ?? 0)} />
@@ -314,8 +414,23 @@ function ErpMonitorPage() {
               />
               Incluir pruebas
             </label>
+            <button
+              type="button"
+              disabled={busy !== null}
+              onClick={() => {
+                if (!window.confirm("¿Borrar de forma definitiva todos los registros marcados como prueba?")) return;
+                void act("purge", async () => {
+                  await erpPurgeTestData({ data: undefined });
+                  setIncluirPruebas(false);
+                });
+              }}
+              className="flex items-center gap-1.5 border border-white/20 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-white/60 hover:text-red-300 hover:border-red-400/50 disabled:opacity-50"
+            >
+              <Trash2 size={11} /> Borrar datos de prueba
+            </button>
           </div>
         </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[860px]">
             <thead>

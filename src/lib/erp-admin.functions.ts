@@ -55,3 +55,71 @@ export const erpRunE2E = createServerFn({ method: "POST" })
     await assertStaff(context.supabase as never, context.userId);
     return runE2ETests();
   });
+
+/** Verificación de conexión real con el ERP (login + lecturas reales, sin simulación). */
+export const erpHealthcheck = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { assertStaff } = await import("./erp-admin.server");
+    await assertStaff(context.supabase as never, context.userId);
+    const { checkErpHealth } = await import("./erp-health.server");
+    return checkErpHealth();
+  });
+
+/** Resumen en lenguaje claro del estado del ERP, generado con IA. */
+export const erpAiSummary = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) =>
+    z.object({ incluirPruebas: z.boolean().default(false) }).parse(data ?? {}),
+  )
+  .handler(async ({ data, context }) => {
+    const { assertStaff, getMonitorSnapshot } = await import("./erp-admin.server");
+    await assertStaff(context.supabase as never, context.userId);
+    const [snap, health] = await Promise.all([
+      getMonitorSnapshot({ incluirPruebas: data.incluirPruebas }),
+      import("./erp-health.server").then((m) => m.checkErpHealth()),
+    ]);
+    const { summarizeForOwner } = await import("./ai-summary.server");
+    return summarizeForOwner({
+      titulo:
+        "Explica en lenguaje de negocio el estado de la integración con el ERP Noil: si está conectado, qué falló, qué quedó en cola y qué debe hacer el equipo.",
+      contexto: {
+        conexionEnVivo: health,
+        modo: snap.modo,
+        metricas: snap.metricas,
+        alertasAbiertas: snap.alertas.filter((a) => !a.resuelta).slice(0, 10),
+        cola: snap.cola.slice(0, 10),
+        ultimosErrores: snap.logs.filter((l) => !l.ok).slice(0, 12),
+        totalRegistrosBitacora: snap.logs.length,
+        incluyePruebas: data.incluirPruebas,
+      },
+    });
+  });
+
+/** Borra la bitácora, cola y alertas marcadas como prueba para dejar solo datos reales. */
+export const erpPurgeTestData = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { assertStaff } = await import("./erp-admin.server");
+    await assertStaff(context.supabase as never, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const borrados: Record<string, number> = {};
+    for (const tabla of ["erp_logs", "erp_outbox", "erp_alerts", "lead_events", "leads"] as const) {
+      if (tabla === "lead_events") {
+        const { data: pruebas } = await supabaseAdmin.from("leads").select("id").eq("es_prueba", true);
+        const ids = (pruebas ?? []).map((l) => l.id);
+        if (ids.length) {
+          const { data } = await supabaseAdmin
+            .from("lead_events")
+            .delete()
+            .in("lead_id", ids)
+            .select("id");
+          borrados[tabla] = data?.length ?? 0;
+        } else borrados[tabla] = 0;
+        continue;
+      }
+      const { data } = await supabaseAdmin.from(tabla).delete().eq("es_prueba", true).select("id");
+      borrados[tabla] = data?.length ?? 0;
+    }
+    return { ok: true, borrados };
+  });

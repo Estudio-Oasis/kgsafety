@@ -4,15 +4,18 @@ import { toast } from "sonner";
 import { Download, RefreshCw, Search } from "lucide-react";
 import { usePortalSession } from "@/hooks/use-portal-session";
 import { StatCard } from "@/components/portal/PortalUI";
+import { AiSummaryPanel } from "@/components/portal/AiSummaryPanel";
 import {
   LEAD_STAGES,
   addLeadNote,
   getLeadEvents,
+  leadsAiSummary,
   listLeads,
   updateLead,
   type LeadEventRow,
   type LeadRow,
 } from "@/lib/leads.functions";
+
 
 export const Route = createFileRoute("/portal/leads")({
   component: LeadsPage,
@@ -159,8 +162,18 @@ function LeadsPage() {
         <StatCard label="Fallas ERP" value={stats.erpError} tone={stats.erpError ? "danger" : "neutral"} />
       </div>
 
+      <div className="mb-6">
+        <AiSummaryPanel
+          tone="light"
+          titulo="Resumen con IA del embudo"
+          descripcion="Prioridades del mes, oportunidades más valiosas y solicitudes atoradas, explicadas en lenguaje de negocio."
+          run={() => leadsAiSummary({ data: undefined })}
+        />
+      </div>
+
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <div className="relative flex-1 min-w-[200px]">
+
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--muted-fg)]" />
           <input
             value={buscar}
