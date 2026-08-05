@@ -53,6 +53,7 @@ import { Route as PortalPlantasSlugRouteImport } from './routes/portal.plantas.$
 import { Route as PortalProyectosIndexRouteImport } from './routes/portal.proyectos.index'
 import { Route as PortalProyectosIdRouteImport } from './routes/portal.proyectos.$id'
 import { Route as ApiPublicHooksErpReconcileRouteImport } from './routes/api/public/hooks/erp-reconcile'
+import { Route as ApiPublicHooksErpSelftestRouteImport } from './routes/api/public/hooks/erp-selftest'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -275,6 +276,12 @@ const ApiPublicHooksErpReconcileRoute =
     path: '/api/public/hooks/erp-reconcile',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksErpSelftestRoute =
+  ApiPublicHooksErpSelftestRouteImport.update({
+    id: '/api/public/hooks/erp-selftest',
+    path: '/api/public/hooks/erp-selftest',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -321,6 +328,7 @@ export interface FileRoutesByFullPath {
   '/portal/clientes/': typeof PortalClientesIndexRoute
   '/portal/proyectos/': typeof PortalProyectosIndexRoute
   '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
+  '/api/public/hooks/erp-selftest': typeof ApiPublicHooksErpSelftestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -365,6 +373,7 @@ export interface FileRoutesByTo {
   '/portal/clientes': typeof PortalClientesIndexRoute
   '/portal/proyectos': typeof PortalProyectosIndexRoute
   '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
+  '/api/public/hooks/erp-selftest': typeof ApiPublicHooksErpSelftestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -412,6 +421,7 @@ export interface FileRoutesById {
   '/portal/clientes/': typeof PortalClientesIndexRoute
   '/portal/proyectos/': typeof PortalProyectosIndexRoute
   '/api/public/hooks/erp-reconcile': typeof ApiPublicHooksErpReconcileRoute
+  '/api/public/hooks/erp-selftest': typeof ApiPublicHooksErpSelftestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -460,6 +470,7 @@ export interface FileRouteTypes {
     | '/portal/clientes/'
     | '/portal/proyectos/'
     | '/api/public/hooks/erp-reconcile'
+    | '/api/public/hooks/erp-selftest'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -504,6 +515,7 @@ export interface FileRouteTypes {
     | '/portal/clientes'
     | '/portal/proyectos'
     | '/api/public/hooks/erp-reconcile'
+    | '/api/public/hooks/erp-selftest'
   id:
     | '__root__'
     | '/'
@@ -550,6 +562,7 @@ export interface FileRouteTypes {
     | '/portal/clientes/'
     | '/portal/proyectos/'
     | '/api/public/hooks/erp-reconcile'
+    | '/api/public/hooks/erp-selftest'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -576,6 +589,7 @@ export interface RootRouteChildren {
   IngenieriaIndexRoute: typeof IngenieriaIndexRoute
   ServiciosIndexRoute: typeof ServiciosIndexRoute
   ApiPublicHooksErpReconcileRoute: typeof ApiPublicHooksErpReconcileRoute
+  ApiPublicHooksErpSelftestRoute: typeof ApiPublicHooksErpSelftestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -888,6 +902,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksErpReconcileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/erp-selftest': {
+      id: '/api/public/hooks/erp-selftest'
+      path: '/api/public/hooks/erp-selftest'
+      fullPath: '/api/public/hooks/erp-selftest'
+      preLoaderRoute: typeof ApiPublicHooksErpSelftestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -974,7 +995,18 @@ const rootRouteChildren: RootRouteChildren = {
   IngenieriaIndexRoute: IngenieriaIndexRoute,
   ServiciosIndexRoute: ServiciosIndexRoute,
   ApiPublicHooksErpReconcileRoute: ApiPublicHooksErpReconcileRoute,
+  ApiPublicHooksErpSelftestRoute: ApiPublicHooksErpSelftestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
