@@ -71,7 +71,7 @@ export async function logErpCall(entry: ErpLogEntry) {
     error_message: (entry.error_message ?? "").slice(0, 500),
     modo: ctx?.modo ?? globalErpMode(),
     es_prueba: ctx?.esPrueba ?? false,
-    detalle: entry.detalle ?? {},
+    detalle: (entry.detalle ?? {}) as never,
   };
   console.log(
     `[erp][${row.trace_id}][${row.stage || row.operacion}] ${row.metodo} ${row.path} -> ${row.status_code ?? "-"} (${row.duracion_ms}ms, intento ${row.intento}, ${row.modo})`,
@@ -161,7 +161,7 @@ export async function enqueueOutbox(input: {
     await db.from("erp_outbox").insert({
       lead_id: input.leadId,
       tipo: input.tipo ?? "cotizacion",
-      payload: input.payload,
+      payload: input.payload as never,
       estado: "pendiente",
       intentos: 1,
       next_attempt_at: new Date(Date.now() + BACKOFF_MIN[0]! * 60_000).toISOString(),
