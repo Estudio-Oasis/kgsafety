@@ -1,23 +1,46 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  AlertTriangle,
   ArrowRight,
-  BadgeCheck,
   CalendarCheck,
   ChevronDown,
   ClipboardCheck,
-  FileCheck2,
   HardHat,
   Phone,
   ShieldCheck,
-  Wrench,
 } from "lucide-react";
-import heroImg from "@/assets/heights-worker.jpg";
 import trainingImg from "@/assets/training-classroom.jpg";
 import engineeringImg from "@/assets/engineering-install.jpg";
 import equipmentImg from "@/assets/equipment-ppe.jpg";
 import { ClientLogosGrid } from "@/components/site/ClientLogosGrid";
+import { CinematicHero } from "@/components/lp/CinematicHero";
+import { ScrollStory } from "@/components/lp/ScrollStory";
+import { Reveal } from "@/components/lp/Reveal";
+
+function ScrollProgress() {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        setP(h > 0 ? Math.min(1, window.scrollY / h) : 0);
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return (
+    <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10" aria-hidden>
+      <div className="lp-progress h-full bg-signal" style={{ transform: `scaleX(${p})` }} />
+    </div>
+  );
+}
 
 const WA = "https://wa.me/527228795076?text=" +
   encodeURIComponent(
