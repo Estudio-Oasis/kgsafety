@@ -50,14 +50,26 @@ function SolicitudesPage() {
   const enProceso = requests.filter((r) => ["cotizada", "programada"].includes(r.status)).length;
   const cerradas = requests.filter((r) => r.status === "cerrada").length;
 
-  const submit = (e: React.FormEvent) => {
+  const [saving, setSaving] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast("Solicitud enviada (simulada)", {
-      description: `Prototipo: en producción se enviaría a KG Safety junto con la planta y descripción.`,
-    });
-    setDescripcion("");
-    setOpen(false);
+    setSaving(true);
+    try {
+      await createServiceRequest({ data: { plantSlug: plantaLocal, tipo, descripcion } });
+      toast.success("Solicitud enviada", {
+        description: "El equipo de KG Safety la revisará y le dará seguimiento.",
+      });
+      setDescripcion("");
+      setOpen(false);
+      await refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No se pudo enviar la solicitud.");
+    } finally {
+      setSaving(false);
+    }
   };
+
 
   return (
     <div className="max-w-7xl mx-auto">
