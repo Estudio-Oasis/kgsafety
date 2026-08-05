@@ -188,7 +188,9 @@ export const createServiceRequest = createServerFn({ method: "POST" })
   });
 
 // ============= ADMINISTRACIÓN DE ACCESOS =============
-async function assertAdmin(context: { supabase: ReturnType<typeof Object> extends never ? never : any; userId: string }) {
+type AuthContext = { supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }> }; userId: string };
+
+async function assertAdmin(context: AuthContext) {
   const { data, error } = await context.supabase.rpc("has_role", {
     _user_id: context.userId,
     _role: "admin_kg",
