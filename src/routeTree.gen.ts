@@ -18,6 +18,7 @@ import { Route as CumplimientoRouteImport } from './routes/cumplimiento'
 import { Route as FacturacionRouteImport } from './routes/facturacion'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as IndustriasRouteImport } from './routes/industrias'
+import { Route as LpRouteImport } from './routes/lp'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -93,6 +94,11 @@ const FaqRoute = FaqRouteImport.update({
 const IndustriasRoute = IndustriasRouteImport.update({
   id: '/industrias',
   path: '/industrias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LpRoute = LpRouteImport.update({
+  id: '/lp',
+  path: '/lp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NosotrosRoute = NosotrosRouteImport.update({
@@ -261,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
   '/industrias': typeof IndustriasRoute
+  '/lp': typeof LpRoute
   '/nosotros': typeof NosotrosRoute
   '/portal': typeof PortalRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -302,6 +309,7 @@ export interface FileRoutesByTo {
   '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
   '/industrias': typeof IndustriasRoute
+  '/lp': typeof LpRoute
   '/nosotros': typeof NosotrosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/soluciones': typeof SolucionesRoute
@@ -344,6 +352,7 @@ export interface FileRoutesById {
   '/facturacion': typeof FacturacionRoute
   '/faq': typeof FaqRoute
   '/industrias': typeof IndustriasRoute
+  '/lp': typeof LpRoute
   '/nosotros': typeof NosotrosRoute
   '/portal': typeof PortalRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -388,6 +397,7 @@ export interface FileRouteTypes {
     | '/facturacion'
     | '/faq'
     | '/industrias'
+    | '/lp'
     | '/nosotros'
     | '/portal'
     | '/sitemap.xml'
@@ -429,6 +439,7 @@ export interface FileRouteTypes {
     | '/facturacion'
     | '/faq'
     | '/industrias'
+    | '/lp'
     | '/nosotros'
     | '/sitemap.xml'
     | '/soluciones'
@@ -470,6 +481,7 @@ export interface FileRouteTypes {
     | '/facturacion'
     | '/faq'
     | '/industrias'
+    | '/lp'
     | '/nosotros'
     | '/portal'
     | '/sitemap.xml'
@@ -513,6 +525,7 @@ export interface RootRouteChildren {
   FacturacionRoute: typeof FacturacionRoute
   FaqRoute: typeof FaqRoute
   IndustriasRoute: typeof IndustriasRoute
+  LpRoute: typeof LpRoute
   NosotrosRoute: typeof NosotrosRoute
   PortalRoute: typeof PortalRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -590,6 +603,13 @@ declare module '@tanstack/react-router' {
       path: '/industrias'
       fullPath: '/industrias'
       preLoaderRoute: typeof IndustriasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lp': {
+      id: '/lp'
+      path: '/lp'
+      fullPath: '/lp'
+      preLoaderRoute: typeof LpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nosotros': {
@@ -877,6 +897,7 @@ const rootRouteChildren: RootRouteChildren = {
   FacturacionRoute: FacturacionRoute,
   FaqRoute: FaqRoute,
   IndustriasRoute: IndustriasRoute,
+  LpRoute: LpRoute,
   NosotrosRoute: NosotrosRoute,
   PortalRoute: PortalRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -893,3 +914,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
