@@ -4,6 +4,8 @@ import {
   Activity,
   AlertTriangle,
   CheckCircle2,
+  Info,
+
   FlaskConical,
   PlugZap,
   RefreshCw,
