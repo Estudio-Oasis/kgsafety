@@ -1,20 +1,102 @@
 /**
  * Cliente del sistema de facturación / timbrado CFDI (api-fact.noilmx.com).
  * Solo servidor: el sitio nunca llama a esta API directamente desde el navegador.
+ *
+ * Cada llamada queda auditada (endpoint, status, latencia, trace y resumen de
+ * request/response) en la misma bitácora que el ERP, para revisión en el portal.
  */
+
+import { erpCtx, logErpCall, newTraceId } from "./erp-monitor.server";
 
 const BASE = process.env.FACT_API_BASE || "https://api-fact.noilmx.com/api";
 
+const CLAVES_SENSIBLES = /token|password|contrasen|secret|authorization|xml|cer|key/i;
+
+/** Resumen seguro y acotado de un cuerpo de request/response para auditoría. */
+export function resumirCuerpo(value: unknown, max = 900): unknown {
+  const visto = new WeakSet<object>();
+  const walk = (v: unknown, depth: number): unknown => {
+    if (v === null || v === undefined) return v ?? null;
+    if (typeof v === "string") return v.length > 200 ? `${v.slice(0, 200)}… (${v.length} chars)` : v;
+    if (typeof v === "number" || typeof v === "boolean") return v;
+    if (Array.isArray(v)) {
+      if (depth > 2) return `[${v.length} elementos]`;
+      return { _tipo: "lista", total: v.length, muestra: v.slice(0, 2).map((r) => walk(r, depth + 1)) };
+    }
+    if (typeof v === "object") {
+      const obj = v as Record<string, unknown>;
+      if (visto.has(obj)) return "[circular]";
+      visto.add(obj);
+      if (depth > 3) return "[objeto]";
+      const out: Record<string, unknown> = {};
+      for (const [k, val] of Object.entries(obj).slice(0, 25)) {
+        out[k] = CLAVES_SENSIBLES.test(k) ? "[omitido]" : walk(val, depth + 1);
+      }
+      return out;
+    }
+    return String(v);
+  };
+  const resumen = walk(value, 0);
+  const json = JSON.stringify(resumen ?? null);
+  if (json && json.length > max) return { _truncado: true, contenido: `${json.slice(0, max)}…` };
+  return resumen;
+}
+
+/** Agrupa varias llamadas de facturación bajo una misma referencia de auditoría. */
+export async function withFactTrace<T>(operacion: string, fn: () => Promise<T>): Promise<T> {
+  if (erpCtx.getStore()) return fn();
+  return erpCtx.run(
+    { traceId: newTraceId(), leadId: null, operacion, modo: "live", esPrueba: false, intento: 1 },
+    fn,
+  );
+}
+
 async function call<T>(path: string, init?: RequestInit): Promise<{ status: number; body: T }> {
-  const res = await fetch(`${BASE}${path}`, {
-    ...init,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      ...(process.env.FACT_API_TOKEN ? { Authorization: `Bearer ${process.env.FACT_API_TOKEN}` } : {}),
-      ...(init?.headers ?? {}),
-    },
-  });
+  const metodo = (init?.method ?? "GET").toUpperCase();
+  const t0 = Date.now();
+  let requestBody: unknown = null;
+  if (typeof init?.body === "string") {
+    try {
+      requestBody = JSON.parse(init.body);
+    } catch {
+      requestBody = init.body.slice(0, 200);
+    }
+  }
+
+  const registrar = (status: number | null, ok: boolean, respuesta: unknown, errorMessage = "") =>
+    logErpCall({
+      operacion: erpCtx.getStore()?.operacion ?? "facturacion",
+      stage: `facturacion:${path.split("/").filter(Boolean)[0] ?? "api"}`,
+      metodo,
+      path: `${BASE}${path}`,
+      status_code: status,
+      ok,
+      duracion_ms: Date.now() - t0,
+      error_code: ok ? "" : `fact_${status ?? "red"}`,
+      error_message: errorMessage,
+      detalle: {
+        sistema: "facturacion",
+        request: resumirCuerpo(requestBody),
+        response: resumirCuerpo(respuesta),
+      },
+    });
+
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      ...init,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        ...(process.env.FACT_API_TOKEN ? { Authorization: `Bearer ${process.env.FACT_API_TOKEN}` } : {}),
+        ...(init?.headers ?? {}),
+      },
+    });
+  } catch (e) {
+    await registrar(null, false, null, e instanceof Error ? e.message : "error de red");
+    throw e;
+  }
+
   const text = await res.text();
   let body: unknown = null;
   try {
@@ -23,8 +105,10 @@ async function call<T>(path: string, init?: RequestInit): Promise<{ status: numb
     body = { error: text.slice(0, 300) };
   }
   if (!res.ok) console.error(`FACT ${path} [${res.status}]: ${text.slice(0, 400)}`);
+  await registrar(res.status, res.ok, body, res.ok ? "" : text.slice(0, 300));
   return { status: res.status, body: body as T };
 }
+
 
 export type FiscalClient = {
   IdProveedorCliente: number;
@@ -196,4 +280,109 @@ export async function findInvoice(criterio: string, empresa = "KGSAFETY") {
       xml: hit.XML ?? null,
     },
   };
+}
+
+// ---------- Vista previa del PDF antes de timbrar ----------
+
+export type InvoicePreview =
+  | { ok: true; pdfBase64: string; bytes: number; error: null }
+  | { ok: false; pdfBase64: null; bytes: 0; error: string };
+
+/**
+ * Genera la vista previa del CFDI (PDF) sin timbrar.
+ * Devuelve el PDF en base64 para mostrarlo en el portal.
+ */
+export async function previewInvoicePdf(input: {
+  IdProveedorCliente: number;
+  NoCotizacion: string;
+  UsoCFDI: string;
+  Referencia?: string;
+}): Promise<InvoicePreview> {
+  const metodo = "POST";
+  const path = "/facturar/preview-pdf";
+  const t0 = Date.now();
+
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      method: metodo,
+      headers: {
+        Accept: "application/pdf, application/json",
+        "Content-Type": "application/json",
+        ...(process.env.FACT_API_TOKEN ? { Authorization: `Bearer ${process.env.FACT_API_TOKEN}` } : {}),
+      },
+      body: JSON.stringify(input),
+    });
+  } catch (e) {
+    await logErpCall({
+      operacion: "facturacion_preview",
+      stage: "facturacion:preview-pdf",
+      metodo,
+      path: `${BASE}${path}`,
+      status_code: null,
+      ok: false,
+      duracion_ms: Date.now() - t0,
+      error_code: "fact_red",
+      error_message: e instanceof Error ? e.message : "error de red",
+      detalle: { sistema: "facturacion", request: resumirCuerpo(input), response: null },
+    });
+    return { ok: false, pdfBase64: null, bytes: 0, error: "No se pudo contactar el servicio de facturación." };
+  }
+
+  const tipo = res.headers.get("content-type") ?? "";
+  const esPdf = res.ok && tipo.includes("pdf");
+  let pdfBase64: string | null = null;
+  let bytes = 0;
+  let mensaje = "";
+
+  if (esPdf) {
+    const buf = new Uint8Array(await res.arrayBuffer());
+    bytes = buf.byteLength;
+    let bin = "";
+    for (const b of buf) bin += String.fromCharCode(b);
+    pdfBase64 = btoa(bin);
+  } else {
+    const texto = await res.text();
+    try {
+      const j = JSON.parse(texto) as { error?: string; mensaje?: string; pdf?: string };
+      if (j.pdf) {
+        pdfBase64 = j.pdf.replace(/^data:application\/pdf;base64,/, "");
+        bytes = Math.round((pdfBase64.length * 3) / 4);
+      }
+      mensaje = j.error ?? j.mensaje ?? "";
+    } catch {
+      mensaje = texto.slice(0, 300);
+    }
+  }
+
+  await logErpCall({
+    operacion: "facturacion_preview",
+    stage: "facturacion:preview-pdf",
+    metodo,
+    path: `${BASE}${path}`,
+    status_code: res.status,
+    ok: Boolean(pdfBase64),
+    duracion_ms: Date.now() - t0,
+    error_code: pdfBase64 ? "" : `fact_${res.status}`,
+    error_message: pdfBase64 ? "" : mensaje,
+    detalle: {
+      sistema: "facturacion",
+      request: resumirCuerpo(input),
+      response: pdfBase64 ? { contentType: tipo || "application/pdf", bytes } : resumirCuerpo(mensaje),
+    },
+  });
+
+  if (!pdfBase64) {
+    return {
+      ok: false,
+      pdfBase64: null,
+      bytes: 0,
+      error:
+        mensaje ||
+        (res.status === 404
+          ? "No encontramos esa cotización para generar la vista previa."
+          : "No fue posible generar la vista previa del PDF."),
+    };
+  }
+  return { ok: true, pdfBase64, bytes, error: null };
 }

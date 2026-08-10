@@ -250,3 +250,109 @@ export async function runE2ETests(): Promise<E2EReport> {
 
   return { modo: "staging", traceId, ok: pasos.every((p) => p.ok), pasos };
 }
+
+// ---------- Auditoría unificada (ERP + facturación) ----------
+
+export type AuditRow = {
+  id: string;
+  created_at: string;
+  trace_id: string;
+  sistema: "erp" | "facturacion";
+  operacion: string;
+  stage: string;
+  metodo: string;
+  path: string;
+  status_code: number | null;
+  ok: boolean;
+  duracion_ms: number;
+  intento: number;
+  error_code: string;
+  error_message: string;
+  modo: string;
+  es_prueba: boolean;
+  request: string | null;
+  response: string | null;
+};
+
+export type AuditTrail = {
+  total: number;
+  resumen: {
+    erp: { llamadas: number; errores: number; latencia: number };
+    facturacion: { llamadas: number; errores: number; latencia: number };
+  };
+  filas: AuditRow[];
+};
+
+function texto(v: unknown): string | null {
+  if (v === null || v === undefined) return null;
+  if (typeof v === "string") return v;
+  try {
+    return JSON.stringify(v, null, 2);
+  } catch {
+    return String(v);
+  }
+}
+
+function sistemaDe(row: { path: string; operacion: string; stage: string; detalle: unknown }): "erp" | "facturacion" {
+  const d = (row.detalle ?? {}) as { sistema?: string };
+  if (d.sistema === "facturacion") return "facturacion";
+  if (/facturacion|fact/i.test(`${row.operacion} ${row.stage}`) || row.path.includes("api-fact")) return "facturacion";
+  return "erp";
+}
+
+export async function getAuditTrail(opts: {
+  sistema: "todos" | "erp" | "facturacion";
+  soloErrores: boolean;
+  incluirPruebas: boolean;
+  traceId?: string;
+  busqueda?: string;
+  limite: number;
+}): Promise<AuditTrail> {
+  const db = await admin();
+  let q = db.from("erp_logs").select("*").order("created_at", { ascending: false }).limit(opts.limite);
+  if (!opts.incluirPruebas) q = q.eq("es_prueba", false);
+  if (opts.soloErrores) q = q.eq("ok", false);
+  if (opts.traceId) q = q.eq("trace_id", opts.traceId);
+  if (opts.busqueda) q = q.ilike("path", `%${opts.busqueda}%`);
+
+  const { data } = await q;
+  const filas: AuditRow[] = (data ?? []).map((r) => {
+    const detalle = (r.detalle ?? {}) as Record<string, unknown>;
+    return {
+      id: r.id,
+      created_at: r.created_at,
+      trace_id: r.trace_id,
+      sistema: sistemaDe({ path: r.path, operacion: r.operacion, stage: r.stage, detalle }),
+      operacion: r.operacion,
+      stage: r.stage,
+      metodo: r.metodo,
+      path: r.path,
+      status_code: r.status_code,
+      ok: r.ok,
+      duracion_ms: r.duracion_ms,
+      intento: r.intento,
+      error_code: r.error_code,
+      error_message: r.error_message,
+      modo: r.modo,
+      es_prueba: r.es_prueba,
+      request: texto(detalle["request"] ?? detalle["payload"] ?? null),
+      response: texto(detalle["response"] ?? detalle["respuesta"] ?? detalle),
+    };
+  });
+
+  const visibles = opts.sistema === "todos" ? filas : filas.filter((f) => f.sistema === opts.sistema);
+  const agrupa = (s: "erp" | "facturacion") => {
+    const g = filas.filter((f) => f.sistema === s);
+    return {
+      llamadas: g.length,
+      errores: g.filter((f) => !f.ok).length,
+      latencia: g.length ? Math.round(g.reduce((a, f) => a + f.duracion_ms, 0) / g.length) : 0,
+    };
+  };
+
+  return {
+    total: visibles.length,
+    resumen: { erp: agrupa("erp"), facturacion: agrupa("facturacion") },
+    filas: visibles,
+  };
+}

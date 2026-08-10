@@ -4,6 +4,8 @@ import {
   Activity,
   AlertTriangle,
   CheckCircle2,
+  Info,
+
   FlaskConical,
   PlugZap,
   RefreshCw,
@@ -221,10 +223,33 @@ function ErpMonitorPage() {
                 </div>
               ))}
             </div>
+            {health.calendario && (
+              <div
+                className={`mt-3 border px-4 py-3 ${
+                  health.calendario.causa === "con_datos"
+                    ? "border-emerald-500/40 bg-emerald-500/10"
+                    : health.calendario.causa === "sin_datos_noil"
+                      ? "border-signal/40 bg-signal/10"
+                      : "border-red-500/40 bg-red-500/10"
+                }`}
+              >
+                <div className="flex items-center gap-2 text-sm font-bold text-white">
+                  <Info size={14} className="shrink-0" />
+                  Cursos abiertos: {health.calendario.titulo}
+                </div>
+                <p className="mt-1 text-[12px] text-white/70 break-words">{health.calendario.explicacion}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-widest text-white/40">
+                  {health.calendario.consultado
+                    ? `HTTP ${health.calendario.ok ? "200" : "error"} · ${health.calendario.filas} fechas devueltas`
+                    : "endpoint no consultado"}
+                </p>
+              </div>
+            )}
             <p className="mt-3 text-[10px] uppercase tracking-widest text-white/40">
               {health.host} · latencia media {health.latenciaMs} ms · verificado{" "}
               {new Date(health.verificadoAt).toLocaleTimeString("es-MX")}
             </p>
+
           </>
         )}
       </section>
