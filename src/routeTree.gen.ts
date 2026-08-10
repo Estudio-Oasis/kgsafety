@@ -33,6 +33,7 @@ import { Route as IngenieriaIndexRouteImport } from './routes/ingenieria.index'
 import { Route as IngenieriaServicioRouteImport } from './routes/ingenieria.$servicio'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as PortalAdminRouteImport } from './routes/portal.admin'
+import { Route as PortalAuditoriaRouteImport } from './routes/portal.auditoria'
 import { Route as PortalBibliotecaRouteImport } from './routes/portal.biblioteca'
 import { Route as PortalCalendarioRouteImport } from './routes/portal.calendario'
 import { Route as PortalCertificacionesRouteImport } from './routes/portal.certificaciones'
@@ -174,6 +175,11 @@ const PortalAdminRoute = PortalAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalAuditoriaRoute = PortalAuditoriaRouteImport.update({
+  id: '/auditoria',
+  path: '/auditoria',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalBibliotecaRoute = PortalBibliotecaRouteImport.update({
   id: '/biblioteca',
   path: '/biblioteca',
@@ -296,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
   '/portal/admin': typeof PortalAdminRoute
+  '/portal/auditoria': typeof PortalAuditoriaRoute
   '/portal/biblioteca': typeof PortalBibliotecaRoute
   '/portal/calendario': typeof PortalCalendarioRoute
   '/portal/certificaciones': typeof PortalCertificacionesRoute
@@ -340,6 +347,7 @@ export interface FileRoutesByTo {
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
   '/portal/admin': typeof PortalAdminRoute
+  '/portal/auditoria': typeof PortalAuditoriaRoute
   '/portal/biblioteca': typeof PortalBibliotecaRoute
   '/portal/calendario': typeof PortalCalendarioRoute
   '/portal/certificaciones': typeof PortalCertificacionesRoute
@@ -387,6 +395,7 @@ export interface FileRoutesById {
   '/equipos/$categoria': typeof EquiposCategoriaRoute
   '/ingenieria/$servicio': typeof IngenieriaServicioRoute
   '/portal/admin': typeof PortalAdminRoute
+  '/portal/auditoria': typeof PortalAuditoriaRoute
   '/portal/biblioteca': typeof PortalBibliotecaRoute
   '/portal/calendario': typeof PortalCalendarioRoute
   '/portal/certificaciones': typeof PortalCertificacionesRoute
@@ -435,6 +444,7 @@ export interface FileRouteTypes {
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
     | '/portal/admin'
+    | '/portal/auditoria'
     | '/portal/biblioteca'
     | '/portal/calendario'
     | '/portal/certificaciones'
@@ -479,6 +489,7 @@ export interface FileRouteTypes {
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
     | '/portal/admin'
+    | '/portal/auditoria'
     | '/portal/biblioteca'
     | '/portal/calendario'
     | '/portal/certificaciones'
@@ -525,6 +536,7 @@ export interface FileRouteTypes {
     | '/equipos/$categoria'
     | '/ingenieria/$servicio'
     | '/portal/admin'
+    | '/portal/auditoria'
     | '/portal/biblioteca'
     | '/portal/calendario'
     | '/portal/certificaciones'
@@ -748,6 +760,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalAdminRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/auditoria': {
+      id: '/portal/auditoria'
+      path: '/auditoria'
+      fullPath: '/portal/auditoria'
+      preLoaderRoute: typeof PortalAuditoriaRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/biblioteca': {
       id: '/portal/biblioteca'
       path: '/biblioteca'
@@ -905,6 +924,7 @@ const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface PortalRouteChildren {
   PortalAdminRoute: typeof PortalAdminRoute
+  PortalAuditoriaRoute: typeof PortalAuditoriaRoute
   PortalBibliotecaRoute: typeof PortalBibliotecaRoute
   PortalCalendarioRoute: typeof PortalCalendarioRoute
   PortalCertificacionesRoute: typeof PortalCertificacionesRoute
@@ -927,6 +947,7 @@ interface PortalRouteChildren {
 
 const PortalRouteChildren: PortalRouteChildren = {
   PortalAdminRoute: PortalAdminRoute,
+  PortalAuditoriaRoute: PortalAuditoriaRoute,
   PortalBibliotecaRoute: PortalBibliotecaRoute,
   PortalCalendarioRoute: PortalCalendarioRoute,
   PortalCertificacionesRoute: PortalCertificacionesRoute,
@@ -978,13 +999,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

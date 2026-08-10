@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useT } from "@/i18n/context";
-import { factCheckQuote, factUpdateAndIssue, factFindInvoice } from "@/lib/facturacion.functions";
+import { factCheckQuote, factUpdateAndIssue, factFindInvoice, factPreviewPdf } from "@/lib/facturacion.functions";
 
 const USOS_CFDI = [
   { c: "G01", l: "G01 · Adquisición de mercancías" },
@@ -49,6 +49,7 @@ export function FacturacionFlow() {
   const check = useServerFn(factCheckQuote);
   const issue = useServerFn(factUpdateAndIssue);
   const search = useServerFn(factFindInvoice);
+  const preview = useServerFn(factPreviewPdf);
 
   const [tab, setTab] = useState<"facturar" | "consultar">("facturar");
 
@@ -61,6 +62,8 @@ export function FacturacionFlow() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uuid, setUuid] = useState<string | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [previewing, setPreviewing] = useState(false);
 
   // CU007
   const [criterio, setCriterio] = useState("");
@@ -74,6 +77,8 @@ export function FacturacionFlow() {
     setReferencia("");
     setCliente(null);
     setError(null);
+    if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+    setPdfUrl(null);
   }
 
   async function validarPago(e: React.FormEvent) {
@@ -103,6 +108,35 @@ export function FacturacionFlow() {
       }
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function previsualizar() {
+    if (!cliente) return;
+    setPreviewing(true);
+    setError(null);
+    try {
+      const r = await preview({
+        data: {
+          idProveedorCliente: cliente.IdProveedorCliente,
+          noCotizacion: cotizacion.trim(),
+          referencia: referencia.trim(),
+          usoCFDI,
+        },
+      });
+      if (r.ok && r.pdfBase64) {
+        const bin = atob(r.pdfBase64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+        if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+        setPdfUrl(url);
+      } else {
+        setPdfUrl(null);
+        setError(r.error ?? t("No fue posible generar la vista previa."));
+      }
+    } finally {
+      setPreviewing(false);
     }
   }
 
@@ -367,7 +401,24 @@ export function FacturacionFlow() {
                 </div>
               </div>
 
+              {pdfUrl && (
+                <div className="border border-[color:var(--border)]">
+                  <div className="flex items-center justify-between px-4 py-2 bg-[color:var(--muted)]/30">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-brand-blue">
+                      {t("Vista previa (sin timbrar)")}
+                    </span>
+                    <a href={pdfUrl} target="_blank" rel="noreferrer" className="text-[10px] uppercase tracking-widest underline">
+                      {t("Abrir en pestaña nueva")}
+                    </a>
+                  </div>
+                  <iframe src={pdfUrl} title={t("Vista previa de la factura")} className="w-full h-[520px] bg-white" />
+                </div>
+              )}
+
               <div className="flex flex-wrap gap-3">
+                <button type="button" onClick={() => void previsualizar()} disabled={previewing || loading} className={ghostCls}>
+                  {previewing ? t("Generando vista previa…") : t("Previsualizar PDF")}
+                </button>
                 <button type="submit" disabled={loading} className={btnCls}>
                   {loading ? t("Emitiendo…") : t("Actualizar y emitir factura")} →
                 </button>

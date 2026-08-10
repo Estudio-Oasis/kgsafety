@@ -123,3 +123,24 @@ export const erpPurgeTestData = createServerFn({ method: "POST" })
     }
     return { ok: true, borrados };
   });
+
+/** Auditoría unificada de llamadas a ERP y facturación. Solo equipo KG. */
+export const erpAuditTrail = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) =>
+    z
+      .object({
+        sistema: z.enum(["todos", "erp", "facturacion"]).default("todos"),
+        soloErrores: z.boolean().default(false),
+        incluirPruebas: z.boolean().default(false),
+        traceId: z.string().trim().max(60).optional(),
+        busqueda: z.string().trim().max(120).optional(),
+        limite: z.number().int().min(20).max(300).default(150),
+      })
+      .parse(data ?? {}),
+  )
+  .handler(async ({ data, context }) => {
+    const { assertStaff, getAuditTrail } = await import("./erp-admin.server");
+    await assertStaff(context.supabase as never, context.userId);
+    return getAuditTrail(data);
+  });

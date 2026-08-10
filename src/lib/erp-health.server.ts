@@ -14,6 +14,16 @@ export type ErpProbe = {
   detalle: string;
 };
 
+export type CalendarDiag = {
+  consultado: boolean;
+  ok: boolean;
+  filas: number;
+  vacio: boolean;
+  causa: "sin_datos_noil" | "error_conexion" | "sin_credenciales" | "con_datos";
+  titulo: string;
+  explicacion: string;
+};
+
 export type ErpHealth = {
   conectado: boolean;
   credenciales: boolean;
@@ -21,7 +31,20 @@ export type ErpHealth = {
   verificadoAt: string;
   latenciaMs: number;
   pruebas: ErpProbe[];
+  calendario: CalendarDiag;
 };
+
+const CAL_SIN_CREDENCIALES: CalendarDiag = {
+  consultado: false,
+  ok: false,
+  filas: 0,
+  vacio: true,
+  causa: "sin_credenciales",
+  titulo: "Calendario no consultado",
+  explicacion:
+    "No hay credenciales de servicio configuradas, así que no pudimos consultar el calendario. Es un problema de configuración de nuestro lado, no de datos de Noil.",
+};
+
 
 async function timed(
   nombre: string,
@@ -96,6 +119,7 @@ export async function checkErpHealth(): Promise<ErpHealth> {
           detalle: "No hay credenciales configuradas para el ERP",
         },
       ],
+      calendario: CAL_SIN_CREDENCIALES,
     };
   }
 
@@ -111,16 +135,24 @@ export async function checkErpHealth(): Promise<ErpHealth> {
       ? ((auth.body as { access_token?: string }).access_token ?? null)
       : null;
 
+  let calendario: CalendarDiag = {
+    consultado: false,
+    ok: false,
+    filas: 0,
+    vacio: true,
+    causa: "error_conexion",
+    titulo: "Calendario no disponible",
+    explicacion:
+      "No se pudo autenticar contra Noil, por lo que no fue posible leer el calendario. Es un problema de conexión, no de datos.",
+  };
+
   if (auth.probe.ok && token) {
     pruebas[0] = { ...auth.probe, detalle: "token emitido" };
     const authHeader = { Authorization: `Bearer ${token}` };
+    const calPath = `/api/calendarioCursosInformacion/-1/${new Date().toISOString().slice(0, 10)}`;
     const reads = await Promise.all([
       timed("Catálogo de cursos", "/api/cursos/-1/-1/-1/-1/-1", { method: "GET", headers: authHeader }),
-      timed(
-        "Calendario de cursos",
-        `/api/calendarioCursosInformacion/-1/${new Date().toISOString().slice(0, 10)}`,
-        { method: "GET", headers: authHeader },
-      ),
+      timed("Calendario de cursos", calPath, { method: "GET", headers: authHeader }),
       timed("Insumos (equipos)", "/api/AlmacenInsumos/-1/-1/-1/-1/EQUIPO", {
         method: "GET",
         headers: authHeader,
@@ -128,10 +160,46 @@ export async function checkErpHealth(): Promise<ErpHealth> {
     ]);
 
     for (const r of reads) pruebas.push(r.probe);
+
+    const cal = reads[1]!;
+    const filas = Array.isArray(cal.body) ? cal.body.length : 0;
+    if (!cal.probe.ok) {
+      calendario = {
+        consultado: true,
+        ok: false,
+        filas: 0,
+        vacio: true,
+        causa: "error_conexion",
+        titulo: "El calendario respondió con error",
+        explicacion: `Noil devolvió ${cal.probe.status ?? "sin respuesta"} en ${calPath}. La lista de cursos abiertos se verá vacía por una falla técnica del ERP, no por falta de convocatorias.`,
+      };
+    } else if (filas === 0) {
+      calendario = {
+        consultado: true,
+        ok: true,
+        filas: 0,
+        vacio: true,
+        causa: "sin_datos_noil",
+        titulo: "Sin convocatorias cargadas en Noil",
+        explicacion:
+          "La conexión y el endpoint funcionan correctamente (HTTP 200), pero Noil no tiene fechas de cursos abiertos capturadas a partir de hoy. Es un tema de datos del ERP: en cuanto el área operativa cargue el calendario, aparecerá automáticamente en el sitio. No requiere cambios de configuración.",
+      };
+    } else {
+      calendario = {
+        consultado: true,
+        ok: true,
+        filas,
+        vacio: false,
+        causa: "con_datos",
+        titulo: "Calendario con convocatorias activas",
+        explicacion: `Noil devolvió ${filas} fechas de cursos abiertos, visibles en el sitio público.`,
+      };
+    }
   }
 
   const conectado = pruebas.every((p) => p.ok) && Boolean(token);
   const latenciaMs = Math.round(pruebas.reduce((a, p) => a + p.ms, 0) / pruebas.length);
 
-  return { conectado, credenciales: true, host: BASE, verificadoAt, latenciaMs, pruebas };
+  return { conectado, credenciales: true, host: BASE, verificadoAt, latenciaMs, pruebas, calendario };
+
 }
