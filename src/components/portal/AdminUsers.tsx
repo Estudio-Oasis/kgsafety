@@ -102,9 +102,8 @@ function InviteForm({
     }
   };
 
-  const accessText = result
-    ? `Acceso al portal KG Safety\nEntra a: ${result.loginUrl}\nCorreo: ${result.email}\nContraseña temporal: ${result.tempPassword}\n(Cámbiala al iniciar sesión.)`
-    : "";
+  const accessText = result ? inviteMessage(result) : "";
+
 
   return (
     <div className="p-4 border-b border-[color:var(--border)] space-y-3">
