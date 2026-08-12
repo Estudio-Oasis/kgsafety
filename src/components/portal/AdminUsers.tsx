@@ -297,6 +297,8 @@ export function AdminUsers() {
                 <th className="text-left px-4 py-2 font-bold">Rol</th>
                 <th className="text-left px-4 py-2 font-bold">Empresa asignada</th>
                 <th className="text-left px-4 py-2 font-bold">Estado</th>
+                <th className="text-left px-4 py-2 font-bold">Acceso</th>
+
                 <th className="text-right px-4 py-2 font-bold">Acciones</th>
               </tr>
             </thead>
