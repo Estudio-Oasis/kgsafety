@@ -36,10 +36,26 @@ function InviteForm({
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<InviteResult | null>(null);
   const isClient = role === "cliente_corp" || role === "cliente_planta";
+  const cleanEmail = email.trim().toLowerCase();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail);
+  const canSubmit = emailOk && fullName.trim().length > 1 && (!isClient || !!company);
 
   const submit = async () => {
+    if (!emailOk) {
+      toast.error("Escribe un correo válido, por ejemplo nombre@empresa.com.");
+      return;
+    }
+    if (!fullName.trim()) {
+      toast.error("Escribe el nombre completo del usuario.");
+      return;
+    }
+    if (isClient && !company) {
+      toast.error("Selecciona la empresa del usuario cliente.");
+      return;
+    }
     setBusy(true);
     try {
+
       const res = await invite({
         data: {
           email,
