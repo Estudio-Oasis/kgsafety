@@ -58,7 +58,7 @@ function InviteForm({
 
       const res = await invite({
         data: {
-          email,
+          email: cleanEmail,
           fullName,
           role,
           companySlug: isClient ? company || null : null,
@@ -132,7 +132,7 @@ function InviteForm({
       <ActionBtn
         variant="primary"
         onClick={() => {
-          if (!busy) void submit();
+          if (!busy && canSubmit) void submit();
         }}
       >
         {busy ? <Loader2 size={11} className="animate-spin" /> : <UserPlus size={11} />} Crear acceso
