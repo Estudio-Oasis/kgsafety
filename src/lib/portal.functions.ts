@@ -197,6 +197,8 @@ export type PortalUser = {
   status: "pending" | "approved" | "rejected";
   roles: string[];
   createdAt: string;
+  lastSignInAt: string | null;
+  signInCount: number;
 };
 
 export const listPortalUsers = createServerFn({ method: "GET" })
@@ -212,6 +214,23 @@ export const listPortalUsers = createServerFn({ method: "GET" })
         .order("created_at", { ascending: false }),
       supabase.from("user_roles").select("user_id, role"),
     ]);
+
+    // Actividad de acceso (solo lectura administrativa)
+    const activity = new Map<string, { lastSignInAt: string | null; signInCount: number }>();
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: authUsers } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+      for (const u of authUsers?.users ?? []) {
+        const meta = (u.user_metadata ?? {}) as Record<string, unknown>;
+        activity.set(u.id, {
+          lastSignInAt: u.last_sign_in_at ?? null,
+          signInCount: Number(meta["sign_in_count"] ?? 0) || (u.last_sign_in_at ? 1 : 0),
+        });
+      }
+    } catch {
+      // si no hay acceso administrativo, seguimos sin datos de actividad
+    }
+
     return (profiles ?? []).map((p) => ({
       id: p.id,
       email: p.email,
@@ -221,8 +240,11 @@ export const listPortalUsers = createServerFn({ method: "GET" })
       status: p.status as PortalUser["status"],
       roles: (roles ?? []).filter((r) => r.user_id === p.id).map((r) => String(r.role)),
       createdAt: p.created_at,
+      lastSignInAt: activity.get(p.id)?.lastSignInAt ?? null,
+      signInCount: activity.get(p.id)?.signInCount ?? 0,
     }));
   });
+
 
 export const setPortalUserAccess = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
