@@ -206,7 +206,9 @@ export function AdminUsers() {
         </ActionBtn>
       }
     >
+      <InviteForm companies={companies} onDone={() => void load()} />
       {users === null ? (
+
         <div className="p-6 flex items-center gap-2 text-xs text-[color:var(--muted-fg)]">
           <Loader2 size={14} className="animate-spin" /> Cargando usuarios…
         </div>
