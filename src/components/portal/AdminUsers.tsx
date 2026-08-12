@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import {
   Check,
@@ -370,6 +370,7 @@ export function AdminUsers() {
   const [companies, setCompanies] = useState<{ slug: string; name: string }[]>([]);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [draft, setDraft] = useState<Record<string, { role: RoleValue; company: string }>>({});
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const load = async () => {
     try {
@@ -450,8 +451,8 @@ export function AdminUsers() {
                 const isClient = current.role === "cliente_corp" || current.role === "cliente_planta";
                 const busy = busyId === u.id;
                 return (
-                  <>
-                  <tr key={u.id}>
+                  <Fragment key={u.id}>
+                  <tr>
 
                     <td className="px-4 py-2.5">
                       <p className="font-bold">{u.fullName || "—"}</p>
@@ -533,7 +534,7 @@ export function AdminUsers() {
                         >
                           {busy ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />} Autorizar
                         </ActionBtn>
-                        <ActionBtn onClick={() => setOpenId((id) => (id === u.id ? null : u.id))}>
+                        <ActionBtn onClick={() => setOpenId((id: string | null) => (id === u.id ? null : u.id))}>
                           <Settings2 size={11} /> {openId === u.id ? "Cerrar" : "Configurar"}
                         </ActionBtn>
                         <ActionBtn onClick={() => void update(u, "rejected", null, null)}>
@@ -549,7 +550,7 @@ export function AdminUsers() {
                       </td>
                     </tr>
                   )}
-                  </>
+                  </Fragment>
                 );
               })}
 
