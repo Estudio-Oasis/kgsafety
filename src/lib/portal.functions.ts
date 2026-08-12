@@ -408,3 +408,57 @@ export const invitePortalUser = createServerFn({ method: "POST" })
     const base = data.origin || "https://kgsafety.lovable.app";
     return { ok: true, email: data.email, tempPassword, loginUrl: `${base}/portal/login`, created };
   });
+
+// ============= RESTABLECER ACCESO DE UN USUARIO EXISTENTE =============
+export const resetPortalUserAccess = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { userId: string; fullName?: string; origin?: string }) => {
+    const userId = String(input.userId ?? "").trim();
+    if (!userId) throw new Error("Usuario inválido.");
+    return {
+      userId,
+      fullName: input.fullName ? String(input.fullName).trim().slice(0, 120) : "",
+      origin: input.origin ?? "",
+    };
+  })
+  .handler(async ({ data, context }): Promise<InviteResult> => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin_kg",
+    });
+    if (!isAdmin) throw new Error("Forbidden");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("id, email, full_name")
+      .eq("id", data.userId)
+      .maybeSingle();
+    if (!profile) throw new Error("No encontramos el perfil de este usuario.");
+
+    const tempPassword = `KG-${crypto.randomUUID().replace(/-/g, "").slice(0, 10)}!7`;
+    const { error: updError } = await supabaseAdmin.auth.admin.updateUserById(data.userId, {
+      password: tempPassword,
+      email_confirm: true,
+    });
+    if (updError) throw new Error(updError.message);
+
+    if (data.fullName && data.fullName !== profile.full_name) {
+      const { error: nameError } = await supabaseAdmin
+        .from("profiles")
+        .update({ full_name: data.fullName })
+        .eq("id", data.userId);
+      if (nameError) throw new Error(nameError.message);
+    }
+
+    const base = data.origin || "https://kgsafety.lovable.app";
+    return {
+      ok: true,
+      email: profile.email,
+      tempPassword,
+      loginUrl: `${base}/portal/login`,
+      created: false,
+    };
+  });
+
