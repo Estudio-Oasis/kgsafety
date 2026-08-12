@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, X, Loader2, RefreshCw, UserPlus, Copy } from "lucide-react";
+import { Check, X, Loader2, RefreshCw, UserPlus, Copy, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Panel, ActionBtn, StatusBadge } from "@/components/portal/PortalUI";
 import {
@@ -21,6 +21,29 @@ const ROLE_LABEL: Record<RoleValue, string> = {
   cliente_planta: "Cliente planta",
 };
 
+function inviteMessage(r: InviteResult) {
+  return [
+    "Hola, te damos acceso al Portal KG Safety.",
+    "",
+    `Entra aquí: ${r.loginUrl}`,
+    `Correo: ${r.email}`,
+    `Contraseña temporal: ${r.tempPassword}`,
+    "",
+    "Por seguridad, cámbiala al iniciar sesión.",
+  ].join("\n");
+}
+
+function waLink(phone: string, message: string) {
+  const digits = phone.replace(/\D/g, "");
+  const number = digits.length === 10 ? `52${digits}` : digits;
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}
+
+function fmtWhen(iso: string | null) {
+  if (!iso) return null;
+  return new Date(iso).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
+}
+
 function InviteForm({
   companies,
   onDone,
@@ -31,6 +54,7 @@ function InviteForm({
   const invite = useServerFn(invitePortalUser);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [role, setRole] = useState<RoleValue>("equipo_kg");
   const [company, setCompany] = useState("");
   const [busy, setBusy] = useState(false);
@@ -39,6 +63,7 @@ function InviteForm({
   const cleanEmail = email.trim().toLowerCase();
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail);
   const canSubmit = emailOk && fullName.trim().length > 1 && (!isClient || !!company);
+
 
   const submit = async () => {
     if (!emailOk) {
