@@ -37,7 +37,7 @@ function AdminPanel() {
         eyebrow="Administración KG Safety"
         title="Panel admin"
         subtitle="Visibilidad total. Acciones simuladas en este prototipo."
-        action={<ActionBtn variant="primary" onClick={() => simAction("Acción admin simulada")}><Plus size={11} /> Crear</ActionBtn>}
+        action={<ActionBtn variant="primary" onClick={() => setTab("Usuarios")}><UserPlus size={11} /> Dar de alta usuario</ActionBtn>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
