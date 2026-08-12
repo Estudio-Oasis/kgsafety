@@ -450,7 +450,9 @@ export function AdminUsers() {
                 const isClient = current.role === "cliente_corp" || current.role === "cliente_planta";
                 const busy = busyId === u.id;
                 return (
+                  <>
                   <tr key={u.id}>
+
                     <td className="px-4 py-2.5">
                       <p className="font-bold">{u.fullName || "—"}</p>
                       <p className="text-[11px] text-[color:var(--muted-fg)]">{u.email}</p>
