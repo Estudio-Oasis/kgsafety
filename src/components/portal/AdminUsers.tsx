@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, X, Loader2, RefreshCw, UserPlus, Copy, MessageCircle } from "lucide-react";
+import {
+  Check,
+  X,
+  Loader2,
+  RefreshCw,
+  UserPlus,
+  Copy,
+  MessageCircle,
+  Settings2,
+  KeyRound,
+  Link2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Panel, ActionBtn, StatusBadge } from "@/components/portal/PortalUI";
 import {
@@ -8,6 +19,7 @@ import {
   listCompanyOptions,
   setPortalUserAccess,
   invitePortalUser,
+  resetPortalUserAccess,
   type InviteResult,
   type PortalUser,
 } from "@/lib/portal.functions";
@@ -33,6 +45,17 @@ function inviteMessage(r: InviteResult) {
   ].join("\n");
 }
 
+function reminderMessage(name: string, email: string, loginUrl: string) {
+  return [
+    `Hola${name ? ` ${name.split(" ")[0]}` : ""}, te recordamos tu acceso al Portal KG Safety.`,
+    "",
+    `Entra aquí: ${loginUrl}`,
+    `Correo: ${email}`,
+    "",
+    "Si no recuerdas tu contraseña, avísanos y te generamos una temporal.",
+  ].join("\n");
+}
+
 function waLink(phone: string, message: string) {
   const digits = phone.replace(/\D/g, "");
   const number = digits.length === 10 ? `52${digits}` : digits;
@@ -43,6 +66,122 @@ function fmtWhen(iso: string | null) {
   if (!iso) return null;
   return new Date(iso).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
 }
+
+/** Panel de administración individual: mensajes de invitación, WhatsApp y datos de acceso. */
+function UserConfigPanel({
+  user,
+  onSaved,
+}: {
+  user: PortalUser;
+  onSaved: () => void;
+}) {
+  const reset = useServerFn(resetPortalUserAccess);
+  const [phone, setPhone] = useState("");
+  const [fullName, setFullName] = useState(user.fullName);
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<InviteResult | null>(null);
+
+  const loginUrl = `${typeof window === "undefined" ? "https://kgsafety.lovable.app" : window.location.origin}/portal/login`;
+  const message = result ? inviteMessage(result) : reminderMessage(fullName, user.email, loginUrl);
+
+  const send = () => {
+    if (phone.replace(/\D/g, "").length < 10) {
+      void navigator.clipboard.writeText(message);
+      toast.success("Mensaje copiado. Agrega el WhatsApp para enviarlo directo.");
+      return;
+    }
+    window.open(waLink(phone, message), "_blank", "noopener");
+  };
+
+  const regenerate = async () => {
+    setBusy(true);
+    try {
+      const res = await reset({
+        data: { userId: user.id, fullName: fullName.trim(), origin: window.location.origin },
+      });
+      setResult(res);
+      toast.success("Contraseña temporal generada. Compártela una sola vez.");
+      onSaved();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No fue posible generar el acceso.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="border border-[color:var(--border)] bg-[color:var(--muted)]/20 p-3 space-y-3 text-xs">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--muted-fg)]">
+        Configurar acceso de {user.email}
+      </p>
+      <div className="grid gap-2 sm:grid-cols-2">
+        <input
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          placeholder="Nombre completo"
+          aria-label={`Nombre completo de ${user.email}`}
+          className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-xs"
+        />
+        <input
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          type="tel"
+          placeholder="WhatsApp (10 dígitos)"
+          aria-label={`WhatsApp de ${user.email}`}
+          className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-xs"
+        />
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        <ActionBtn variant="primary" onClick={send}>
+          <MessageCircle size={11} /> Enviar por WhatsApp
+        </ActionBtn>
+        <ActionBtn
+          onClick={() => {
+            void navigator.clipboard.writeText(message);
+            toast.success("Mensaje copiado.");
+          }}
+        >
+          <Copy size={11} /> Copiar mensaje
+        </ActionBtn>
+        <ActionBtn
+          onClick={() => {
+            void navigator.clipboard.writeText(loginUrl);
+            toast.success("Link del portal copiado.");
+          }}
+        >
+          <Link2 size={11} /> Copiar link
+        </ActionBtn>
+        <ActionBtn
+          onClick={() => {
+            if (!busy) void regenerate();
+          }}
+        >
+          {busy ? <Loader2 size={11} className="animate-spin" /> : <KeyRound size={11} />} Generar contraseña temporal
+        </ActionBtn>
+      </div>
+      {result ? (
+        <div className="border border-[color:var(--border)] bg-[color:var(--card)] p-2.5 space-y-1">
+          <p className="font-bold uppercase tracking-wider text-[10px]">Datos de acceso — compártelos una sola vez</p>
+          <p>
+            Portal: <span className="font-mono break-all">{result.loginUrl}</span>
+          </p>
+          <p>
+            Correo: <span className="font-mono break-all">{result.email}</span>
+          </p>
+          <p>
+            Contraseña temporal: <span className="font-mono">{result.tempPassword}</span>
+          </p>
+        </div>
+      ) : (
+        <p className="text-[11px] text-[color:var(--muted-fg)]">
+          El mensaje incluye el link del portal y su correo. Si el usuario perdió su contraseña, genera una temporal y el
+          mensaje la incluirá automáticamente.
+        </p>
+      )}
+    </div>
+  );
+}
+
 
 function InviteForm({
   companies,
