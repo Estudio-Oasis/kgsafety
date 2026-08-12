@@ -365,6 +365,22 @@ export function AdminUsers() {
                         label={u.status === "approved" ? "Aprobado" : u.status === "rejected" ? "Rechazado" : "Pendiente"}
                       />
                     </td>
+                    <td className="px-4 py-2.5">
+                      {u.lastSignInAt ? (
+                        <>
+                          <StatusBadge state="vigente" label="Ya entró" />
+                          <p className="mt-1 text-[11px] text-[color:var(--muted-fg)]">{fmtWhen(u.lastSignInAt)}</p>
+                        </>
+                      ) : (
+                        <>
+                          <StatusBadge state="pendiente" label="No ha entrado" />
+                          <p className="mt-1 text-[11px] text-[color:var(--muted-fg)]">
+                            Invitado {fmtWhen(u.createdAt) ?? "—"}
+                          </p>
+                        </>
+                      )}
+                    </td>
+
                     <td className="px-4 py-2.5 text-right">
                       <div className="inline-flex gap-1.5">
                         <ActionBtn
