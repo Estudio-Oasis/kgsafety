@@ -191,14 +191,30 @@ function InviteForm({
           <p>
             Contraseña temporal: <span className="font-mono">{result.tempPassword}</span>
           </p>
-          <ActionBtn
-            onClick={() => {
-              void navigator.clipboard.writeText(accessText);
-              toast.success("Datos copiados.");
-            }}
-          >
-            <Copy size={11} /> Copiar instrucciones
-          </ActionBtn>
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            <ActionBtn
+              onClick={() => {
+                void navigator.clipboard.writeText(accessText);
+                toast.success("Mensaje de invitación copiado.");
+              }}
+            >
+              <Copy size={11} /> Copiar mensaje
+            </ActionBtn>
+            <ActionBtn
+              variant="primary"
+              onClick={() => {
+                if (phone.replace(/\D/g, "").length < 10) {
+                  void navigator.clipboard.writeText(accessText);
+                  toast.success("Mensaje copiado. Agrega el WhatsApp para enviarlo directo.");
+                  return;
+                }
+                window.open(waLink(phone, accessText), "_blank", "noopener");
+              }}
+            >
+              <MessageCircle size={11} /> Enviar por WhatsApp
+            </ActionBtn>
+          </div>
+
         </div>
       )}
     </div>
