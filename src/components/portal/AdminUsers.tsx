@@ -439,7 +439,7 @@ export function AdminUsers() {
                 <th className="text-left px-4 py-2 font-bold">Estado</th>
                 <th className="text-left px-4 py-2 font-bold">Acceso</th>
 
-                <th className="text-right px-4 py-2 font-bold">Acciones</th>
+                <th className="text-right px-4 py-2 font-bold sticky right-0 bg-[color:var(--surface)] border-l border-[color:var(--border)]">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[color:var(--border)]">
