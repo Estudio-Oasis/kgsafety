@@ -110,7 +110,7 @@ function InviteForm({
       <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--muted-fg)]">
         Dar de alta un usuario
       </p>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
         <input
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
@@ -124,6 +124,14 @@ function InviteForm({
           type="email"
           placeholder="correo@empresa.com"
           aria-label="Correo del nuevo usuario"
+          className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-sm"
+        />
+        <input
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          type="tel"
+          placeholder="WhatsApp (10 dígitos)"
+          aria-label="WhatsApp del nuevo usuario (opcional)"
           className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-sm"
         />
         <select
@@ -152,6 +160,7 @@ function InviteForm({
             </option>
           ))}
         </select>
+
       </div>
       <div className="flex items-center gap-3 flex-wrap">
         <ActionBtn
