@@ -455,6 +455,14 @@ export type QuoteInput = {
   folioCurso?: string;
 };
 
+/**
+ * Noil valida `ELugarCurso` contra los literales exactos "Local" y "Foráneo"
+ * (con acento). Enviar "Foraneo" produce 422 y la cotización nunca llega.
+ */
+export function erpLugarCurso(v: string): string {
+  return /foran/i.test(v) ? "Foráneo" : "Local";
+}
+
 export type QuoteResult = {
   status: "creada" | "recibida_pendiente_verificacion";
   idSolicitud: number | null;
@@ -568,7 +576,7 @@ export async function createQuote(
       IdServicio: idServicio,
       IdCurso: input.idCurso,
       ICantidad: input.participantes,
-      ELugarCurso: input.lugarCurso,
+      ELugarCurso: erpLugarCurso(input.lugarCurso),
       ETipoCursoCliente: input.tipoCursoCliente,
       sLugarServicio: input.lugarServicio || input.lugarCurso,
       SCorreoContacto: input.correo,
@@ -622,7 +630,7 @@ export async function createQuote(
         body: JSON.stringify({
           dFechaCurso: input.fechaDeseada,
           IdCurso: input.idCurso,
-          ETipoCurso: input.lugarCurso,
+          ETipoCurso: erpLugarCurso(input.lugarCurso),
           IdCotizacionSolicitud: idSolicitud,
         }),
       });
