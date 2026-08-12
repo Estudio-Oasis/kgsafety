@@ -129,14 +129,22 @@ function InviteForm({
           ))}
         </select>
       </div>
-      <ActionBtn
-        variant="primary"
-        onClick={() => {
-          if (!busy && canSubmit) void submit();
-        }}
-      >
-        {busy ? <Loader2 size={11} className="animate-spin" /> : <UserPlus size={11} />} Crear acceso
-      </ActionBtn>
+      <div className="flex items-center gap-3 flex-wrap">
+        <ActionBtn
+          variant="primary"
+          onClick={() => {
+            if (!busy && canSubmit) void submit();
+          }}
+        >
+          {busy ? <Loader2 size={11} className="animate-spin" /> : <UserPlus size={11} />} Crear acceso
+        </ActionBtn>
+        {!canSubmit && (
+          <span className="text-[11px] text-[color:var(--muted-fg)]">
+            Completa nombre y un correo válido{isClient ? " y elige la empresa" : ""}.
+          </span>
+        )}
+      </div>
+
 
       {result && (
         <div className="border border-[color:var(--border)] bg-[color:var(--muted)]/30 p-3 text-xs space-y-1">
