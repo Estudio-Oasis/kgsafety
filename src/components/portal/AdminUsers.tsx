@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, X, Loader2, RefreshCw } from "lucide-react";
+import { Check, X, Loader2, RefreshCw, UserPlus, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { Panel, ActionBtn, StatusBadge } from "@/components/portal/PortalUI";
 import {
   listPortalUsers,
   listCompanyOptions,
   setPortalUserAccess,
+  invitePortalUser,
+  type InviteResult,
   type PortalUser,
 } from "@/lib/portal.functions";
 
@@ -18,6 +20,134 @@ const ROLE_LABEL: Record<RoleValue, string> = {
   cliente_corp: "Cliente corporativo",
   cliente_planta: "Cliente planta",
 };
+
+function InviteForm({
+  companies,
+  onDone,
+}: {
+  companies: { slug: string; name: string }[];
+  onDone: () => void;
+}) {
+  const invite = useServerFn(invitePortalUser);
+  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState<RoleValue>("equipo_kg");
+  const [company, setCompany] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<InviteResult | null>(null);
+  const isClient = role === "cliente_corp" || role === "cliente_planta";
+
+  const submit = async () => {
+    setBusy(true);
+    try {
+      const res = await invite({
+        data: {
+          email,
+          fullName,
+          role,
+          companySlug: isClient ? company || null : null,
+          origin: window.location.origin,
+        },
+      });
+      setResult(res);
+      setEmail("");
+      setFullName("");
+      toast.success(res.created ? "Usuario creado y autorizado." : "Usuario existente actualizado.");
+      onDone();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No fue posible crear el usuario.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const accessText = result
+    ? `Acceso al portal KG Safety\nEntra a: ${result.loginUrl}\nCorreo: ${result.email}\nContraseña temporal: ${result.tempPassword}\n(Cámbiala al iniciar sesión.)`
+    : "";
+
+  return (
+    <div className="p-4 border-b border-[color:var(--border)] space-y-3">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--muted-fg)]">
+        Dar de alta un usuario
+      </p>
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        <input
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          placeholder="Nombre completo"
+          aria-label="Nombre completo del nuevo usuario"
+          className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-sm"
+        />
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          placeholder="correo@empresa.com"
+          aria-label="Correo del nuevo usuario"
+          className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-sm"
+        />
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value as RoleValue)}
+          aria-label="Rol del nuevo usuario"
+          className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-sm"
+        >
+          {(Object.keys(ROLE_LABEL) as RoleValue[]).map((r) => (
+            <option key={r} value={r}>
+              {ROLE_LABEL[r]}
+            </option>
+          ))}
+        </select>
+        <select
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          disabled={!isClient}
+          aria-label="Empresa del nuevo usuario"
+          className="bg-transparent border border-[color:var(--border)] px-3 py-2 text-sm disabled:opacity-40"
+        >
+          <option value="">Sin empresa</option>
+          {companies.map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <ActionBtn
+        variant="primary"
+        onClick={() => {
+          if (!busy) void submit();
+        }}
+      >
+        {busy ? <Loader2 size={11} className="animate-spin" /> : <UserPlus size={11} />} Crear acceso
+      </ActionBtn>
+
+      {result && (
+        <div className="border border-[color:var(--border)] bg-[color:var(--muted)]/30 p-3 text-xs space-y-1">
+          <p className="font-bold uppercase tracking-wider text-[10px]">Datos de acceso — compártelos una sola vez</p>
+          <p>
+            Portal: <span className="font-mono break-all">{result.loginUrl}</span>
+          </p>
+          <p>
+            Correo: <span className="font-mono break-all">{result.email}</span>
+          </p>
+          <p>
+            Contraseña temporal: <span className="font-mono">{result.tempPassword}</span>
+          </p>
+          <ActionBtn
+            onClick={() => {
+              void navigator.clipboard.writeText(accessText);
+              toast.success("Datos copiados.");
+            }}
+          >
+            <Copy size={11} /> Copiar instrucciones
+          </ActionBtn>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 export function AdminUsers() {
   const fetchUsers = useServerFn(listPortalUsers);
@@ -76,7 +206,9 @@ export function AdminUsers() {
         </ActionBtn>
       }
     >
+      <InviteForm companies={companies} onDone={() => void load()} />
       {users === null ? (
+
         <div className="p-6 flex items-center gap-2 text-xs text-[color:var(--muted-fg)]">
           <Loader2 size={14} className="animate-spin" /> Cargando usuarios…
         </div>

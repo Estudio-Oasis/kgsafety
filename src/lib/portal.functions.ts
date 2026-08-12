@@ -287,3 +287,102 @@ export const listCompanyOptions = createServerFn({ method: "GET" })
     const { data } = await supabaseAdmin.from("companies").select("slug, name").order("name");
     return data ?? [];
   });
+
+// ============= ALTA DIRECTA DE USUARIOS (INVITACIÓN) =============
+export type InviteResult = {
+  ok: true;
+  email: string;
+  tempPassword: string;
+  loginUrl: string;
+  created: boolean;
+};
+
+export const invitePortalUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    (input: {
+      email: string;
+      fullName: string;
+      role: "admin_kg" | "equipo_kg" | "cliente_corp" | "cliente_planta";
+      companySlug: string | null;
+      origin?: string;
+    }) => {
+      const email = String(input.email ?? "").trim().toLowerCase().slice(0, 160);
+      const fullName = String(input.fullName ?? "").trim().slice(0, 120);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) throw new Error("Correo inválido.");
+      if (!["admin_kg", "equipo_kg", "cliente_corp", "cliente_planta"].includes(input.role)) {
+        throw new Error("Rol inválido.");
+      }
+      const isClient = input.role === "cliente_corp" || input.role === "cliente_planta";
+      const companySlug = input.companySlug ? String(input.companySlug).trim().slice(0, 80) : null;
+      if (isClient && !companySlug) throw new Error("Los usuarios cliente requieren una empresa asignada.");
+      return { email, fullName, role: input.role, companySlug: isClient ? companySlug : null, origin: input.origin ?? "" };
+    },
+  )
+  .handler(async ({ data, context }): Promise<InviteResult> => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin_kg",
+    });
+    if (!isAdmin) throw new Error("Forbidden");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Contraseña temporal robusta; el usuario la cambia al entrar.
+    const tempPassword = `KG-${crypto.randomUUID().replace(/-/g, "").slice(0, 10)}!7`;
+
+    let userId: string | null = null;
+    let created = false;
+
+    const { data: createdUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+      email: data.email,
+      password: tempPassword,
+      email_confirm: true,
+      user_metadata: { full_name: data.fullName },
+    });
+
+    if (createdUser?.user) {
+      userId = createdUser.user.id;
+      created = true;
+    } else {
+      const message = createError?.message ?? "";
+      const alreadyExists = /already|registered|exists/i.test(message);
+      if (!alreadyExists) throw new Error(message || "No fue posible crear el usuario.");
+      // Ya existe: localizamos su perfil y le reponemos la contraseña temporal.
+      const { data: existing } = await supabaseAdmin
+        .from("profiles")
+        .select("id")
+        .eq("email", data.email)
+        .maybeSingle();
+      if (!existing) throw new Error("El correo ya existe pero no tiene perfil asociado.");
+      userId = existing.id;
+      const { error: updError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+        password: tempPassword,
+        email_confirm: true,
+      });
+      if (updError) throw new Error(updError.message);
+    }
+
+    const { error: profileError } = await supabaseAdmin
+      .from("profiles")
+      .upsert(
+        {
+          id: userId,
+          email: data.email,
+          full_name: data.fullName,
+          status: "approved",
+          company_slug: data.companySlug,
+        },
+        { onConflict: "id" },
+      );
+    if (profileError) throw new Error(profileError.message);
+
+    await supabaseAdmin.from("user_roles").delete().eq("user_id", userId);
+    const { error: roleError } = await supabaseAdmin
+      .from("user_roles")
+      .insert({ user_id: userId, role: data.role });
+    if (roleError) throw new Error(roleError.message);
+
+    const base = data.origin || "https://kgsafety.lovable.app";
+    return { ok: true, email: data.email, tempPassword, loginUrl: `${base}/portal/login`, created };
+  });
