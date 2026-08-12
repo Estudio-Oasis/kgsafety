@@ -523,7 +523,7 @@ export function AdminUsers() {
                       )}
                     </td>
 
-                    <td className="px-4 py-2.5 text-right">
+                    <td className="px-4 py-2.5 text-right sticky right-0 bg-[color:var(--surface)] border-l border-[color:var(--border)]">
                       <div className="inline-flex gap-1.5 flex-wrap justify-end">
                         <ActionBtn
                           variant="primary"
