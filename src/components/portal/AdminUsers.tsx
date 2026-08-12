@@ -521,7 +521,7 @@ export function AdminUsers() {
                     </td>
 
                     <td className="px-4 py-2.5 text-right">
-                      <div className="inline-flex gap-1.5">
+                      <div className="inline-flex gap-1.5 flex-wrap justify-end">
                         <ActionBtn
                           variant="primary"
                           onClick={() => {
@@ -531,14 +531,26 @@ export function AdminUsers() {
                         >
                           {busy ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />} Autorizar
                         </ActionBtn>
+                        <ActionBtn onClick={() => setOpenId((id) => (id === u.id ? null : u.id))}>
+                          <Settings2 size={11} /> {openId === u.id ? "Cerrar" : "Configurar"}
+                        </ActionBtn>
                         <ActionBtn onClick={() => void update(u, "rejected", null, null)}>
                           <X size={11} /> Rechazar
                         </ActionBtn>
                       </div>
                     </td>
                   </tr>
+                  {openId === u.id && (
+                    <tr key={`${u.id}-config`}>
+                      <td colSpan={7} className="px-4 pb-4">
+                        <UserConfigPanel user={u} onSaved={() => void load()} />
+                      </td>
+                    </tr>
+                  )}
+                  </>
                 );
               })}
+
             </tbody>
           </table>
         </div>
