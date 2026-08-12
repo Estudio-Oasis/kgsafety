@@ -36,13 +36,29 @@ function InviteForm({
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<InviteResult | null>(null);
   const isClient = role === "cliente_corp" || role === "cliente_planta";
+  const cleanEmail = email.trim().toLowerCase();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail);
+  const canSubmit = emailOk && fullName.trim().length > 1 && (!isClient || !!company);
 
   const submit = async () => {
+    if (!emailOk) {
+      toast.error("Escribe un correo válido, por ejemplo nombre@empresa.com.");
+      return;
+    }
+    if (!fullName.trim()) {
+      toast.error("Escribe el nombre completo del usuario.");
+      return;
+    }
+    if (isClient && !company) {
+      toast.error("Selecciona la empresa del usuario cliente.");
+      return;
+    }
     setBusy(true);
     try {
+
       const res = await invite({
         data: {
-          email,
+          email: cleanEmail,
           fullName,
           role,
           companySlug: isClient ? company || null : null,
@@ -113,14 +129,22 @@ function InviteForm({
           ))}
         </select>
       </div>
-      <ActionBtn
-        variant="primary"
-        onClick={() => {
-          if (!busy) void submit();
-        }}
-      >
-        {busy ? <Loader2 size={11} className="animate-spin" /> : <UserPlus size={11} />} Crear acceso
-      </ActionBtn>
+      <div className="flex items-center gap-3 flex-wrap">
+        <ActionBtn
+          variant="primary"
+          onClick={() => {
+            if (!busy && canSubmit) void submit();
+          }}
+        >
+          {busy ? <Loader2 size={11} className="animate-spin" /> : <UserPlus size={11} />} Crear acceso
+        </ActionBtn>
+        {!canSubmit && (
+          <span className="text-[11px] text-[color:var(--muted-fg)]">
+            Completa nombre y un correo válido{isClient ? " y elige la empresa" : ""}.
+          </span>
+        )}
+      </div>
+
 
       {result && (
         <div className="border border-[color:var(--border)] bg-[color:var(--muted)]/30 p-3 text-xs space-y-1">
