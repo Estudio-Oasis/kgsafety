@@ -43,7 +43,10 @@ Hoy tenemos **el esqueleto de datos y la lectura**, no la operación. La base ya
 
 ## Ruta propuesta para cerrar la brecha
 
+Fase 0 — Acceso visible al portal: en la barra superior del sitio público (junto al reloj mundial / header) se agrega un acceso "Portal" con dos entradas claras: "Portal de clientes" y "Acceso KG (admin/equipo)", ambas a la pantalla de ingreso. Visible en escritorio, tablet y móvil, con `noindex` intacto en `/portal/*`.
+
 Fase A — Bandeja de conciliación y auditoría real: pantalla de excepciones (folios duplicados, solicitudes sin cliente, cotizaciones sin solicitud/partidas, cantidades en cero, clientes sin RFC, persona repetida) y triggers que llenen audit_log.
+
 
 Fase B — Roles y permisos operativos: agregar Ventas, Operaciones, Instructor, Facturación y Sólo lectura sobre organization_members, con RLS y revalidación en servidor.
 
