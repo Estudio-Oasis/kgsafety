@@ -1800,27 +1800,27 @@ export type Database = {
       legacy_reference_records: {
         Row: {
           created_at: string
-          entity: string
           id: string
-          legacy_id: string | null
+          legacy_key: string
           organization_id: string
-          payload: Json
+          record_type: string
+          source_payload: Json
         }
         Insert: {
           created_at?: string
-          entity: string
           id?: string
-          legacy_id?: string | null
+          legacy_key: string
           organization_id: string
-          payload?: Json
+          record_type: string
+          source_payload?: Json
         }
         Update: {
           created_at?: string
-          entity?: string
           id?: string
-          legacy_id?: string | null
+          legacy_key?: string
           organization_id?: string
-          payload?: Json
+          record_type?: string
+          source_payload?: Json
         }
         Relationships: [
           {
