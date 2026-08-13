@@ -41,40 +41,79 @@ export function WorldClockBar() {
 
   return (
     <div className="w-full bg-anchor border-b border-white/10 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-white/55">
-      {/* Desktop xl: static row, all cities visible */}
-      <div className="hidden xl:flex justify-end items-center gap-6 px-12 py-1.5">
-        {items.map((it) => (
-          <div key={it.code} className="flex items-center gap-2 shrink-0">
-            <span className="text-white/40">{it.code}</span>
-            <span className="text-signal tabular-nums">{it.time}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Tablet (md–lg): horizontal scroll, all cities reachable by swipe */}
-      <div
-        className="hidden md:flex xl:hidden overflow-x-auto items-center gap-6 px-6 py-1.5 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        aria-label="Horas mundiales"
-      >
-        {items.map((it) => (
-          <div key={it.code} className="flex items-center gap-2 shrink-0">
-            <span className="text-white/40">{it.code}</span>
-            <span className="text-signal tabular-nums">{it.time}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Mobile (<md): marquee */}
-      <div className="md:hidden relative py-1.5 overflow-hidden">
-        <div className="flex gap-8 whitespace-nowrap animate-marquee will-change-transform">
-          {[...items, ...items].map((it, i) => (
-            <div key={i} className="flex items-center gap-2 shrink-0">
+      {/* Desktop xl: portal access + all cities */}
+      <div className="hidden xl:flex items-center justify-between gap-6 px-12 py-1.5">
+        <PortalAccess />
+        <div className="flex items-center gap-6">
+          {items.map((it) => (
+            <div key={it.code} className="flex items-center gap-2 shrink-0">
               <span className="text-white/40">{it.code}</span>
               <span className="text-signal tabular-nums">{it.time}</span>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Tablet (md–lg): portal access fixed, cities scrollable */}
+      <div className="hidden md:flex xl:hidden items-center gap-4 px-6 py-1.5">
+        <PortalAccess />
+        <div
+          className="flex overflow-x-auto items-center gap-6 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          aria-label="Horas mundiales"
+        >
+          {items.map((it) => (
+            <div key={it.code} className="flex items-center gap-2 shrink-0">
+              <span className="text-white/40">{it.code}</span>
+              <span className="text-signal tabular-nums">{it.time}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile (<md): portal access row + marquee */}
+      <div className="md:hidden">
+        <div className="flex items-center justify-center gap-3 px-4 pt-1.5">
+          <PortalAccess compact />
+        </div>
+        <div className="relative py-1.5 overflow-hidden">
+          <div className="flex gap-8 whitespace-nowrap animate-marquee will-change-transform">
+            {[...items, ...items].map((it, i) => (
+              <div key={i} className="flex items-center gap-2 shrink-0">
+                <span className="text-white/40">{it.code}</span>
+                <span className="text-signal tabular-nums">{it.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
+function PortalAccess({ compact = false }: { compact?: boolean }) {
+  return (
+    <nav aria-label="Acceso al portal" className="flex items-center gap-2 shrink-0">
+      {!compact && (
+        <span className="flex items-center gap-1.5 text-white/40">
+          <Lock className="h-3 w-3" aria-hidden="true" />
+          Portal
+        </span>
+      )}
+      <Link
+        to="/portal/login"
+        className="flex items-center gap-1.5 rounded-full border border-white/15 px-2.5 py-0.5 text-white/70 transition hover:border-signal/60 hover:text-signal"
+      >
+        <Building2 className="h-3 w-3" aria-hidden="true" />
+        Clientes
+      </Link>
+      <Link
+        to="/portal/login"
+        className="flex items-center gap-1.5 rounded-full border border-signal/40 px-2.5 py-0.5 text-signal transition hover:bg-signal/10"
+      >
+        <ShieldCheck className="h-3 w-3" aria-hidden="true" />
+        Acceso KG
+      </Link>
+    </nav>
+  );
+}
+
