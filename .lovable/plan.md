@@ -43,7 +43,10 @@ Hoy tenemos **el esqueleto de datos y la lectura**, no la operación. La base ya
 
 ## Ruta propuesta para cerrar la brecha
 
+Fase 0 — Acceso visible al portal: en la barra superior del sitio público (junto al reloj mundial / header) se agrega un acceso "Portal" con dos entradas claras: "Portal de clientes" y "Acceso KG (admin/equipo)", ambas a la pantalla de ingreso. Visible en escritorio, tablet y móvil, con `noindex` intacto en `/portal/*`.
+
 Fase A — Bandeja de conciliación y auditoría real: pantalla de excepciones (folios duplicados, solicitudes sin cliente, cotizaciones sin solicitud/partidas, cantidades en cero, clientes sin RFC, persona repetida) y triggers que llenen audit_log.
+
 
 Fase B — Roles y permisos operativos: agregar Ventas, Operaciones, Instructor, Facturación y Sólo lectura sobre organization_members, con RLS y revalidación en servidor.
 
@@ -61,7 +64,9 @@ Fase H (opcional) — Inventario/almacén: módulo nuevo (SKU, marca, existencia
 
 ## Notas técnicas
 
+- Noil no se desconecta: sigue funcionando como respaldo (write-behind) con su cola de reintentos; cada operación nueva se guarda primero en nuestra base y luego se replica.
 - Todo se construye sobre el backend actual con funciones de servidor (`createServerFn`) y RLS por `organization_id`; nada de llamadas a Noil desde el navegador (ya se cumple).
+
 - Los cálculos de cotización y los folios se generan en servidor; el navegador nunca define totales.
 - Las excepciones históricas no se corrigen automáticamente: se marcan para revisión humana.
 - El inventario y el historial fiscal completo requieren información externa; se documentan como faltantes, no se inventan.
