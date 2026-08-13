@@ -19,6 +19,7 @@ import {
   AlertTriangle,
   TrendingUp,
   Activity,
+  Database,
 } from "lucide-react";
 import { PortalAuthProvider, usePortalSession } from "@/hooks/use-portal-session";
 import type { Role } from "@/data/portal";
