@@ -64,7 +64,9 @@ Fase H (opcional) — Inventario/almacén: módulo nuevo (SKU, marca, existencia
 
 ## Notas técnicas
 
+- Noil no se desconecta: sigue funcionando como respaldo (write-behind) con su cola de reintentos; cada operación nueva se guarda primero en nuestra base y luego se replica.
 - Todo se construye sobre el backend actual con funciones de servidor (`createServerFn`) y RLS por `organization_id`; nada de llamadas a Noil desde el navegador (ya se cumple).
+
 - Los cálculos de cotización y los folios se generan en servidor; el navegador nunca define totales.
 - Las excepciones históricas no se corrigen automáticamente: se marcan para revisión humana.
 - El inventario y el historial fiscal completo requieren información externa; se documentan como faltantes, no se inventan.
