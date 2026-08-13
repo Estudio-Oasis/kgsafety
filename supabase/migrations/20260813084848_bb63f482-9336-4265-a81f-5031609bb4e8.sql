@@ -1,0 +1,1 @@
+alter table public.quote_lines drop constraint if exists quote_lines_discounted_unit_price_check;
