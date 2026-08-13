@@ -103,8 +103,9 @@ export const erpKgStats = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<ErpKgStats> => {
     await assertStaff(context.supabase, context.userId);
+    const db = context.supabase as any;
     const count = async (table: string) => {
-      const { count: c, error } = await context.supabase
+      const { count: c, error } = await db
         .from(table)
         .select("id", { count: "exact", head: true });
       if (error) throw new Error(`${table}: ${error.message}`);
@@ -133,7 +134,7 @@ export const erpKgStats = createServerFn({ method: "GET" })
       count("suppliers"),
       count("contractors"),
     ]);
-    const { data: totals, error: totalsError } = await context.supabase
+    const { data: totals, error: totalsError } = await db
       .from("quotes")
       .select("total");
     if (totalsError) throw new Error(totalsError.message);
@@ -161,7 +162,8 @@ export const erpKgClients = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => listSchema.parse(data ?? {}))
   .handler(async ({ context, data }): Promise<ErpClientRow[]> => {
     await assertStaff(context.supabase, context.userId);
-    let query = context.supabase
+    const db = context.supabase as any;
+    let query = db
       .from("clients")
       .select(
         "id,legacy_id,code,commercial_name,legal_name,tax_id,email,phone,city,state,active",
@@ -184,7 +186,8 @@ export const erpKgCourses = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => listSchema.parse(data ?? {}))
   .handler(async ({ context, data }): Promise<ErpCourseRow[]> => {
     await assertStaff(context.supabase, context.userId);
-    let query = context.supabase
+    const db = context.supabase as any;
+    let query = db
       .from("courses")
       .select(
         "id,legacy_id,code,name,duration_text_legacy,local_unit_price,travel_unit_price,visible_on_web,active",
@@ -201,7 +204,8 @@ export const erpKgRequests = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<ErpRequestRow[]> => {
     await assertStaff(context.supabase, context.userId);
-    const { data, error } = await context.supabase
+    const db = context.supabase as any;
+    const { data, error } = await db
       .from("quote_requests")
       .select(
         "id,code,request_date,participant_count,travel_mode,delivery_type,location,contact_email,contact_phone,status,comments",
@@ -216,7 +220,8 @@ export const erpKgQuotes = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<ErpQuoteRow[]> => {
     await assertStaff(context.supabase, context.userId);
-    const { data, error } = await context.supabase
+    const db = context.supabase as any;
+    const { data, error } = await db
       .from("quotes")
       .select(
         "id,code,quote_date,valid_until,origin,delivery_type,travel_mode,location,currency,subtotal,total,status",
@@ -231,7 +236,8 @@ export const erpKgParticipants = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<ErpParticipantRow[]> => {
     await assertStaff(context.supabase, context.userId);
-    const { data, error } = await context.supabase
+    const db = context.supabase as any;
+    const { data, error } = await db
       .from("participants")
       .select(
         "id,curp,given_names,paternal_surname,maternal_surname,position,employer_commercial_name,employer_tax_id",
