@@ -40,6 +40,7 @@ import { Route as PortalCertificacionesRouteImport } from './routes/portal.certi
 import { Route as PortalConstanciasRouteImport } from './routes/portal.constancias'
 import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
 import { Route as PortalErpRouteImport } from './routes/portal.erp'
+import { Route as PortalErpKgRouteImport } from './routes/portal.erp-kg'
 import { Route as PortalFacturacionRouteImport } from './routes/portal.facturacion'
 import { Route as PortalLeadsRouteImport } from './routes/portal.leads'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
@@ -210,6 +211,11 @@ const PortalErpRoute = PortalErpRouteImport.update({
   path: '/erp',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalErpKgRoute = PortalErpKgRouteImport.update({
+  id: '/erp-kg',
+  path: '/erp-kg',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalFacturacionRoute = PortalFacturacionRouteImport.update({
   id: '/facturacion',
   path: '/facturacion',
@@ -309,6 +315,7 @@ export interface FileRoutesByFullPath {
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/erp': typeof PortalErpRoute
+  '/portal/erp-kg': typeof PortalErpKgRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -354,6 +361,7 @@ export interface FileRoutesByTo {
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/erp': typeof PortalErpRoute
+  '/portal/erp-kg': typeof PortalErpKgRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -402,6 +410,7 @@ export interface FileRoutesById {
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/erp': typeof PortalErpRoute
+  '/portal/erp-kg': typeof PortalErpKgRoute
   '/portal/facturacion': typeof PortalFacturacionRoute
   '/portal/leads': typeof PortalLeadsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -451,6 +460,7 @@ export interface FileRouteTypes {
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/erp'
+    | '/portal/erp-kg'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -496,6 +506,7 @@ export interface FileRouteTypes {
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/erp'
+    | '/portal/erp-kg'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -543,6 +554,7 @@ export interface FileRouteTypes {
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/erp'
+    | '/portal/erp-kg'
     | '/portal/facturacion'
     | '/portal/leads'
     | '/portal/login'
@@ -809,6 +821,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalErpRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/erp-kg': {
+      id: '/portal/erp-kg'
+      path: '/erp-kg'
+      fullPath: '/portal/erp-kg'
+      preLoaderRoute: typeof PortalErpKgRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/facturacion': {
       id: '/portal/facturacion'
       path: '/facturacion'
@@ -931,6 +950,7 @@ interface PortalRouteChildren {
   PortalConstanciasRoute: typeof PortalConstanciasRoute
   PortalDocumentosRoute: typeof PortalDocumentosRoute
   PortalErpRoute: typeof PortalErpRoute
+  PortalErpKgRoute: typeof PortalErpKgRoute
   PortalFacturacionRoute: typeof PortalFacturacionRoute
   PortalLeadsRoute: typeof PortalLeadsRoute
   PortalLoginRoute: typeof PortalLoginRoute
@@ -954,6 +974,7 @@ const PortalRouteChildren: PortalRouteChildren = {
   PortalConstanciasRoute: PortalConstanciasRoute,
   PortalDocumentosRoute: PortalDocumentosRoute,
   PortalErpRoute: PortalErpRoute,
+  PortalErpKgRoute: PortalErpKgRoute,
   PortalFacturacionRoute: PortalFacturacionRoute,
   PortalLeadsRoute: PortalLeadsRoute,
   PortalLoginRoute: PortalLoginRoute,
