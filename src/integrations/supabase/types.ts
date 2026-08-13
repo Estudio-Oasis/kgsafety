@@ -2941,6 +2941,17 @@ export type Database = {
       can_read_company: { Args: { _company_slug: string }; Returns: boolean }
       can_read_plant: { Args: { _plant_slug: string }; Returns: boolean }
       current_company: { Args: { _user_id: string }; Returns: string }
+      erp_exception_report: {
+        Args: never
+        Returns: {
+          categoria: string
+          detalle: string
+          entidad: string
+          folio: string
+          registro_id: string
+          severidad: string
+        }[]
+      }
       has_org_role: {
         Args: { _organization_id: string; _roles: string[] }
         Returns: boolean
