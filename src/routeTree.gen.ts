@@ -37,6 +37,7 @@ import { Route as PortalAuditoriaRouteImport } from './routes/portal.auditoria'
 import { Route as PortalBibliotecaRouteImport } from './routes/portal.biblioteca'
 import { Route as PortalCalendarioRouteImport } from './routes/portal.calendario'
 import { Route as PortalCertificacionesRouteImport } from './routes/portal.certificaciones'
+import { Route as PortalConciliacionRouteImport } from './routes/portal.conciliacion'
 import { Route as PortalConstanciasRouteImport } from './routes/portal.constancias'
 import { Route as PortalDocumentosRouteImport } from './routes/portal.documentos'
 import { Route as PortalErpRouteImport } from './routes/portal.erp'
@@ -196,6 +197,11 @@ const PortalCertificacionesRoute = PortalCertificacionesRouteImport.update({
   path: '/certificaciones',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalConciliacionRoute = PortalConciliacionRouteImport.update({
+  id: '/conciliacion',
+  path: '/conciliacion',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalConstanciasRoute = PortalConstanciasRouteImport.update({
   id: '/constancias',
   path: '/constancias',
@@ -312,6 +318,7 @@ export interface FileRoutesByFullPath {
   '/portal/biblioteca': typeof PortalBibliotecaRoute
   '/portal/calendario': typeof PortalCalendarioRoute
   '/portal/certificaciones': typeof PortalCertificacionesRoute
+  '/portal/conciliacion': typeof PortalConciliacionRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/erp': typeof PortalErpRoute
@@ -358,6 +365,7 @@ export interface FileRoutesByTo {
   '/portal/biblioteca': typeof PortalBibliotecaRoute
   '/portal/calendario': typeof PortalCalendarioRoute
   '/portal/certificaciones': typeof PortalCertificacionesRoute
+  '/portal/conciliacion': typeof PortalConciliacionRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/erp': typeof PortalErpRoute
@@ -407,6 +415,7 @@ export interface FileRoutesById {
   '/portal/biblioteca': typeof PortalBibliotecaRoute
   '/portal/calendario': typeof PortalCalendarioRoute
   '/portal/certificaciones': typeof PortalCertificacionesRoute
+  '/portal/conciliacion': typeof PortalConciliacionRoute
   '/portal/constancias': typeof PortalConstanciasRoute
   '/portal/documentos': typeof PortalDocumentosRoute
   '/portal/erp': typeof PortalErpRoute
@@ -457,6 +466,7 @@ export interface FileRouteTypes {
     | '/portal/biblioteca'
     | '/portal/calendario'
     | '/portal/certificaciones'
+    | '/portal/conciliacion'
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/erp'
@@ -503,6 +513,7 @@ export interface FileRouteTypes {
     | '/portal/biblioteca'
     | '/portal/calendario'
     | '/portal/certificaciones'
+    | '/portal/conciliacion'
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/erp'
@@ -551,6 +562,7 @@ export interface FileRouteTypes {
     | '/portal/biblioteca'
     | '/portal/calendario'
     | '/portal/certificaciones'
+    | '/portal/conciliacion'
     | '/portal/constancias'
     | '/portal/documentos'
     | '/portal/erp'
@@ -800,6 +812,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalCertificacionesRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/conciliacion': {
+      id: '/portal/conciliacion'
+      path: '/conciliacion'
+      fullPath: '/portal/conciliacion'
+      preLoaderRoute: typeof PortalConciliacionRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/constancias': {
       id: '/portal/constancias'
       path: '/constancias'
@@ -947,6 +966,7 @@ interface PortalRouteChildren {
   PortalBibliotecaRoute: typeof PortalBibliotecaRoute
   PortalCalendarioRoute: typeof PortalCalendarioRoute
   PortalCertificacionesRoute: typeof PortalCertificacionesRoute
+  PortalConciliacionRoute: typeof PortalConciliacionRoute
   PortalConstanciasRoute: typeof PortalConstanciasRoute
   PortalDocumentosRoute: typeof PortalDocumentosRoute
   PortalErpRoute: typeof PortalErpRoute
@@ -971,6 +991,7 @@ const PortalRouteChildren: PortalRouteChildren = {
   PortalBibliotecaRoute: PortalBibliotecaRoute,
   PortalCalendarioRoute: PortalCalendarioRoute,
   PortalCertificacionesRoute: PortalCertificacionesRoute,
+  PortalConciliacionRoute: PortalConciliacionRoute,
   PortalConstanciasRoute: PortalConstanciasRoute,
   PortalDocumentosRoute: PortalDocumentosRoute,
   PortalErpRoute: PortalErpRoute,
