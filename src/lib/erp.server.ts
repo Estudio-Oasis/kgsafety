@@ -13,7 +13,15 @@ let cachedToken: { value: string; expiresAt: number } | null = null;
 async function login(): Promise<string> {
   const email = process.env.ERP_API_EMAIL;
   const password = process.env.ERP_API_PASSWORD;
-  if (!email || !password) throw new Error("ERP: credenciales no configuradas");
+  if (!email || !password) {
+    // Falta configuración de nuestro lado: no es reintentable, reintentar no lo arregla.
+    throw new ErpError(
+      "auth",
+      "credenciales_no_configuradas",
+      "El sistema no tiene configuradas las credenciales de servicio del ERP (ERP_API_EMAIL / ERP_API_PASSWORD). No se pudo enviar la solicitud a Noil.",
+      { retryable: false },
+    );
+  }
 
   const res = await fetch(`${BASE}/api/auth/login`, {
     method: "POST",
