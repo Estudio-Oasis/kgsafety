@@ -404,6 +404,9 @@ export async function previewInvoicePdf(input: {
   });
 
   if (!pdfBase64) {
+    if (esNoAutenticado(res.status)) {
+      return { ok: false, pdfBase64: null, bytes: 0, error: MSG_NO_AUTENTICADO };
+    }
     return {
       ok: false,
       pdfBase64: null,
