@@ -149,26 +149,32 @@ export async function submitQuote(
           };
         }
 
-        // 3) Rechazo definitivo (RFC inválido, datos rechazados): se informa al usuario.
+        // 3) Rechazo definitivo (RFC inválido, datos rechazados) o falta de configuración.
         await attachErpOutcome(leadId, {
           erp_status: "error",
           erp_trace_id: traceId,
-          erp_error: `${stage}/${code}`,
+          erp_error: esConfiguracion ? "configuracion/credenciales_no_configuradas" : `${stage}/${code}`,
         });
         await raiseAlert({
           tipo: "erp_error",
-          severidad: stage === "validacion" ? "baja" : "alta",
-          titulo: `Solicitud no aceptada (${stage})`,
-          mensaje,
+          severidad: esConfiguracion ? "alta" : stage === "validacion" ? "baja" : "alta",
+          titulo: esConfiguracion
+            ? "Configuración faltante en KG Safety: credenciales del ERP no configuradas"
+            : `Solicitud no aceptada (${stage})`,
+          mensaje: esConfiguracion
+            ? `Problema de configuración del lado de KG Safety (no de Noil): faltan las credenciales de servicio del ERP, por lo que la solicitud NO se envió a Noil. Detalle: ${mensaje}`
+            : mensaje,
           leadId,
         });
         return {
           ok: false,
-          stage,
-          code,
-          message: mensaje,
+          stage: esConfiguracion ? "configuracion" : stage,
+          code: esConfiguracion ? "configuracion_faltante" : code,
+          message: esConfiguracion
+            ? "No pudimos enviar su solicitud por una falla de configuración de nuestro sistema. Su información quedó registrada; por favor contáctenos por teléfono o WhatsApp para confirmarla."
+            : mensaje,
           traceId,
-          retryable: reintentable,
+          retryable: false,
           idCotizacionSolicitud: null,
           folio: null,
           fechaAgendada: false,
