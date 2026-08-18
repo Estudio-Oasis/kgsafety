@@ -12,6 +12,19 @@ const BASE = process.env.FACT_API_BASE || "https://api-fact.noilmx.com/api";
 
 const CLAVES_SENSIBLES = /token|password|contrasen|secret|authorization|xml|cer|key/i;
 
+/** true cuando la API rechazó la llamada por autenticación (falta o es inválido el token). */
+export function esNoAutenticado(status: number | null): boolean {
+  return status === 401 || status === 403;
+}
+
+export const MSG_NO_AUTENTICADO =
+  "El servicio de facturación rechazó la conexión por falta de autenticación (problema de configuración de nuestro sistema, no de la cotización). Ya lo estamos revisando; contacte a Administración.";
+
+/** true cuando ni siquiera hay token configurado para el servicio de facturación. */
+export function faltaTokenFacturacion(): boolean {
+  return !process.env["FACT_API_TOKEN"];
+}
+
 /** Resumen seguro y acotado de un cuerpo de request/response para auditoría. */
 export function resumirCuerpo(value: unknown, max = 900): unknown {
   const visto = new WeakSet<object>();
