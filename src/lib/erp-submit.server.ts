@@ -102,12 +102,19 @@ export async function submitQuote(
         const stage = erpErr?.stage ?? "desconocido";
         const code = erpErr?.code ?? "error_inesperado";
         const mensaje = erpErr?.message ?? "Ocurrió un error inesperado al procesar la solicitud.";
-        const reintentable = erpErr ? erpErr.retryable : true;
+
+        // Falla de configuración (secretos faltantes): reintentar no la arregla.
+        const esConfiguracion =
+          code === "credenciales_no_configuradas" ||
+          /credenciales no configuradas|no configurad|ERP_API_EMAIL|ERP_API_PASSWORD/i.test(
+            e instanceof Error ? e.message : "",
+          );
+        const reintentable = esConfiguracion ? false : erpErr ? erpErr.retryable : true;
 
         await logErpCall({
           stage,
           ok: false,
-          error_code: code,
+          error_code: esConfiguracion ? "configuracion_faltante" : code,
           error_message: mensaje,
         });
 
