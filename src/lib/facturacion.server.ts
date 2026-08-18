@@ -295,6 +295,7 @@ export async function findInvoice(criterio: string, empresa = "KGSAFETY") {
     `/facturafactura/buscar/${encodeURIComponent(criterio.trim())}/${encodeURIComponent(empresa)}`,
   );
   const rows = Array.isArray(body) ? body : [];
+  if (esNoAutenticado(status)) return { ok: false as const, invoice: null, error: MSG_NO_AUTENTICADO };
   if (status !== 200) return { ok: false as const, invoice: null, error: "Servicio de búsqueda no disponible." };
   const hit = rows[0];
   if (!hit) return { ok: false as const, invoice: null, error: "No se encontró ninguna factura con los datos proporcionados." };
