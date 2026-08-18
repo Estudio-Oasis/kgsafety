@@ -213,9 +213,13 @@ export async function checkErpHealth(): Promise<ErpHealth> {
     }
   }
 
-  const conectado = pruebas.every((p) => p.ok) && Boolean(token);
-  const latenciaMs = Math.round(pruebas.reduce((a, p) => a + p.ms, 0) / pruebas.length);
   pruebas.push(facturacionProbe());
+  const conectado = pruebas.every((p) => p.ok) && Boolean(token);
+  const latencias = pruebas.filter((p) => p.ms > 0);
+  const latenciaMs =
+    latencias.length > 0
+      ? Math.round(latencias.reduce((a, p) => a + p.ms, 0) / latencias.length)
+      : 0;
 
   return { conectado, credenciales: true, host: BASE, verificadoAt, latenciaMs, pruebas, calendario };
 
