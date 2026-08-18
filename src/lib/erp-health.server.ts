@@ -46,6 +46,21 @@ const CAL_SIN_CREDENCIALES: CalendarDiag = {
 };
 
 
+/** Verifica la configuración del servicio de facturación (no expone el token). */
+function facturacionProbe(): ErpProbe {
+  const token = process.env["FACT_API_TOKEN"];
+  return {
+    nombre: "Servicio de facturación (token)",
+    path: "-",
+    ok: Boolean(token),
+    status: null,
+    ms: 0,
+    detalle: token
+      ? "token de facturación configurado"
+      : "Falta el secreto FACT_API_TOKEN: las llamadas de facturación se envían sin autenticación y la API responderá 401/403. Es configuración de nuestro lado.",
+  };
+}
+
 async function timed(
   nombre: string,
   path: string,
@@ -118,6 +133,7 @@ export async function checkErpHealth(): Promise<ErpHealth> {
           ms: 0,
           detalle: "No hay credenciales configuradas para el ERP",
         },
+        facturacionProbe(),
       ],
       calendario: CAL_SIN_CREDENCIALES,
     };
@@ -199,6 +215,7 @@ export async function checkErpHealth(): Promise<ErpHealth> {
 
   const conectado = pruebas.every((p) => p.ok) && Boolean(token);
   const latenciaMs = Math.round(pruebas.reduce((a, p) => a + p.ms, 0) / pruebas.length);
+  pruebas.push(facturacionProbe());
 
   return { conectado, credenciales: true, host: BASE, verificadoAt, latenciaMs, pruebas, calendario };
 

@@ -12,6 +12,19 @@ const BASE = process.env.FACT_API_BASE || "https://api-fact.noilmx.com/api";
 
 const CLAVES_SENSIBLES = /token|password|contrasen|secret|authorization|xml|cer|key/i;
 
+/** true cuando la API rechazó la llamada por autenticación (falta o es inválido el token). */
+export function esNoAutenticado(status: number | null): boolean {
+  return status === 401 || status === 403;
+}
+
+export const MSG_NO_AUTENTICADO =
+  "El servicio de facturación rechazó la conexión por falta de autenticación (problema de configuración de nuestro sistema, no de la cotización). Ya lo estamos revisando; contacte a Administración.";
+
+/** true cuando ni siquiera hay token configurado para el servicio de facturación. */
+export function faltaTokenFacturacion(): boolean {
+  return !process.env["FACT_API_TOKEN"];
+}
+
 /** Resumen seguro y acotado de un cuerpo de request/response para auditoría. */
 export function resumirCuerpo(value: unknown, max = 900): unknown {
   const visto = new WeakSet<object>();
@@ -184,7 +197,23 @@ export async function checkQuoteForInvoice(cotizacion: string) {
   >(`/adminclientesfacturas/buscar/${encodeURIComponent(cotizacion.trim())}`);
 
   const rows = Array.isArray(body) ? body : [];
-  if (status !== 200 || rows.length === 0) {
+  if (esNoAutenticado(status)) {
+    return {
+      ok: false as const,
+      code: "servicio_no_autenticado",
+      error: MSG_NO_AUTENTICADO,
+      info: null,
+    };
+  }
+  if (status !== 200) {
+    return {
+      ok: false as const,
+      code: "servicio",
+      error: "El servicio de facturación no respondió correctamente. Intente más tarde.",
+      info: null,
+    };
+  }
+  if (rows.length === 0) {
     return {
       ok: false as const,
       code: "no_encontrada",
@@ -193,6 +222,7 @@ export async function checkQuoteForInvoice(cotizacion: string) {
       info: null,
     };
   }
+
 
   const row = rows[0]!;
   const estatus = (row.EEstatus ?? "").trim();
@@ -265,6 +295,7 @@ export async function findInvoice(criterio: string, empresa = "KGSAFETY") {
     `/facturafactura/buscar/${encodeURIComponent(criterio.trim())}/${encodeURIComponent(empresa)}`,
   );
   const rows = Array.isArray(body) ? body : [];
+  if (esNoAutenticado(status)) return { ok: false as const, invoice: null, error: MSG_NO_AUTENTICADO };
   if (status !== 200) return { ok: false as const, invoice: null, error: "Servicio de búsqueda no disponible." };
   const hit = rows[0];
   if (!hit) return { ok: false as const, invoice: null, error: "No se encontró ninguna factura con los datos proporcionados." };
@@ -373,6 +404,9 @@ export async function previewInvoicePdf(input: {
   });
 
   if (!pdfBase64) {
+    if (esNoAutenticado(res.status)) {
+      return { ok: false, pdfBase64: null, bytes: 0, error: MSG_NO_AUTENTICADO };
+    }
     return {
       ok: false,
       pdfBase64: null,
