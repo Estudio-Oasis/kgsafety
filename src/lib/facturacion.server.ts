@@ -184,7 +184,23 @@ export async function checkQuoteForInvoice(cotizacion: string) {
   >(`/adminclientesfacturas/buscar/${encodeURIComponent(cotizacion.trim())}`);
 
   const rows = Array.isArray(body) ? body : [];
-  if (status !== 200 || rows.length === 0) {
+  if (esNoAutenticado(status)) {
+    return {
+      ok: false as const,
+      code: "servicio_no_autenticado",
+      error: MSG_NO_AUTENTICADO,
+      info: null,
+    };
+  }
+  if (status !== 200) {
+    return {
+      ok: false as const,
+      code: "servicio",
+      error: "El servicio de facturación no respondió correctamente. Intente más tarde.",
+      info: null,
+    };
+  }
+  if (rows.length === 0) {
     return {
       ok: false as const,
       code: "no_encontrada",
@@ -193,6 +209,7 @@ export async function checkQuoteForInvoice(cotizacion: string) {
       info: null,
     };
   }
+
 
   const row = rows[0]!;
   const estatus = (row.EEstatus ?? "").trim();
