@@ -61,6 +61,36 @@ function facturacionProbe(): ErpProbe {
   };
 }
 
+/** Resuelve la empresa de facturación del contrato (IdEmpresaFacturacion real, sin fallback). */
+async function empresaFacturacionProbe(): Promise<ErpProbe> {
+  const t0 = Date.now();
+  const contrato = process.env["FACT_CONTRATO"] || "KGSAFETY";
+  const path = `/api/proyecto/contrato/${contrato}`;
+  try {
+    const { getEmpresaFacturacion } = await import("./facturacion.server");
+    const empresa = await getEmpresaFacturacion(contrato);
+    return {
+      nombre: "Empresa de facturación (contrato)",
+      path,
+      ok: Boolean(empresa),
+      status: empresa ? 200 : null,
+      ms: Date.now() - t0,
+      detalle: empresa
+        ? `contrato ${empresa.contrato} → IdEmpresaFacturacion ${empresa.idEmpresaFacturacion}`
+        : `No se pudo resolver el IdEmpresaFacturacion del contrato ${contrato}. Sin ese dato no se puede buscar ni timbrar facturas.`,
+    };
+  } catch (e) {
+    return {
+      nombre: "Empresa de facturación (contrato)",
+      path,
+      ok: false,
+      status: null,
+      ms: Date.now() - t0,
+      detalle: e instanceof Error ? e.message : "error al consultar el contrato",
+    };
+  }
+}
+
 async function timed(
   nombre: string,
   path: string,
