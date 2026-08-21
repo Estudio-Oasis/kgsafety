@@ -239,6 +239,31 @@ export async function issueInvoice(input: {
   UsoCFDI: string;
   Referencia?: string;
 }) {
+  // El 422 de Noil ("No se encontró la empresa de facturación configurada para el
+  // contrato") indica que el timbrado depende del contrato. Resolvemos y dejamos
+  // constancia en la bitácora; el cuerpo del POST se mantiene según el contrato
+  // documentado en Swagger (sin campo de empresa) hasta confirmarlo con Noil.
+  const empresa = await getEmpresaFacturacion();
+  if (!empresa) {
+    return { ok: false as const, error: MSG_SIN_EMPRESA_FACTURACION };
+  }
+  await logErpCall({
+    operacion: erpCtx.getStore()?.operacion ?? "facturacion_emitir",
+    stage: "facturacion:empresa-facturacion",
+    metodo: "GET",
+    path: `${BASE}/proyecto/contrato/${empresa.contrato}`,
+    status_code: 200,
+    ok: true,
+    duracion_ms: 0,
+    error_code: "",
+    error_message: "",
+    detalle: {
+      sistema: "facturacion",
+      request: { contrato: empresa.contrato, cotizacion: input.NoCotizacion },
+      response: { IdEmpresaFacturacion: empresa.idEmpresaFacturacion, IdEmpresa: empresa.idEmpresa },
+    },
+  });
+
   const { status, body } = await call<{
     success?: boolean;
     uuid?: string;
