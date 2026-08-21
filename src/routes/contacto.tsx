@@ -287,6 +287,7 @@ function ContactoPage() {
         });
 
       } else {
+        const esConfiguracion = res.code === "configuracion_faltante";
         setResult({
           ok: false,
           titulo:
@@ -295,7 +296,9 @@ function ContactoPage() {
               : res.stage === "crear_cliente"
                 ? "No pudimos dar de alta el cliente"
                 : "No se pudo registrar",
-          msg: `${res.message} ${res.retryable ? "Puede intentarlo de nuevo en unos minutos." : "Envíela por WhatsApp y la atendemos de inmediato."}`,
+          msg: esConfiguracion
+            ? res.message
+            : `${res.message} ${res.retryable ? "Puede intentarlo de nuevo en unos minutos." : "Envíela por WhatsApp y la atendemos de inmediato."}`,
           traceId: res.traceId,
           retryable: res.retryable,
         });
