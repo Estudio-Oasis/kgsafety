@@ -7,10 +7,11 @@
  */
 
 import { erpCtx, logErpCall, newTraceId } from "./erp-monitor.server";
+import { sanitizeBody } from "./erp-sanitize";
 
 const BASE = process.env.FACT_API_BASE || "https://api-fact.noilmx.com/api";
 
-const CLAVES_SENSIBLES = /token|password|contrasen|secret|authorization|xml|cer|key/i;
+
 
 /** true cuando la API rechazó la llamada por autenticación (falta o es inválido el token). */
 export function esNoAutenticado(status: number | null): boolean {
@@ -26,34 +27,10 @@ export function faltaTokenFacturacion(): boolean {
 }
 
 /** Resumen seguro y acotado de un cuerpo de request/response para auditoría. */
-export function resumirCuerpo(value: unknown, max = 900): unknown {
-  const visto = new WeakSet<object>();
-  const walk = (v: unknown, depth: number): unknown => {
-    if (v === null || v === undefined) return v ?? null;
-    if (typeof v === "string") return v.length > 200 ? `${v.slice(0, 200)}… (${v.length} chars)` : v;
-    if (typeof v === "number" || typeof v === "boolean") return v;
-    if (Array.isArray(v)) {
-      if (depth > 2) return `[${v.length} elementos]`;
-      return { _tipo: "lista", total: v.length, muestra: v.slice(0, 2).map((r) => walk(r, depth + 1)) };
-    }
-    if (typeof v === "object") {
-      const obj = v as Record<string, unknown>;
-      if (visto.has(obj)) return "[circular]";
-      visto.add(obj);
-      if (depth > 3) return "[objeto]";
-      const out: Record<string, unknown> = {};
-      for (const [k, val] of Object.entries(obj).slice(0, 25)) {
-        out[k] = CLAVES_SENSIBLES.test(k) ? "[omitido]" : walk(val, depth + 1);
-      }
-      return out;
-    }
-    return String(v);
-  };
-  const resumen = walk(value, 0);
-  const json = JSON.stringify(resumen ?? null);
-  if (json && json.length > max) return { _truncado: true, contenido: `${json.slice(0, max)}…` };
-  return resumen;
+export function resumirCuerpo(value: unknown, max = 1200): unknown {
+  return sanitizeBody(value, max);
 }
+
 
 /** Agrupa varias llamadas de facturación bajo una misma referencia de auditoría. */
 export async function withFactTrace<T>(operacion: string, fn: () => Promise<T>): Promise<T> {

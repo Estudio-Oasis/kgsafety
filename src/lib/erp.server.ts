@@ -95,6 +95,14 @@ async function raw(
 ): Promise<{ status: number; ok: boolean; json: unknown | null; text: string }> {
   const method = (init?.method ?? "GET").toUpperCase();
   const t0 = Date.now();
+  let requestBody: unknown = null;
+  if (typeof init?.body === "string") {
+    try {
+      requestBody = JSON.parse(init.body);
+    } catch {
+      requestBody = init.body.slice(0, 200);
+    }
+  }
 
   // Modo staging: las escrituras nunca llegan a Noil (no se generan registros reales).
   if (currentMode() === "staging" && method !== "GET") {
@@ -106,7 +114,7 @@ async function raw(
       status_code: sim.status,
       ok: true,
       duracion_ms: Date.now() - t0,
-      detalle: { simulado: true },
+      detalle: { simulado: true, peticion: requestBody, respuesta: sim.json },
     });
     return sim;
   }
@@ -131,6 +139,7 @@ async function raw(
       duracion_ms: Date.now() - t0,
       error_code: "red_no_disponible",
       error_message: String(e),
+      detalle: { sistema: "erp", peticion: requestBody, respuesta: null },
     });
     throw e;
   }
@@ -158,6 +167,13 @@ async function raw(
     ok: res.ok,
     duracion_ms: Date.now() - t0,
     error_message: res.ok ? "" : text.slice(0, 300),
+    // También en 200: sin el cuerpo no se puede diagnosticar (p.ej. Noil devolviendo arreglo).
+    detalle: {
+      sistema: "erp",
+      peticion: requestBody,
+      respuesta: json,
+      ...(json === null && text ? { respuestaTexto: text.slice(0, 300) } : {}),
+    },
   });
 
   return { status: res.status, ok: res.ok, json, text };
