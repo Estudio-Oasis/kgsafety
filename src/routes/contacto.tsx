@@ -270,20 +270,24 @@ function ContactoPage() {
 
       if (res.ok) {
         const pendiente = res.code === "recibida_pendiente_verificacion";
+        const enCola = res.code === "recibida_en_cola";
         const folio = res.folio && res.folio.trim() ? res.folio.trim() : null;
         setResult({
           ok: true,
           folio,
           traceId: res.traceId,
-          titulo: pendiente || !folio ? "Solicitud recibida" : "Solicitud registrada",
-          msg: pendiente
-            ? "Su solicitud fue recibida y está pendiente de verificación. No la envíe de nuevo: un asesor la confirmará."
-            : folio
-              ? "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal."
-              : "Su solicitud fue recibida correctamente. No la envíe de nuevo: un asesor la confirmará y le enviará la cotización formal.",
+          titulo: pendiente || enCola || !folio ? "Solicitud recibida" : "Solicitud registrada",
+          msg: enCola
+            ? res.message
+            : pendiente
+              ? "Su solicitud fue recibida y está pendiente de verificación. No la envíe de nuevo: un asesor la confirmará."
+              : folio
+                ? "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal."
+                : "Su solicitud fue recibida correctamente. No la envíe de nuevo: un asesor la confirmará y le enviará la cotización formal.",
         });
 
       } else {
+        const esConfiguracion = res.code === "configuracion_faltante";
         setResult({
           ok: false,
           titulo:
@@ -292,7 +296,9 @@ function ContactoPage() {
               : res.stage === "crear_cliente"
                 ? "No pudimos dar de alta el cliente"
                 : "No se pudo registrar",
-          msg: `${res.message} ${res.retryable ? "Puede intentarlo de nuevo en unos minutos." : "Envíela por WhatsApp y la atendemos de inmediato."}`,
+          msg: esConfiguracion
+            ? res.message
+            : `${res.message} ${res.retryable ? "Puede intentarlo de nuevo en unos minutos." : "Envíela por WhatsApp y la atendemos de inmediato."}`,
           traceId: res.traceId,
           retryable: res.retryable,
         });
