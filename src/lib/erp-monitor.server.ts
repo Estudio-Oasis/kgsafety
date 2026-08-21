@@ -239,7 +239,7 @@ export async function processOutbox(limit = 10): Promise<ReconcileResult> {
         .eq("id", item.id);
       await attachErpOutcome(item.lead_id ?? null, {
         erp_status: result.status === "creada" ? "creada" : "pendiente_verificacion",
-        erp_folio: result.folio ?? (result.idSolicitud ? String(result.idSolicitud) : ""),
+        erp_folio: result.folio?.trim() || "",
         erp_solicitud_id: result.idSolicitud ? String(result.idSolicitud) : "",
         erp_trace_id: traceId,
       });
