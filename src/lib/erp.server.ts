@@ -307,17 +307,35 @@ export async function createClient(input: {
   correo: string;
   telefono: string;
 }): Promise<number> {
-  const res = await call<{ IdCliente?: number; Mensaje?: string }>("/api/clientesSspa", {
+  const rfc = normalizeRfc(input.rfc);
+  const res = await call<unknown>("/api/clientesSspa", {
     method: "POST",
     body: JSON.stringify({
-      RFC: normalizeRfc(input.rfc),
+      RFC: rfc,
       Nombre: input.nombre.trim(),
       Correo: input.correo.trim(),
       Telefono_fijo: input.telefono.trim(),
     }),
   });
-  if (!res?.IdCliente) throw new Error("ERP: no se pudo registrar el cliente");
-  return res.IdCliente;
+
+  // Noil devuelve el IdCliente en varias formas: arreglo [{"IdCliente":487}],
+  // objeto raíz {"IdCliente":487}, anidado {"data":{"IdCliente":487}} o el
+  // patrón [datos, statusCode]. unwrap() ya normaliza arreglo y [datos, statusCode].
+  const rows = unwrap<{ IdCliente?: number; Mensaje?: string }>(res);
+  const id =
+    rows[0]?.IdCliente ??
+    (res as { IdCliente?: number } | null)?.IdCliente ??
+    (res as { data?: { IdCliente?: number } } | null)?.data?.IdCliente;
+
+  if (id) return id;
+
+  // Red de seguridad: el POST pudo haber creado el cliente en Noil aunque no
+  // devolviera el ID (visto el 14-ago: HTTP 200 sin IdCliente en la raíz).
+  // Lo recuperamos por RFC antes de declarar el fallo, evitando duplicados.
+  const found = await findClientByRfc(rfc);
+  if (found?.IdCliente) return found.IdCliente;
+
+  throw new Error("ERP: no se pudo registrar el cliente");
 }
 
 // ---------- CU001 / CU002: catálogo de insumos (equipos y servicios) ----------
