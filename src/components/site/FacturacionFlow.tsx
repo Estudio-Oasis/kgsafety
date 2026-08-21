@@ -1,16 +1,8 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useT } from "@/i18n/context";
+import { USOS_CFDI, DEFAULT_USO_CFDI } from "@/lib/cfdi";
 import { factCheckQuote, factUpdateAndIssue, factFindInvoice, factPreviewPdf } from "@/lib/facturacion.functions";
-
-const USOS_CFDI = [
-  { c: "G01", l: "G01 · Adquisición de mercancías" },
-  { c: "G03", l: "G03 · Gastos en general" },
-  { c: "I01", l: "I01 · Construcciones" },
-  { c: "I08", l: "I08 · Otra maquinaria y equipo" },
-  { c: "P01", l: "P01 · Por definir" },
-  { c: "S01", l: "S01 · Sin efectos fiscales" },
-];
 
 type FiscalClient = {
   IdProveedorCliente: number;
@@ -58,7 +50,7 @@ export function FacturacionFlow() {
   const [referencia, setReferencia] = useState("");
   const [cliente, setCliente] = useState<FiscalClient | null>(null);
   const [fiscal, setFiscal] = useState({ calle: "", numero: "", numeroInt: "", colonia: "", cp: "", telefono: "" });
-  const [usoCFDI, setUsoCFDI] = useState("G03");
+  const [usoCFDI, setUsoCFDI] = useState(DEFAULT_USO_CFDI);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uuid, setUuid] = useState<string | null>(null);
