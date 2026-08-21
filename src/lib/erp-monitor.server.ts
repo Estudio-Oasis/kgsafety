@@ -8,6 +8,8 @@
 
 import { AsyncLocalStorage } from "node:async_hooks";
 
+import { sanitizeDetalle, sanitizeMessage } from "./erp-sanitize";
+
 export type ErpMode = "live" | "staging";
 
 export type ErpCtx = {
@@ -68,10 +70,11 @@ export async function logErpCall(entry: ErpLogEntry) {
     duracion_ms: Math.round(entry.duracion_ms ?? 0),
     intento: entry.intento ?? ctx?.intento ?? 1,
     error_code: (entry.error_code ?? "").slice(0, 120),
-    error_message: (entry.error_message ?? "").slice(0, 500),
+    error_message: sanitizeMessage(entry.error_message ?? "").slice(0, 500),
     modo: ctx?.modo ?? globalErpMode(),
     es_prueba: ctx?.esPrueba ?? false,
-    detalle: (entry.detalle ?? {}) as never,
+    // Enmascarado ANTES de escribir en la tabla: la base nunca guarda datos en claro.
+    detalle: sanitizeDetalle(entry.detalle) as never,
   };
   console.log(
     `[erp][${row.trace_id}][${row.stage || row.operacion}] ${row.metodo} ${row.path} -> ${row.status_code ?? "-"} (${row.duracion_ms}ms, intento ${row.intento}, ${row.modo})`,

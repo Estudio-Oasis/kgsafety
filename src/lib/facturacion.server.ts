@@ -7,10 +7,11 @@
  */
 
 import { erpCtx, logErpCall, newTraceId } from "./erp-monitor.server";
+import { sanitizeBody } from "./erp-sanitize";
 
 const BASE = process.env.FACT_API_BASE || "https://api-fact.noilmx.com/api";
 
-const CLAVES_SENSIBLES = /token|password|contrasen|secret|authorization|xml|cer|key/i;
+
 
 /** true cuando la API rechazó la llamada por autenticación (falta o es inválido el token). */
 export function esNoAutenticado(status: number | null): boolean {
@@ -26,7 +27,11 @@ export function faltaTokenFacturacion(): boolean {
 }
 
 /** Resumen seguro y acotado de un cuerpo de request/response para auditoría. */
-export function resumirCuerpo(value: unknown, max = 900): unknown {
+export function resumirCuerpo(value: unknown, max = 1200): unknown {
+  return sanitizeBody(value, max);
+}
+
+function resumirCuerpoLegacy(value: unknown, max = 900): unknown {
   const visto = new WeakSet<object>();
   const walk = (v: unknown, depth: number): unknown => {
     if (v === null || v === undefined) return v ?? null;
