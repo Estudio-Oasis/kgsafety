@@ -377,9 +377,28 @@ export type InvoiceRecord = {
   XML?: string;
 };
 
-export async function findInvoice(criterio: string, empresa = "KGSAFETY") {
+export async function findInvoice(criterio: string, contrato: string = CONTRATO_DEFAULT) {
+  const empresa = await getEmpresaFacturacion(contrato);
+  if (!empresa) {
+    await logErpCall({
+      operacion: erpCtx.getStore()?.operacion ?? "facturacion_consultar",
+      stage: "facturacion:empresa-facturacion",
+      metodo: "GET",
+      path: `${BASE}/proyecto/contrato/${contrato}`,
+      status_code: null,
+      ok: false,
+      duracion_ms: 0,
+      error_code: "fact_sin_empresa",
+      error_message: `No se resolvió IdEmpresaFacturacion para el contrato ${contrato}; se aborta la búsqueda para no devolver resultados vacíos engañosos.`,
+      detalle: { sistema: "facturacion", request: { contrato }, response: null },
+    });
+    return { ok: false as const, invoice: null, error: MSG_SIN_EMPRESA_FACTURACION };
+  }
+
   const { status, body } = await call<InvoiceRecord[]>(
-    `/facturafactura/buscar/${encodeURIComponent(criterio.trim())}/${encodeURIComponent(empresa)}`,
+    `/facturafactura/buscar/${encodeURIComponent(criterio.trim())}/${encodeURIComponent(
+      String(empresa.idEmpresaFacturacion),
+    )}`,
   );
   const rows = Array.isArray(body) ? body : [];
   if (esNoAutenticado(status)) return { ok: false as const, invoice: null, error: MSG_NO_AUTENTICADO };
