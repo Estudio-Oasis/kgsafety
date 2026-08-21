@@ -26,8 +26,10 @@ La lectura respondió 200 **sin** cabecera de autenticación.
 2. **Caché en memoria** con TTL corto (~10 min) para no consultar el contrato en cada búsqueda.
 
 3. **Búsqueda de facturas**: `findInvoice` deja de recibir el literal `"KGSAFETY"` como parámetro
-   fijo. Resuelve el contrato primero y usa lo que Noil devuelva; si no se resuelve, cae al
-   literal actual para no romper el flujo hoy y registra una advertencia en la bitácora.
+   fijo y usa el `IdEmpresaFacturacion` resuelto. **Sin fallback al texto**: si no se resuelve,
+   `findInvoice` devuelve un error claro ("No se pudo determinar la empresa de facturación del
+   contrato…") y lo registra en la bitácora. Un fallback al literal produce HTTP 200 con
+   resultados vacíos — búsquedas que mienten — y es justo el bug que se corrige.
 
 4. **Emisión (`/facturar/emitir`)**: hoy el payload no lleva empresa de facturación y el 422 de
    Noil menciona "No se encontró la empresa de facturación configurada para el contrato".

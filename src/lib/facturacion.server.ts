@@ -123,6 +123,78 @@ async function call<T>(path: string, init?: RequestInit): Promise<{ status: numb
 }
 
 
+// ---------- Empresa de facturación del contrato ----------
+
+/** Aplana la respuesta de Noil: objeto raíz, arreglo, o patrón [datos, statusCode]. */
+function filas(payload: unknown): Record<string, unknown>[] {
+  if (payload === null || typeof payload !== "object") return [];
+  if (Array.isArray(payload)) {
+    const out: Record<string, unknown>[] = [];
+    for (const item of payload) {
+      if (item && typeof item === "object" && !Array.isArray(item)) out.push(item as Record<string, unknown>);
+      else if (Array.isArray(item)) out.push(...filas(item));
+    }
+    return out;
+  }
+  const obj = payload as Record<string, unknown>;
+  const out: Record<string, unknown>[] = [obj];
+  for (const key of ["data", "datos", "result", "resultado", "items"]) {
+    if (obj[key] !== undefined) out.push(...filas(obj[key]));
+  }
+  return out;
+}
+
+function numeroPositivo(v: unknown): number | null {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+export type EmpresaFacturacion = {
+  contrato: string;
+  idEmpresaFacturacion: number;
+  idEmpresa: number | null;
+  descripcion: string;
+};
+
+const CONTRATO_DEFAULT = process.env["FACT_CONTRATO"] || "KGSAFETY";
+const TTL_MS = 10 * 60 * 1000;
+const cacheEmpresa = new Map<string, { at: number; valor: EmpresaFacturacion }>();
+
+export const MSG_SIN_EMPRESA_FACTURACION =
+  "No se pudo determinar la empresa de facturación configurada para el contrato. Es un problema de configuración de nuestro sistema; contacte a Administración.";
+
+/**
+ * Obtiene el IdEmpresaFacturacion real del contrato desde Noil.
+ * Devuelve null si no se puede resolver: nunca se sustituye por el texto del contrato.
+ */
+export async function getEmpresaFacturacion(
+  contrato: string = CONTRATO_DEFAULT,
+): Promise<EmpresaFacturacion | null> {
+  const clave = contrato.trim().toUpperCase();
+  const hit = cacheEmpresa.get(clave);
+  if (hit && Date.now() - hit.at < TTL_MS) return hit.valor;
+
+  const { status, body } = await call<unknown>(`/proyecto/contrato/${encodeURIComponent(contrato.trim())}`);
+  if (status !== 200) return null;
+
+  for (const fila of filas(body)) {
+    const id =
+      numeroPositivo(fila["IdEmpresaFacturacion"]) ??
+      numeroPositivo(fila["idEmpresaFacturacion"]) ??
+      numeroPositivo((fila["proyecto"] as Record<string, unknown> | undefined)?.["IdEmpresaFacturacion"]);
+    if (id === null) continue;
+    const valor: EmpresaFacturacion = {
+      contrato: String(fila["sContrato"] ?? fila["sCodigo"] ?? contrato),
+      idEmpresaFacturacion: id,
+      idEmpresa: numeroPositivo(fila["IdEmpresa"]),
+      descripcion: String(fila["mDescripcion"] ?? ""),
+    };
+    cacheEmpresa.set(clave, { at: Date.now(), valor });
+    return valor;
+  }
+  return null;
+}
+
 export type FiscalClient = {
   IdProveedorCliente: number;
   NombreEmpresa: string;
@@ -139,10 +211,25 @@ export type FiscalClient = {
 };
 
 export async function findFiscalClient(codigo: string) {
-  const { status, body } = await call<FiscalClient & { error?: string }>(
+  const { status, body } = await call<unknown>(
     `/proveedorcliente/buscar/${encodeURIComponent(codigo.trim())}`,
   );
-  if (status === 200 && body?.IdProveedorCliente) return body;
+  if (status !== 200) return null;
+
+  for (const fila of filas(body)) {
+    const anidado = fila["master_cliente"] as Record<string, unknown> | undefined;
+    const id =
+      numeroPositivo(fila["IdProveedorCliente"]) ??
+      numeroPositivo(fila["IdClienteProveedor"]) ??
+      numeroPositivo(anidado?.["IdProveedorCliente"]) ??
+      numeroPositivo(anidado?.["IdClienteProveedor"]);
+    if (id === null) continue;
+    const base = (anidado && typeof anidado === "object" ? { ...anidado, ...fila } : fila) as Record<
+      string,
+      unknown
+    >;
+    return { ...(base as unknown as FiscalClient), IdProveedorCliente: id };
+  }
   return null;
 }
 
@@ -152,6 +239,31 @@ export async function issueInvoice(input: {
   UsoCFDI: string;
   Referencia?: string;
 }) {
+  // El 422 de Noil ("No se encontró la empresa de facturación configurada para el
+  // contrato") indica que el timbrado depende del contrato. Resolvemos y dejamos
+  // constancia en la bitácora; el cuerpo del POST se mantiene según el contrato
+  // documentado en Swagger (sin campo de empresa) hasta confirmarlo con Noil.
+  const empresa = await getEmpresaFacturacion();
+  if (!empresa) {
+    return { ok: false as const, error: MSG_SIN_EMPRESA_FACTURACION };
+  }
+  await logErpCall({
+    operacion: erpCtx.getStore()?.operacion ?? "facturacion_emitir",
+    stage: "facturacion:empresa-facturacion",
+    metodo: "GET",
+    path: `${BASE}/proyecto/contrato/${empresa.contrato}`,
+    status_code: 200,
+    ok: true,
+    duracion_ms: 0,
+    error_code: "",
+    error_message: "",
+    detalle: {
+      sistema: "facturacion",
+      request: { contrato: empresa.contrato, cotizacion: input.NoCotizacion },
+      response: { IdEmpresaFacturacion: empresa.idEmpresaFacturacion, IdEmpresa: empresa.idEmpresa },
+    },
+  });
+
   const { status, body } = await call<{
     success?: boolean;
     uuid?: string;
@@ -290,9 +402,28 @@ export type InvoiceRecord = {
   XML?: string;
 };
 
-export async function findInvoice(criterio: string, empresa = "KGSAFETY") {
+export async function findInvoice(criterio: string, contrato: string = CONTRATO_DEFAULT) {
+  const empresa = await getEmpresaFacturacion(contrato);
+  if (!empresa) {
+    await logErpCall({
+      operacion: erpCtx.getStore()?.operacion ?? "facturacion_consultar",
+      stage: "facturacion:empresa-facturacion",
+      metodo: "GET",
+      path: `${BASE}/proyecto/contrato/${contrato}`,
+      status_code: null,
+      ok: false,
+      duracion_ms: 0,
+      error_code: "fact_sin_empresa",
+      error_message: `No se resolvió IdEmpresaFacturacion para el contrato ${contrato}; se aborta la búsqueda para no devolver resultados vacíos engañosos.`,
+      detalle: { sistema: "facturacion", request: { contrato }, response: null },
+    });
+    return { ok: false as const, invoice: null, error: MSG_SIN_EMPRESA_FACTURACION };
+  }
+
   const { status, body } = await call<InvoiceRecord[]>(
-    `/facturafactura/buscar/${encodeURIComponent(criterio.trim())}/${encodeURIComponent(empresa)}`,
+    `/facturafactura/buscar/${encodeURIComponent(criterio.trim())}/${encodeURIComponent(
+      String(empresa.idEmpresaFacturacion),
+    )}`,
   );
   const rows = Array.isArray(body) ? body : [];
   if (esNoAutenticado(status)) return { ok: false as const, invoice: null, error: MSG_NO_AUTENTICADO };
