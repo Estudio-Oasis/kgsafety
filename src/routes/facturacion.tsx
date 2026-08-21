@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/i18n/context";
 import { FacturacionFlow } from "@/components/site/FacturacionFlow";
-import { USOS_CFDI } from "@/lib/cfdi";
 
 const LINKS = {
   administracion: "https://admin-factura-cliente.noilmx.com/",
