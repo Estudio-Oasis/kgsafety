@@ -245,6 +245,7 @@ export async function checkErpHealth(): Promise<ErpHealth> {
   }
 
   pruebas.push(facturacionProbe());
+  pruebas.push(await empresaFacturacionProbe());
   const conectado = pruebas.every((p) => p.ok) && Boolean(token);
   const latencias = pruebas.filter((p) => p.ms > 0);
   const latenciaMs =
