@@ -171,7 +171,7 @@ export async function submitQuote(
           stage: esConfiguracion ? "configuracion" : stage,
           code: esConfiguracion ? "configuracion_faltante" : code,
           message: esConfiguracion
-            ? "No pudimos enviar su solicitud por una falla de configuración de nuestro sistema. Su información quedó registrada; por favor contáctenos por teléfono o WhatsApp para confirmarla."
+            ? "Recibimos su solicitud, pero por un problema temporal de configuración no quedó registrada en nuestro sistema. Confírmela por teléfono al +52 722 879 5076 o por WhatsApp y la atendemos de inmediato."
             : mensaje,
           traceId,
           retryable: false,
