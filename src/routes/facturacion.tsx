@@ -1,15 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useT } from "@/i18n/context";
 import { FacturacionFlow } from "@/components/site/FacturacionFlow";
-
-const USOS_CFDI = [
-  { c: "G01", l: "G01 · Adquisición de mercancías" },
-  { c: "G03", l: "G03 · Gastos en general" },
-  { c: "I08", l: "I08 · Otra maquinaria y equipo" },
-  { c: "P01", l: "P01 · Por definir" },
-  { c: "D10", l: "D10 · Pagos por servicios educativos" },
-  { c: "S01", l: "S01 · Sin efectos fiscales" },
-];
+import { USOS_CFDI } from "@/lib/cfdi";
 
 const LINKS = {
   administracion: "https://admin-factura-cliente.noilmx.com/",
