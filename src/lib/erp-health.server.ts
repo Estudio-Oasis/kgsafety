@@ -164,6 +164,7 @@ export async function checkErpHealth(): Promise<ErpHealth> {
           detalle: "No hay credenciales configuradas para el ERP",
         },
         facturacionProbe(),
+        await empresaFacturacionProbe(),
       ],
       calendario: CAL_SIN_CREDENCIALES,
     };
