@@ -270,15 +270,19 @@ function ContactoPage() {
 
       if (res.ok) {
         const pendiente = res.code === "recibida_pendiente_verificacion";
+        const folio = res.folio && res.folio.trim() ? res.folio.trim() : null;
         setResult({
           ok: true,
-          folio: res.folio ?? (res.idCotizacionSolicitud ? String(res.idCotizacionSolicitud) : null),
+          folio,
           traceId: res.traceId,
-          titulo: pendiente ? "Solicitud recibida" : "Solicitud registrada",
+          titulo: pendiente || !folio ? "Solicitud recibida" : "Solicitud registrada",
           msg: pendiente
             ? "Su solicitud fue recibida y está pendiente de verificación. No la envíe de nuevo: un asesor la confirmará."
-            : "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal.",
+            : folio
+              ? "Su solicitud quedó registrada en nuestro sistema. Un asesor le enviará la cotización formal."
+              : "Su solicitud fue recibida correctamente. No la envíe de nuevo: un asesor la confirmará y le enviará la cotización formal.",
         });
+
       } else {
         setResult({
           ok: false,

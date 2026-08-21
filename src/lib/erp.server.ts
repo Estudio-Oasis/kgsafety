@@ -630,22 +630,36 @@ export async function createQuote(
   let idSolicitud = body.IdCotizacionSolicitud ?? null;
   let folio = body.SCodigoSolicitud ?? null;
 
-  // 5. Verificación posterior mediante GET filtrado (el 201 puede venir vacío).
-  if (!idSolicitud) {
-    const found = await findQuotes({
-      fecha,
-      idCliente,
-      idServicio,
-      idCurso: input.idCurso,
-      tipoCursoCliente: input.tipoCursoCliente,
-    });
-    const last = found[found.length - 1];
-    if (last?.IdCotizacionSolicitud) {
-      idSolicitud = last.IdCotizacionSolicitud;
-      folio = last.SCodigoSolicitud ?? folio;
+  // 5. Verificación posterior mediante GET filtrado: siempre se consulta si falta
+  //    el ID o el folio real (SCodigoSolicitud), porque el 201 suele venir sin folio.
+  if (!idSolicitud || !folio) {
+    try {
+      const found = await findQuotes({
+        fecha,
+        idCliente,
+        idServicio,
+        idCurso: input.idCurso,
+        tipoCursoCliente: input.tipoCursoCliente,
+      });
+      const match = idSolicitud
+        ? found.find((q) => q.IdCotizacionSolicitud === idSolicitud)
+        : found[found.length - 1];
+      if (match?.IdCotizacionSolicitud) {
+        idSolicitud = match.IdCotizacionSolicitud;
+        folio = match.SCodigoSolicitud?.trim() || folio;
+      }
+      log(traceId, "verificar_cotizacion", {
+        encontrados: found.length,
+        idSolicitud,
+        folio: folio ?? "",
+      });
+    } catch (e) {
+      // La cotización ya existe en el ERP: no invalidar por falla al consultar el folio.
+      log(traceId, "verificar_cotizacion", { error: String(e), idSolicitud });
     }
-    log(traceId, "verificar_cotizacion", { encontrados: found.length, idSolicitud });
   }
+  if (folio !== null && !folio.trim()) folio = null;
+
 
   // 6. Fecha del calendario (opcional, no invalida la cotización).
   let fechaAgendada = false;
