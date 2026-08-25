@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useT } from "@/i18n/context";
 import { USOS_CFDI, DEFAULT_USO_CFDI } from "@/lib/cfdi";
-import { factCheckQuote, factUpdateAndIssue, factFindInvoice, factPreviewPdf } from "@/lib/facturacion.functions";
+import {
+  factCheckQuote,
+  factUpdateAndIssue,
+  factFindInvoice,
+  factPreviewPdf,
+  factStampedPdf,
+} from "@/lib/facturacion.functions";
 
 type FiscalClient = {
   IdProveedorCliente: number;
@@ -42,6 +48,7 @@ export function FacturacionFlow() {
   const issue = useServerFn(factUpdateAndIssue);
   const search = useServerFn(factFindInvoice);
   const preview = useServerFn(factPreviewPdf);
+  const stampedPdf = useServerFn(factStampedPdf);
 
   const [tab, setTab] = useState<"facturar" | "consultar">("facturar");
 
@@ -63,6 +70,8 @@ export function FacturacionFlow() {
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [showXml, setShowXml] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfAviso, setPdfAviso] = useState<string | null>(null);
 
   function resetFacturar() {
     setCotizacion("");
@@ -198,6 +207,41 @@ export function FacturacionFlow() {
     a.download = `Factura_${invoice.folio || invoice.uuid}.xml`;
     a.click();
     URL.revokeObjectURL(a.href);
+  }
+
+  async function descargarPdf() {
+    if (!invoice) return;
+    const clave = invoice.uuid || invoice.folio || criterio.trim();
+    if (!clave) return;
+    setPdfLoading(true);
+    setPdfAviso(null);
+    setSearchError(null);
+    try {
+      const r = await stampedPdf({ data: { criterio: clave } });
+      if (r.ok && r.pdfBase64) {
+        const bin = atob(r.pdfBase64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+        a.download = `Factura_${invoice.folio || invoice.uuid}.pdf`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        if (!r.qr) {
+          setPdfAviso(
+            t(
+              "El PDF se generó, pero la factura no incluyó código QR: aparece la leyenda \"Código QR no disponible\".",
+            ),
+          );
+        }
+      } else {
+        setSearchError(r.error ?? t("No fue posible generar el PDF de la factura."));
+      }
+    } catch {
+      setSearchError(t("Error de conexión al generar el PDF. Intente de nuevo."));
+    } finally {
+      setPdfLoading(false);
+    }
   }
 
   return (
@@ -503,13 +547,27 @@ export function FacturacionFlow() {
                     invoice.xml ? setShowXml(true) : setSearchError(t("No hay XML disponible para esta factura."))
                   }
                 >
-                  XML
+                  {t("Ver XML")}
                 </button>
                 <button type="button" className={ghostCls} onClick={descargarXml} disabled={!invoice.xml}>
-                  {t("Descargar")}
+                  {t("Descargar XML")}
+                </button>
+                <button
+                  type="button"
+                  className={btnCls}
+                  onClick={() => void descargarPdf()}
+                  disabled={pdfLoading || !invoice.xml}
+                >
+                  {pdfLoading ? t("Generando PDF…") : t("Descargar PDF")}
                 </button>
               </div>
             </div>
+          )}
+
+          {pdfAviso && (
+            <p className="mt-3 text-xs border border-[color:var(--border)] bg-[color:var(--surface)] p-3 text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)]">
+              {pdfAviso}
+            </p>
           )}
 
           {showXml && invoice?.xml && (

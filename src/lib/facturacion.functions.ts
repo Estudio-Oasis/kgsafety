@@ -212,3 +212,26 @@ export const factPreviewPdf = createServerFn({ method: "POST" })
       };
     }
   });
+
+/** PDF propio (generado en Lovable) de una factura YA TIMBRADA. Solo lectura del ERP. */
+export const factStampedPdf = createServerFn({ method: "POST" })
+  .inputValidator((data: { criterio: string }) =>
+    z.object({ criterio: z.string().trim().min(1).max(80) }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    const { buildStampedInvoicePdf, withFactTrace } = await import("./facturacion.server");
+    try {
+      return await withFactTrace("facturacion_pdf_propio", () => buildStampedInvoicePdf(data.criterio));
+    } catch (e) {
+      console.error(e);
+      return {
+        ok: false as const,
+        pdfBase64: null,
+        bytes: 0,
+        folio: "",
+        uuid: "",
+        qr: false,
+        error: "No fue posible generar el PDF de la factura. Intente más tarde.",
+      };
+    }
+  });
