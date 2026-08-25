@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useT } from "@/i18n/context";
 import { USOS_CFDI, DEFAULT_USO_CFDI } from "@/lib/cfdi";
-import { factCheckQuote, factUpdateAndIssue, factFindInvoice, factPreviewPdf } from "@/lib/facturacion.functions";
+import {
+  factCheckQuote,
+  factUpdateAndIssue,
+  factFindInvoice,
+  factPreviewPdf,
+  factStampedPdf,
+} from "@/lib/facturacion.functions";
 
 type FiscalClient = {
   IdProveedorCliente: number;
