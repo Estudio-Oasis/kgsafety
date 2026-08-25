@@ -48,6 +48,7 @@ export function FacturacionFlow() {
   const issue = useServerFn(factUpdateAndIssue);
   const search = useServerFn(factFindInvoice);
   const preview = useServerFn(factPreviewPdf);
+  const stampedPdf = useServerFn(factStampedPdf);
 
   const [tab, setTab] = useState<"facturar" | "consultar">("facturar");
 
