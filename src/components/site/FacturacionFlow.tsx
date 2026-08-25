@@ -209,6 +209,41 @@ export function FacturacionFlow() {
     URL.revokeObjectURL(a.href);
   }
 
+  async function descargarPdf() {
+    if (!invoice) return;
+    const clave = invoice.uuid || invoice.folio || criterio.trim();
+    if (!clave) return;
+    setPdfLoading(true);
+    setPdfAviso(null);
+    setSearchError(null);
+    try {
+      const r = await stampedPdf({ data: { criterio: clave } });
+      if (r.ok && r.pdfBase64) {
+        const bin = atob(r.pdfBase64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+        a.download = `Factura_${invoice.folio || invoice.uuid}.pdf`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        if (!r.qr) {
+          setPdfAviso(
+            t(
+              "El PDF se generó, pero la factura no incluyó código QR: aparece la leyenda \"Código QR no disponible\".",
+            ),
+          );
+        }
+      } else {
+        setSearchError(r.error ?? t("No fue posible generar el PDF de la factura."));
+      }
+    } catch {
+      setSearchError(t("Error de conexión al generar el PDF. Intente de nuevo."));
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
   return (
     <div
       id="autofactura"
