@@ -70,6 +70,8 @@ export function FacturacionFlow() {
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [showXml, setShowXml] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfAviso, setPdfAviso] = useState<string | null>(null);
 
   function resetFacturar() {
     setCotizacion("");
