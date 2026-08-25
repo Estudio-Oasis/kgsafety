@@ -528,3 +528,74 @@ export async function previewInvoicePdf(input: {
   }
   return { ok: true, pdfBase64, bytes, error: null };
 }
+
+// ---------- PDF propio de una factura YA TIMBRADA ----------
+
+/**
+ * Genera el PDF de un CFDI timbrado con nuestra propia librería, a partir del
+ * registro completo de GET /facturafactura/buscar/{criterio}/{idEmpresa}.
+ * No llama a ningún endpoint de PDF externo. El QR se toma únicamente del
+ * base64 que venga en la respuesta; si no viene, queda la leyenda y se registra.
+ */
+export async function buildStampedInvoicePdf(criterio: string, contrato: string = CONTRATO_DEFAULT) {
+  const vacio = { ok: false as const, pdfBase64: null, bytes: 0, folio: "", uuid: "", qr: false };
+
+  const empresa = await getEmpresaFacturacion(contrato);
+  if (!empresa) return { ...vacio, error: MSG_SIN_EMPRESA_FACTURACION };
+
+  const { status, body } = await call<unknown>(
+    `/facturafactura/buscar/${encodeURIComponent(criterio.trim())}/${encodeURIComponent(
+      String(empresa.idEmpresaFacturacion),
+    )}`,
+  );
+  if (esNoAutenticado(status)) return { ...vacio, error: MSG_NO_AUTENTICADO };
+  if (status !== 200) return { ...vacio, error: "Servicio de búsqueda no disponible." };
+
+  const hit = filas(body)[0];
+  if (!hit) return { ...vacio, error: "No se encontró ninguna factura con los datos proporcionados." };
+
+  const t0 = Date.now();
+  const { construirPdfCfdi } = await import("./cfdi-pdf.server");
+  const res = await construirPdfCfdi(hit);
+
+  const folio = String(hit["Folio"] ?? "");
+  const uuid = String(hit["FolioFiscal"] ?? "");
+
+  await logErpCall({
+    operacion: erpCtx.getStore()?.operacion ?? "facturacion_pdf_propio",
+    stage: "facturacion:pdf-propio",
+    metodo: "LOCAL",
+    path: "lovable:construirPdfCfdi",
+    status_code: null,
+    ok: res.ok,
+    duracion_ms: Date.now() - t0,
+    error_code: res.ok ? (res.qr ? "" : "fact_pdf_sin_qr") : "fact_pdf_local",
+    error_message: res.ok
+      ? res.qr
+        ? ""
+        : "La respuesta de /facturafactura/buscar no incluyó código QR en base64; el PDF se generó con la leyenda \"Código QR no disponible\"."
+      : res.error,
+    detalle: {
+      sistema: "facturacion",
+      request: resumirCuerpo({ criterio: criterio.trim(), idEmpresaFacturacion: empresa.idEmpresaFacturacion }),
+      response: resumirCuerpo({
+        folio,
+        uuid,
+        bytes: res.ok ? res.bytes : 0,
+        qrIncrustado: res.ok ? res.qr : false,
+        qrCampo: res.ok ? res.qrCampo : null,
+      }),
+    },
+  });
+
+  if (!res.ok) return { ...vacio, folio, uuid, error: res.error };
+  return {
+    ok: true as const,
+    pdfBase64: res.pdfBase64,
+    bytes: res.bytes,
+    folio,
+    uuid,
+    qr: res.qr,
+    error: null,
+  };
+}
