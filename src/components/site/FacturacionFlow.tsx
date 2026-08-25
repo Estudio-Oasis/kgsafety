@@ -547,13 +547,27 @@ export function FacturacionFlow() {
                     invoice.xml ? setShowXml(true) : setSearchError(t("No hay XML disponible para esta factura."))
                   }
                 >
-                  XML
+                  {t("Ver XML")}
                 </button>
                 <button type="button" className={ghostCls} onClick={descargarXml} disabled={!invoice.xml}>
-                  {t("Descargar")}
+                  {t("Descargar XML")}
+                </button>
+                <button
+                  type="button"
+                  className={btnCls}
+                  onClick={() => void descargarPdf()}
+                  disabled={pdfLoading || !invoice.xml}
+                >
+                  {pdfLoading ? t("Generando PDF…") : t("Descargar PDF")}
                 </button>
               </div>
             </div>
+          )}
+
+          {pdfAviso && (
+            <p className="mt-3 text-xs border border-[color:var(--border)] bg-[color:var(--surface)] p-3 text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)]">
+              {pdfAviso}
+            </p>
           )}
 
           {showXml && invoice?.xml && (
