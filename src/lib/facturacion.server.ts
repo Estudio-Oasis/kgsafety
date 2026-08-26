@@ -307,7 +307,7 @@ export async function checkQuoteForInvoice(cotizacion: string) {
       ok: false as const,
       code: "no_encontrada",
       error:
-        "La factura podrá obtenerse al día siguiente de la operación. Si ya pasó ese plazo, verifique el número de cotización.",
+        "La factura podrá obtenerse al día siguiente de la operación. Si ya pasó ese plazo, verifique que el número de cotización y la referencia de pago tengan la información correcta.",
       info: null,
     };
   }
