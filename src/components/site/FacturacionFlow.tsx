@@ -284,7 +284,7 @@ export function FacturacionFlow() {
             </div>
             <p className="text-xs text-[color:color-mix(in_oklab,var(--on-surface)_75%,transparent)]">
               {t(
-                "La factura puede emitirse a partir del día siguiente de la operación y dentro del mes en curso. Para clientes tipo Normal es obligatoria la referencia de pago.",
+                "La factura puede emitirse a partir del día siguiente de la operación y dentro del mes en curso; por disposiciones fiscales no puede emitirse después del mes en curso. Es obligatorio contar con la cotización emitida por el área de servicio. Para clientes tipo Normal es obligatoria la referencia de pago.",
               )}
             </p>
           </div>

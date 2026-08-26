@@ -5,8 +5,8 @@ import { FacturacionFlow } from "@/components/site/FacturacionFlow";
 const LINKS = {
   administracion: "https://admin-factura-cliente.noilmx.com/",
   whatsapp: "https://api.whatsapp.com/send?phone=527222532753",
-  email: "mailto:vianey-contadora@kg-safety.com",
-  tel: "tel:+5217227990719",
+  email: "mailto:facturacion@kg-safety.com",
+  tel: "tel:+527229330758",
 };
 
 export const Route = createFileRoute("/facturacion")({
@@ -78,7 +78,7 @@ function FacturacionPage() {
           <div className="grid sm:grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)] mb-10">
             <ContactBlock
               label={t("Teléfono directo")}
-              value="+52 1 722 799 0719"
+              value="+52 722 933 07 58"
               href={LINKS.tel}
             />
             <ContactBlock
