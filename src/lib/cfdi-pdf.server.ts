@@ -146,7 +146,47 @@ export function parseCfdi(xml: string): CfdiParsed | null {
   };
 }
 
+// ---------- domicilio del emisor (viene del registro de Noil, no del XML) ----------
+
+/**
+ * El CFDI 4.0 no incluye el domicilio del emisor en el XML (sólo LugarExpedicion),
+ * por lo que se toma de los campos del registro devuelto por /facturafactura/buscar.
+ * Si el registro no lo trae, no se imprime nada: nunca se escribe un valor fijo.
+ */
+export function domicilioEmisor(record: unknown): string[] {
+  if (!record || typeof record !== "object") return [];
+  const r = record as Nodo;
+  const str = (k: string) => {
+    const v = r[k];
+    const s = v === undefined || v === null ? "" : String(v).trim();
+    return s === "*" || s.toUpperCase() === "N/A" ? "" : s;
+  };
+  const calle = str("Calle");
+  const noExt = str("NoExt");
+  const noInt = str("NoInt");
+  const colonia = str("Colonia");
+  const cp = str("Cp");
+  const ciudad = str("Ciudad");
+  const estado = str("Estado");
+  const pais = str("Pais");
+
+  const numero = [noExt, noInt].filter(Boolean).join("-");
+  const linea1 = [calle, numero].filter(Boolean).join(" ");
+  const linea2 = [
+    colonia ? `Col. ${colonia}` : "",
+    cp ? `C.P. ${cp}` : "",
+    ciudad,
+    estado,
+    pais,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  return [linea1, linea2].filter(Boolean);
+}
+
 // ---------- QR: sólo el base64 de la respuesta ----------
+
 
 const PNG_B64 = "iVBORw0KGgo";
 const JPG_B64 = "/9j/";
