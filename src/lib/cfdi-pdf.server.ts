@@ -353,6 +353,7 @@ export async function construirPdfCfdi(record: unknown): Promise<PdfResultado> {
   let yIzq = ctx.y - 26;
   for (const linea of [
     `RFC: ${attr(emisor, "Rfc")}`,
+    ...domicilioEmisor(record),
     `Régimen fiscal: ${attr(emisor, "RegimenFiscal")}`,
     `Lugar de expedición: ${attr(c, "LugarExpedicion")}`,
     attr(emisor, "FacAtrAdquirente") ? `Fac. atr. adquirente: ${attr(emisor, "FacAtrAdquirente")}` : "",
