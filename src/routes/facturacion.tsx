@@ -78,7 +78,7 @@ function FacturacionPage() {
           <div className="grid sm:grid-cols-2 gap-px bg-[color:var(--border)] border border-[color:var(--border)] mb-10">
             <ContactBlock
               label={t("Teléfono directo")}
-              value="+52 1 722 799 0719"
+              value="+52 722 933 07 58"
               href={LINKS.tel}
             />
             <ContactBlock
