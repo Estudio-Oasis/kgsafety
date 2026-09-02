@@ -42,7 +42,7 @@ export function SiteFooter() {
           </h4>
           <ul className="space-y-3 text-sm text-white/70">
             <li><Link to="/contacto" className="hover:text-signal">{t("Solicitar cotización")}</Link></li>
-            <li><Link to="/facturacion" hash="autofactura" className="hover:text-signal">{t("Facturar (CFDI 4.0)")}</Link></li>
+            <li><a href="https://facturacion.kg-safety.com/facturar/proceso" target="_blank" rel="noopener noreferrer" className="hover:text-signal">{t("Facturar (CFDI 4.0)")}</a></li>
             <li><Link to="/facturacion" className="hover:text-signal">{t("Soporte de facturación")}</Link></li>
             
           </ul>

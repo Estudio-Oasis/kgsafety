@@ -73,9 +73,9 @@ export function SiteHeader() {
           <Link to="/contacto" className="text-[color:var(--signal)] hover:text-white transition-colors">
             {t("Cotizar en línea")}
           </Link>
-          <Link to="/facturacion" hash="autofactura" className="hover:text-[color:var(--signal)] transition-colors">
+          <a href="https://facturacion.kg-safety.com/facturar/proceso" target="_blank" rel="noopener noreferrer" className="hover:text-[color:var(--signal)] transition-colors">
             {t("Facturar")}
-          </Link>
+          </a>
           <button
             onClick={toggleTheme}
             aria-label={t("Cambiar tema")}
@@ -201,14 +201,15 @@ export function SiteHeader() {
             >
               {t("Cotizar en línea")}
             </Link>
-            <Link
-              to="/facturacion"
-              hash="autofactura"
+            <a
+              href="https://facturacion.kg-safety.com/facturar/proceso"
+              target="_blank"
+              rel="noopener noreferrer"
               className="py-2 text-brand-blue hover:text-signal transition-colors"
               onClick={() => setOpen(false)}
             >
               {t("Facturación electrónica")}
-            </Link>
+            </a>
             {MOBILE_GROUPS.map((group) => {
               const expanded = openGroup === group.label;
               return (
