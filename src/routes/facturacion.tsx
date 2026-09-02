@@ -52,9 +52,10 @@ function FacturacionPage() {
             <ActionCard
               n="01"
               title={t("Obtener factura")}
-              desc={t("Genere y timbre su factura aquí mismo con su código de cliente y folio de cotización.")}
+              desc={t("Genere y timbre su factura en nuestro portal de auto-facturación con su código de cliente y folio de cotización.")}
               cta={t("Facturar ahora")}
-              href="#autofactura"
+              href="https://facturacion.kg-safety.com/facturar/proceso"
+              external
             />
 
             <ActionCard
