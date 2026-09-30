@@ -9,7 +9,9 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "bun test tests/",
+    "import:catalogos": "bun run scripts/import-catalogos.ts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

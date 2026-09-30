@@ -173,76 +173,24 @@ export const qeSuggestPrice = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ context, data }) => {
+    const { suggestPrice } = await import("./price-suggest");
     const db = context.supabase as any;
     const { data: pkgs, error } = await db
       .from("price_packages")
-      .select("code,name,package_type,unit_price,min_participants,max_participants,tax_rate")
+      .select("code,package_type,unit_price,min_participants,max_participants,tax_rate")
       .eq("course_legacy_id", data.courseLegacyId)
       .eq("active", true);
     if (error) return { ok: false as const, error: error.message, suggestion: null };
 
     const rows = (pkgs ?? []) as Array<{
       code: string;
-      name: string;
       package_type: string;
       unit_price: number;
       min_participants: number | null;
       max_participants: number | null;
       tax_rate: number;
     }>;
-    if (rows.length === 0) {
-      return { ok: true as const, error: null, suggestion: null };
-    }
 
-    const individualType = data.modality === "Foraneo" ? "individual_foraneo" : "individual_local";
-    const individual = rows.find((r) => r.package_type === individualType) ?? null;
-    const grupal = rows.find((r) => r.package_type === "grupal") ?? null;
-
-    const perPerson = individual ? Number(individual.unit_price) : null;
-    const individualTotal = perPerson !== null ? perPerson * data.participants : null;
-    const grupalTotal = grupal ? Number(grupal.unit_price) : null;
-
-    // Recomendación: si el paquete grupal aplica al rango y sale más barato, sugerirlo.
-    const grupalAplica =
-      grupal &&
-      (grupal.min_participants == null || data.participants >= grupal.min_participants) &&
-      (grupal.max_participants == null || data.participants <= grupal.max_participants);
-
-    let recommended: "individual" | "grupal" = "individual";
-    if (
-      grupalAplica &&
-      grupalTotal !== null &&
-      individualTotal !== null &&
-      grupalTotal <= individualTotal
-    ) {
-      recommended = "grupal";
-    } else if (grupalAplica && individualTotal === null) {
-      recommended = "grupal";
-    }
-
-    return {
-      ok: true as const,
-      error: null,
-      suggestion: {
-        recommended,
-        individual: individual
-          ? {
-              code: individual.code,
-              unitPrice: perPerson,
-              taxRate: Number(individual.tax_rate),
-              total: individualTotal,
-            }
-          : null,
-        grupal: grupal
-          ? {
-              code: grupal.code,
-              unitPrice: grupalTotal,
-              taxRate: Number(grupal.tax_rate),
-              minParticipants: grupal.min_participants,
-              maxParticipants: grupal.max_participants,
-              aplica: Boolean(grupalAplica),
-            }
-          : null,
-      },
-    };
+    const suggestion = suggestPrice(rows, data.modality, data.participants);
+    return { ok: true as const, error: null, suggestion };
   });
