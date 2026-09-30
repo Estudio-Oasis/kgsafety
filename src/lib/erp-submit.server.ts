@@ -20,6 +20,7 @@ import {
   type ErpMode,
 } from "./erp-monitor.server";
 import { attachErpOutcome, recordLead } from "./leads.server";
+import { noilSyncEnabled, quoteSourceOfTruth, submitWebQuote } from "./web-quote.server";
 
 export type SubmitQuoteResponse = {
   ok: boolean;
@@ -36,9 +37,7 @@ export type SubmitQuoteResponse = {
 };
 
 export function looksLikeTest(input: { empresa: string; correo: string }) {
-  return (
-    /prueba|staging|\btest\b/i.test(input.empresa) || /kg-safety\.com$/i.test(input.correo)
-  );
+  return /prueba|staging|\btest\b/i.test(input.empresa) || /kg-safety\.com$/i.test(input.correo);
 }
 
 export async function submitQuote(
@@ -70,6 +69,83 @@ export async function submitQuote(
     es_prueba: esPrueba,
     modo,
   });
+
+  // ------------------------------------------------------------------
+  // Cotizador PROPIO: cuando Supabase es la fuente de verdad, la solicitud
+  // se registra en nuestra base (create_web_quote) sin depender de Noil.
+  // Noil solo se sincroniza si NOIL_SYNC sigue encendido.
+  // ------------------------------------------------------------------
+  if (quoteSourceOfTruth() === "supabase") {
+    const web = await submitWebQuote(data);
+
+    if (web.ok) {
+      await attachErpOutcome(leadId, {
+        erp_status: "creada",
+        erp_folio: web.code ?? "",
+        erp_solicitud_id: web.quoteRequestId,
+        erp_trace_id: traceId,
+      });
+
+      // Sincronización opcional con Noil en segundo plano (mejor esfuerzo).
+      if (noilSyncEnabled()) {
+        void erpCtx
+          .run({ traceId, leadId, operacion: "cotizacion_sync", modo, esPrueba, intento: 1 }, () =>
+            createQuote(data, { traceId }),
+          )
+          .catch((e) => console.error("[web-quote] sync Noil falló (no crítico)", e));
+      }
+
+      return {
+        ok: true,
+        stage: "completado",
+        code: web.status === "duplicate" ? "duplicada" : "creada",
+        message: "Su solicitud quedó registrada en nuestro sistema.",
+        traceId,
+        retryable: false,
+        idCotizacionSolicitud: null,
+        folio: web.code,
+        fechaAgendada: false,
+        leadId,
+      };
+    }
+
+    if (web.status === "rate_limited") {
+      return {
+        ok: false,
+        stage: "rate_limit",
+        code: "rate_limited",
+        message: web.error,
+        traceId,
+        retryable: false,
+        idCotizacionSolicitud: null,
+        folio: null,
+        fechaAgendada: false,
+        leadId,
+      };
+    }
+
+    // Error temporal registrando en Supabase: dejamos constancia y pedimos
+    // confirmación por teléfono (no se pierde la solicitud: el lead ya existe).
+    await attachErpOutcome(leadId, {
+      erp_status: "pendiente",
+      erp_trace_id: traceId,
+      erp_error: `supabase/${web.status}: ${web.error}`,
+    });
+    return {
+      ok: true,
+      stage: "en_cola",
+      code: "recibida_en_cola",
+      message:
+        "Recibimos su solicitud, pero por un problema temporal no pudimos confirmarla en el sistema. No la envíe de nuevo: confírmela por teléfono al +52 722 879 5076 o por WhatsApp y un asesor la atenderá de inmediato.",
+      traceId,
+      retryable: false,
+      idCotizacionSolicitud: null,
+      folio: null,
+      fechaAgendada: false,
+      enCola: true,
+      leadId,
+    };
+  }
 
   return erpCtx.run(
     { traceId, leadId, operacion: "cotizacion", modo, esPrueba, intento: 1 },
@@ -153,7 +229,9 @@ export async function submitQuote(
         await attachErpOutcome(leadId, {
           erp_status: "error",
           erp_trace_id: traceId,
-          erp_error: esConfiguracion ? "configuracion/credenciales_no_configuradas" : `${stage}/${code}`,
+          erp_error: esConfiguracion
+            ? "configuracion/credenciales_no_configuradas"
+            : `${stage}/${code}`,
         });
         await raiseAlert({
           tipo: "erp_error",
