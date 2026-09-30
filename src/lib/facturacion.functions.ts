@@ -1,14 +1,22 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+// NOTA: la lógica de timbrado se enruta por proveedor (BILLING_PROVIDER) a
+// través de getBillingProvider(). Con "noil" (por omisión) el comportamiento es
+// idéntico al anterior; "pac" queda listo para el timbrado directo.
+
 export const factLookupClient = createServerFn({ method: "POST" })
   .inputValidator((data: { codigo: string }) =>
     z.object({ codigo: z.string().trim().min(2).max(40) }).parse(data),
   )
   .handler(async ({ data }) => {
-    const { findFiscalClient, withFactTrace } = await import("./facturacion.server");
+    const { withFactTrace } = await import("./facturacion.server");
+    const { getBillingProvider } = await import("./billing/index.server");
     try {
-      const client = await withFactTrace("facturacion_buscar_cliente", () => findFiscalClient(data.codigo));
+      const billing = await getBillingProvider();
+      const client = await withFactTrace("facturacion_buscar_cliente", () =>
+        billing.findClient(data.codigo),
+      );
       if (!client) return { ok: false as const, client: null };
       return {
         ok: true as const,
@@ -40,10 +48,12 @@ export const factIssueInvoice = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { issueInvoice, withFactTrace } = await import("./facturacion.server");
+    const { withFactTrace } = await import("./facturacion.server");
+    const { getBillingProvider } = await import("./billing/index.server");
     try {
+      const billing = await getBillingProvider();
       return await withFactTrace("facturacion_emitir", () =>
-        issueInvoice({
+        billing.issueInvoice({
           IdProveedorCliente: data.idProveedorCliente,
           NoCotizacion: data.noCotizacion,
           UsoCFDI: data.usoCFDI,
@@ -52,69 +62,89 @@ export const factIssueInvoice = createServerFn({ method: "POST" })
       );
     } catch (e) {
       console.error(e);
-      return { ok: false as const, error: "El servicio de facturación no respondió. Intente más tarde." };
+      return {
+        ok: false as const,
+        error: "El servicio de facturación no respondió. Intente más tarde.",
+      };
     }
   });
 
 export const factCheckQuote = createServerFn({ method: "POST" })
   .inputValidator((data: { cotizacion: string; referencia?: string }) =>
     z
-      .object({ cotizacion: z.string().trim().min(1).max(60), referencia: z.string().trim().max(60).default("") })
+      .object({
+        cotizacion: z.string().trim().min(1).max(60),
+        referencia: z.string().trim().max(60).default(""),
+      })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { checkQuoteForInvoice, validatePayment, findFiscalClient, withFactTrace } = await import("./facturacion.server");
+    const { withFactTrace } = await import("./facturacion.server");
+    const { getBillingProvider } = await import("./billing/index.server");
     try {
+      const billing = await getBillingProvider();
       return await withFactTrace("facturacion_validar_cotizacion", async () => {
-      const check = await checkQuoteForInvoice(data.cotizacion);
-      if (!check.ok || !check.info) return { ok: false as const, error: check.error, code: check.code, client: null };
+        const check = await billing.checkQuote(data.cotizacion);
+        if (!check.ok || !check.info)
+          return { ok: false as const, error: check.error, code: check.code, client: null };
 
-      if (check.info.tipoCliente === "Normal") {
-        if (!data.referencia) {
+        if (check.info.tipoCliente === "Normal") {
+          if (!data.referencia) {
+            return {
+              ok: false as const,
+              code: "falta_referencia",
+              error: 'Para clientes de tipo "Normal", es necesario ingresar la referencia de pago.',
+              client: null,
+            };
+          }
+          const pay = await billing.validatePayment(
+            data.cotizacion,
+            data.referencia,
+            check.info.monto,
+          );
+          if (!pay.ok)
+            return { ok: false as const, code: "pago_no_valido", error: pay.error, client: null };
+        }
+
+        const fiscal = await billing.findClient(check.info.codigoCliente);
+        if (!fiscal) {
           return {
             ok: false as const,
-            code: "falta_referencia",
-            error: 'Para clientes de tipo "Normal", es necesario ingresar la referencia de pago.',
+            code: "sin_datos_fiscales",
+            error:
+              "No se encontraron datos fiscales dados de alta. Por favor consulte a Administración.",
             client: null,
           };
         }
-        const pay = await validatePayment(data.cotizacion, data.referencia, check.info.monto);
-        if (!pay.ok) return { ok: false as const, code: "pago_no_valido", error: pay.error, client: null };
-      }
 
-      const fiscal = await findFiscalClient(check.info.codigoCliente);
-      if (!fiscal) {
         return {
-          ok: false as const,
-          code: "sin_datos_fiscales",
-          error: "No se encontraron datos fiscales dados de alta. Por favor consulte a Administración.",
-          client: null,
+          ok: true as const,
+          code: "ok",
+          error: null,
+          client: {
+            IdProveedorCliente: fiscal.IdProveedorCliente,
+            NombreEmpresa: fiscal.NombreEmpresa,
+            RFC: fiscal.RFC,
+            Codigo: fiscal.Codigo,
+            Email: fiscal.Email ?? "",
+            RegimenFiscal: fiscal.RegimenFiscal ?? "",
+            Calle: fiscal.Calle ?? "",
+            No: fiscal.No ?? "",
+            NoInt: fiscal.NoInt ?? "",
+            Colonia: fiscal.Colonia ?? "",
+            CP: fiscal.CP ?? "",
+            TelEmpresa: fiscal.TelEmpresa ?? "",
+          },
         };
-      }
-
-      return {
-        ok: true as const,
-        code: "ok",
-        error: null,
-        client: {
-          IdProveedorCliente: fiscal.IdProveedorCliente,
-          NombreEmpresa: fiscal.NombreEmpresa,
-          RFC: fiscal.RFC,
-          Codigo: fiscal.Codigo,
-          Email: fiscal.Email ?? "",
-          RegimenFiscal: fiscal.RegimenFiscal ?? "",
-          Calle: fiscal.Calle ?? "",
-          No: fiscal.No ?? "",
-          NoInt: fiscal.NoInt ?? "",
-          Colonia: fiscal.Colonia ?? "",
-          CP: fiscal.CP ?? "",
-          TelEmpresa: fiscal.TelEmpresa ?? "",
-        },
-      };
       });
     } catch (e) {
       console.error(e);
-      return { ok: false as const, code: "servicio", error: "El servicio de facturación no respondió. Intente más tarde.", client: null };
+      return {
+        ok: false as const,
+        code: "servicio",
+        error: "El servicio de facturación no respondió. Intente más tarde.",
+        client: null,
+      };
     }
   });
 
@@ -130,38 +160,51 @@ export const factUpdateAndIssue = createServerFn({ method: "POST" })
         numero: z.string().trim().min(1).max(20),
         numeroInt: z.string().trim().max(20).default(""),
         colonia: z.string().trim().min(1).max(160),
-        cp: z.string().trim().regex(/^\d{5}$/),
+        cp: z
+          .string()
+          .trim()
+          .regex(/^\d{5}$/),
         telefono: z.string().trim().max(30).default(""),
       })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { updateFiscalClient, issueInvoice, withFactTrace } = await import("./facturacion.server");
+    const { withFactTrace } = await import("./facturacion.server");
+    const { getBillingProvider } = await import("./billing/index.server");
     try {
+      const billing = await getBillingProvider();
       return await withFactTrace("facturacion_actualizar_y_emitir", async () => {
-      const updated = await updateFiscalClient(data.idProveedorCliente, {
-        Calle: data.calle,
-        No: data.numero,
-        NoInt: data.numeroInt,
-        Colonia: data.colonia,
-        CP: data.cp,
-        TelEmpresa: data.telefono,
-      });
-      if (!updated) {
-        return { ok: false as const, uuid: null, error: "No fue posible actualizar los datos fiscales." };
-      }
-      const res = await issueInvoice({
-        IdProveedorCliente: data.idProveedorCliente,
-        NoCotizacion: data.noCotizacion,
-        UsoCFDI: data.usoCFDI,
-        ...(data.referencia ? { Referencia: data.referencia } : {}),
-      });
-      if (!res.ok) return { ok: false as const, uuid: null, error: res.error };
-      return { ok: true as const, uuid: res.uuid, error: null };
+        const updated = await billing.updateClient(data.idProveedorCliente, {
+          Calle: data.calle,
+          No: data.numero,
+          NoInt: data.numeroInt,
+          Colonia: data.colonia,
+          CP: data.cp,
+          TelEmpresa: data.telefono,
+        });
+        if (!updated) {
+          return {
+            ok: false as const,
+            uuid: null,
+            error: "No fue posible actualizar los datos fiscales.",
+          };
+        }
+        const res = await billing.issueInvoice({
+          IdProveedorCliente: data.idProveedorCliente,
+          NoCotizacion: data.noCotizacion,
+          UsoCFDI: data.usoCFDI,
+          ...(data.referencia ? { Referencia: data.referencia } : {}),
+        });
+        if (!res.ok) return { ok: false as const, uuid: null, error: res.error };
+        return { ok: true as const, uuid: res.uuid, error: null };
       });
     } catch (e) {
       console.error(e);
-      return { ok: false as const, uuid: null, error: "Ocurrió un error al emitir la factura. Intente más tarde." };
+      return {
+        ok: false as const,
+        uuid: null,
+        error: "Ocurrió un error al emitir la factura. Intente más tarde.",
+      };
     }
   });
 
@@ -170,12 +213,18 @@ export const factFindInvoice = createServerFn({ method: "POST" })
     z.object({ criterio: z.string().trim().min(1).max(80) }).parse(data),
   )
   .handler(async ({ data }) => {
-    const { findInvoice, withFactTrace } = await import("./facturacion.server");
+    const { withFactTrace } = await import("./facturacion.server");
+    const { getBillingProvider } = await import("./billing/index.server");
     try {
-      return await withFactTrace("facturacion_consultar", () => findInvoice(data.criterio));
+      const billing = await getBillingProvider();
+      return await withFactTrace("facturacion_consultar", () => billing.findInvoice(data.criterio));
     } catch (e) {
       console.error(e);
-      return { ok: false as const, invoice: null, error: "Error de conexión con el servicio de facturación." };
+      return {
+        ok: false as const,
+        invoice: null,
+        error: "Error de conexión con el servicio de facturación.",
+      };
     }
   });
 
@@ -192,10 +241,12 @@ export const factPreviewPdf = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { previewInvoicePdf, withFactTrace } = await import("./facturacion.server");
+    const { withFactTrace } = await import("./facturacion.server");
+    const { getBillingProvider } = await import("./billing/index.server");
     try {
+      const billing = await getBillingProvider();
       return await withFactTrace("facturacion_preview", () =>
-        previewInvoicePdf({
+        billing.previewPdf({
           IdProveedorCliente: data.idProveedorCliente,
           NoCotizacion: data.noCotizacion,
           UsoCFDI: data.usoCFDI,
@@ -219,9 +270,11 @@ export const factStampedPdf = createServerFn({ method: "POST" })
     z.object({ criterio: z.string().trim().min(1).max(80) }).parse(data),
   )
   .handler(async ({ data }) => {
-    const { buildStampedInvoicePdf, withFactTrace } = await import("./facturacion.server");
+    const { withFactTrace } = await import("./facturacion.server");
+    const { getBillingProvider } = await import("./billing/index.server");
     try {
-      return await withFactTrace("facturacion_pdf_propio", () => buildStampedInvoicePdf(data.criterio));
+      const billing = await getBillingProvider();
+      return await withFactTrace("facturacion_pdf_propio", () => billing.stampedPdf(data.criterio));
     } catch (e) {
       console.error(e);
       return {
